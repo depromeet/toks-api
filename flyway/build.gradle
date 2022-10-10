@@ -1,0 +1,28 @@
+plugins {
+    id "java"
+    id "org.flywaydb.flyway" version "9.4.0"
+}
+
+ext {
+    set('flywayVersion', '9.4.0')
+    set('jupiterVersion', '5.9.0')
+}
+
+group 'com.tdsn'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+// default flyway configuration : local
+flyway {
+    url = 'jdbc:mysql://localhost:3306/hot6?'
+    user = 'root'
+    password = 'benx0508!'
+}
+
+dependencies {
+    implementation "org.flywaydb:flyway-core:${flywayVersion}"
+    implementation project(':core')
+}

@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+ext {
+    set('flywayVersion', '9.4.0')
+    set('jupiterVersion', '5.9.0')
+}
+
+group 'com.tdsn'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':core')
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    testImplementation project(':core')
+
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${jupiterVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}
