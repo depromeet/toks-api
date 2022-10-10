@@ -17,9 +17,9 @@ repositories {
 
 // default flyway configuration : local
 flyway {
-    url = 'jdbc:mysql://localhost:3306/hot6?'
-    user = 'root'
-    password = 'benx0508!'
+    url = 'jdbc:mysql://localhost:3306/tdsn?'
+    user = "${mysqlUsername}"
+    password = "${mysqlPassword}"
 }
 
 dependencies {

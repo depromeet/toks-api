@@ -10,7 +10,7 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
   datasource:
-    url: jdbc:mysql://localhost:3306/hot6
+    url: jdbc:mysql://localhost:3306/tdsn
     username: ${mysqlUsername}
     password: ${mysqlPassword}
     driver-class-name: com.mysql.cj.jdbc.Driver
