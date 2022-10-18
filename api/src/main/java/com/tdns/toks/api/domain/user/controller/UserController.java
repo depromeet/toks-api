@@ -35,7 +35,7 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
     public ResponseEntity<JwtToken> login(
             UserLoginRequest userLoginRequest
-    ){
+    ) {
         return ResponseEntity.ok(userApiService.login(userLoginRequest));
     }// 초기세팅 테스트용 메서드
 }

@@ -1,6 +1,5 @@
 package com.tdns.toks.api;
 
-import com.tdns.toks.api.domain.user.model.dto.UserApiDTO;
 import com.tdns.toks.core.common.type.JwtToken;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
