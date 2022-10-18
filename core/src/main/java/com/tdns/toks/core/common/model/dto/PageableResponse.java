@@ -21,12 +21,6 @@ public class PageableResponse<T> {
     private int number;
     private Sort sort;
 
-    public static <T1, T2> PageableResponse<T2> makeResponse(Page<T1> data, Function<T1, T2> copyObjectFunc) {
-        PageableResponse response = new PageableResponse();
-        response.setContent(data.getContent().stream().map(copyObjectFunc).collect(Collectors.toList()));
-        return getPageableResponse(response, data.getNumberOfElements(), data.getNumber(), data.getSize(), data.getTotalElements(), data.getTotalPages());
-    }
-
     public static <T> PageableResponse<T> makeResponse(Page<T> data) {
         PageableResponse response = new PageableResponse();
         response.setContent(data.getContent());
@@ -42,8 +36,8 @@ public class PageableResponse<T> {
     }
 
     private static <T2> PageableResponse<T2> getPageableResponse(
-        PageableResponse response, int numberOfElements, int number, int size, long totalElements,
-        int totalPages) {
+            PageableResponse response, int numberOfElements, int number, int size, long totalElements,
+            int totalPages) {
         response.setNumberOfElements(numberOfElements);
         response.setNumber(number);
         response.setSize(size);

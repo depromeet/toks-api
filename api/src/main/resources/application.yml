@@ -61,8 +61,8 @@ cloud:
 
 #security
 security:
-  permit-url: /api-docs/**,/configuration/**,/swagger-ui/**,/webjars/**,/health
-  filter-skip: /health,/api-docs,/configuration,/swagger,/swagger-ui,/webjars
+  permit-url: /api-docs/**,/configuration/**,/swagger-ui/**,/webjars/**,/health,/swagger/**,/swagger/index.html
+  filter-skip: /health,/api-docs,/configuration,/swagger,/swagger-ui,/webjars,/swagger/**
 
 #swagger
 springdoc:
@@ -74,7 +74,7 @@ springdoc:
   swagger-ui:
     operations-sorter: alpha
     tags-sorter: alpha
-    path: /swagger-ui/api-docs.html
+    path: /api-docs.html
     disable-swagger-default-url: true
     display-query-params-without-oauth2: true
   paths-to-match:

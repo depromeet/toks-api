@@ -4,7 +4,7 @@ import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.config.security.JwtTokenProvider;
 import com.tdns.toks.core.domain.user.model.dto.UserDTO;
-import com.tdns.toks.core.domain.user.model.entity.UserEntity;
+import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,8 +39,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (token != null && jwtTokenProvider.verifyToken(token)) {
             String email = jwtTokenProvider.getUid(token);
-            UserEntity userEntity = userService.getUserByStatus(email).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNAUTHORIZED_USER));
-            Authentication auth = getAuthentication(UserDTO.convertEntityToDTO(userEntity));
+            User user = userService.getUserByStatus(email).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNAUTHORIZED_USER));
+            Authentication auth = getAuthentication(UserDTO.convertEntityToDTO(user));
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         filterChain.doFilter(request, response);

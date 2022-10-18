@@ -1,28 +1,35 @@
+buildscript {
+    ext {
+        def localProperties = new Properties()
+        def localPropertiesFile = rootProject.file('local.properties')
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.withReader('UTF-8') { reader ->
+                localProperties.load(reader)
+            }
+        }
+
+        def mysqlUsername = localProperties.getProperty('mysql.userName')
+        def mysqlPassword = localProperties.getProperty('mysql.userPassword')
+
+        set('mysqlUsername', mysqlUsername)
+        set('mysqlPassword', mysqlPassword)
+        set('flywayVersion', '6.5.7')
+    }
+}
+
 plugins {
-    id "java"
-    id "org.flywaydb.flyway" version "9.4.0"
+    id "org.flywaydb.flyway" version "${flywayVersion}"
 }
 
-ext {
-    set('flywayVersion', '9.4.0')
-    set('jupiterVersion', '5.9.0')
+dependencies {
+    implementation project(':core')
+    implementation "org.flywaydb:flyway-core:${flywayVersion}"
 }
 
-group 'com.tdsn'
-version '1.0-SNAPSHOT'
-
-repositories {
-    mavenCentral()
-}
 
 // default flyway configuration : local
 flyway {
     url = 'jdbc:mysql://localhost:3306/tdsn?'
     user = "${mysqlUsername}"
     password = "${mysqlPassword}"
-}
-
-dependencies {
-    implementation "org.flywaydb:flyway-core:${flywayVersion}"
-    implementation project(':core')
 }

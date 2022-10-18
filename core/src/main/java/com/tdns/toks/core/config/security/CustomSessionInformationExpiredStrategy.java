@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @Component
-public class CustomSessionInfomationExpiredStrategy implements SessionInformationExpiredStrategy {
+public class CustomSessionInformationExpiredStrategy implements SessionInformationExpiredStrategy {
     @Override
     public void onExpiredSessionDetected(SessionInformationExpiredEvent event) throws IOException {
 //        log.info("Redirecting to session expired page");

@@ -2,7 +2,7 @@ package com.tdns.toks.core.domain.user.service;
 
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
-import com.tdns.toks.core.domain.user.model.entity.UserEntity;
+import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 import com.tdns.toks.core.domain.user.type.UserProvider;
 import lombok.RequiredArgsConstructor;
@@ -16,16 +16,17 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+
     @Transactional(readOnly = true)
-    public Optional<UserEntity> getUserByStatus(String email) {
+    public Optional<User> getUserByStatus(String email) {
         return userRepository.findByEmail(email);
     }
 
-    public UserEntity getUser(UserProvider provider, String providerId) {
+    public User getUser(UserProvider provider, String providerId) {
         return userRepository.findByProviderAndProviderId(provider, providerId).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.COULDNT_FIND_ANY_DATA));
     }
 
-    public UserEntity createUser(UserEntity userEntity) {
-        return userRepository.save(userEntity);
+    public User createUser(User user) {
+        return userRepository.save(user);
     }
 }

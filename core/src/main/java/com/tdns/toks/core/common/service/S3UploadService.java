@@ -21,7 +21,7 @@ import java.net.URL;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class S3UploadService  {
+public class S3UploadService {
     private final AmazonS3 s3;
 
     @Value("${cloud.aws.s3.bucket}")

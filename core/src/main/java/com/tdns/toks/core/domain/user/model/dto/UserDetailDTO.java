@@ -2,7 +2,7 @@ package com.tdns.toks.core.domain.user.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tdns.toks.core.common.type.JwtToken;
-import com.tdns.toks.core.domain.user.model.entity.UserEntity;
+import com.tdns.toks.core.domain.user.model.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,19 +22,19 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Schema(name="UserDetailDto", description="User 디테일 정보")
+@Schema(name = "UserDetailDto", description = "User 디테일 정보")
 public class UserDetailDTO implements UserDetails {
 
-    private final UserEntity user;
+    private final User user;
 
     private JwtToken jwtToken;
     private Map<String, Object> attributes;
 
-    public UserDetailDTO(UserEntity user) {
+    public UserDetailDTO(User user) {
         this.user = user;
     }
 
-    public UserDetailDTO(UserEntity user, Map<String, Object> attributes, JwtToken jwtToken) {
+    public UserDetailDTO(User user, Map<String, Object> attributes, JwtToken jwtToken) {
         this.user = user;
         this.attributes = attributes;
         this.jwtToken = jwtToken;

@@ -24,10 +24,10 @@ public class PageableParam {
 //    @ApiParam(value = "한 페이지에 나오는 레코드 수. 0 보다 큰 정수.")
     protected int pageSize = DEFAULT_PAGE_SIZE;
 
-//    @ApiParam(value = "정렬 기준. 선택하지 않으면 id로 정렬함.", allowableValues = "id,...")
+    //    @ApiParam(value = "정렬 기준. 선택하지 않으면 id로 정렬함.", allowableValues = "id,...")
     protected String[] sortProperty = {"id"};
 
-//    @ApiParam(value = "정렬 방식. 선택하지 않으면 기본값(Desc)로 자동설정함. `sortProperty`값이 없으면 이 값은 무시함.", allowableValues = "ASC,DESC", defaultValue = "DESC")
+    //    @ApiParam(value = "정렬 방식. 선택하지 않으면 기본값(Desc)로 자동설정함. `sortProperty`값이 없으면 이 값은 무시함.", allowableValues = "ASC,DESC", defaultValue = "DESC")
     protected Sort.Direction sortDirection = Sort.Direction.DESC;
 
     public Pageable getPageable() {

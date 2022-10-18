@@ -1,6 +1,6 @@
 package com.tdns.toks.core.domain.user.model.dto;
 
-import com.tdns.toks.core.domain.user.model.entity.UserEntity;
+import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.type.UserProvider;
 import com.tdns.toks.core.domain.user.type.UserRole;
 import com.tdns.toks.core.domain.user.type.UserStatus;
@@ -22,15 +22,15 @@ public class UserDTO {
     private UserProvider provider;
     private String providerId;
 
-    public static UserDTO convertEntityToDTO(UserEntity userEntity){
+    public static UserDTO convertEntityToDTO(User user) {
         UserDTO userDTO = new UserDTO();
-        userDTO.id = userEntity.getId();
-        userDTO.email = userEntity.getEmail();
-        userDTO.name = userEntity.getName();
-        userDTO.status = userEntity.getStatus();
-        userDTO.userRole = userEntity.getUserRole();
-        userDTO.provider = userEntity.getProvider();
-        userDTO.providerId = userEntity.getProviderId();
+        userDTO.id = user.getId();
+        userDTO.email = user.getEmail();
+        userDTO.name = user.getName();
+        userDTO.status = user.getStatus();
+        userDTO.userRole = user.getUserRole();
+        userDTO.provider = user.getProvider();
+        userDTO.providerId = user.getProviderId();
         return userDTO;
     }
 }
