@@ -1,0 +1,35 @@
+buildscript {
+    ext {
+        def localProperties = new Properties()
+        def localPropertiesFile = rootProject.file('local.properties')
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.withReader('UTF-8') { reader ->
+                localProperties.load(reader)
+            }
+        }
+
+        def mysqlUsername = localProperties.getProperty('mysql.userName')
+        def mysqlPassword = localProperties.getProperty('mysql.userPassword')
+
+        set('mysqlUsername', mysqlUsername)
+        set('mysqlPassword', mysqlPassword)
+        set('flywayVersion', '6.5.7')
+    }
+}
+
+plugins {
+    id "org.flywaydb.flyway" version "${flywayVersion}"
+}
+
+dependencies {
+    implementation project(':core')
+    implementation "org.flywaydb:flyway-core:${flywayVersion}"
+}
+
+
+// default flyway configuration : local
+flyway {
+    url = 'jdbc:mysql://localhost:3306/tdsn?'
+    user = "${mysqlUsername}"
+    password = "${mysqlPassword}"
+}

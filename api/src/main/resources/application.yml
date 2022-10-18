@@ -1,0 +1,81 @@
+# default profile
+spring:
+  profiles:
+    include:
+      - httpclient
+    active: development
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+  datasource:
+    url: jdbc:mysql://localhost:3306/tdsn
+    username: ${mysqlUsername}
+    password: ${mysqlPassword}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    database: mysql
+    database-platform: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
+  redis:
+    host: 127.0.0.1
+    port: 6379
+#  swagger issue
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jwt:
+    secret: ${jwtSecretKey}
+
+server:
+  port: 822
+  tomcat:
+    connection-timeout: 30000
+    max-threads: 100
+    min-spare-threads: 50
+    accept-count: 50
+    uri-encoding: UTF-8
+  forward-headers-strategy: framework
+
+## AWS Setting
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    credentials:
+      access-key: ${awsAccessKey}
+      secret-key: ${awsSecretKey}
+
+    s3:
+      bucket: tdns
+      upload:
+        path.review: public/review
+      cdn:
+        url: https://tdns.s3.ap-northeast-2.amazonaws.com
+
+#security
+security:
+  permit-url: /api-docs/**,/configuration/**,/swagger-ui/**,/webjars/**,/health,/swagger/**,/swagger/index.html
+  filter-skip: /health,/api-docs,/configuration,/swagger,/swagger-ui,/webjars,/swagger/**
+
+#swagger
+springdoc:
+  version: '1.0'
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /api-docs.html
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+  paths-to-match:
+    - /api/v1/**
