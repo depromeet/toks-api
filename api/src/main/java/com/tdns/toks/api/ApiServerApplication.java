@@ -1,4 +1,4 @@
-팅package com.tdns.toks.api;
+package com.tdns.toks.api;
 
 import com.tdns.toks.BasePackageLocation;
 import lombok.RequiredArgsConstructor;
