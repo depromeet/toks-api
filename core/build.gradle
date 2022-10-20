@@ -2,6 +2,7 @@ buildscript {
     ext {
         queryDslVersion = "5.0.0"
         jupiterVersion = "5.9.0"
+        jasyptVersion = "3.0.3"
     }
 }
 
@@ -26,6 +27,8 @@ dependencies {
 
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+    implementation "com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasyptVersion}"
 }
 
 test {
