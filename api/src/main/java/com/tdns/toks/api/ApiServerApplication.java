@@ -16,10 +16,7 @@ import java.util.Arrays;
 import java.util.TimeZone;
 
 @Slf4j
-@SpringBootApplication
-@ComponentScan(basePackageClasses = BasePackageLocation.class)
-@EntityScan(basePackageClasses = BasePackageLocation.class)
-@EnableJpaRepositories(basePackageClasses = BasePackageLocation.class)
+@SpringBootApplication(scanBasePackageClasses = BasePackageLocation.class)
 @RequiredArgsConstructor
 public class ApiServerApplication implements ApplicationListener<ApplicationReadyEvent> {
     private final Environment environment;
