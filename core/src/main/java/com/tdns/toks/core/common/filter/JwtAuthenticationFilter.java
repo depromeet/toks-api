@@ -19,7 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -47,8 +47,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public Authentication getAuthentication(UserDTO user) {
-        return new UsernamePasswordAuthenticationToken(user, "",
-                Arrays.asList(new SimpleGrantedAuthority(user.getUserRole().getAuthority())));
+        return new UsernamePasswordAuthenticationToken(
+                user,
+                "",
+                List.of(new SimpleGrantedAuthority(user.getUserRole().getAuthority()))
+        );
     }
 }
 

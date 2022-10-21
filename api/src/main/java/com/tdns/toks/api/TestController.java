@@ -1,6 +1,6 @@
 package com.tdns.toks.api;
 
-import com.tdns.toks.api.domain.user.model.dto.UserApiDTO;
+import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.common.type.JwtToken;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +30,7 @@ public class TestController {
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
     @GetMapping
-    public ResponseEntity<Object> test(){
-        return ResponseEntity.ok(HttpStatus.OK);
+    public ResponseEntity<Void> test() {
+        return ResponseDto.noContent();
     }// 초기세팅 테스트용 메서드
 }

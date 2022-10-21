@@ -2,6 +2,7 @@ package com.tdns.toks.api.domain.user.controller;
 
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserLoginRequest;
 import com.tdns.toks.api.domain.user.service.UserApiService;
+import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.common.type.JwtToken;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,7 +36,8 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
     public ResponseEntity<JwtToken> login(
             UserLoginRequest userLoginRequest
-    ){
-        return ResponseEntity.ok(userApiService.login(userLoginRequest));
+    ) {
+        var response = userApiService.login(userLoginRequest);
+        return ResponseDto.ok(response);
     }// 초기세팅 테스트용 메서드
 }
