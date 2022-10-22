@@ -3,17 +3,11 @@ spring:
   profiles:
     include:
       - httpclient
-    active: development
   servlet:
     multipart:
       enabled: true
       max-file-size: 100MB
       max-request-size: 100MB
-  datasource:
-    url: jdbc:mysql://localhost:3306/tdsn
-    username: ${mysqlUsername}
-    password: ${mysqlPassword}
-    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
     hibernate:
@@ -29,7 +23,7 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   jwt:
-    secret: ${jwtSecretKey}
+    secret: ENC(BF9EmOQPpQJ8n8uZwUgw37wHFDBQg9wCNHiZUcDnNTbQbHwUd//RIfjiCO38GavO7PIuCKm11FFVhKG1HofyiljZBCCD83eOzw9lWZi6VXE=)
 
 server:
   port: 822
@@ -49,8 +43,8 @@ cloud:
     region:
       static: ap-northeast-2
     credentials:
-      access-key: ${awsAccessKey}
-      secret-key: ${awsSecretKey}
+      access-key: ENC(jK+9F60zXpVOGvhQxJTcQmWq3WudTMDevw4xzRq0uby3C4AsoTDFDJTHwTZmZ5bCbTIwgfDzdPlNu+59OvjUTA==)
+      secret-key: ENC(U12n+g77036NbW3qLUm7vxKBf1z2JL1hgHdkYrZUolUJM0prmIj5kDTGTZTfhJhJP9p6Voc6aOlH8BcBoc28hh+SZYYDsm8kK/oyQk3Aidk=)
 
     s3:
       bucket: tdns

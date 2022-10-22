@@ -1,0 +1,31 @@
+apply plugin: "com.google.cloud.tools.jib"
+
+jib {
+    from {
+        image = "adoptopenjdk/openjdk11"
+    }
+    to {
+        String buildPhase = System.getProperty("build.phase", "dev")
+        project.ext.buildPhase = buildPhase
+        String encryptorPassword = System.getenv("JASYPT_ENCRYPTOR_PASSWORD")
+        project.ext.encryptorPassword = encryptorPassword
+        image = "460278091480.dkr.ecr.ap-northeast-2.amazonaws.com/container-toks-api-server"
+        tags = ["${buildPhase}"]
+    }
+    container {
+        String profile = "-Dspring.profiles.active=${buildPhase.toString()}"
+        String encryptor = "-Djasypt.encryptor.password=${encryptorPassword.toString()}"
+        creationTime = "USE_CURRENT_TIMESTAMP"
+        jvmFlags = [
+                profile,
+                encryptor,
+                "-Dserver.tomcat.accesslog.enabled=true",
+                "-Dserver.tomcat.basedir=",
+                "-XX:+UseContainerSupport",
+                "-Dserver.port=8080",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.timezone=Asia/Seoul"
+        ]
+        ports = ["8080"]
+    }
+}
