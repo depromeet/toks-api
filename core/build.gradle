@@ -46,6 +46,9 @@ sourceSets {
     main.java.srcDir querydslDir
 }
 configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
     querydsl.extendsFrom compileClasspath
 }
 

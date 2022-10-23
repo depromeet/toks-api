@@ -11,7 +11,6 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor
 public class ResponseDto<T> implements Serializable {
     private T data;
 
