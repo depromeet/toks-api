@@ -2,4 +2,5 @@ rootProject.name = 'toks'
 include 'core'
 include 'api'
 include 'flyway'
+include 'batch'
 

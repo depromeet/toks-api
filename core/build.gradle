@@ -29,6 +29,10 @@ dependencies {
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
     implementation "com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasyptVersion}"
+
+    implementation("com.slack.api:bolt:1.18.0")
+    implementation("com.slack.api:bolt-servlet:1.18.0")
+    implementation("com.slack.api:bolt-jetty:1.18.0")
 }
 
 test {
