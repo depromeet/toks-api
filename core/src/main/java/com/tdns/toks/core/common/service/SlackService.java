@@ -13,12 +13,11 @@ import java.io.IOException;
 public class SlackService {
     @Value(value = "${slack.token}")
     String token;
-    @Value(value = "${slack.channel.user-alert}")
-    String userAlertChannel;
-    public void slackSendMessage(String message){
+
+    public void slackSendMessage(String channel, String message){
         try{
             Slack slack = Slack.getInstance();
-            slack.methods(token).chatPostMessage(req -> req.channel(userAlertChannel).text(message));
+            slack.methods(token).chatPostMessage(req -> req.channel(channel).text(message));
         } catch (SlackApiException | IOException e) {
             log.error(e.getMessage());
         }

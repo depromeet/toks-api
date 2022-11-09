@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 @EnableSchedulerLock(defaultLockAtMostFor = "PT10S")
 @RequiredArgsConstructor
 public class SlackJob {
+
+    @Value(value = "${slack.channel.user-alert}")
+    private final String userAlertChannel;
     private final SlackService slackService;
 
     @Scheduled(cron = "0 0 * * * *")
@@ -20,6 +23,6 @@ public class SlackJob {
     public void UserServiceScheduler() {
         // 유저서비스 증감 데이터 조회
         String userData = "";
-        slackService.slackSendMessage(userData);
+        slackService.slackSendMessage(userAlertChannel, userData);
     }
 }
