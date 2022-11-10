@@ -7,7 +7,6 @@ CREATE TABLE `user` (
                         `id` bigint NOT NULL AUTO_INCREMENT COMMENT '회원 번호',
                         `email` varchar(100) NOT NULL UNIQUE COMMENT '회원 이메일',
                         `name` varchar(100) NOT NULL COMMENT '회원 이름',
-                        `upwd` varchar(100) NOT NULL COMMENT '회원 비밀번호',
                         `status` varchar(30) NOT NULL DEFAULT 'ACTIVE' COMMENT '회원 상태',
                         `user_role` varchar(30) NOT NULL DEFAULT 'USER' COMMENT '회원 권한',
                         `provider` varchar(30) NOT NULL DEFAULT 'IFSELF' COMMENT 'provider(IFSELF, GOOGLE, KAKAO, NAVER)',
