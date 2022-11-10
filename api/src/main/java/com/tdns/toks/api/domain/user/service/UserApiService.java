@@ -34,7 +34,6 @@ public class UserApiService {
                 .name("random")
                 .status(UserStatus.ACTIVE)
                 .userRole(UserRole.USER)
-                .upwd(bCryptPasswordEncoder.encode(userLoginRequest.getEmail()))
                 .provider(userLoginRequest.getProvider())
                 .providerId(userLoginRequest.getProviderId())
                 .build();

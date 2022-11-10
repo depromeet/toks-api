@@ -18,7 +18,30 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-#  swagger issue
+
+  # kakao login
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ENC(XGWtqHAq/Kl2l0YnKe5pUfd9VbsbLwMnSK/fMBfS/RDGGGPMRxZuP7N2g9kBLR1xpZ9zmwqsvjm4Z9YVm3s4KlYUyN4pPrd6tk7UxhHdMQ0=)
+            redirect-uri: http://localhost:8080/login/tofront
+            authorization-grant-type: authorization_code
+            client-authentication-method: POST
+            client-name: kakao
+            scope:
+              - profile_nickname
+              - account_email
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+
+  #  swagger issue
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -26,7 +49,7 @@ spring:
     secret: ENC(BF9EmOQPpQJ8n8uZwUgw37wHFDBQg9wCNHiZUcDnNTbQbHwUd//RIfjiCO38GavO7PIuCKm11FFVhKG1HofyiljZBCCD83eOzw9lWZi6VXE=)
 
 server:
-  port: 822
+  port: 8080
   tomcat:
     connection-timeout: 30000
     max-threads: 100
@@ -55,7 +78,7 @@ cloud:
 
 #security
 security:
-  permit-url: /api-docs/**,/configuration/**,/swagger-ui/**,/webjars/**,/health,/swagger/**,/swagger/index.html
+  permit-url: /api-docs/**,/configuration/**,/swagger-ui/**,/webjars/**,/health,/swagger/**,/swagger/index.html, /login/**
   filter-skip: /health,/api-docs,/configuration,/swagger,/swagger-ui,/webjars,/swagger/**
 
 #swagger

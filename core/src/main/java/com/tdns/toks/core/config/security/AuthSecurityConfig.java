@@ -2,6 +2,9 @@ package com.tdns.toks.core.config.security;
 
 import com.tdns.toks.core.common.filter.ExceptionHandlerFilter;
 import com.tdns.toks.core.common.filter.JwtAuthenticationFilter;
+import com.tdns.toks.core.common.oauth.CustomOAuth2UserService;
+import com.tdns.toks.core.common.oauth.OAuth2FailureHandler;
+import com.tdns.toks.core.common.oauth.OAuth2SuccessHandler;
 import com.tdns.toks.core.common.service.UserDetailService;
 import com.tdns.toks.core.common.type.CORSType;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +27,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -38,21 +40,42 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuth2FailureHandler oAuth2FailureHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().disable().csrf().disable()
                 .formLogin().disable()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(permitUrl).permitAll()
-                .antMatchers(HttpMethod.GET, "/**").authenticated()
-                .antMatchers(HttpMethod.POST, "/**").authenticated()
-                .antMatchers(HttpMethod.DELETE, "/**").authenticated()
-                .antMatchers(HttpMethod.PUT, "/**").authenticated()
-                .antMatchers(HttpMethod.PATCH, "/**").authenticated()
-                .anyRequest().permitAll();
+                    .antMatchers(permitUrl).permitAll()
+                    .antMatchers(HttpMethod.GET, "/**").authenticated()
+                    .antMatchers(HttpMethod.POST, "/**").authenticated()
+                    .antMatchers(HttpMethod.DELETE, "/**").authenticated()
+                    .antMatchers(HttpMethod.PUT, "/**").authenticated()
+                    .antMatchers(HttpMethod.PATCH, "/**").authenticated()
+                    .anyRequest().permitAll()
+
+                .and()
+                .oauth2Login()
+                // todo 로그인 페이지 추가하고 permit에 등록 해야겠지...?
+//                    .loginPage("/login")
+                    .authorizationEndpoint()
+                    .baseUri("/oauth2/authorize")
+                    .and()
+                    .redirectionEndpoint()
+                    .baseUri("/login/tofront")
+                    .and()
+                    .userInfoEndpoint().userService(customOAuth2UserService)
+                .and()
+                    .successHandler(oAuth2SuccessHandler)
+                    .failureHandler(oAuth2FailureHandler)
+                    ;
+
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class);

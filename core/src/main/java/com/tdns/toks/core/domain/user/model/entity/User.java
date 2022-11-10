@@ -30,9 +30,6 @@ public class User extends BaseTimeEntity implements Serializable {
     @Column(name = "name", columnDefinition = "회원 이름")
     private String name;
 
-    @Column(unique = true, length = 300)
-    private String upwd;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, columnDefinition = "회원 상태")
     private UserStatus status;
@@ -48,4 +45,7 @@ public class User extends BaseTimeEntity implements Serializable {
     @Column(name = "provider_id", columnDefinition = "provider 고유 id")
     private String providerId;
 
+    private void update(String email) {
+        this.email = email;
+    }
 }
