@@ -36,20 +36,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
-
-        Connection con = null;
-        try {
-            con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tdsn",
-                    "tdns","1234"
-            );
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        System.out.println();
         OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, oAuth2User.getAttributes());
         User user = userRepository.findByEmail(oAuth2Attribute.getEmail())
-                                    .orElse(createUser(oAuth2Attribute));
+                                    .orElseGet(() -> createUser(oAuth2Attribute));
 
 
         return new UserDetailDTO(user, oAuth2Attribute.getAttributes(), jwtTokenProvider.generateToken(oAuth2Attribute.getEmail()));
