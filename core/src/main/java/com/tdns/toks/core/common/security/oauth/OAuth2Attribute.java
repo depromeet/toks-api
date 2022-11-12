@@ -21,14 +21,6 @@ public class OAuth2Attribute {
         switch (provider) {
             case "kakao":
                 return ofKakao("email", attributes);
-
-            /* 추후 구현(?)
-            case "google":
-                return ;
-            case "github":
-                return ;
-            */
-
             default:
                 throw new RuntimeException("등록되지 않은 Provider : " + provider);
         }

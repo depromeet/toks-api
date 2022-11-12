@@ -62,17 +62,15 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .oauth2Login()
-                // todo 로그인 페이지 추가하고 permit에 등록 해야겠지...?
-//                    .loginPage("/login")
+                // todo 로그인 페이지 추가하고 permit에 등록
+                //    .loginPage("/login")
                     .authorizationEndpoint()
                     .baseUri("/oauth2/authorize")
                     .and()
                     .userInfoEndpoint().userService(customOAuth2UserService)
                 .and()
                     .successHandler(oAuth2SuccessHandler)
-                    .failureHandler(oAuth2FailureHandler)
-                    ;
-
+                    .failureHandler(oAuth2FailureHandler);
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class);

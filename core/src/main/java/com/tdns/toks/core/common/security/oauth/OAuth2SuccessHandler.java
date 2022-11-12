@@ -2,8 +2,6 @@ package com.tdns.toks.core.common.security.oauth;
 
 import com.tdns.toks.core.common.security.JwtTokenProvider;
 import com.tdns.toks.core.common.type.JwtToken;
-import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
-import com.tdns.toks.core.domain.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,10 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Objects;
 
 @Slf4j
 @Component

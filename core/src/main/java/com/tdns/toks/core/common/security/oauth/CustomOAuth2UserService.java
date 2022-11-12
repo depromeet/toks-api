@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
-//    private final UserDetailService userDetailService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -58,6 +57,4 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .providerId(oAuth2Attribute.getProviderId())
                 .build();
     }
-
-
 }

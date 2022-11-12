@@ -13,8 +13,9 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler {
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        log.info("실패");
+        log.info("[OAuth2FailureHandler] 인증 실패");
     }
 }
