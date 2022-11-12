@@ -22,11 +22,12 @@ spring:
   # kakao login
   security:
     oauth2:
+      front-redirect-uri: http://localhost:8080/login/kakaoauth
       client:
         registration:
           kakao:
             client-id: ENC(XGWtqHAq/Kl2l0YnKe5pUfd9VbsbLwMnSK/fMBfS/RDGGGPMRxZuP7N2g9kBLR1xpZ9zmwqsvjm4Z9YVm3s4KlYUyN4pPrd6tk7UxhHdMQ0=)
-            redirect-uri: http://localhost:8080/login/tofront
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: POST
             client-name: kakao

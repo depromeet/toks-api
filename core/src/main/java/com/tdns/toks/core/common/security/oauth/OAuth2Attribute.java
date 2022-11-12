@@ -1,11 +1,10 @@
-package com.tdns.toks.core.common.oauth;
+package com.tdns.toks.core.common.security.oauth;
 
 import com.tdns.toks.core.domain.user.type.UserProvider;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Getter

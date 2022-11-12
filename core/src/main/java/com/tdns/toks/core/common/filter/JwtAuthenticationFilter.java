@@ -2,7 +2,7 @@ package com.tdns.toks.core.common.filter;
 
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
-import com.tdns.toks.core.config.security.JwtTokenProvider;
+import com.tdns.toks.core.common.security.JwtTokenProvider;
 import com.tdns.toks.core.domain.user.model.dto.UserDTO;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.service.UserService;

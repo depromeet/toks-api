@@ -2,9 +2,9 @@ package com.tdns.toks.core.config.security;
 
 import com.tdns.toks.core.common.filter.ExceptionHandlerFilter;
 import com.tdns.toks.core.common.filter.JwtAuthenticationFilter;
-import com.tdns.toks.core.common.oauth.CustomOAuth2UserService;
-import com.tdns.toks.core.common.oauth.OAuth2FailureHandler;
-import com.tdns.toks.core.common.oauth.OAuth2SuccessHandler;
+import com.tdns.toks.core.common.security.oauth.CustomOAuth2UserService;
+import com.tdns.toks.core.common.security.oauth.OAuth2FailureHandler;
+import com.tdns.toks.core.common.security.oauth.OAuth2SuccessHandler;
 import com.tdns.toks.core.common.service.UserDetailService;
 import com.tdns.toks.core.common.type.CORSType;
 import lombok.RequiredArgsConstructor;
@@ -66,9 +66,6 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
 //                    .loginPage("/login")
                     .authorizationEndpoint()
                     .baseUri("/oauth2/authorize")
-                    .and()
-                    .redirectionEndpoint()
-                    .baseUri("/login/tofront")
                     .and()
                     .userInfoEndpoint().userService(customOAuth2UserService)
                 .and()

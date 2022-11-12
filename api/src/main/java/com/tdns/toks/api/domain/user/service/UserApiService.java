@@ -1,7 +1,7 @@
 package com.tdns.toks.api.domain.user.service;
 
 import com.tdns.toks.core.common.type.JwtToken;
-import com.tdns.toks.core.config.security.JwtTokenProvider;
+import com.tdns.toks.core.common.security.JwtTokenProvider;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.service.UserService;
 import com.tdns.toks.core.domain.user.type.UserRole;

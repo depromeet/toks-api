@@ -1,4 +1,4 @@
-package com.tdns.toks.core.common.oauth;
+package com.tdns.toks.core.common.security.oauth;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;

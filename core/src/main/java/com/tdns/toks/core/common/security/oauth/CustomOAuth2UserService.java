@@ -1,6 +1,6 @@
-package com.tdns.toks.core.common.oauth;
+package com.tdns.toks.core.common.security.oauth;
 
-import com.tdns.toks.core.config.security.JwtTokenProvider;
+import com.tdns.toks.core.common.security.JwtTokenProvider;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
@@ -15,10 +15,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 @Slf4j
 @Service
@@ -38,7 +34,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         log.info("[CustomOAuth2UserService]");
         log.info(oAuth2User.toString());
 
-        // 인증 업체 (ex. kakao, google, facebook, github ...)
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
 
