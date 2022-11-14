@@ -34,7 +34,7 @@ jobs:
           java-version: 11
 
       - name: Build with Gradle
-        run: ./gradlew :api:jib
+        run: chmod +x gradlew ./gradlew :api:jib
 
       - name: Download task definition
         run: |
