@@ -1,9 +1,9 @@
-package com.tdns.toks.core.domain.user.model.entity;
+package com.tdns.toks.core.domain.model.entity;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
-import com.tdns.toks.core.domain.user.type.UserProvider;
-import com.tdns.toks.core.domain.user.type.UserRole;
-import com.tdns.toks.core.domain.user.type.UserStatus;
+import com.tdns.toks.core.domain.type.UserProvider;
+import com.tdns.toks.core.domain.type.UserRole;
+import com.tdns.toks.core.domain.type.UserStatus;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 

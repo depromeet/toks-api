@@ -1,7 +1,7 @@
 package com.tdns.toks.api.domain.user.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.tdns.toks.core.domain.user.type.UserProvider;
+import com.tdns.toks.core.domain.type.UserProvider;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

@@ -1,10 +1,11 @@
-package com.tdns.toks.core.domain.user.service;
+package com.tdns.toks.core.domain.service;
 
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
-import com.tdns.toks.core.domain.user.model.entity.User;
-import com.tdns.toks.core.domain.user.repository.UserRepository;
-import com.tdns.toks.core.domain.user.type.UserProvider;
+import com.tdns.toks.core.domain.model.entity.User;
+import com.tdns.toks.core.domain.repository.UserRepository;
+import com.tdns.toks.core.domain.type.UserProvider;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package com.tdns.toks.core.domain.user.type;
+package com.tdns.toks.core.domain.type;
 
 public enum UserStatus {
     ACTIVE, INACTIVE, INIT;
