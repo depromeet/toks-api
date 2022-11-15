@@ -45,7 +45,7 @@ public class User extends BaseTimeEntity implements Serializable {
     @Column(name = "provider_id", columnDefinition = "provider 고유 id")
     private String providerId;
 
-    private void updateName(String name) {
-        this.email = name;
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

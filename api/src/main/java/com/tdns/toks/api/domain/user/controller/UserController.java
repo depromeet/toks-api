@@ -1,8 +1,10 @@
 package com.tdns.toks.api.domain.user.controller;
 
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserLoginRequest;
+import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserUpdateNicknameRequest;
 import com.tdns.toks.api.domain.user.service.UserApiService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
+import com.tdns.toks.core.common.service.UserDetailService;
 import com.tdns.toks.core.common.type.JwtToken;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,10 +15,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "UserController-V1", description = "USER API")
 @RestController
@@ -43,6 +43,16 @@ public class UserController {
         return ResponseDto.ok(response);
     }// 초기세팅 테스트용 메서드
 
-//    @PatchMapping("/name")
-//    public ResponseEntity<User>
+    @PatchMapping("/nickname")
+    @Operation(
+            method = "PATCH",
+            summary = "사용자 닉네임 설정"
+    )
+    public ResponseEntity<User> updateNickname(
+            UserUpdateNicknameRequest userUpdateNicknameRequest
+    ) {
+        userApiService.updateNickname(userUpdateNicknameRequest);
+        return ResponseDto.ok
+    }
+
 }

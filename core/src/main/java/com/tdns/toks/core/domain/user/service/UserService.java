@@ -29,4 +29,10 @@ public class UserService {
     public User createUser(User user) {
         return userRepository.save(user);
     }
+
+    public User updateNickname(String email, String nickname) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
+        user.updateNickname(nickname);
+        return user;
+    }
 }
