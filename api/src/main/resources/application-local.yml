@@ -4,3 +4,7 @@ spring:
     username:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+url:
+  prefix: http://localhost:822 #임시 프론트 url 확인 필요
+  study-path: /study
+  join-path: /join
