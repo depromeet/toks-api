@@ -1,4 +1,4 @@
-package com.tdns.toks.core.domain.model.entity.quiz;
+package com.tdns.toks.core.domain.quiz.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

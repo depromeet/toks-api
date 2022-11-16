@@ -1,4 +1,4 @@
-package com.tdns.toks.core.domain.model.entity.quiz;
+package com.tdns.toks.core.domain.quiz.model.entity;
 
 import java.time.LocalDateTime;
 
@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import org.springframework.data.annotation.CreatedBy;
 
 import com.tdns.toks.core.common.model.entity.BaseEntity;
+import com.tdns.toks.core.domain.quiz.type.QuizType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

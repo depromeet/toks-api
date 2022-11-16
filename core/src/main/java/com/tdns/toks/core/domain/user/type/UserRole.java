@@ -1,4 +1,4 @@
-package com.tdns.toks.core.domain.type;
+package com.tdns.toks.core.domain.user.type;
 
 import org.springframework.security.core.GrantedAuthority;
 

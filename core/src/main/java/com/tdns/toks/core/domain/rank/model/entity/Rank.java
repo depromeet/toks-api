@@ -1,4 +1,4 @@
-package com.tdns.toks.core.domain.model.entity.rank;
+package com.tdns.toks.core.domain.rank.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

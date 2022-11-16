@@ -1,8 +1,8 @@
-package com.tdns.toks.core.domain.repository;
+package com.tdns.toks.core.domain.user.repository;
 
-import com.tdns.toks.core.domain.model.entity.User;
-import com.tdns.toks.core.domain.type.UserProvider;
-import com.tdns.toks.core.domain.type.UserStatus;
+import com.tdns.toks.core.domain.user.model.entity.User;
+import com.tdns.toks.core.domain.user.type.UserProvider;
+import com.tdns.toks.core.domain.user.type.UserStatus;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,9 +1,9 @@
-package com.tdns.toks.core.domain.model.dto;
+package com.tdns.toks.core.domain.user.model.dto;
 
-import com.tdns.toks.core.domain.model.entity.User;
-import com.tdns.toks.core.domain.type.UserProvider;
-import com.tdns.toks.core.domain.type.UserRole;
-import com.tdns.toks.core.domain.type.UserStatus;
+import com.tdns.toks.core.domain.user.model.entity.User;
+import com.tdns.toks.core.domain.user.type.UserProvider;
+import com.tdns.toks.core.domain.user.type.UserRole;
+import com.tdns.toks.core.domain.user.type.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

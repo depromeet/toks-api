@@ -1,8 +1,8 @@
-package com.tdns.toks.core.domain.model.dto;
+package com.tdns.toks.core.domain.user.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tdns.toks.core.common.type.JwtToken;
-import com.tdns.toks.core.domain.model.entity.User;
+import com.tdns.toks.core.domain.user.model.entity.User;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
