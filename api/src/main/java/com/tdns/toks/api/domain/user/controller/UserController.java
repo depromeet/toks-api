@@ -16,7 +16,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "UserController-V1", description = "USER API")
@@ -56,7 +55,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
     public ResponseEntity<UserInfoResponse> updateNickname(
-            UserUpdateNicknameRequest userUpdateNicknameRequest
+            @RequestBody UserUpdateNicknameRequest userUpdateNicknameRequest
     ) {
         var response = userApiService.updateNickname(userUpdateNicknameRequest);
         return ResponseDto.created(response);
