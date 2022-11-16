@@ -27,22 +27,20 @@ public class User extends BaseTimeEntity implements Serializable {
     @Column(name = "email", unique = true, columnDefinition = "회원 이메일")
     private String email;
 
-    @Column(name = "name", columnDefinition = "회원 이름")
-    private String name;
+    @Column(name = "nickname", columnDefinition = "회원 닉네임")
+    private String nickname;
+
+    @Column(name = "thumbnail_image_url", columnDefinition = "작은 프로필 이미지 URL")
+    private String thumbnailImageUrl;
+
+    @Column(name = "profile_image_url", columnDefinition = "큰 프로필 이미지 URL")
+    private String profileImageUrl;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, columnDefinition = "회원 상태")
-    private UserStatus status;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "user_role", nullable = false, columnDefinition = "회원 권한")
-    private UserRole userRole;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "provider", nullable = false, columnDefinition = "회원 권한")
+    @Column(name = "provider", nullable = false, columnDefinition = "provider")
     private UserProvider provider;
 
-    @Column(name = "provider_id", columnDefinition = "provider 고유 id")
+    @Column(name = "provider_id", columnDefinition = "user의 provider 고유 id")
     private String providerId;
 
     public void updateNickname(String nickname) {
