@@ -1,6 +1,6 @@
 package com.tdns.toks.core.domain.model.entity;
 
-import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
+import com.tdns.toks.core.common.model.entity.BaseEntity;
 import com.tdns.toks.core.domain.type.UserProvider;
 import com.tdns.toks.core.domain.type.UserRole;
 import com.tdns.toks.core.domain.type.UserStatus;
@@ -18,11 +18,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user")
-public class User extends BaseTimeEntity implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "회원 번호")
-    private Long id;
+public class User extends BaseEntity implements Serializable {
 
     @Column(name = "email", unique = true, columnDefinition = "회원 이메일")
     private String email;

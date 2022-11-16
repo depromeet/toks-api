@@ -3,7 +3,7 @@ package com.tdns.toks.core.domain.model.entity.rank;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import com.tdns.toks.core.domain.model.entity.BaseEntity;
+import com.tdns.toks.core.common.model.entity.BaseEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

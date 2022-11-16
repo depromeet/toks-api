@@ -1,4 +1,4 @@
-package com.tdns.toks.core.domain.model.entity;
+package com.tdns.toks.core.common.model.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

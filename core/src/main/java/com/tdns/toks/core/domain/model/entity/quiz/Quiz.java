@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 
 import org.springframework.data.annotation.CreatedBy;
 
-import com.tdns.toks.core.domain.model.entity.BaseEntity;
+import com.tdns.toks.core.common.model.entity.BaseEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
