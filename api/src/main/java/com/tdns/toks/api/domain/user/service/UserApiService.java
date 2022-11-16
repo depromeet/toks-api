@@ -35,9 +35,7 @@ public class UserApiService {
         return User
                 .builder()
                 .email(userLoginRequest.getEmail())
-                .name("random")
-                .status(UserStatus.ACTIVE)
-                .userRole(UserRole.USER)
+                .nickname("random")
                 .provider(userLoginRequest.getProvider())
                 .providerId(userLoginRequest.getProviderId())
                 .build();
@@ -45,6 +43,7 @@ public class UserApiService {
 
     public User updateNickname(UserUpdateNicknameRequest userUpdateNicknameRequest) {
         // 토큰으로 유저 이메일 알아오는 법
+        //todo
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         User user = userService.updateNickname(email, userUpdateNicknameRequest.getNickname());

@@ -62,8 +62,6 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .oauth2Login()
-                // todo 로그인 페이지 추가하고 permit에 등록
-                //    .loginPage("/login")
                     .authorizationEndpoint()
                     .baseUri("/oauth2/authorize")
                     .and()

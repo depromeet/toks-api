@@ -37,6 +37,14 @@ public class User extends BaseTimeEntity implements Serializable {
     private String profileImageUrl;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, columnDefinition = "회원 상태")
+    private UserStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_role", nullable = false, columnDefinition = "회원 권한")
+    private UserRole userRole;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "provider", nullable = false, columnDefinition = "provider")
     private UserProvider provider;
 

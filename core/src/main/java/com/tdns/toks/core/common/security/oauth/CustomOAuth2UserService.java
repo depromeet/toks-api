@@ -50,11 +50,14 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private User convertToUserEntity(OAuth2Attribute oAuth2Attribute) {
         return User.builder()
                 .email(oAuth2Attribute.getEmail())
-                .name(oAuth2Attribute.getName())
+                .nickname(oAuth2Attribute.getNickname())
                 .status(UserStatus.ACTIVE)
                 .userRole(UserRole.USER)
+                .thumbnailImageUrl(oAuth2Attribute.getThumbnailImageUrl())
+                .profileImageUrl(oAuth2Attribute.getProfileImageUrl())
                 .provider(oAuth2Attribute.getProvider())
                 .providerId(oAuth2Attribute.getProviderId())
                 .build();
     }
+
 }

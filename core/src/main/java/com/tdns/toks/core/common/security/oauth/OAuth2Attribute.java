@@ -13,7 +13,9 @@ public class OAuth2Attribute {
     private Map<String, Object> attributes;
     private String attributeKey;
     private String email;
-    private String name;
+    private String nickname;
+    private String thumbnailImageUrl;
+    private String profileImageUrl;
     private UserProvider provider;
     private String providerId;
 
@@ -30,11 +32,14 @@ public class OAuth2Attribute {
                                            Map<String, Object> attributes) {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
+        Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
         return OAuth2Attribute.builder()
                 .provider(UserProvider.KAKAO)
                 .providerId(String.valueOf(attributes.get("id")))
                 .email((String) kakaoAccount.get("email"))
-                .name((String) properties.get("nickname"))
+                .nickname((String) properties.get("nickname"))
+                .thumbnailImageUrl((String) profile.get("thumbnail_image_url"))
+                .profileImageUrl((String) profile.get("profile_image_url"))
                 .attributes(kakaoAccount)
                 .attributeKey(attributeKey)
                 .build();

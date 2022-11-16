@@ -16,7 +16,7 @@ import lombok.Setter;
 public class UserDTO {
     private Long id;
     private String email;
-    private String name;
+    private String nickname;
     private UserStatus status;
     private UserRole userRole;
     private UserProvider provider;
@@ -26,7 +26,7 @@ public class UserDTO {
         UserDTO userDTO = new UserDTO();
         userDTO.id = user.getId();
         userDTO.email = user.getEmail();
-        userDTO.name = user.getName();
+        userDTO.nickname = user.getNickname();
         userDTO.status = user.getStatus();
         userDTO.userRole = user.getUserRole();
         userDTO.provider = user.getProvider();

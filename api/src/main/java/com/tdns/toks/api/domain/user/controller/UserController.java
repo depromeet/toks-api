@@ -43,16 +43,16 @@ public class UserController {
         return ResponseDto.ok(response);
     }// 초기세팅 테스트용 메서드
 
-    @PatchMapping("/nickname")
-    @Operation(
-            method = "PATCH",
-            summary = "사용자 닉네임 설정"
-    )
-    public ResponseEntity<User> updateNickname(
-            UserUpdateNicknameRequest userUpdateNicknameRequest
-    ) {
-        userApiService.updateNickname(userUpdateNicknameRequest);
-        return ResponseDto.ok
-    }
+//    @PatchMapping("/nickname")
+//    @Operation(
+//            method = "PATCH",
+//            summary = "사용자 닉네임 설정"
+//    )
+//    public ResponseEntity<User> updateNickname(////////////
+//            UserUpdateNicknameRequest userUpdateNicknameRequest
+//    ) {
+//        userApiService.updateNickname(userUpdateNicknameRequest);
+//        return ResponseDto.ok
+//    }
 
 }
