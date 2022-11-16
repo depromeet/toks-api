@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.user.service;
 
+import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserInfoResponse;
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserUpdateNicknameRequest;
 import com.tdns.toks.core.common.service.UserDetailService;
 import com.tdns.toks.core.common.type.JwtToken;
@@ -31,6 +32,13 @@ public class UserApiService {
         return (jwtTokenProvider.generateToken(user.getEmail()));
     }
 
+    public UserInfoResponse updateNickname(UserUpdateNicknameRequest userUpdateNicknameRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User user = userService.updateNickname(email, userUpdateNicknameRequest.getNickname());
+        return convertUserEntityToUserInfo(user);
+    }
+
     private User convertToUserEntity(UserLoginRequest userLoginRequest){
         return User
                 .builder()
@@ -41,12 +49,13 @@ public class UserApiService {
                 .build();
     }
 
-    public User updateNickname(UserUpdateNicknameRequest userUpdateNicknameRequest) {
-        // 토큰으로 유저 이메일 알아오는 법
-        //todo
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        User user = userService.updateNickname(email, userUpdateNicknameRequest.getNickname());
-        return user;
+    private UserInfoResponse convertUserEntityToUserInfo(User user) {
+        return UserInfoResponse
+                .builder()
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .thumbnailImageUrl(user.getThumbnailImageUrl())
+                .profileImageUrl(user.getProfileImageUrl())
+                .build();
     }
 }

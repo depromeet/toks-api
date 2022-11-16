@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.user.controller;
 
+import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserInfoResponse;
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserLoginRequest;
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserUpdateNicknameRequest;
 import com.tdns.toks.api.domain.user.service.UserApiService;
@@ -43,16 +44,21 @@ public class UserController {
         return ResponseDto.ok(response);
     }// 초기세팅 테스트용 메서드
 
-//    @PatchMapping("/nickname")
-//    @Operation(
-//            method = "PATCH",
-//            summary = "사용자 닉네임 설정"
-//    )
-//    public ResponseEntity<User> updateNickname(////////////
-//            UserUpdateNicknameRequest userUpdateNicknameRequest
-//    ) {
-//        userApiService.updateNickname(userUpdateNicknameRequest);
-//        return ResponseDto.ok
-//    }
-
+    @PatchMapping("/nickname")
+    @Operation(
+            method = "PATCH",
+            summary = "사용자 닉네임 설정"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = JwtToken.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    public ResponseEntity<UserInfoResponse> updateNickname(
+            UserUpdateNicknameRequest userUpdateNicknameRequest
+    ) {
+        var response = userApiService.updateNickname(userUpdateNicknameRequest);
+        return ResponseDto.created(response);
+    }
 }
