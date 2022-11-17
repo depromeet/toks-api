@@ -26,6 +26,7 @@ public class StudyApiService {
     public StudyApiResponse createStudy(StudyCreateRequest studyCreateRequest) {
         var userDTO = UserDetailDTO.get();
         var study = studyService.save(convertToEntity(studyCreateRequest, userDTO.getId()));
+        joinStudy(study, userDTO.getId());
         return StudyApiResponse.toResponse(study, userDTO);
     }
 
@@ -36,10 +37,7 @@ public class StudyApiService {
     public void joinStudy(long studyId) {
         var userDTO = UserDetailDTO.get();
         var study = studyService.getStudy(studyId);
-        if (studyService.existStudyUser(userDTO.getId(), study.getId())) {
-            new SilentApplicationErrorException(ApplicationErrorType.ALREADY_JOIN_USER);
-        }
-        studyService.saveStudyUser(convertToEntity(userDTO.getId(), study.getId()));
+        joinStudy(study, userDTO.getId());
     }
 
     private Study convertToEntity(StudyCreateRequest studyCreateRequest, Long userId) {
@@ -61,5 +59,20 @@ public class StudyApiService {
                 .studyId(studyId)
                 .status(StudyUserStatus.ACTIVE) //1차 MVP 때는 승인&수락 기능이 빠지기 때문에 ACTIVE, 추후 생성 시에는 REQUEST로 변경 예정
                 .build();
+    }
+
+    private StudyUser joinStudy(Study study, long userId) {
+        {
+            if (StudyStatus.FINISH.equals(study.getStatus())) {
+                throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_FINISH_STUDY);
+            } else if (study.getCapacity().maxHeadCount <= study.getStudyUserCount()) {
+                throw new SilentApplicationErrorException(ApplicationErrorType.OVER_MAX_HEADCOUNT);
+            } else if (studyService.existStudyUser(userId, study.getId())) {
+                throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_JOIN_USER);
+            }
+            var studyUser = studyService.saveStudyUser(convertToEntity(userId, study.getId()));
+            study.updateStudyUserCount(1);
+            return studyUser;
+        }
     }
 }

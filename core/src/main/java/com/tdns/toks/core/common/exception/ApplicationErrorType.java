@@ -24,7 +24,9 @@ public enum ApplicationErrorType {
     TO_JSON_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, -40015, "try.again"),
     UNKNOWN_USER(HttpStatus.BAD_REQUEST, -10006, "try.again"),
     UNAUTHORIZED_USER(HttpStatus.BAD_REQUEST, -10006, "try.again"),
-    ALREADY_JOIN_USER(HttpStatus.BAD_REQUEST, -10008, "이미 해당 스터디에 가입한 유저입니다.");
+    ALREADY_JOIN_USER(HttpStatus.BAD_REQUEST, -10008, "이미 해당 스터디에 가입한 유저입니다."),
+    ALREADY_FINISH_STUDY(HttpStatus.BAD_REQUEST, -10009, "이미 끝난 스터디에는 가입할 수 없습니다."),
+    OVER_MAX_HEADCOUNT(HttpStatus.BAD_REQUEST, -10010, "가입 인원이 초과된 스터디입니다");
     @Getter
     private HttpStatus httpStatus;
 
