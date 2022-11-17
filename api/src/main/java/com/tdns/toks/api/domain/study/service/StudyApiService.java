@@ -50,6 +50,7 @@ public class StudyApiService {
                 .endDate(studyCreateRequest.getEndDate())
                 .status(StudyStatus.getStatus(studyCreateRequest.getStartDate(), studyCreateRequest.getEndDate(), LocalDate.now()))
                 .capacity(studyCreateRequest.getCapacity())
+                .studyUserCount(0)
                 .leaderId(userId)
                 .build();
     }

@@ -44,7 +44,9 @@ public class Study extends BaseTimeEntity implements Serializable {
     @Column(name = "capacity", nullable = false, columnDefinition = "스터디 규모")
     private StudyCapacity capacity;
 
+    @Column(name = "study_user_count", nullable = false, columnDefinition = "스터디 참여 중인 인원")
+    private Integer studyUserCount;
+
     @Column(name = "leader_id", columnDefinition = "스터디장 user_id")
     private Long leaderId;
-
 }
