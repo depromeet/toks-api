@@ -65,7 +65,7 @@ public class StudyApiService {
         {
             if (StudyStatus.FINISH.equals(study.getStatus())) {
                 throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_FINISH_STUDY);
-            } else if (study.getCapacity().maxHeadCount <= study.getStudyUserCount()) {
+            } else if (study.getCapacity().maxHeadCount != null && study.getCapacity().maxHeadCount <= study.getStudyUserCount()) {
                 throw new SilentApplicationErrorException(ApplicationErrorType.OVER_MAX_HEADCOUNT);
             } else if (studyService.existStudyUser(userId, study.getId())) {
                 throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_JOIN_USER);
