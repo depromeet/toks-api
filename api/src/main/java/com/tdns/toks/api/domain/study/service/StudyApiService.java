@@ -21,13 +21,12 @@ public class StudyApiService {
     private final StudyService studyService;
 
     public StudyApiResponse createStudy(StudyCreateRequest studyCreateRequest) {
-        UserDTO userDTO = UserDetailDTO.get();
-        Study study = studyService.save(convertToEntity(studyCreateRequest, userDTO.getId()));
+        var userDTO = UserDetailDTO.get();
+        var study = studyService.save(convertToEntity(studyCreateRequest, userDTO.getId()));
         return StudyApiResponse.toResponse(study, userDTO);
     }
 
     public StudyFormResponse getFormData() {
-
         return new StudyFormResponse();
     }
 
