@@ -40,8 +40,7 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
-
-  #  swagger issue
+  # swagger issue
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -58,7 +57,7 @@ server:
     uri-encoding: UTF-8
   forward-headers-strategy: framework
 
-## AWS Setting
+# AWS Setting
 cloud:
   aws:
     stack:
@@ -76,12 +75,12 @@ cloud:
       cdn:
         url: https://tdns.s3.ap-northeast-2.amazonaws.com
 
-#security
+# security
 security:
   permit-url: /api-docs/**,/configuration/**,/swagger-ui/**,/webjars/**,/health,/swagger/**,/swagger/index.html, /login/**
   filter-skip: /health,/api-docs,/configuration,/swagger,/swagger-ui,/webjars,/swagger/**
 
-#swagger
+# swagger
 springdoc:
   version: '1.0'
   api-docs:

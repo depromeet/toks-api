@@ -1,13 +1,9 @@
 package com.tdns.toks.api.domain.user.controller;
 
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserInfoResponse;
-import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserLoginRequest;
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserUpdateNicknameRequest;
 import com.tdns.toks.api.domain.user.service.UserApiService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
-import com.tdns.toks.core.common.service.UserDetailService;
-import com.tdns.toks.core.common.type.JwtToken;
-import com.tdns.toks.core.domain.user.model.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -31,7 +27,7 @@ public class UserController {
             summary = "사용자 닉네임 설정"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = JwtToken.class))}),
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserInfoResponse.class))}),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),

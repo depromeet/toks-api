@@ -27,14 +27,14 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String email = authentication.getName();
-        String url = setRedirectUrl(jwtTokenProvider.generateToken(email));
+        var email = authentication.getName();
+        var url = setRedirectUrl(jwtTokenProvider.generateToken(email));
         getRedirectStrategy().sendRedirect(request, response, url);
     }
 
     private String setRedirectUrl(JwtToken jwtToken) {
-        String accessToken = jwtToken.getAccessToken();
-        String refreshToken = jwtToken.getRefreshToken();
+        var accessToken = jwtToken.getAccessToken();
+        var refreshToken = jwtToken.getRefreshToken();
         return UriComponentsBuilder.fromUriString(frontRedirectUri)
                 .queryParam("accessToken", accessToken)
                 .queryParam("refreshToken", refreshToken)
