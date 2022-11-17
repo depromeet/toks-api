@@ -24,7 +24,8 @@ public enum ApplicationErrorType {
     TO_JSON_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, -40015, "try.again"),
     UNKNOWN_USER(HttpStatus.BAD_REQUEST, -10006, "try.again"),
     UNAUTHORIZED_USER(HttpStatus.BAD_REQUEST, -10006, "try.again"),
-    NO_PROVIDER(HttpStatus.NO_CONTENT, -20234234, "no provider");
+    NO_PROVIDER(HttpStatus.NO_CONTENT, -20234234, "no provider"),
+    DUPLICATED_NICKNAME(HttpStatus.CONFLICT, -200000, "duplicated nickname");
     @Getter
     private HttpStatus httpStatus;
 
