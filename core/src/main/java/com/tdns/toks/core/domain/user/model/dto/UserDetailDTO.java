@@ -41,6 +41,7 @@ public class UserDetailDTO implements UserDetails, OAuth2User {
 
     @Override
     public String getPassword() {
+        //필수 오버라이드 항목이나 미사용.
         return null;
     }
 
