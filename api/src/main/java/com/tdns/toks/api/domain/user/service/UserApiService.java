@@ -6,6 +6,7 @@ import com.tdns.toks.core.common.service.UserDetailService;
 import com.tdns.toks.core.common.type.JwtToken;
 import com.tdns.toks.core.common.security.JwtTokenProvider;
 import com.tdns.toks.core.domain.user.model.dto.UserDTO;
+import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.service.UserService;
 import com.tdns.toks.core.domain.user.type.UserRole;
@@ -34,9 +35,8 @@ public class UserApiService {
     }
 
     public UserInfoResponse updateNickname(UserUpdateNicknameRequest userUpdateNicknameRequest) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDTO userDto = (UserDTO)authentication.getPrincipal();
-        User user = userService.updateNickname(userDto.getEmail(), userUpdateNicknameRequest.getNickname());
+        UserDTO userDTO = UserDetailDTO.get();
+        User user = userService.updateNickname(userDTO.getEmail(), userUpdateNicknameRequest.getNickname());
         return convertUserEntityToUserInfo(user);
     }
 
