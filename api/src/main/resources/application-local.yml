@@ -1,6 +1,6 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/tdsn
-    username:
-    password:
+    username: ENC(EC2XH5y3UjcjT1r8CjC89e3Wl3xO1/Q021q1USlJc08W6l3c1LqDCuKXcBX2IiPV)
+    password: ENC(i0aoaM01FqrI66AotsKVF8dV4vbuD8amVH68kvzFHspJmV91XHOBwNXsZJffRJp7)
     driver-class-name: com.mysql.cj.jdbc.Driver
