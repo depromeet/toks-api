@@ -1,15 +1,15 @@
 buildscript {
     ext {
-//        def localProperties = new Properties()
-//        def localPropertiesFile = rootProject.file('local.properties')
-//        if (localPropertiesFile.exists()) {
-//            localPropertiesFile.withReader('UTF-8') { reader ->
-//                localProperties.load(reader)
-//            }
-//        }
-//
-//        def mysqlUsername = localProperties.getProperty('mysql.userName')
-//        def mysqlPassword = localProperties.getProperty('mysql.userPassword')
+        def localProperties = new Properties()
+        def localPropertiesFile = rootProject.file('local.properties')
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.withReader('UTF-8') { reader ->
+                localProperties.load(reader)
+            }
+        }
+
+        def mysqlUsername = localProperties.getProperty('mysql.userName')
+        def mysqlPassword = localProperties.getProperty('mysql.userPassword')
 
         set('mysqlUsername', "tdns")
         set('mysqlPassword', "1234")
