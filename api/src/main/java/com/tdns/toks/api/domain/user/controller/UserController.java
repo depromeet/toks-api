@@ -25,23 +25,23 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserApiService userApiService;
 
-    @PostMapping("/login")
-    @Operation(
-            method = "POST",
-            summary = "로그인"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = JwtToken.class))}),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
-    public ResponseEntity<JwtToken> login(
-            UserLoginRequest userLoginRequest
-    ) {
-        var response = userApiService.login(userLoginRequest);
-        return ResponseDto.ok(response);
-    }// 초기세팅 테스트용 메서드
+//    @PostMapping("/login")
+//    @Operation(
+//            method = "POST",
+//            summary = "로그인"
+//    )
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = JwtToken.class))}),
+//            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+//            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+//            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
+//            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+//    public ResponseEntity<JwtToken> login(
+//            UserLoginRequest userLoginRequest
+//    ) {
+//        var response = userApiService.login(userLoginRequest);
+//        return ResponseDto.ok(response);
+//    }// 초기세팅 테스트용 메서드
 
     @PatchMapping("/nickname")
     @Operation(
