@@ -36,7 +36,7 @@ public class UserApiService {
 
     public UserInfoResponse updateNickname(UserUpdateNicknameRequest userUpdateNicknameRequest) {
         UserDTO userDTO = UserDetailDTO.get();
-        User user = userService.updateNickname(userDTO.getEmail(), userUpdateNicknameRequest.getNickname());
+        User user = userService.updateNickname(userDTO.getId(), userUpdateNicknameRequest.getNickname());
         return convertUserEntityToUserInfo(user);
     }
 

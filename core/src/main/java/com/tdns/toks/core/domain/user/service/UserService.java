@@ -30,8 +30,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateNickname(String email, String nickname) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
+    public User updateNickname(Long id, String nickname) {
+        User user = userRepository.findById(id).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
         user.updateNickname(nickname);
         return user;
     }
