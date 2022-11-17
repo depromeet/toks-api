@@ -11,6 +11,7 @@ CREATE TABLE `study` (
                         `end_date` date NOT NULL COMMENT '종료 일자',
                         `status` varchar(50) NOT NULL COMMENT '스터디 상태',
                         `capacity` varchar(50) NOT NULL COMMENT '참여 규모',
+                        `study_user_count` int NOT NULL COMMENT '참여 인원',
                         `leader_id` bigint NOT NULL COMMENT '스터디장 user_id',
                         `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
                         `updated_at` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',

@@ -6,7 +6,6 @@ import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.service.StudyService;
 import com.tdns.toks.core.domain.study.type.StudyStatus;
-import com.tdns.toks.core.domain.user.model.dto.UserDTO;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ public class StudyApiService {
         return new StudyFormResponse();
     }
 
-    private Study convertToEntity(StudyCreateRequest studyCreateRequest, Long userId){
+    private Study convertToEntity(StudyCreateRequest studyCreateRequest, Long userId) {
         return Study.builder()
                 .name(studyCreateRequest.getName())
                 .description(studyCreateRequest.getDescription())
@@ -38,6 +37,7 @@ public class StudyApiService {
                 .endDate(studyCreateRequest.getEndDate())
                 .status(StudyStatus.getStatus(studyCreateRequest.getStartDate(), studyCreateRequest.getEndDate(), LocalDate.now()))
                 .capacity(studyCreateRequest.getCapacity())
+                .studyUserCount(0)
                 .leaderId(userId)
                 .build();
     }
