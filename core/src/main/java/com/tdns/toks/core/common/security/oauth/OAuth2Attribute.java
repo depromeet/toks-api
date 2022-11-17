@@ -1,5 +1,7 @@
 package com.tdns.toks.core.common.security.oauth;
 
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.user.type.UserProvider;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -24,7 +26,7 @@ public class OAuth2Attribute {
             case "kakao":
                 return ofKakao("email", attributes);
             default:
-                throw new RuntimeException("등록되지 않은 Provider : " + provider);
+                throw new SilentApplicationErrorException(ApplicationErrorType.NO_PROVIDER);
         }
     }
 

@@ -23,7 +23,8 @@ public enum ApplicationErrorType {
     INVALID_LOGIN_INFO(HttpStatus.BAD_REQUEST, -20007, "try.again"/*Invalid Login Info*/),
     TO_JSON_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, -40015, "try.again"),
     UNKNOWN_USER(HttpStatus.BAD_REQUEST, -10006, "try.again"),
-    UNAUTHORIZED_USER(HttpStatus.BAD_REQUEST, -10006, "try.again");
+    UNAUTHORIZED_USER(HttpStatus.BAD_REQUEST, -10006, "try.again"),
+    NO_PROVIDER(HttpStatus.NO_CONTENT, -20234234, "no provider");
     @Getter
     private HttpStatus httpStatus;
 
