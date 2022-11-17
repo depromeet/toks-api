@@ -13,5 +13,5 @@ spring:
     locations: classpath:db/migration/schema
     url: jdbc:mysql://localhost:3306/tdsn
     schemas: test
-    user: ${mysqlUsername}
-    password: ${mysqlPassword}
+    user: ENC(4yKe/MoGv2mg5S6nEiZwjPxmUiNpeN1sU4jwf7LAP+WoJ9kXtgCI9toGbXpcPYlD)
+    password: ENC(drZoLtxSspNJRGx7v+G7OwUiZkFMRFZtf8gKpFAt3Pf4yc39vOzi9b7xQcD2nnkk)
