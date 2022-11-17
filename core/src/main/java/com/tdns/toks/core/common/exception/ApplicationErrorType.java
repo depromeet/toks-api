@@ -23,7 +23,8 @@ public enum ApplicationErrorType {
     INVALID_LOGIN_INFO(HttpStatus.BAD_REQUEST, -20007, "try.again"/*Invalid Login Info*/),
     TO_JSON_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, -40015, "try.again"),
     UNKNOWN_USER(HttpStatus.BAD_REQUEST, -10006, "try.again"),
-    UNAUTHORIZED_USER(HttpStatus.BAD_REQUEST, -10006, "try.again");
+    UNAUTHORIZED_USER(HttpStatus.BAD_REQUEST, -10006, "try.again"),
+    ALREADY_JOIN_USER(HttpStatus.BAD_REQUEST, -10008, "이미 해당 스터디에 가입한 유저입니다.");
     @Getter
     private HttpStatus httpStatus;
 
