@@ -27,7 +27,6 @@ public class StudyApiService {
     }
 
     public StudyFormResponse getFormData() {
-
         return new StudyFormResponse();
     }
 
