@@ -62,6 +62,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .oauth2Login()
+                    .loginPage("/login/social") // 추후 프론트 url 맞춰야 함
                     .authorizationEndpoint()
                     .baseUri("/oauth2/authorize")
                     .and()
