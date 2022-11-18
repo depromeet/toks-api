@@ -2,6 +2,9 @@ package com.tdns.toks.core.domain.quiz.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 import org.springframework.data.annotation.CreatedBy;
 
@@ -15,10 +18,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class AnswerLike extends BaseEntity {
+public class UserQuizLike extends BaseEntity {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '답변 id'")
-	private Long userAnswerId;
+	private Long userQuizHistoryId;
 
 	@CreatedBy
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '생성자'")

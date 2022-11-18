@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 import org.springframework.data.annotation.CreatedBy;
 
@@ -20,11 +23,19 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Quiz extends BaseEntity {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
 	@Column(nullable = false, columnDefinition = "VARCHAR(255) COMMENT '퀴즈'")
 	private String quiz;
 
 	@Column(columnDefinition = "VARCHAR(255) COMMENT '퀴즈 설명'")
 	private String description;
+
+	// TODO: 정답 포맷 논의
+	@Column(nullable = false, columnDefinition = "JSON COMMENT '정답'")
+	private String answer;
 
 	@Column(nullable = false, columnDefinition = "VARCHAR(10) COMMENT '퀴즈 타입'")
 	private QuizType quizType;

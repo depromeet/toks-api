@@ -20,6 +20,10 @@ import java.io.Serializable;
 @Table(name = "user")
 public class User extends BaseEntity implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "email", unique = true, columnDefinition = "회원 이메일")
     private String email;
 
