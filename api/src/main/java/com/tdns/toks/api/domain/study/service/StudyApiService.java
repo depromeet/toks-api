@@ -8,6 +8,7 @@ import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.StudyUser;
 import com.tdns.toks.core.domain.study.service.StudyService;
+import com.tdns.toks.core.domain.study.type.StudyCapacity;
 import com.tdns.toks.core.domain.study.type.StudyStatus;
 import com.tdns.toks.core.domain.study.type.StudyUserStatus;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
@@ -65,9 +66,11 @@ public class StudyApiService {
         {
             if (StudyStatus.FINISH.equals(study.getStatus())) {
                 throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_FINISH_STUDY);
-            } else if (study.getCapacity().maxHeadCount != null && study.getCapacity().maxHeadCount <= study.getStudyUserCount()) {
+            }
+            if (StudyCapacity.headCountIsOver(study.getCapacity(), study.getStudyUserCount())) {
                 throw new SilentApplicationErrorException(ApplicationErrorType.OVER_MAX_HEADCOUNT);
-            } else if (studyService.existStudyUser(userId, study.getId())) {
+            }
+            if (studyService.existStudyUser(userId, study.getId())) {
                 throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_JOIN_USER);
             }
             var studyUser = studyService.saveStudyUser(convertToEntity(userId, study.getId()));

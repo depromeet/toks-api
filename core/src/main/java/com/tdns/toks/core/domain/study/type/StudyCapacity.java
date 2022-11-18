@@ -22,4 +22,8 @@ public enum StudyCapacity implements EnumModel {
     public String getValue() {
         return this.value;
     }
+
+    public static boolean headCountIsOver(StudyCapacity studyCapacity, Integer studyHeadCount){
+        return studyCapacity.maxHeadCount != null && studyCapacity.maxHeadCount <= studyHeadCount;
+    }
 }
