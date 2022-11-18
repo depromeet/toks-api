@@ -10,7 +10,7 @@ import javax.persistence.Id;
 
 import org.springframework.data.annotation.CreatedBy;
 
-import com.tdns.toks.core.common.model.entity.BaseEntity;
+import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class Quiz extends BaseEntity {
+public class Quiz extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
