@@ -3,7 +3,9 @@ package com.tdns.toks.api.domain.study.model.dto;
 import com.tdns.toks.core.common.model.entity.EnumValue;
 import com.tdns.toks.core.common.utils.EnumConvertUtil;
 import com.tdns.toks.core.common.utils.UrlConvertUtil;
+import com.tdns.toks.core.domain.study.model.dto.TagDTO;
 import com.tdns.toks.core.domain.study.model.entity.Study;
+import com.tdns.toks.core.domain.study.model.entity.Tag;
 import com.tdns.toks.core.domain.study.type.StudyCapacity;
 import com.tdns.toks.core.domain.user.model.dto.UserDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,6 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StudyApiDTO {
     @Builder
@@ -20,8 +23,8 @@ public class StudyApiDTO {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    @Schema(name="StudyCreateRequest", description="STUDY 생성 요청 모델")
-    public static class StudyCreateRequest{
+    @Schema(name = "StudyCreateRequest", description = "STUDY 생성 요청 모델")
+    public static class StudyCreateRequest {
         @NotEmpty(message = "스터디 이름은 필수 항목 입니다.")
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "name", description = "이름이름")
         private String name;
@@ -44,13 +47,16 @@ public class StudyApiDTO {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "capacity", description = "스터디 규모")
         private StudyCapacity capacity;
 
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "tag id list", description = "태그 id list")
+        private List<Long> tagIdList;
+
     }
 
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     @Setter
-    @Schema(name="StudyApiResponse", description="STUDY 응답 모델")
+    @Schema(name = "StudyApiResponse", description = "STUDY 응답 모델")
     public static class StudyApiResponse {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "id", description = "study id")
         private Long id;
@@ -75,7 +81,9 @@ public class StudyApiDTO {
 
         private UserDTO user;
 
-        public static StudyApiResponse toResponse(Study study, UserDTO userDTO){
+        private List<TagDTO> tagList;
+
+        public static StudyApiResponse toResponse(Study study, UserDTO userDTO, List<Tag> tagList) {
             StudyApiResponse response = new StudyApiResponse();
             response.id = study.getId();
             response.name = study.getName();
@@ -85,6 +93,7 @@ public class StudyApiDTO {
             response.capacity = study.getCapacity();
             response.inviteUrl = UrlConvertUtil.convertToInviteUrl(study.getId());
             response.user = userDTO;
+            response.tagList = tagList.stream().map(tag -> TagDTO.of(tag.getId(), tag.getName())).collect(Collectors.toList());
             return response;
         }
     }
@@ -93,7 +102,7 @@ public class StudyApiDTO {
     @NoArgsConstructor
     @Getter
     @Setter
-    @Schema(name="StudyFormResponse", description="STUDY 생성 폼데이터 조회 모델")
+    @Schema(name = "StudyFormResponse", description = "STUDY 생성 폼데이터 조회 모델")
     public static class StudyFormResponse {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "capacities", description = "스터디 규모")
         private List<EnumValue> capacities = EnumConvertUtil.convertToEnumValue(StudyCapacity.class);
