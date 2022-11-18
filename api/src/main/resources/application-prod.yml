@@ -11,3 +11,7 @@ spring:
         registration:
           kakao:
             redirect-uri: https://tokstudy.com/login/oauth2/code/kakao
+url:
+  prefix: <prod url>
+  study-path: /study
+  join-path: /join
