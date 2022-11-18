@@ -4,3 +4,7 @@ spring:
     username:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+url:
+  prefix: <prod url>
+  study-path: /study
+  join-path: /join

@@ -12,7 +12,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: validate
-    generate-ddl: true
+    generate-ddl: false
     database: mysql
     database-platform: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
   redis:
