@@ -11,8 +11,8 @@ buildscript {
         def mysqlUsername = localProperties.getProperty('mysql.userName')
         def mysqlPassword = localProperties.getProperty('mysql.userPassword')
 
-        set('mysqlUsername', "tdns")
-        set('mysqlPassword', "1234")
+        set('mysqlUsername', mysqlUsername)
+        set('mysqlPassword', mysqlPassword)
         set('flywayVersion', '6.5.7')
     }
 }
