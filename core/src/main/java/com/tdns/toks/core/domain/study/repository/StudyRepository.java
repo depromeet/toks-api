@@ -9,5 +9,4 @@ import java.util.List;
 
 @Repository
 public interface StudyRepository extends JpaRepository<Study, Long> {
-    List<Tag> findByTagIdIn(List<Long> tagIdList);
 }

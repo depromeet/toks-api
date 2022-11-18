@@ -93,7 +93,7 @@ public class StudyApiDTO {
             response.capacity = study.getCapacity();
             response.inviteUrl = UrlConvertUtil.convertToInviteUrl(study.getId());
             response.user = userDTO;
-            response.tagList = tagList.stream().map(tag -> TagDTO.of(tag.getId(), tag.getName())).collect(Collectors.toList());
+            response.tagList = tagList.stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
             return response;
         }
     }
@@ -106,5 +106,15 @@ public class StudyApiDTO {
     public static class StudyFormResponse {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "capacities", description = "스터디 규모")
         private List<EnumValue> capacities = EnumConvertUtil.convertToEnumValue(StudyCapacity.class);
+    }
+
+    @AllArgsConstructor(staticName = "of")
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    @Schema(name = "TagResponse", description = "태그 조회 모델")
+    public static class TagResponse {
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "tagList", description = "태그 리스트")
+        private List<TagDTO> tagList;
     }
 }

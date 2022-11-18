@@ -1,8 +1,10 @@
 package com.tdns.toks.api.domain.study.service;
 
+import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
+import com.tdns.toks.core.domain.study.model.dto.TagDTO;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.StudyTag;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.*;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -31,7 +35,7 @@ public class StudyApiService {
 
         List<Tag> tagList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(studyCreateRequest.getTagIdList())) {
-            tagList = studyService.findByTagIdIn(studyCreateRequest.getTagIdList());
+            tagList = studyService.getTagListByIdList(studyCreateRequest.getTagIdList());
             studyService.saveAllStudyTag(convertToEntityList(tagList, study.getId()));
         }
         return StudyApiResponse.toResponse(study, userDTO, tagList);
@@ -39,6 +43,12 @@ public class StudyApiService {
 
     public StudyFormResponse getFormData() {
         return new StudyFormResponse();
+    }
+
+    @Transactional(readOnly = true)
+    public TagResponse getTagByKeyword(String keyword) {
+        List<TagDTO> tagDTOList = studyService.getTagListByKeyword(keyword).stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
+        return TagResponse.of(tagDTOList);
     }
 
     private Study convertToEntity(StudyCreateRequest studyCreateRequest, Long userId) {

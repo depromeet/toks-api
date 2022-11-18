@@ -5,6 +5,7 @@ import com.tdns.toks.core.domain.study.model.entity.StudyTag;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
 import com.tdns.toks.core.domain.study.repository.StudyRepository;
 import com.tdns.toks.core.domain.study.repository.StudyTagRepository;
+import com.tdns.toks.core.domain.study.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,15 +20,23 @@ public class StudyService {
 
     private final StudyTagRepository studyTagRepository;
 
+    private final TagRepository tagRepository;
+
     public Study save(Study study) {
         return studyRepository.save(study);
     }
 
-    public List<Tag> findByTagIdIn(List<Long> tagIdList) {
-        return studyRepository.findByTagIdIn(tagIdList);
+    @Transactional(readOnly = true)
+    public List<Tag> getTagListByIdList(List<Long> tagIdList) {
+        return tagRepository.findByTagIdIn(tagIdList);
     }
 
     public List<StudyTag> saveAllStudyTag(List<StudyTag> studyTagList) {
         return studyTagRepository.saveAll(studyTagList);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Tag> getTagListByKeyword(String keyword) {
+        return tagRepository.findByNameContaining(keyword);
     }
 }
