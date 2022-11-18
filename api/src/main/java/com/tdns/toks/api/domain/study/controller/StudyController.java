@@ -80,6 +80,6 @@ public class StudyController {
             @PathVariable("studyId") @Valid @Positive @NotNull(message = "스터디 id는 필수 항목 입니다.") Long studyId
     ) {
         studyApiService.joinStudy(studyId);
-        return ResponseDto.created();
+        return ResponseDto.noContent();
     }
 }
