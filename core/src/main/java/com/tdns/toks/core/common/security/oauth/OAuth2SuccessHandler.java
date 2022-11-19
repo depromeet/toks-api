@@ -2,6 +2,7 @@ package com.tdns.toks.core.common.security.oauth;
 
 import com.tdns.toks.core.common.security.JwtTokenProvider;
 import com.tdns.toks.core.common.type.JwtToken;
+import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +29,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         var email = authentication.getName();
-        var url = setRedirectUrl(jwtTokenProvider.generateToken(email));
+        UserDetailDTO userDetailDTO = (UserDetailDTO) authentication.getPrincipal();
+        var url = setRedirectUrl(userDetailDTO.getJwtToken());
         getRedirectStrategy().sendRedirect(request, response, url);
     }
 
