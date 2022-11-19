@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.Null;
 import java.util.Optional;
-
-import static java.util.Optional.empty;
 
 @Service
 @Transactional
@@ -42,7 +39,7 @@ public class UserService {
         return user;
     }
 
-    public boolean isNicknameDuplicated(String nickname) {
+    private boolean isNicknameDuplicated(String nickname) {
         Optional<User> usedNickname = userRepository.findByNickname(nickname);
         return usedNickname.isPresent();
     }
