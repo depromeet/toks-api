@@ -26,7 +26,10 @@ public enum ApplicationErrorType {
     UNAUTHORIZED_USER(HttpStatus.BAD_REQUEST, -10006, "try.again"),
     NO_PROVIDER(HttpStatus.NO_CONTENT, -20010, "no provider"),
     DUPLICATED_NICKNAME(HttpStatus.CONFLICT, -20011, "duplicated nickname"),
-    AUTHENTICATION_FAIL(HttpStatus.UNAUTHORIZED, -20012, "authentication failed");
+    AUTHENTICATION_FAIL(HttpStatus.UNAUTHORIZED, -20012, "authentication failed"),
+    EMPTY_TOKEN(HttpStatus.BAD_REQUEST, -20013, "no token"),
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, -20014, "error.invalid.refresh.token");
+
     @Getter
     private HttpStatus httpStatus;
 

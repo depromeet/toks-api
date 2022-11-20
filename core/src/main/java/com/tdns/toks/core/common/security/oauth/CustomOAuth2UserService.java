@@ -1,6 +1,7 @@
 package com.tdns.toks.core.common.security.oauth;
 
 import com.tdns.toks.core.common.security.JwtTokenProvider;
+import com.tdns.toks.core.common.type.JwtToken;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
@@ -29,9 +30,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, oAuth2User.getAttributes());
+        JwtToken jwtToken = jwtTokenProvider.generateToken(oAuth2Attribute.getEmail());
         User user = userRepository.findByEmail(oAuth2Attribute.getEmail())
                                     .orElseGet(() -> createUser(oAuth2Attribute));
-        return new UserDetailDTO(user, oAuth2Attribute.getAttributes(), jwtTokenProvider.generateToken(oAuth2Attribute.getEmail()));
+        user.setRefreshToken(jwtToken.getRefreshToken());
+        return new UserDetailDTO(user, oAuth2Attribute.getAttributes(), jwtToken);
     }
 
     private User createUser(OAuth2Attribute oAuth2Attribute) {

@@ -30,6 +30,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
     public void setErrorResponse(HttpStatus status, HttpServletResponse response, Exception ex) throws IOException {
         response.setStatus(status.value());
+        response.setHeader("exceptionMessage", ex.getMessage());
         response.setContentType("application/json");
     }
 }

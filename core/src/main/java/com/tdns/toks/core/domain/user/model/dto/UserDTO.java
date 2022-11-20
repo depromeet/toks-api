@@ -21,6 +21,7 @@ public class UserDTO {
     private UserRole userRole;
     private UserProvider provider;
     private String providerId;
+    private String refreshToken;
 
     public static UserDTO convertEntityToDTO(User user) {
         UserDTO userDTO = new UserDTO();
@@ -31,6 +32,7 @@ public class UserDTO {
         userDTO.userRole = user.getUserRole();
         userDTO.provider = user.getProvider();
         userDTO.providerId = user.getProviderId();
+        userDTO.refreshToken = user.getRefreshToken();
         return userDTO;
     }
 }

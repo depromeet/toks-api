@@ -15,6 +15,7 @@ CREATE TABLE `user` (
                         `provider_id` varchar(100) NULL COMMENT 'provider 고유 id',
                         `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
                         `updated_at` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
+                        `refresh_token` varchar(1000) NULL COMMENT '리프래시 토큰',
                         PRIMARY KEY (`id`)
 ) AUTO_INCREMENT=200000 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='유저 테이블';
 

@@ -1,6 +1,7 @@
 package com.tdns.toks.core.domain.user.model.entity;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
+import com.tdns.toks.core.domain.user.model.dto.UserDTO;
 import com.tdns.toks.core.domain.user.type.UserProvider;
 import com.tdns.toks.core.domain.user.type.UserRole;
 import com.tdns.toks.core.domain.user.type.UserStatus;
@@ -50,6 +51,9 @@ public class User extends BaseTimeEntity implements Serializable {
 
     @Column(name = "provider_id", columnDefinition = "user의 provider 고유 id")
     private String providerId;
+
+    @Column(name = "refresh_token", columnDefinition = "리프레시 토큰")
+    private String refreshToken;
 
     public void updateNickname(String nickname) {
         this.nickname = nickname;

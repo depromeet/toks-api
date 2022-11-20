@@ -37,11 +37,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.getAuthToken(request);
 
-        if (token != null && jwtTokenProvider.verifyToken(token)) {
-            String email = jwtTokenProvider.getUid(token);
-            User user = userService.getUserByStatus(email).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNAUTHORIZED_USER));
-            Authentication auth = getAuthentication(UserDTO.convertEntityToDTO(user));
-            SecurityContextHolder.getContext().setAuthentication(auth);
+        if (token != null) {
+            if (jwtTokenProvider.verifyToken(token)) {
+                String email = jwtTokenProvider.getUid(token);
+                User user = userService.getUserByStatus(email).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNAUTHORIZED_USER));
+                Authentication auth = getAuthentication(UserDTO.convertEntityToDTO(user));
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            } else {
+                throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_ACCESS_TOKEN);
+            }
         }
         filterChain.doFilter(request, response);
     }

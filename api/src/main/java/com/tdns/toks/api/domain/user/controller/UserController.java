@@ -1,5 +1,7 @@
 package com.tdns.toks.api.domain.user.controller;
 
+import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserRenewAccessTokenResponse;
+import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserRenewAccessTokenRequest;
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserInfoResponse;
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserUpdateNicknameRequest;
 import com.tdns.toks.api.domain.user.service.UserApiService;
@@ -36,6 +38,24 @@ public class UserController {
             @RequestBody UserUpdateNicknameRequest userUpdateNicknameRequest
     ) {
         var response = userApiService.updateNickname(userUpdateNicknameRequest);
+        return ResponseDto.created(response);
+    }
+
+    @PostMapping("/renew")
+    @Operation(
+            method = "POST",
+            summary = "사용자 accessToken 갱신 요청"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserRenewAccessTokenResponse.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    public ResponseEntity<UserRenewAccessTokenResponse> renewAccessToken(
+            @RequestBody UserRenewAccessTokenRequest userRenewAccessTokenRequest
+    ) {
+        var response = userApiService.renewAccessToken(userRenewAccessTokenRequest);
         return ResponseDto.created(response);
     }
 }
