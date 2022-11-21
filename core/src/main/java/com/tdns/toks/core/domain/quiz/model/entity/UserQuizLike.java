@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Table(name = "user_quiz_like")
 public class UserQuizLike extends BaseTimeEntity {
 
 	@Id

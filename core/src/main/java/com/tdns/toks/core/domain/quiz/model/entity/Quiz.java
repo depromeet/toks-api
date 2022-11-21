@@ -22,7 +22,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Table(name = "quiz")
 public class Quiz extends BaseTimeEntity {
 
 	@Id
@@ -32,15 +31,18 @@ public class Quiz extends BaseTimeEntity {
 	@Column(nullable = false, columnDefinition = "VARCHAR(255) COMMENT '퀴즈'")
 	private String quiz;
 
+	@Column(nullable = false, columnDefinition = "VARCHAR(10) COMMENT '퀴즈 타입'")
+	private QuizType quizType;
+
 	@Column(columnDefinition = "VARCHAR(255) COMMENT '퀴즈 설명'")
 	private String description;
+
+	@Column(columnDefinition = "TINYINT COMMENT '난이도'")
+	private Integer difficulty;
 
 	// TODO: 정답 포맷 논의
 	@Column(nullable = false, columnDefinition = "JSON COMMENT '정답'")
 	private String answer;
-
-	@Column(nullable = false, columnDefinition = "VARCHAR(10) COMMENT '퀴즈 타입'")
-	private QuizType quizType;
 
 	@Column(nullable = false, columnDefinition = "DATETIME COMMENT '시작시간'")
 	private LocalDateTime startedAt;
@@ -51,14 +53,8 @@ public class Quiz extends BaseTimeEntity {
 	@Column(columnDefinition = "VARCHAR(255) COMMENT '이미지 url'")
 	private String imageUrl;
 
-	@Column(columnDefinition = "TINYINT COMMENT '난이도'")
-	private Integer difficulty;
-
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '스터디 id'")
 	private Long studyId;
-
-	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '정답 id'")
-	private Long quizAnswerId;
 
 	@CreatedBy
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '생성자'")
