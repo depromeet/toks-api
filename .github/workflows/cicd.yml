@@ -14,9 +14,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Migrate Dev DB With Flyway
-        run: ./gradlew -Dflyway.placeholders.environment=dev :flyway:flywayMigrate
-
       - name: Checkout
         uses: actions/checkout@v1
 
@@ -35,6 +32,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+
+      - name: Migrate Dev DB With Flyway
+        run: ./gradlew -Dflyway.placeholders.environment=dev :flyway:flywayMigrate
 
       - name: Build with Gradle
         run: ./gradlew :api:jib
