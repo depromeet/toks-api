@@ -1,19 +1,17 @@
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor
+import org.jasypt.properties.EncryptableProperties
+
 buildscript {
     ext {
-        def localProperties = new Properties()
-        def localPropertiesFile = rootProject.file('local.properties')
-        if (localPropertiesFile.exists()) {
-            localPropertiesFile.withReader('UTF-8') { reader ->
-                localProperties.load(reader)
-            }
-        }
-
-        def mysqlUsername = localProperties.getProperty('mysql.userName')
-        def mysqlPassword = localProperties.getProperty('mysql.userPassword')
-
-        set('mysqlUsername', mysqlUsername)
-        set('mysqlPassword', mysqlPassword)
         set('flywayVersion', '6.5.7')
+        String encryptorPassword = System.getenv("JASYPT_ENCRYPTOR_PASSWORD")
+        set('encryptorPassword', encryptorPassword)
+
+        String buildPhase = System.getProperty("flyway.placeholders.environment")
+        set('buildPhase', buildPhase)
+    }
+    dependencies {
+        classpath 'org.jasypt:jasypt:1.9.3'
     }
 }
 
@@ -29,7 +27,17 @@ dependencies {
 
 // default flyway configuration : local
 flyway {
-    url = 'jdbc:mysql://localhost:3306/tdsn?'
-    user = "${mysqlUsername}"
-    password = "${mysqlPassword}"
+    StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+    encryptor.setPassword("${encryptorPassword}"); //<-- your Jasypt password can come from anywhere.  Hopefully somewhere more secure than this.
+    encryptor.setAlgorithm("PBEWithMD5AndDES");
+    def flywayFile = file('src/main/resources/application-' + "${buildPhase}" + '.yml')
+
+    Properties flywayProps = new EncryptableProperties(encryptor)
+    flywayFile.withInputStream { stream ->
+        flywayProps.load(stream)
+    }
+
+    url = flywayProps.url
+    user = flywayProps.user
+    password = flywayProps.password
 }
