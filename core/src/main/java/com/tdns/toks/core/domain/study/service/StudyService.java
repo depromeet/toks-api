@@ -28,7 +28,7 @@ public class StudyService {
 
     @Transactional(readOnly = true)
     public List<Tag> getTagListByIdList(List<Long> tagIdList) {
-        return tagRepository.findByTagIdIn(tagIdList);
+        return tagRepository.findByIdIn(tagIdList);
     }
 
     public List<StudyTag> saveAllStudyTag(List<StudyTag> studyTagList) {

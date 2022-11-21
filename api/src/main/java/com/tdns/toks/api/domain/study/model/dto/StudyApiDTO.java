@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.List;
@@ -125,6 +126,7 @@ public class StudyApiDTO {
     @Schema(name = "TagCreateRequest", description = "태그 생성 모델")
     public static class TagCreateRequest {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "keyword", description = "키워드")
+        @NotBlank
         private String keyword;
     }
 }

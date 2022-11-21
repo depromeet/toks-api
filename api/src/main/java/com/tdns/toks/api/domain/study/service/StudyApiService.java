@@ -48,14 +48,14 @@ public class StudyApiService {
 
     @Transactional(readOnly = true)
     public TagResponse getTagByKeyword(String keyword) {
-        var tagDTOList = studyService.getTagListByKeyword(keyword).stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
+        var tagDTOList = studyService.getTagListByKeyword(keyword.trim()).stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
         return TagResponse.of(tagDTOList);
     }
 
 
-    @Transactional
     public TagDTO getOrCreateKeyword(TagCreateRequest tagCreateRequest) {
-        var tag = Optional.ofNullable(studyService.getTagByKeyword(tagCreateRequest.getKeyword()))
+        var keyword = tagCreateRequest.getKeyword().trim();
+        var tag = Optional.ofNullable(studyService.getTagByKeyword(keyword))
                 .orElseGet(() -> studyService.createTag(convertToEntity(tagCreateRequest.getKeyword())));
         return TagDTO.of(tag);
     }
