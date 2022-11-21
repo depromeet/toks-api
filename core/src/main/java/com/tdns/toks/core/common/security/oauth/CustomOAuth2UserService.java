@@ -1,7 +1,6 @@
 package com.tdns.toks.core.common.security.oauth;
 
 import com.tdns.toks.core.common.security.JwtTokenProvider;
-import com.tdns.toks.core.common.type.JwtToken;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
@@ -26,13 +25,14 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     @Override
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
-        OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
-        String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, oAuth2User.getAttributes());
-        JwtToken jwtToken = jwtTokenProvider.generateToken(oAuth2Attribute.getEmail());
-        User user = userRepository.findByEmail(oAuth2Attribute.getEmail())
-                                    .orElseGet(() -> createUser(oAuth2Attribute));
+        var oAuth2UserService = new DefaultOAuth2UserService();
+        var oAuth2User = oAuth2UserService.loadUser(userRequest);
+        var oAuth2Attribute = OAuth2Attribute.of(
+                userRequest.getClientRegistration().getRegistrationId(),
+                oAuth2User.getAttributes());
+        var jwtToken = jwtTokenProvider.generateToken(oAuth2Attribute.getEmail());
+        var user = userRepository.findByEmail(oAuth2Attribute.getEmail())
+                .orElseGet(() -> createUser(oAuth2Attribute));
         user.setRefreshToken(jwtToken.getRefreshToken());
         return new UserDetailDTO(user, oAuth2Attribute.getAttributes(), jwtToken);
     }
@@ -53,5 +53,4 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .providerId(oAuth2Attribute.getProviderId())
                 .build();
     }
-
 }

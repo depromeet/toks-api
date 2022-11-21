@@ -7,7 +7,6 @@ import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 import com.tdns.toks.core.domain.user.type.UserProvider;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.pool.TypePool;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,7 +53,6 @@ public class UserService {
     }
 
     private boolean isNicknameDuplicated(String nickname) {
-        Optional<User> usedNickname = userRepository.findByNickname(nickname);
-        return usedNickname.isPresent();
+        return userRepository.existsByNickname(nickname);
     }
 }

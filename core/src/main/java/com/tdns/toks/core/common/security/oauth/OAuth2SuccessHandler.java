@@ -28,8 +28,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        var email = authentication.getName();
-        UserDetailDTO userDetailDTO = (UserDetailDTO) authentication.getPrincipal();
+        var userDetailDTO = (UserDetailDTO) authentication.getPrincipal();
         var url = setRedirectUrl(userDetailDTO.getJwtToken());
         getRedirectStrategy().sendRedirect(request, response, url);
     }
