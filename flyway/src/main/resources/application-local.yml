@@ -1,0 +1,6 @@
+## spring
+spring:
+  flyway:
+    url: jdbc:mysql://localhost:3306/tdsn
+    user:
+    password:
