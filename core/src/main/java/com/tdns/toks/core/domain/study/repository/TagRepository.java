@@ -11,4 +11,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     List<Tag> findByTagIdIn(List<Long> tagIdList);
 
     List<Tag> findByNameContaining(String keyword);
+
+    Tag findFirstByName(String keyword);
 }

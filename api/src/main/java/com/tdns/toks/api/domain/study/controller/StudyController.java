@@ -1,10 +1,7 @@
 package com.tdns.toks.api.domain.study.controller;
 
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
+import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.*;
 import com.tdns.toks.api.domain.study.service.StudyApiService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.common.type.JwtToken;
@@ -78,6 +75,24 @@ public class StudyController {
             @RequestParam String keyword
     ) {
         var response = studyApiService.getTagByKeyword(keyword);
+        return ResponseDto.ok(response);
+    }
+
+    @PostMapping("/tag")
+    @Operation(
+            method = "POST",
+            summary = "태그 조회 및 생성"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = TagDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    public ResponseEntity<TagDTO> getOrCreateKeyword(
+            @RequestBody TagCreateRequest tagCreateRequest
+    ) {
+        var response = studyApiService.getOrCreateKeyword(tagCreateRequest);
         return ResponseDto.ok(response);
     }
 }

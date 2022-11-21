@@ -39,4 +39,13 @@ public class StudyService {
     public List<Tag> getTagListByKeyword(String keyword) {
         return tagRepository.findByNameContaining(keyword);
     }
+
+    @Transactional(readOnly = true)
+    public Tag getTagByKeyword(String keyword) {
+        return tagRepository.findFirstByName(keyword);
+    }
+
+    public Tag createTag(Tag tag) {
+        return tagRepository.save(tag);
+    }
 }

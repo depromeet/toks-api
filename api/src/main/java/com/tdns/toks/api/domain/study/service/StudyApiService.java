@@ -1,6 +1,5 @@
 package com.tdns.toks.api.domain.study.service;
 
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
@@ -19,9 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.*;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagCreateRequest;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -47,8 +48,16 @@ public class StudyApiService {
 
     @Transactional(readOnly = true)
     public TagResponse getTagByKeyword(String keyword) {
-        List<TagDTO> tagDTOList = studyService.getTagListByKeyword(keyword).stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
+        var tagDTOList = studyService.getTagListByKeyword(keyword).stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
         return TagResponse.of(tagDTOList);
+    }
+
+
+    @Transactional
+    public TagDTO getOrCreateKeyword(TagCreateRequest tagCreateRequest) {
+        var tag = Optional.ofNullable(studyService.getTagByKeyword(tagCreateRequest.getKeyword()))
+                .orElseGet(() -> studyService.createTag(convertToEntity(tagCreateRequest.getKeyword())));
+        return TagDTO.of(tag);
     }
 
     private Study convertToEntity(StudyCreateRequest studyCreateRequest, Long userId) {
@@ -72,6 +81,12 @@ public class StudyApiService {
         return StudyTag.builder()
                 .studyId(studyId)
                 .tagId(tagId)
+                .build();
+    }
+
+    private Tag convertToEntity(String name) {
+        return Tag.builder()
+                .name(name)
                 .build();
     }
 }

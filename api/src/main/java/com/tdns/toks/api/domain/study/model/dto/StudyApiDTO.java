@@ -117,4 +117,14 @@ public class StudyApiDTO {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "tagList", description = "태그 리스트")
         private List<TagDTO> tagList;
     }
+
+    @AllArgsConstructor(staticName = "of")
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    @Schema(name = "TagCreateRequest", description = "태그 생성 모델")
+    public static class TagCreateRequest {
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "keyword", description = "키워드")
+        private String keyword;
+    }
 }
