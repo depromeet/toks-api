@@ -5,7 +5,6 @@ import com.tdns.toks.core.domain.user.type.UserProvider;
 import com.tdns.toks.core.domain.user.type.UserRole;
 import com.tdns.toks.core.domain.user.type.UserStatus;
 import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,7 +12,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
-@DynamicUpdate
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
