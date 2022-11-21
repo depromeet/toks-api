@@ -7,7 +7,7 @@ buildscript {
         String encryptorPassword = System.getenv("JASYPT_ENCRYPTOR_PASSWORD")
         set('encryptorPassword', encryptorPassword)
 
-        String buildPhase = System.getProperty("flyway.placeholders.environment")
+        String buildPhase = System.getProperty("flyway.placeholders.environment", "dev")
         set('buildPhase', buildPhase)
     }
     dependencies {
