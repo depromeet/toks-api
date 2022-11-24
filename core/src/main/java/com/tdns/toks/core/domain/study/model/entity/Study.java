@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "study")
 public class Study extends BaseTimeEntity implements Serializable {
     @Id

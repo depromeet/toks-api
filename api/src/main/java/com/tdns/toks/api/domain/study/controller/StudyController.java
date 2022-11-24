@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -90,7 +91,7 @@ public class StudyController {
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
     public ResponseEntity<TagDTO> getOrCreateKeyword(
-            @RequestBody TagCreateRequest tagCreateRequest
+            @Validated @RequestBody TagCreateRequest tagCreateRequest
     ) {
         var response = studyApiService.getOrCreateKeyword(tagCreateRequest);
         return ResponseDto.ok(response);

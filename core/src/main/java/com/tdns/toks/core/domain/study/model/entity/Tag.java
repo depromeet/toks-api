@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tag")
 public class Tag extends BaseTimeEntity implements Serializable {
     @Id
