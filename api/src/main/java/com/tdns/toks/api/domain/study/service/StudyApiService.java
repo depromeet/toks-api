@@ -56,5 +56,5 @@ public class StudyApiService {
         var tag = Optional.ofNullable(studyService.getTagByKeyword(keyword))
                 .orElseGet(() -> studyService.createTag(mapper.toEntity(tagCreateRequest.getKeyword())));
         return TagDTO.of(tag);
-    }3
+    }
 }
