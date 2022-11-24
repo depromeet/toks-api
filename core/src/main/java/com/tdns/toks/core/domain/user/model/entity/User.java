@@ -20,9 +20,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Table(name = "user")
 public class User extends BaseTimeEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "회원 번호")
     private Long id;
 
     @Column(name = "email", unique = true, columnDefinition = "회원 이메일")

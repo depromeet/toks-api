@@ -33,6 +33,9 @@ jobs:
         with:
           java-version: 11
 
+      - name: Migrate Dev DB With Flyway
+        run: ./gradlew -Dflyway.placeholders.environment=dev :flyway:flywayMigrate
+
       - name: Build with Gradle
         run: ./gradlew :api:jib
 
