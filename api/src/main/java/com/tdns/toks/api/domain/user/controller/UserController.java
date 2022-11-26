@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.user.controller;
 
+import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserUpdateNicknameResponse;
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserRenewAccessTokenResponse;
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserRenewAccessTokenRequest;
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserInfoResponse;
@@ -23,10 +24,10 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserApiService userApiService;
 
-    @PatchMapping("/nickname")
+    @GetMapping
     @Operation(
-            method = "PATCH",
-            summary = "사용자 닉네임 설정"
+            method = "GET",
+            summary = "사용자 정보 조회"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserInfoResponse.class))}),
@@ -34,7 +35,24 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
-    public ResponseEntity<UserInfoResponse> updateNickname(
+    public ResponseEntity<UserInfoResponse> getUserInformation(
+    ) {
+        var response = userApiService.getUserInfo();
+        return ResponseDto.ok(response);
+    }
+
+    @PatchMapping("/nickname")
+    @Operation(
+            method = "PATCH",
+            summary = "사용자 닉네임 설정"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserUpdateNicknameResponse.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    public ResponseEntity<UserUpdateNicknameResponse> updateNickname(
             @RequestBody UserUpdateNicknameRequest userUpdateNicknameRequest
     ) {
         var response = userApiService.updateNickname(userUpdateNicknameRequest);

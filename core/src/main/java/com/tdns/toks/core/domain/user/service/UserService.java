@@ -25,21 +25,17 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public User getUser(UserProvider provider, String providerId) {
-        return userRepository.findByProviderAndProviderId(provider, providerId).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.COULDNT_FIND_ANY_DATA));
+    public User getUser(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.COULDNT_FIND_ANY_DATA));
     }
 
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
-
-    public User updateNickname(Long id, String nickname) {
+    public String updateNickname(Long id, String nickname) {
         User user = userRepository.findById(id).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
         if (isNicknameDuplicated(nickname)) {
             throw new SilentApplicationErrorException(ApplicationErrorType.DUPLICATED_NICKNAME);
         }
         user.updateNickname(nickname);
-        return user;
+        return user.getNickname();
     }
 
     public String renewAccessToken(String requestRefreshToken) {
@@ -50,7 +46,7 @@ public class UserService {
             return jwtTokenProvider.renewAccessToken(user.getEmail());
         }
         user.setRefreshToken("none");
-        return "expired";
+        return "refreshToken expired";
     }
 
     private boolean isNicknameDuplicated(String nickname) {

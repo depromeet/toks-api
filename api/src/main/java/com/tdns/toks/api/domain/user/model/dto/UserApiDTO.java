@@ -24,7 +24,17 @@ public class UserApiDTO {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    @Schema(name="UserInfoResponse", description="사용자 정보 응답 모델")
+    @Schema(name = "NicknameResponse", description = "변경된 닉네임 반환 모델")
+    public static class UserUpdateNicknameResponse {
+        @Schema(accessMode = Schema.AccessMode.READ_ONLY, required = true, name = "nickname", description = "사용자 nickname")
+        private String nickname;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Schema(name = "UserInfoResponse", description = "사용자 정보 응답 모델")
     public static class UserInfoResponse {
         @Schema(accessMode = Schema.AccessMode.READ_ONLY, required = true, name = "id", description = "사용자 email")
         private String email;
