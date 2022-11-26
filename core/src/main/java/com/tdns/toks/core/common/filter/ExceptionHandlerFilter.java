@@ -1,5 +1,7 @@
 package com.tdns.toks.core.common.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,16 +23,23 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
         } catch (SilentApplicationErrorException ex){
             log.error("exception exception handler filter");
-            setErrorResponse(ex.getResponseStatusType().getHttpStatus(),response,ex);
+            ApplicationErrorType responseStatusType = ex.getResponseStatusType();
+            setErrorResponseHeader(ex.getResponseStatusType().getHttpStatus(),response,ex);
+            setErrorResponseBody(response, responseStatusType);
         }catch (RuntimeException ex){
             log.error("runtime exception exception handler filter");
-            setErrorResponse(HttpStatus.FORBIDDEN,response,ex);
+            setErrorResponseHeader(HttpStatus.FORBIDDEN,response,ex);
         }
     }
 
-    public void setErrorResponse(HttpStatus status, HttpServletResponse response, Exception ex) throws IOException {
+    private void setErrorResponseHeader(HttpStatus status, HttpServletResponse response, Exception ex) throws IOException {
         response.setStatus(status.value());
-        response.setHeader("exceptionMessage", ex.getMessage());
         response.setContentType("application/json");
+    }
+
+    public void setErrorResponseBody(HttpServletResponse response, ApplicationErrorType applicationErrorType) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String errorResponse = objectMapper.writeValueAsString(applicationErrorType);
+        response.getWriter().write(errorResponse);
     }
 }

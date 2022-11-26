@@ -39,14 +39,16 @@ public class UserService {
     }
 
     public String renewAccessToken(String requestRefreshToken) {
+        if (!jwtTokenProvider.verifyToken(requestRefreshToken)) {
+            throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_REFRESH_TOKEN);
+        }
         String email = jwtTokenProvider.getUid(requestRefreshToken);
         User user = userRepository.findByEmail(email).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
         String userRefreshToken = user.getRefreshToken();
-        if (jwtTokenProvider.verifyToken(requestRefreshToken) && requestRefreshToken.equals(userRefreshToken)) {
-            return jwtTokenProvider.renewAccessToken(user.getEmail());
+        if (!requestRefreshToken.equals(userRefreshToken)) {
+            throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_REFRESH_TOKEN);
         }
-        user.setRefreshToken("none");
-        return "refreshToken expired";
+        return jwtTokenProvider.renewAccessToken(user.getEmail());
     }
 
     private boolean isNicknameDuplicated(String nickname) {
