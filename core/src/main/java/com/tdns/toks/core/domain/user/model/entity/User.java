@@ -25,34 +25,34 @@ public class User extends BaseTimeEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email", unique = true, columnDefinition = "회원 이메일")
+    @Column(unique = true, columnDefinition =  "VARCHAR(255) COMMENT '회원 이메일'")
     private String email;
 
-    @Column(name = "nickname", columnDefinition = "회원 닉네임")
+    @Column(columnDefinition =  "VARCHAR(255) COMMENT '회원 닉네임'")
     private String nickname;
 
-    @Column(name = "thumbnail_image_url", columnDefinition = "작은 프로필 이미지 URL")
+    @Column(columnDefinition = "VARCHAR(255) COMMENT '작은 프로필 이미지 URL'")
     private String thumbnailImageUrl;
 
-    @Column(name = "profile_image_url", columnDefinition = "큰 프로필 이미지 URL")
+    @Column(columnDefinition = "VARCHAR(255) COMMENT '큰 프로필 이미지 URL'")
     private String profileImageUrl;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, columnDefinition = "회원 상태")
+    @Column(nullable = false, columnDefinition = "VARCHAR(10) COMMENT '회원 상태'")
     private UserStatus status;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_role", nullable = false, columnDefinition = "회원 권한")
+    @Column(nullable = false, columnDefinition = "VARCHAR(10) COMMENT '회원 권한'")
     private UserRole userRole;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "provider", nullable = false, columnDefinition = "provider")
+    @Column(nullable = false, columnDefinition = "VARCHAR(10) COMMENT '인증 업체'")
     private UserProvider provider;
 
-    @Column(name = "provider_id", columnDefinition = "user의 provider 고유 id")
+    @Column(columnDefinition = "VARCHAR(255) COMMENT 'user의 provider 고유 id'")
     private String providerId;
 
-    @Column(name = "refresh_token", columnDefinition = "리프레시 토큰")
+    @Column(columnDefinition = "VARCHAR(512) COMMENT '리프래시 토큰'")
     private String refreshToken;
 
     public void updateNickname(String nickname) {
