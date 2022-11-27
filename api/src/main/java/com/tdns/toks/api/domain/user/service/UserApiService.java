@@ -33,6 +33,11 @@ public class UserApiService {
         return new UserRenewAccessTokenResponse(accessToken);
     }
 
+    public void deleteRefreshToken() {
+        var userDTO = UserDetailDTO.get();
+        userService.deleteRefreshToken(userDTO.getId());
+    }
+
     private UserInfoResponse convertUserEntityToUserInfo(User user) {
         return UserInfoResponse
                 .builder()

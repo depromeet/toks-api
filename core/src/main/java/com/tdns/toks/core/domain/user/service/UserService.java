@@ -51,6 +51,11 @@ public class UserService {
         return jwtTokenProvider.renewAccessToken(user.getEmail());
     }
 
+    public void deleteRefreshToken(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
+        user.setRefreshToken("logout");
+    }
+
     private boolean isNicknameDuplicated(String nickname) {
         return userRepository.existsByNickname(nickname);
     }

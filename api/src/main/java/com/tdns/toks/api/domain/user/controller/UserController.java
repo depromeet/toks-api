@@ -76,4 +76,20 @@ public class UserController {
         var response = userApiService.renewAccessToken(userRenewAccessTokenRequest);
         return ResponseDto.created(response);
     }
+
+    @PatchMapping("/logout")
+    @Operation(
+            method = "PATCH",
+            summary = "사용자 로그아웃, refreshToken 삭제 처리"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    public ResponseEntity<Void> userLogout() {
+        userApiService.deleteRefreshToken();
+        return ResponseDto.noContent();
+    }
 }
