@@ -1,9 +1,17 @@
+# default profile
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/tdsn
     username:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    oauth2:
+      front-redirect-uri: http://localhost:8080/login/kakaoauth
+      client:
+        registration:
+          kakao:
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
 url:
   prefix: http://localhost:822 #임시 프론트 url 확인 필요
   study-path: /study

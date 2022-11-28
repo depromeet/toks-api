@@ -1,4 +1,4 @@
-package com.tdns.toks.core.config.security;
+package com.tdns.toks.core.common.security;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

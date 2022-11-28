@@ -16,21 +16,23 @@ import lombok.Setter;
 public class UserDTO {
     private Long id;
     private String email;
-    private String name;
+    private String nickname;
     private UserStatus status;
     private UserRole userRole;
     private UserProvider provider;
     private String providerId;
+    private String refreshToken;
 
     public static UserDTO convertEntityToDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.id = user.getId();
         userDTO.email = user.getEmail();
-        userDTO.name = user.getName();
+        userDTO.nickname = user.getNickname();
         userDTO.status = user.getStatus();
         userDTO.userRole = user.getUserRole();
         userDTO.provider = user.getProvider();
         userDTO.providerId = user.getProviderId();
+        userDTO.refreshToken = user.getRefreshToken();
         return userDTO;
     }
 }

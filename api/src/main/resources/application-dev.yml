@@ -4,6 +4,13 @@ spring:
     username: ENC(XZgCSKYBjOGxjU5koULVISqUMWSqaLygaIJwHEXq9ZyI2S0AQmvE97XuakgjFPMv)
     password: ENC(17+mE7X+dMMjiJu+7CuwVp2bhhwKCw85SJpBGMBAgL0STOUgszKa7Yozd1FYeCPn)
     driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    oauth2:
+      front-redirect-uri: https://tokstudy.com/login/kakaoauth
+      client:
+        registration:
+          kakao:
+            redirect-uri: https://tokstudy.com/login/oauth2/code/kakao
 url:
   prefix: <dev url>
   study-path: /study

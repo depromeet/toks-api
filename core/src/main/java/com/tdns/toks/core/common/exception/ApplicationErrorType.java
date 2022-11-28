@@ -1,5 +1,6 @@
 package com.tdns.toks.core.common.exception;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 /**
  * 주의! error code 값을 변경할 때는 클라이언트에서 혹시 사용하고 있지 않은지 꼭 확인해야 합니다!
  */
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 @AllArgsConstructor
 public enum ApplicationErrorType {
     /**
@@ -23,7 +25,13 @@ public enum ApplicationErrorType {
     INVALID_LOGIN_INFO(HttpStatus.BAD_REQUEST, -20007, "try.again"/*Invalid Login Info*/),
     TO_JSON_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, -40015, "try.again"),
     UNKNOWN_USER(HttpStatus.BAD_REQUEST, -10006, "try.again"),
-    UNAUTHORIZED_USER(HttpStatus.BAD_REQUEST, -10006, "try.again");
+    UNAUTHORIZED_USER(HttpStatus.BAD_REQUEST, -10006, "try.again"),
+    NO_PROVIDER(HttpStatus.NO_CONTENT, -20010, "no provider"),
+    DUPLICATED_NICKNAME(HttpStatus.CONFLICT, -20011, "duplicated nickname"),
+    AUTHENTICATION_FAIL(HttpStatus.UNAUTHORIZED, -20012, "authentication failed"),
+    EMPTY_TOKEN(HttpStatus.BAD_REQUEST, -20013, "no token"),
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, -20014, "error.invalid.refresh.token");
+
     @Getter
     private HttpStatus httpStatus;
 

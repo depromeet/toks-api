@@ -18,32 +18,31 @@ import java.time.LocalDate;
 public class Study extends BaseTimeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "스터디 번호")
     private Long id;
 
-    @Column(name = "name", columnDefinition = "스터디 이름")
+    @Column(columnDefinition = "VARCHAR(255) COMMENT '스터디 이름'")
     private String name;
 
-    @Column(name = "description", columnDefinition = "스터디 설명")
+    @Column(columnDefinition = "VARCHAR(255) COMMENT '스터디 설명'")
     private String description;
 
-    @Column(name = "start_date", columnDefinition = "시작 일자")
+    @Column(columnDefinition = "DATETIME COMMENT '시작 일자'")
     private LocalDate startDate;
 
-    @Column(name = "end_date", columnDefinition = "종료 일자")
+    @Column(columnDefinition = "DATETIME COMMENT '종료 일자'")
     private LocalDate endDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, columnDefinition = "스터디 상태")
+    @Column(nullable = false, columnDefinition = "VARCHAR(20) COMMENT '스터디 설명'")
     private StudyStatus status;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "capacity", nullable = false, columnDefinition = "스터디 규모")
+    @Column(nullable = false, columnDefinition = "VARCHAR(10) COMMENT '스터디 설명'")
     private StudyCapacity capacity;
 
-    @Column(name = "study_user_count", nullable = false, columnDefinition = "스터디 참여 중인 인원")
+    @Column(nullable = false, columnDefinition = "TINYINT COMMENT '스터디 참여 중인 인원'")
     private Integer studyUserCount;
 
-    @Column(name = "leader_id", columnDefinition = "스터디장 user_id")
+    @Column(columnDefinition = "BIGINT COMMENT '스터디장 user_id'")
     private Long leaderId;
 }
