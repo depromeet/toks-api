@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "TestController-V1", description = "Test API")
+@Tag(name = "PingController-V1", description = "Ping API")
 @RestController
-@RequestMapping(path = "/api/v1/test", produces = "application/json")
+@RequestMapping(path = "ping", produces = "application/json")
 @RequiredArgsConstructor
-public class TestController {
+public class PingController {
     @Operation(
             method = "GET",
-            summary = "test"
+            summary = "ping"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = JwtToken.class))}),
@@ -30,7 +30,7 @@ public class TestController {
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
     @GetMapping
-    public ResponseEntity<Void> test() {
-        return ResponseDto.noContent();
-    }// 초기세팅 테스트용 메서드
+    public ResponseEntity<String> ping() {
+        return ResponseDto.ok("Healthy!");
+    }
 }

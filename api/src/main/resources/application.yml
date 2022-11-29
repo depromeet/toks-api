@@ -77,8 +77,8 @@ cloud:
 
 # security
 security:
-  permit-url: /api-docs/**,/configuration/**,/swagger-ui/**,/webjars/**,/health,/swagger/**,/swagger/index.html, /login/**, /api/v1/user/renew
-  filter-skip: /health,/api-docs,/configuration,/swagger,/swagger-ui,/webjars,/swagger/**
+  permit-url: /api-docs/**,/configuration/**,/swagger-ui/**,/webjars/**,/ping,/swagger/**,/swagger/index.html, /login/**, /api/v1/user/renew
+  filter-skip: /ping,/api-docs,/configuration,/swagger,/swagger-ui,/webjars,/swagger/**
 
 # swagger
 springdoc:
