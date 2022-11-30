@@ -113,7 +113,7 @@ subprojects { subproject ->
             // for database, cache
             implementation 'mysql:mysql-connector-java:8.0.28'
             implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//            implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+            implementation 'org.springframework.boot:spring-boot-starter-data-redis'
             //webflux 도입 시 주석 제거
 //            implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
 
