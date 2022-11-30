@@ -12,6 +12,9 @@ spring:
         registration:
           kakao:
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+  redis:
+    host: 127.0.0.1
+    port: 6379
 url:
   prefix: http://localhost:822 #임시 프론트 url 확인 필요
   study-path: /study
