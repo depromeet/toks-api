@@ -11,6 +11,9 @@ spring:
         registration:
           kakao:
             redirect-uri: https://api.tokstudy.com/login/oauth2/code/kakao
+  redis:
+    host: ENC(cXBlIptXDX2pcubu7UkhXSHJv+dGZYLk92wWAxKXox4/7P/4OLN+UGicp2NGg8r4G+16MNwovBrrcNwgDm7XZuPbsFUiMvQONYsIzUM9d/qVwpGdgmXsFRiyi/Djw9Oq)
+    port: 6379
 url:
   prefix: <dev url>
   study-path: /study
