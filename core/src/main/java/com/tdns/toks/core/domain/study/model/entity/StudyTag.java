@@ -15,13 +15,13 @@ import java.io.Serializable;
 public class StudyTag extends BaseTimeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "스터디 태그 번호")
+    @Column(name = "id", columnDefinition = "BIGINT COMMENT '스터디 태그 번호'")
     private Long id;
 
-    @Column(name = "study_id", columnDefinition = "스터디 번호")
+    @Column(name = "study_id", columnDefinition = "BIGINT COMMENT '스터디 번호'")
     private Long studyId;
 
-    @Column(name = "tag_id", columnDefinition = "태그 번호")
+    @Column(name = "tag_id", columnDefinition = "BIGINT COMMENT '태그 번호'")
     private Long tagId;
 
 }
