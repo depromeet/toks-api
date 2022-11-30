@@ -26,6 +26,8 @@ dependencies {
     /* jasypt 관련 */
     implementation "com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasyptVersion}"
 
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+
     testImplementation "org.junit.jupiter:junit-jupiter-api:${jupiterVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}"
 }
