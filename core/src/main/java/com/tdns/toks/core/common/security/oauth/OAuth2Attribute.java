@@ -33,13 +33,12 @@ public class OAuth2Attribute {
     private static OAuth2Attribute ofKakao(String attributeKey,
                                            Map<String, Object> attributes) {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-        Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
         Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
         return OAuth2Attribute.builder()
                 .provider(UserProvider.KAKAO)
                 .providerId(String.valueOf(attributes.get("id")))
                 .email((String) kakaoAccount.get("email"))
-                .nickname((String) properties.get("nickname"))
+                .nickname("닉네임을 등록해주세요")
                 .thumbnailImageUrl((String) profile.get("thumbnail_image_url"))
                 .profileImageUrl((String) profile.get("profile_image_url"))
                 .attributes(kakaoAccount)
