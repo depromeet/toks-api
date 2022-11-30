@@ -15,9 +15,6 @@ spring:
     generate-ddl: false
     database: mysql
     database-platform: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
-#  redis: TODO: elasti cache 주소 추가
-#    host: 127.0.0.1
-#    port: 6379
 
   # kakao login
   security:
