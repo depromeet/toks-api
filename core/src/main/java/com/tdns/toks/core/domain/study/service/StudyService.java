@@ -1,5 +1,6 @@
 package com.tdns.toks.core.domain.study.service;
 
+import com.tdns.toks.core.domain.rank.repository.RankingRepository;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.StudyTag;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
@@ -21,6 +22,8 @@ public class StudyService {
     private final StudyTagRepository studyTagRepository;
 
     private final TagRepository tagRepository;
+
+    private final RankingRepository rankingRepository;
 
     public Study save(Study study) {
         return studyRepository.save(study);
@@ -47,5 +50,9 @@ public class StudyService {
 
     public Tag createTag(Tag tag) {
         return tagRepository.save(tag);
+    }
+
+    public Long countParticipants(Study study) { // 참여 인원
+        return rankingRepository.countByStudyId(study.getId());
     }
 }
