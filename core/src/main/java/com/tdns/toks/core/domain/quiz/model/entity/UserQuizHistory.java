@@ -29,6 +29,9 @@ public class UserQuizHistory extends BaseTimeEntity {
 	@Column(nullable = false, columnDefinition = "JSON COMMENT '정답'")
 	private String answer;
 
+	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '퀴즈 id'")
+	private Long quizId;
+
 	@CreatedBy
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '생성자'")
 	private Long createdBy;
