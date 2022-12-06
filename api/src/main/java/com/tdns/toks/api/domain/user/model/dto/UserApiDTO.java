@@ -1,11 +1,13 @@
 package com.tdns.toks.api.domain.user.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.tdns.toks.core.domain.user.type.UserProvider;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-
 import javax.validation.constraints.NotEmpty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class UserApiDTO {
     @Builder
@@ -68,5 +70,31 @@ public class UserApiDTO {
     public static class UserRenewAccessTokenResponse {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "accessToken", description = "갱신된 엑세스 토큰")
         private String accessToken;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Schema(name="UserRenewAccessTokenResponse", description="갱신된 AccessToken 응답 모델")
+    public static class User {
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "accessToken", description = "갱신된 엑세스 토큰")
+        private String accessToken;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Schema(name = "UserSimpleResponse", description = "사용자 정보 응답 모델")
+    public static class UserSimpleResponse {
+        @Schema(accessMode = Schema.AccessMode.READ_ONLY, required = true, name = "userId", description = "사용자 id")
+        private Long userId;
+
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "nickname", description = "사용자 nickname")
+        private String nickname;
+
+        @Schema(accessMode = Schema.AccessMode.READ_ONLY, required = true, name = "profileImageUrl", description = "큰 이미지 URL")
+        private String profileImageUrl;
     }
 }

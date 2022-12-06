@@ -1,11 +1,10 @@
-package com.tdns.toks.core.domain.rank.model.entity;
+package com.tdns.toks.core.domain.ranking.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
 
