@@ -71,14 +71,4 @@ public class UserApiDTO {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "accessToken", description = "갱신된 엑세스 토큰")
         private String accessToken;
     }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Schema(name="UserRenewAccessTokenResponse", description="갱신된 AccessToken 응답 모델")
-    public static class User {
-        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "accessToken", description = "갱신된 엑세스 토큰")
-        private String accessToken;
-    }
 }
