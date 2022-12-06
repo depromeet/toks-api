@@ -81,20 +81,4 @@ public class UserApiDTO {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "accessToken", description = "갱신된 엑세스 토큰")
         private String accessToken;
     }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Schema(name = "UserSimpleResponse", description = "사용자 정보 응답 모델")
-    public static class UserSimpleResponse {
-        @Schema(accessMode = Schema.AccessMode.READ_ONLY, required = true, name = "userId", description = "사용자 id")
-        private Long userId;
-
-        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "nickname", description = "사용자 nickname")
-        private String nickname;
-
-        @Schema(accessMode = Schema.AccessMode.READ_ONLY, required = true, name = "profileImageUrl", description = "큰 이미지 URL")
-        private String profileImageUrl;
-    }
 }
