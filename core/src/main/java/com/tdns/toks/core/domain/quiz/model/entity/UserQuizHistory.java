@@ -35,11 +35,17 @@ public class UserQuizHistory extends BaseTimeEntity {
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '생성자'")
 	private Long createdBy;
 
-	public static UserQuizHistory of(String answer, Long quizId) {
+	public static UserQuizHistory of(
+		final String answer,
+		final Long quizId)
+	{
 		return new UserQuizHistory(answer, quizId);
 	}
 
-	public UserQuizHistory(String answer, Long quizId) {
+	public UserQuizHistory(
+		final String answer,
+		final Long quizId
+	) {
 		this.answer = answer;
 		this.quizId = quizId;
 	}

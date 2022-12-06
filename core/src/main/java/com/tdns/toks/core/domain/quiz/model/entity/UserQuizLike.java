@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedBy;
 
@@ -31,4 +30,16 @@ public class UserQuizLike extends BaseTimeEntity {
 	@CreatedBy
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '생성자'")
 	private Long createdBy;
+
+	public static UserQuizLike from(
+		final Long userQuizHistoryId
+	) {
+		return new UserQuizLike(userQuizHistoryId);
+	}
+
+	public UserQuizLike(
+		final Long userQuizHistoryId
+	) {
+		this.userQuizHistoryId = userQuizHistoryId;
+	}
 }
