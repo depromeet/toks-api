@@ -29,7 +29,7 @@ public class UserQuizHistoryController {
 	@PostMapping
 	@Operation(
 		method = "POST",
-		summary = "퀴즈 답변 생성"
+		summary = "퀴즈 답변 제출"
 	)
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserQuizHistoryResponse.class))}),

@@ -29,7 +29,7 @@ public class UserQuizLikeController {
 	@PostMapping
 	@Operation(
 		method = "POST",
-		summary = "퀴즈 좋아요 생성"
+		summary = "퀴즈 답변 좋아요"
 	)
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserQuizLikeResponse.class))}),
