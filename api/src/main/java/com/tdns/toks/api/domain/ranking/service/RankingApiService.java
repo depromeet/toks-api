@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tdns.toks.core.domain.ranking.service.RankingService;
-import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.service.StudyService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ public class RankingApiService {
 	private final RankingService rankingService;
 
 	public RankingsApiResponse getByStudyId(final Long studyId) {
-		Study study = studyService.getOrThrow(studyId);
+		var study = studyService.getOrThrow(studyId);
 		return new RankingsApiResponse(rankingService.getByStudyId(study.getId()));
 	}
 }
