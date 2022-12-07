@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class UserQuizLike extends BaseTimeEntity {
+public class QuizLike extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +31,13 @@ public class UserQuizLike extends BaseTimeEntity {
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '생성자'")
 	private Long createdBy;
 
-	public static UserQuizLike from(
+	public static QuizLike from(
 		final Long userQuizHistoryId
 	) {
-		return new UserQuizLike(userQuizHistoryId);
+		return new QuizLike(userQuizHistoryId);
 	}
 
-	public UserQuizLike(
+	public QuizLike(
 		final Long userQuizHistoryId
 	) {
 		this.userQuizHistoryId = userQuizHistoryId;

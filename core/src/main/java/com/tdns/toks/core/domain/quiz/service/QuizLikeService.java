@@ -5,23 +5,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
-import com.tdns.toks.core.domain.quiz.model.entity.UserQuizLike;
-import com.tdns.toks.core.domain.quiz.repository.UserQuizLikeRepository;
+import com.tdns.toks.core.domain.quiz.model.entity.QuizLike;
+import com.tdns.toks.core.domain.quiz.repository.QuizLikeRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserQuizLikeService {
-	private final UserQuizLikeRepository userQuizLikeRepository;
+public class QuizLikeService {
+	private final QuizLikeRepository quizLikeRepository;
 
-	public UserQuizLike create(final UserQuizLike userQuizLike) {
-		return userQuizLikeRepository.save(userQuizLike);
+	public QuizLike create(final QuizLike quizLike) {
+		return quizLikeRepository.save(quizLike);
 	}
 
 	public void checkAlreadyLike(final Long userId, final Long quizId) {
-		if (userQuizLikeRepository.countByUserIdAndQuizId(userId, quizId) == 1) {
+		if (quizLikeRepository.countByUserIdAndQuizId(userId, quizId) == 1) {
 			throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_LIKE_USER_QUIZ);
 		}
 	}

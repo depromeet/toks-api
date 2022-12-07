@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Tag(name = "UserQuizHistoryController-V1", description = "USER QUIZ HISTORY API")
 @RestController
-@RequestMapping(path = "/api/v1/user-quiz-history", produces = "application/json")
+@RequestMapping(path = "/api/v1/user-quiz-histories", produces = "application/json")
 @RequiredArgsConstructor
 public class UserQuizHistoryController {
 	private final UserQuizHistoryApiService userQuizHistoryApiService;
