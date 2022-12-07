@@ -2,6 +2,7 @@ package com.tdns.toks.api.domain.quiz.service;
 
 import static com.tdns.toks.api.domain.quiz.model.dto.UserQuizHistoryApiDTO.*;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,5 +25,10 @@ public class UserQuizHistoryApiService {
 		quizService.getOrThrow(request.getQuizId());
 		userQuizHistoryService.checkAlreadySubmitted(request.getQuizId(), UserDetailDTO.get().getId());
 		return UserQuizHistoryResponse.toResponse(userQuizHistoryService.save(mapper.toEntity(request)));
+	}
+
+	public UserQuizHistoriesResponse getAllByQuizId(final Long quizId, final Pageable pageable) {
+		var quiz = quizService.getOrThrow(quizId);
+		return new UserQuizHistoriesResponse(userQuizHistoryService.getAllByQuizId(quiz.getId(), pageable));
 	}
 }
