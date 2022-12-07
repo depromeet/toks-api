@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.ranking.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,12 +21,12 @@ import lombok.RequiredArgsConstructor;
 
 @Tag(name = "RankingController-V1", description = "RANKING API")
 @RestController
-@RequestMapping(path = "/api/v1/ranking", produces = "application/json")
+@RequestMapping(path = "/api/v1/rankings", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class RankingController {
 	private final RankingApiService rankingApiService;
 
-	@GetMapping("/{studyId}")
+	@GetMapping("studies/{studyId}")
 	@Operation(
 		method = "GET",
 		summary = "순위 조회"
