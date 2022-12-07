@@ -20,7 +20,7 @@ public class UserQuizLikeApiService {
 	private final UserQuizHistoryService userQuizHistoryService;
 	private final UserQuizLikeMapper mapper;
 
-	public UserQuizLikeResponse like(UserQuizLikeRequest request) {
+	public UserQuizLikeResponse like(final UserQuizLikeRequest request) {
 		var userQuizHistory = userQuizHistoryService.getOrThrow(request.getUserQuizHistoryId());
 		userQuizLikeService.checkAlreadyLike(UserDetailDTO.get().getId(), userQuizHistory.getQuizId());
 

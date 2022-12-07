@@ -20,7 +20,7 @@ public class UserQuizHistoryApiService {
 	private final QuizService quizService;
 	private final UserQuizHistoryMapper mapper;
 
-	public UserQuizHistoryResponse submit(UserQuizHistoryRequest request) {
+	public UserQuizHistoryResponse submit(final UserQuizHistoryRequest request) {
 		quizService.getOrThrow(request.getQuizId());
 		userQuizHistoryService.checkAlreadySubmitted(request.getQuizId(), UserDetailDTO.get().getId());
 		return UserQuizHistoryResponse.toResponse(userQuizHistoryService.save(mapper.toEntity(request)));

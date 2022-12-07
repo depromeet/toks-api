@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class UserQuizHistoryService {
 	private final UserQuizHistoryRepository userQuizHistoryRepository;
 
-	public UserQuizHistory save(UserQuizHistory userQuizHistory) {
+	public UserQuizHistory save(final UserQuizHistory userQuizHistory) {
 		return userQuizHistoryRepository.save(userQuizHistory);
 	}
 
