@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.study.service;
 
+import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudiesInfoResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
@@ -56,5 +57,10 @@ public class StudyApiService {
         var tag = Optional.ofNullable(studyService.getTagByKeyword(keyword))
                 .orElseGet(() -> studyService.createTag(mapper.toEntity(tagCreateRequest.getKeyword())));
         return TagDTO.of(tag);
+    }
+
+    public StudiesInfoResponse getStudies() {
+        var userDTO = UserDetailDTO.get();
+
     }
 }
