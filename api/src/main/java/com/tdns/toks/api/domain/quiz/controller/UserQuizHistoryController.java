@@ -2,6 +2,7 @@ package com.tdns.toks.api.domain.quiz.controller;
 
 import static com.tdns.toks.api.domain.quiz.model.dto.UserQuizHistoryApiDTO.*;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @Tag(name = "UserQuizHistoryController-V1", description = "USER QUIZ HISTORY API")
 @RestController
-@RequestMapping(path = "/api/v1/user-quiz-histories", produces = "application/json")
+@RequestMapping(path = "/api/v1/user-quiz-histories", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class UserQuizHistoryController {
 	private final UserQuizHistoryApiService userQuizHistoryApiService;

@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.quiz.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @Tag(name = "QuizLikeController-V1", description = "QUIZ LIKE API")
 @RestController
-@RequestMapping(path = "/api/v1/quiz-likes", produces = "application/json")
+@RequestMapping(path = "/api/v1/quiz-likes", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class QuizLikeController {
 	private final QuizLikeApiService quizLikeApiService;
