@@ -36,6 +36,10 @@ public class Quiz extends BaseTimeEntity {
 	@Column(columnDefinition = "VARCHAR(255) COMMENT '퀴즈 설명'")
 	private String description;
 
+	// TODO: 와이어프레임 기준 필요없는 필드이므로, 삭제 처리
+	@Column(columnDefinition = "TINYINT COMMENT '난이도'")
+	private Integer difficulty;
+
 	// TODO: 정답 포맷 논의
 	@Column(nullable = false, columnDefinition = "JSON COMMENT '정답'")
 	private String answer;
