@@ -52,7 +52,7 @@ public class UserQuizHistoryController {
 		summary = "퀴즈 답변 다건 조회"
 	)
 	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserQuizHistoryResponse.class))}),
+		@ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserQuizHistoriesResponse.class))}),
 		@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
 		@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
 		@ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
