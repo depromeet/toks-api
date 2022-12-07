@@ -20,9 +20,9 @@ public class UserQuizLikeApiService {
 	private final UserQuizHistoryService userQuizHistoryService;
 	private final UserQuizLikeMapper mapper;
 
-	public UserQuizLikeResponse create(UserQuizLikeRequest request) {
+	public UserQuizLikeResponse like(UserQuizLikeRequest request) {
 		var userQuizHistory = userQuizHistoryService.getOrThrow(request.getUserQuizHistoryId());
-		userQuizLikeService.checkAlreadyLikeOrNot(UserDetailDTO.get().getId(), userQuizHistory.getQuizId());
+		userQuizLikeService.checkAlreadyLike(UserDetailDTO.get().getId(), userQuizHistory.getQuizId());
 
 		return UserQuizLikeResponse.toResponse(userQuizLikeService.create(mapper.toEntity(request)));
 	}

@@ -20,7 +20,7 @@ public class UserQuizLikeService {
 		return userQuizLikeRepository.save(userQuizLike);
 	}
 
-	public void checkAlreadyLikeOrNot(final Long userId, final Long quizId) {
+	public void checkAlreadyLike(final Long userId, final Long quizId) {
 		if (userQuizLikeRepository.countByUserIdAndQuizId(userId, quizId) == 1) {
 			throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_LIKE_USER_QUIZ);
 		}

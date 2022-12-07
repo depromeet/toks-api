@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tdns.toks.api.domain.quiz.model.mapper.UserQuizHistoryMapper;
 import com.tdns.toks.core.domain.quiz.service.QuizService;
 import com.tdns.toks.core.domain.quiz.service.UserQuizHistoryService;
+import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,8 +20,9 @@ public class UserQuizHistoryApiService {
 	private final QuizService quizService;
 	private final UserQuizHistoryMapper mapper;
 
-	public UserQuizHistoryResponse create(UserQuizHistoryRequest request) {
+	public UserQuizHistoryResponse submit(UserQuizHistoryRequest request) {
 		quizService.getOrThrow(request.getQuizId());
+		userQuizHistoryService.checkAlreadySubmitted(request.getQuizId(), UserDetailDTO.get().getId());
 		return UserQuizHistoryResponse.toResponse(userQuizHistoryService.save(mapper.toEntity(request)));
 	}
 }

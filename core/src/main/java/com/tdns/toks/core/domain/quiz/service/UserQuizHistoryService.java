@@ -24,4 +24,10 @@ public class UserQuizHistoryService {
 		return userQuizHistoryRepository.findById(id)
 			.orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
 	}
+
+	public void checkAlreadySubmitted(final Long quizId, final Long userId) {
+		if (userQuizHistoryRepository.existsByQuizIdAndCreatedBy(quizId, userId)) {
+			throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_SUBMITTED_USER_QUIZ);
+		}
+	}
 }

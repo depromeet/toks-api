@@ -22,8 +22,8 @@ public class UserQuizHistoryController {
 	private final UserQuizHistoryApiService userQuizHistoryApiService;
 
 	@PostMapping
-	public ResponseEntity<UserQuizHistoryResponse> create(@Validated final UserQuizHistoryRequest request) {
-		var response = userQuizHistoryApiService.create(request);
+	public ResponseEntity<UserQuizHistoryResponse> submit(@Validated final UserQuizHistoryRequest request) {
+		var response = userQuizHistoryApiService.submit(request);
 		return ResponseDto.ok(response);
 	}
 }

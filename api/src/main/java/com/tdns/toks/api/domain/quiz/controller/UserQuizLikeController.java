@@ -22,8 +22,8 @@ public class UserQuizLikeController {
 	private final UserQuizLikeApiService userQuizLikeApiService;
 
 	@PostMapping
-	public ResponseEntity<UserQuizLikeResponse> create(@Validated final UserQuizLikeRequest request) {
-		var response = userQuizLikeApiService.create(request);
+	public ResponseEntity<UserQuizLikeResponse> like(@Validated final UserQuizLikeRequest request) {
+		var response = userQuizLikeApiService.like(request);
 		return ResponseDto.ok(response);
 	}
 }
