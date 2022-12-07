@@ -13,7 +13,7 @@ public class UserQuizLikeCustomRepositoryImpl implements UserQuizLikeCustomRepos
 
 	@Override
 	public Long countByUserIdAndQuizId(final Long userId, final Long quizId) {
-		return jpaQueryFactory.select(userQuizLike.id.sum())
+		return jpaQueryFactory.select(userQuizLike.id.count())
 			.from(userQuizLike)
 			.innerJoin(userQuizHistory)
 			.on(userQuizLike.userQuizHistoryId.eq(userQuizHistory.id))
