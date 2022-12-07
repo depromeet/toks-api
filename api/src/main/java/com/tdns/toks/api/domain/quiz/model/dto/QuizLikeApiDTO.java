@@ -24,9 +24,6 @@ public class QuizLikeApiDTO {
 		private Long userQuizHistoryId;
 	}
 
-	@Builder
-	@Getter
-	@Setter
 	@AllArgsConstructor
 	@NoArgsConstructor
 	@Schema(name = "QuizLikeResponse", description = "USER QUIZ HISTORY 생성 응답 모델")

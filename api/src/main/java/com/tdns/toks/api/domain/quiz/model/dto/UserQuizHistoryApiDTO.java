@@ -6,17 +6,11 @@ import com.tdns.toks.core.domain.quiz.model.entity.UserQuizHistory;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 public class UserQuizHistoryApiDTO {
-	@Builder
 	@Getter
-	@Setter
-	@AllArgsConstructor
-	@NoArgsConstructor
 	@Schema(name = "UserQuizHistoryRequest", description = "USER QUIZ HISTORY 생성 요청 모델")
 	public static class UserQuizHistoryRequest {
 		@NotEmpty(message = "퀴즈 답변은 필수 항목입니다.")
@@ -27,9 +21,6 @@ public class UserQuizHistoryApiDTO {
 		private Long quizId;
 	}
 
-	@Builder
-	@Getter
-	@Setter
 	@AllArgsConstructor
 	@NoArgsConstructor
 	@Schema(name = "UserQuizHistoryRequest", description = "USER QUIZ HISTORY 생성 응답 모델")
