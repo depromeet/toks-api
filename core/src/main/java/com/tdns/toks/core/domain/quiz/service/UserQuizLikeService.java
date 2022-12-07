@@ -16,13 +16,13 @@ import lombok.RequiredArgsConstructor;
 public class UserQuizLikeService {
 	private final UserQuizLikeRepository userQuizLikeRepository;
 
-	public UserQuizLike create(Long userId, UserQuizLike userQuizLike) {
-		checkLikeOrNot(userId, userQuizLike.getUserQuizHistoryId());
-
-		return
+	public UserQuizLike create(final UserQuizLike userQuizLike) {
+		return userQuizLikeRepository.save(userQuizLike);
 	}
 
-	private void checkLikeOrNot() {
-
+	public void checkAlreadyLikeOrNot(final Long userId, final Long quizId) {
+		if (userQuizLikeRepository.countByUserIdAndQuizId(userId, quizId) == 1) {
+			throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_LIKE_USER_QUIZ);
+		}
 	}
 }

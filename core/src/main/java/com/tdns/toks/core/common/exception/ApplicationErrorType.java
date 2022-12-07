@@ -32,7 +32,8 @@ public enum ApplicationErrorType {
     DUPLICATED_NICKNAME(HttpStatus.CONFLICT, -20011, "duplicated nickname"),
     AUTHENTICATION_FAIL(HttpStatus.UNAUTHORIZED, -20012, "authentication failed"),
     EMPTY_TOKEN(HttpStatus.BAD_REQUEST, -20013, "no token"),
-    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, -20014, "error.invalid.refresh.token");
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, -20014, "error.invalid.refresh.token"),
+    ALREADY_LIKE_USER_QUIZ(HttpStatus.BAD_REQUEST, -20015, "error.invalid.refresh.token");
 
     @Getter
     private HttpStatus httpStatus;
