@@ -36,9 +36,6 @@ public class Quiz extends BaseTimeEntity {
 	@Column(columnDefinition = "VARCHAR(255) COMMENT '퀴즈 설명'")
 	private String description;
 
-	@Column(columnDefinition = "TINYINT COMMENT '난이도'")
-	private Integer difficulty;
-
 	// TODO: 정답 포맷 논의
 	@Column(nullable = false, columnDefinition = "JSON COMMENT '정답'")
 	private String answer;
@@ -49,7 +46,7 @@ public class Quiz extends BaseTimeEntity {
 	@Column(nullable = false, columnDefinition = "DATETIME COMMENT '종료시간'")
 	private LocalDateTime endedAt;
 
-	@Column(columnDefinition = "VARCHAR(255) COMMENT '이미지 url'")
+	@Column(columnDefinition = "JSON COMMENT '이미지 url'")
 	private String imageUrl;
 
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '스터디 id'")
