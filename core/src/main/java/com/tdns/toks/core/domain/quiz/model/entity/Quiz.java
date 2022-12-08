@@ -47,7 +47,7 @@ public class Quiz extends BaseTimeEntity {
 	private LocalDateTime endedAt;
 
 	@Column(columnDefinition = "JSON COMMENT '이미지 url'")
-	private String imageUrl;
+	private String imageUrls;
 
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '스터디 id'")
 	private Long studyId;
