@@ -1,13 +1,13 @@
-package com.tdns.toks.core.domain.ranking.model.dto;
+package com.tdns.toks.core.domain.quizrank.model.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class RankingDto {
+public class QuizRankDTO {
 
-	private Long rankingId;
+	private Long quizRankId;
 	private Integer score;
 	private UserSimpleDTO user;
 
