@@ -52,7 +52,7 @@ public class StudyService {
         return tagRepository.save(tag);
     }
 
-    public Long countParticipants(Study study) { // 참여 인원
-        return rankingRepository.countByStudyId(study.getId());
+    public List<Tag> getStudyTags(Long studyId) {
+        return studyTagRepository.getStudyTagsByStudyId(studyId);
     }
 }

@@ -5,10 +5,14 @@ import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
 import com.tdns.toks.api.domain.study.model.mapper.StudyApiMapper;
+import com.tdns.toks.core.domain.study.model.dto.StudyDTO.InProgressStudyInfoLight;
+import com.tdns.toks.core.domain.study.model.dto.StudyTagsDTO;
 import com.tdns.toks.core.domain.study.model.dto.TagDTO;
+import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
 import com.tdns.toks.core.domain.study.service.StudyService;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
+import com.tdns.toks.core.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,7 @@ import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 @Transactional
 public class StudyApiService {
     private final StudyService studyService;
+    private final UserService userService;
     private final StudyApiMapper mapper;
 
     public StudyApiResponse createStudy(StudyCreateRequest studyCreateRequest) {
@@ -61,6 +66,27 @@ public class StudyApiService {
 
     public StudiesInfoResponse getStudies() {
         var userDTO = UserDetailDTO.get();
+        var userStudies = userService.getUserStudies(userDTO.getId());
+        return toStudyDTOs(userStudies);
+    }
 
+    private StudiesInfoResponse toStudyDTOs(List<Study> studies) {
+        List<InProgressStudyInfoLight> output = new ArrayList<>();
+        for (Study study : studies) {
+            output.add(InProgressStudyInfoLight.builder()
+                    .id(study.getId())
+                    .name(study.getName())
+                    .startDate(study.getStartDate())
+                    .endDate(study.getEndDate())
+                    .studyUserCount(study.getStudyUserCount())
+                    .studyTagsDTO(getStudyTagsDTO(study.getId()))
+                    .build());
+        }
+        return new StudiesInfoResponse(output);
+    }
+
+    private StudyTagsDTO getStudyTagsDTO(Long studyId) {
+        var collect = studyService.getStudyTags(studyId).stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
+        return new StudyTagsDTO(collect);
     }
 }

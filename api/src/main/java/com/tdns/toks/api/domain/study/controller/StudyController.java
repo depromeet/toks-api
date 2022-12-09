@@ -106,6 +106,7 @@ public class StudyController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
     public ResponseEntity<StudiesInfoResponse> getUserStudies(
     ) {
-        studyApiService.getStudies();
+        var response = studyApiService.getStudies();
+        return ResponseDto.ok(response);
     }
 }
