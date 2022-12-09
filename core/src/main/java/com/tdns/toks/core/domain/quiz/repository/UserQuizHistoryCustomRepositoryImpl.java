@@ -46,6 +46,7 @@ public class UserQuizHistoryCustomRepositoryImpl implements UserQuizHistoryCusto
 			.on(userQuizHistory.createdBy.eq(user.id))
 			.innerJoin(quizLike)
 			.on(userQuizHistory.id.eq(quizLike.userQuizHistoryId))
+			.orderBy(userQuizHistory.count().desc())
 			.orderBy(getOrderSpecifier(pageable.getSort()).toArray(OrderSpecifier[]::new))
 			.groupBy(userQuizHistory.id)
 			.fetch();
@@ -56,11 +57,6 @@ public class UserQuizHistoryCustomRepositoryImpl implements UserQuizHistoryCusto
 		sort.forEach(order -> {
 				Order direction = order.isAscending() ? Order.ASC : Order.DESC;
 				String prop = order.getProperty();
-
-				if (prop.equals("likeNumber")) {
-					orderSpecifiers.add(getNumberLikeOrderSpecifier(direction));
-					return;
-				}
 
 				PathBuilder orderByExpression = new PathBuilder(UserQuizHistory.class, "userQuizHistory");
 				orderSpecifiers.add(new OrderSpecifier(direction, orderByExpression.get(prop)));
