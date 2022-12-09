@@ -1,7 +1,10 @@
 package com.tdns.toks.api.domain.quiz.model.dto;
 
+import java.util.List;
+
 import javax.validation.constraints.NotEmpty;
 
+import com.tdns.toks.core.domain.quiz.model.dto.UserQuizHistoryDto;
 import com.tdns.toks.core.domain.quiz.model.entity.UserQuizHistory;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -41,5 +44,14 @@ public class UserQuizHistoryApiDTO {
 				userQuizHistory.getQuizId()
 			);
 		}
+	}
+
+	@Getter
+	@AllArgsConstructor
+	@NoArgsConstructor
+	@Schema(name = "UserQuizHistoriesResponse", description = "USER QUIZ HISTORY 생성 응답 모델")
+	public static class UserQuizHistoriesResponse {
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "user quiz history 리스트", description = "user quiz history 리스트")
+		private List<UserQuizHistoryDto> userQuizHistories;
 	}
 }
