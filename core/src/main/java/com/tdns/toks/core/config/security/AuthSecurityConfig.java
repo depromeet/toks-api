@@ -45,7 +45,10 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().disable().csrf().disable()
+        http.httpBasic().disable()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
+                .csrf().disable()
                 .formLogin().disable()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
