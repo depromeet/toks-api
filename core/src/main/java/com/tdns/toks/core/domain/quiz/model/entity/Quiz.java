@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,11 +33,13 @@ public class Quiz extends BaseTimeEntity {
 	private String quiz;
 
 	@Column(nullable = false, columnDefinition = "VARCHAR(10) COMMENT '퀴즈 타입'")
+	@Enumerated(EnumType.STRING)
 	private QuizType quizType;
 
 	@Column(columnDefinition = "VARCHAR(255) COMMENT '퀴즈 설명'")
 	private String description;
 
+	// TODO: 와이어프레임 기준 필요없는 필드이므로, 삭제 처리
 	@Column(columnDefinition = "TINYINT COMMENT '난이도'")
 	private Integer difficulty;
 
