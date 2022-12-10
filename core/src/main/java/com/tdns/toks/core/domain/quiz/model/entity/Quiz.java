@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,6 +33,7 @@ public class Quiz extends BaseTimeEntity {
 	private String quiz;
 
 	@Column(nullable = false, columnDefinition = "VARCHAR(10) COMMENT '퀴즈 타입'")
+	@Enumerated(EnumType.STRING)
 	private QuizType quizType;
 
 	@Column(columnDefinition = "VARCHAR(255) COMMENT '퀴즈 설명'")

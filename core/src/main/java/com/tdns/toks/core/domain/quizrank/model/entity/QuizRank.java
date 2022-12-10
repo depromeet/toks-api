@@ -1,11 +1,10 @@
-package com.tdns.toks.core.domain.rank.model.entity;
+package com.tdns.toks.core.domain.quizrank.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
 
@@ -17,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class Ranking extends BaseTimeEntity {
+public class QuizRank extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
