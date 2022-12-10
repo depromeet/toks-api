@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizSimpleResponse;
 import com.tdns.toks.api.domain.quiz.service.QuizApiService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
@@ -38,7 +37,7 @@ public class QuizController {
 		@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
 		@ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
-	public ResponseEntity<QuizApiDTO.QuizSimpleResponse> getById(@PathVariable final Long quizId) {
+	public ResponseEntity<QuizSimpleResponse> getById(@PathVariable final Long quizId) {
 		var response = quizApiService.getById(quizId);
 		return ResponseDto.ok(response);
 	}
