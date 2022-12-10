@@ -9,7 +9,7 @@ import com.tdns.toks.core.domain.quiz.model.entity.QuizLike;
 public class QuizLikeMapper {
 
 	public QuizLike toEntity(QuizLikeRequest request) {
-		return QuizLike.from(request.getUserQuizHistoryId());
+		return QuizLike.from(request.getQuizReplyHistoryId());
 	}
 
 }

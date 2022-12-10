@@ -25,21 +25,21 @@ public class QuizLike extends BaseTimeEntity {
 	private Long id;
 
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '답변 id'")
-	private Long userQuizHistoryId;
+	private Long quizReplyHistoryId;
 
 	@CreatedBy
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '생성자'")
 	private Long createdBy;
 
 	public static QuizLike from(
-		final Long userQuizHistoryId
+		final Long quizReplyHistoryId
 	) {
-		return new QuizLike(userQuizHistoryId);
+		return new QuizLike(quizReplyHistoryId);
 	}
 
 	public QuizLike(
-		final Long userQuizHistoryId
+		final Long quizReplyHistoryId
 	) {
-		this.userQuizHistoryId = userQuizHistoryId;
+		this.quizReplyHistoryId = quizReplyHistoryId;
 	}
 }

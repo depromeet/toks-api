@@ -1,7 +1,7 @@
 package com.tdns.toks.core.domain.quiz.repository;
 
 import static com.tdns.toks.core.domain.quiz.model.entity.QQuizLike.*;
-import static com.tdns.toks.core.domain.quiz.model.entity.QUserQuizHistory.*;
+import static com.tdns.toks.core.domain.quiz.model.entity.QQuizReplyHistory.*;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -12,13 +12,13 @@ public class QuizLikeCustomRepositoryImpl implements QuizLikeCustomRepository {
 	private final JPAQueryFactory jpaQueryFactory;
 
 	@Override
-	public Long countByUserIdAndQuizId(final Long userId, final Long quizId) {
+	public Long countByUserIdAndQuizId(final Long userId, final Long quizReplyHistoryId) {
 		return jpaQueryFactory.select(quizLike.id.count())
 			.from(quizLike)
-			.innerJoin(userQuizHistory)
-			.on(quizLike.userQuizHistoryId.eq(userQuizHistory.id))
+			.innerJoin(quizReplyHistory)
+			.on(quizLike.quizReplyHistoryId.eq(quizReplyHistory.id))
 			.where(quizLike.createdBy.eq(userId)
-				.and(userQuizHistory.quizId.eq(quizId)))
+				.and(quizReplyHistory.quizId.eq(quizReplyHistoryId)))
 			.fetchOne();
 	}
 }

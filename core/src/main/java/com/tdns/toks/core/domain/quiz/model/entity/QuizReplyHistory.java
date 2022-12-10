@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class UserQuizHistory extends BaseTimeEntity {
+public class QuizReplyHistory extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,14 +35,14 @@ public class UserQuizHistory extends BaseTimeEntity {
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '생성자'")
 	private Long createdBy;
 
-	public static UserQuizHistory of(
+	public static QuizReplyHistory of(
 		final String answer,
 		final Long quizId)
 	{
-		return new UserQuizHistory(answer, quizId);
+		return new QuizReplyHistory(answer, quizId);
 	}
 
-	public UserQuizHistory(
+	public QuizReplyHistory(
 		final String answer,
 		final Long quizId
 	) {

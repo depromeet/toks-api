@@ -5,9 +5,9 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class UserQuizHistoryDto {
+public class QuizReplyHistoryDto {
 
-	private final Long userQuizHistoryId;
+	private final Long quizReplyHistoryId;
 	private final String answer;
 	private final Long likeNumber;
 	private final UserSimpleDTO creator;
