@@ -1,16 +1,20 @@
 package com.tdns.toks.core.domain.study.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.tdns.toks.core.common.exception.ApplicationErrorException;
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.StudyTag;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
 import com.tdns.toks.core.domain.study.repository.StudyRepository;
 import com.tdns.toks.core.domain.study.repository.StudyTagRepository;
 import com.tdns.toks.core.domain.study.repository.TagRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
@@ -47,5 +51,11 @@ public class StudyService {
 
     public Tag createTag(Tag tag) {
         return tagRepository.save(tag);
+    }
+
+    @Transactional(readOnly = true)
+    public Study getOrThrow(final Long id) {
+        return studyRepository.findById(id)
+            .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
     }
 }
