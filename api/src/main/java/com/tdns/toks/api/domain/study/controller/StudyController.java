@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "StudyController-V1", description = "STUDY API")
 @RestController
-@RequestMapping(path = "/api/v1/study", produces = "application/json")
+@RequestMapping(path = "/api/v1/studies", produces = "application/json")
 @RequiredArgsConstructor
 public class StudyController {
     private final StudyApiService studyApiService;
