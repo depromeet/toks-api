@@ -5,20 +5,15 @@ import java.util.List;
 import com.tdns.toks.core.domain.quizrank.model.dto.QuizRankDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 public class QuizRankApiDTO {
-
-	@AllArgsConstructor
-	@NoArgsConstructor
 	@Getter
-	@Setter
+	@RequiredArgsConstructor
 	@Schema(name = "QuizRanksApiResponse", description = "Ranks 응답 모델")
 	public static class QuizRanksApiResponse {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "ranks", description = "rank 리스트")
-		private List<QuizRankDTO> quizRanksDto;
+		private final List<QuizRankDTO> quizRanksDto;
 	}
 }

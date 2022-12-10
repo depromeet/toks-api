@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
+import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
 import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 
@@ -18,6 +19,11 @@ public class QuizService {
 
 	public Quiz getOrThrow(final Long id) {
 		return quizRepository.findById(id)
+			.orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
+	}
+
+	public QuizSimpleDTO retrieveByIdOrThrow(final Long id) {
+		return quizRepository.retrieveById(id)
 			.orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
 	}
 }
