@@ -1,8 +1,10 @@
 package com.tdns.toks.core.domain.quiz.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -49,8 +51,9 @@ public class Quiz extends BaseTimeEntity {
 	@Column(nullable = false, columnDefinition = "DATETIME COMMENT '종료시간'")
 	private LocalDateTime endedAt;
 
-	@Column(columnDefinition = "JSON COMMENT '이미지 url'")
-	private String imageUrls;
+	@Column(columnDefinition = "VARCHAR(255) COMMENT '이미지 url 리스트'")
+	@Convert(converter = StringArrayConverter.class)
+	private List<String> imageUrls;
 
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '스터디 id'")
 	private Long studyId;
