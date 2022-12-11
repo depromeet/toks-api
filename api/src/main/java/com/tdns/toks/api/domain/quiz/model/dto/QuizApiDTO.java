@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
 import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
@@ -40,6 +41,7 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "duration of second", description = "duration of second")
 		private final Long durationOfSecond;
 
+		@JsonFormat(timezone = "Asia/Seoul")
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "timestamp", description = "timestamp")
 		private final Timestamp timestamp;
 
@@ -94,6 +96,7 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "duration of second", description = "duration of second")
 		private final Long durationOfSecond;
 
+		@JsonFormat(timezone = "Asia/Seoul")
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "timestamp", description = "timestamp")
 		private final Timestamp timestamp;
 
