@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
+import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 
@@ -96,9 +97,6 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "timestamp", description = "timestamp")
 		private final Timestamp timestamp;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "image urls", description = "image urls")
-		private final List<String> imageUrls;
-
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "creator", description = "creator")
 		private final UserSimpleDTO creator;
 
@@ -108,7 +106,10 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "study id", description = "study id")
 		private final Long studyId;
 
-		public static QuizResponse toResponse(QuizSimpleDTO quizSimpleDTO, List<UserSimpleDTO> unSubmitter) {
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "study id", description = "study id")
+		private final QuizStatusType quizStatus;
+
+		public static QuizResponse toResponse(QuizSimpleDTO quizSimpleDTO, List<UserSimpleDTO> unSubmitter, QuizStatusType quizStatus) {
 			return new QuizResponse(
 				quizSimpleDTO.getQuizId(),
 				quizSimpleDTO.getQuiz(),
@@ -118,10 +119,10 @@ public class QuizApiDTO {
 				quizSimpleDTO.getEndedAt(),
 				Duration.between(quizSimpleDTO.getStartedAt(), quizSimpleDTO.getEndedAt()).getSeconds(),
 				new Timestamp(System.currentTimeMillis()),
-				quizSimpleDTO.getImageUrls(),
 				quizSimpleDTO.getCreator(),
 				unSubmitter,
-				quizSimpleDTO.getStudyId()
+				quizSimpleDTO.getStudyId(),
+				quizStatus
 			);
 		}
 	}

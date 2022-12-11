@@ -29,13 +29,17 @@ public class QuizApiService {
 		var quizzes = quizService.retrieveByStudyId(studyId);
 		var results = new ArrayList<QuizResponse>();
 
-		for (QuizSimpleDTO quizz : quizzes) {
+		for (QuizSimpleDTO quiz : quizzes) {
 			var unSubmitter = unSubmitters.stream()
-				.filter(userSimpleByQuizIdDTO -> userSimpleByQuizIdDTO.getQuizId().equals(quizz.getQuizId()))
+				.filter(userSimpleByQuizIdDTO -> userSimpleByQuizIdDTO.getQuizId().equals(quiz.getQuizId()))
 				.findFirst()
 				.get()
 				.getUsers();
-			results.add(QuizResponse.toResponse(quizz, unSubmitter));
+			results.add(QuizResponse.toResponse(
+				quiz,
+				unSubmitter,
+				quizService.getQuizStatus(quiz.getStartedAt(), quiz.getEndedAt()))
+			);
 		}
 
 		return new QuizzesResponse(results);
