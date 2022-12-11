@@ -1,5 +1,7 @@
 package com.tdns.toks.core.domain.quiz.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,5 +27,9 @@ public class QuizService {
 	public QuizSimpleDTO retrieveByIdOrThrow(final Long id) {
 		return quizRepository.retrieveById(id)
 			.orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
+	}
+
+	public List<QuizSimpleDTO> retrieveByStudyId(final Long studyId) {
+		return quizRepository.retrieveByStudyId(studyId);
 	}
 }
