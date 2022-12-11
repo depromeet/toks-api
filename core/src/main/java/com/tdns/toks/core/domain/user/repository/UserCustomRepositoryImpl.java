@@ -1,6 +1,7 @@
 package com.tdns.toks.core.domain.user.repository;
 
 import static com.querydsl.core.group.GroupBy.*;
+import static com.tdns.toks.core.domain.quiz.model.entity.QQuiz.*;
 import static com.tdns.toks.core.domain.quiz.model.entity.QQuizReplyHistory.*;
 import static com.tdns.toks.core.domain.quizrank.model.entity.QQuizRank.*;
 import static com.tdns.toks.core.domain.user.model.entity.QUser.*;
@@ -26,11 +27,14 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
 			jpaQueryFactory
 				.from(user)
 				.where(quizRank.studyId.eq(studyId)
-					.and(user.status.eq(UserStatus.ACTIVE)))
+					.and(user.status.eq(UserStatus.ACTIVE))
+					.and(quiz1.studyId.eq(studyId)))
 				.innerJoin(quizRank)
 				.on(quizRank.userId.eq(user.id))
 				.innerJoin(quizReplyHistory)
 				.on(quizReplyHistory.createdBy.eq(user.id))
+				.innerJoin(quiz1)
+				.on(quiz1.id.eq(quizReplyHistory.quizId))
 				.transform(groupBy(quizReplyHistory.quizId).as(
 					Projections.fields(UserSimpleByQuizIdDTO.class,
 						quizReplyHistory.quizId.as("quizId"),
