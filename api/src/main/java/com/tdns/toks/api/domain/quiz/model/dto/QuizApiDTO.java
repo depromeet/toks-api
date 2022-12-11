@@ -63,7 +63,7 @@ public class QuizApiDTO {
 				new Timestamp(System.currentTimeMillis()),
 				quizSimpleDTO.getImageUrls(),
 				quizSimpleDTO.getCreator(),
-				quizSimpleDTO.getQuizId()
+				quizSimpleDTO.getStudyId()
 			);
 		}
 	}
@@ -102,11 +102,14 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "creator", description = "creator")
 		private final UserSimpleDTO creator;
 
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "unSubmitters", description = "unSubmitters")
+		private final List<UserSimpleDTO> unSubmitters;
+
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "study id", description = "study id")
 		private final Long studyId;
 
-		public static QuizSimpleResponse toResponse(QuizSimpleDTO quizSimpleDTO) {
-			return new QuizSimpleResponse(
+		public static QuizResponse toResponse(QuizSimpleDTO quizSimpleDTO, List<UserSimpleDTO> unSubmitter) {
+			return new QuizResponse(
 				quizSimpleDTO.getQuizId(),
 				quizSimpleDTO.getQuiz(),
 				quizSimpleDTO.getQuizType(),
@@ -117,8 +120,17 @@ public class QuizApiDTO {
 				new Timestamp(System.currentTimeMillis()),
 				quizSimpleDTO.getImageUrls(),
 				quizSimpleDTO.getCreator(),
-				quizSimpleDTO.getQuizId()
+				unSubmitter,
+				quizSimpleDTO.getStudyId()
 			);
 		}
+	}
+
+	@Getter
+	@RequiredArgsConstructor
+	@Schema(name = "QuizResponse", description = "QUIZ 조회 응답 모델")
+	public static class QuizzesResponse {
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizzes response", description = "quizzes response")
+		private final List<QuizResponse> quizzes;
 	}
 }
