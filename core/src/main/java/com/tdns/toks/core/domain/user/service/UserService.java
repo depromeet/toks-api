@@ -1,10 +1,18 @@
 package com.tdns.toks.core.domain.user.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.common.security.JwtTokenProvider;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.repository.StudyRepository;
+import com.tdns.toks.core.domain.user.model.dto.UserSimpleByQuizIdDTO;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 
@@ -62,6 +70,19 @@ public class UserService {
 
     public List<Study> getUserStudies(Long userId) {
         return studyRepository.getAllInProgressStudyByUserId(userId);
+    }
+
+    public List<UserSimpleByQuizIdDTO> filterUnSubmitterByStudyId(Long studyId) {
+        var submitters = userRepository.retrieveSubmittedByStudyId(studyId);
+        var participants = userRepository.retrieveParticipantByStudyId(studyId);
+        var result = new ArrayList<UserSimpleByQuizIdDTO>();
+
+        for (UserSimpleByQuizIdDTO submitter : submitters) {
+            var unSubmitters = new ArrayList<>(participants);
+            unSubmitters.removeAll(submitter.getUsers());
+            result.add(new UserSimpleByQuizIdDTO(submitter.getQuizId(), unSubmitters));
+        }
+        return result;
     }
 
     private boolean isNicknameDuplicated(String nickname) {

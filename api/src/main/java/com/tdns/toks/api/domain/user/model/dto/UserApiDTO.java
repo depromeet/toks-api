@@ -1,11 +1,13 @@
 package com.tdns.toks.api.domain.user.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.tdns.toks.core.domain.user.type.UserProvider;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-
 import javax.validation.constraints.NotEmpty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class UserApiDTO {
     @Builder

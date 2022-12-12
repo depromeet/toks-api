@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedBy;
 
@@ -19,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class UserQuizHistory extends BaseTimeEntity {
+public class QuizReplyHistory extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,4 +34,19 @@ public class UserQuizHistory extends BaseTimeEntity {
 	@CreatedBy
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '생성자'")
 	private Long createdBy;
+
+	public static QuizReplyHistory of(
+		final String answer,
+		final Long quizId)
+	{
+		return new QuizReplyHistory(answer, quizId);
+	}
+
+	public QuizReplyHistory(
+		final String answer,
+		final Long quizId
+	) {
+		this.answer = answer;
+		this.quizId = quizId;
+	}
 }
