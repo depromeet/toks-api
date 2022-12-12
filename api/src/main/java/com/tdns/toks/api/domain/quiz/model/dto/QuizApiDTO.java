@@ -5,7 +5,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
+import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 
@@ -39,6 +41,7 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "duration of second", description = "duration of second")
 		private final Long durationOfSecond;
 
+		@JsonFormat(timezone = "Asia/Seoul")
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "timestamp", description = "timestamp")
 		private final Timestamp timestamp;
 
@@ -63,7 +66,7 @@ public class QuizApiDTO {
 				new Timestamp(System.currentTimeMillis()),
 				quizSimpleDTO.getImageUrls(),
 				quizSimpleDTO.getCreator(),
-				quizSimpleDTO.getQuizId()
+				quizSimpleDTO.getStudyId()
 			);
 		}
 	}
@@ -93,20 +96,24 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "duration of second", description = "duration of second")
 		private final Long durationOfSecond;
 
+		@JsonFormat(timezone = "Asia/Seoul")
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "timestamp", description = "timestamp")
 		private final Timestamp timestamp;
-
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "image urls", description = "image urls")
-		private final List<String> imageUrls;
 
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "creator", description = "creator")
 		private final UserSimpleDTO creator;
 
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "unSubmitters", description = "unSubmitters")
+		private final List<UserSimpleDTO> unSubmitters;
+
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "study id", description = "study id")
 		private final Long studyId;
 
-		public static QuizSimpleResponse toResponse(QuizSimpleDTO quizSimpleDTO) {
-			return new QuizSimpleResponse(
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "study id", description = "study id")
+		private final QuizStatusType quizStatus;
+
+		public static QuizResponse toResponse(QuizSimpleDTO quizSimpleDTO, List<UserSimpleDTO> unSubmitter, QuizStatusType quizStatus) {
+			return new QuizResponse(
 				quizSimpleDTO.getQuizId(),
 				quizSimpleDTO.getQuiz(),
 				quizSimpleDTO.getQuizType(),
@@ -115,10 +122,19 @@ public class QuizApiDTO {
 				quizSimpleDTO.getEndedAt(),
 				Duration.between(quizSimpleDTO.getStartedAt(), quizSimpleDTO.getEndedAt()).getSeconds(),
 				new Timestamp(System.currentTimeMillis()),
-				quizSimpleDTO.getImageUrls(),
 				quizSimpleDTO.getCreator(),
-				quizSimpleDTO.getQuizId()
+				unSubmitter,
+				quizSimpleDTO.getStudyId(),
+				quizStatus
 			);
 		}
+	}
+
+	@Getter
+	@RequiredArgsConstructor
+	@Schema(name = "QuizResponse", description = "QUIZ 조회 응답 모델")
+	public static class QuizzesResponse {
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizzes response", description = "quizzes response")
+		private final List<QuizResponse> quizzes;
 	}
 }
