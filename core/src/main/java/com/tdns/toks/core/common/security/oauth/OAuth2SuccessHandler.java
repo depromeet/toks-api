@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,8 +30,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         var userDetailDTO = (UserDetailDTO) authentication.getPrincipal();
-        var url = setRedirectUrl(userDetailDTO.getJwtToken());
-        getRedirectStrategy().sendRedirect(request, response, url);
+        Cookie cookie = new Cookie("testAuthenticate", "aslfeijlkj0sf393jk38afs*lsje");
+        response.addCookie(cookie);
+
+//        var url = setRedirectUrl(userDetailDTO.getJwtToken());
+//        getRedirectStrategy().sendRedirect(request, response, url);
     }
 
     private String setRedirectUrl(JwtToken jwtToken) {
