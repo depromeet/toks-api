@@ -17,6 +17,7 @@ import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizReplyHistoryDto;
 import com.tdns.toks.core.domain.quiz.model.entity.QuizReplyHistory;
+import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 import com.tdns.toks.core.domain.user.type.UserStatus;
 
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class QuizReplyHistoryCustomRepositoryImpl implements QuizReplyHistoryCus
 					quizReplyHistory.id.as("quizReplyHistoryId"),
 					quizReplyHistory.answer.as("answer"),
 					quizReplyHistory.count().as("likeNumber"),
-					Projections.fields(QuizReplyHistoryDto.UserSimpleDTO.class,
+					Projections.fields(UserSimpleDTO.class,
 						user.id.as("userId"),
 						user.nickname.as("nickname"),
 						user.profileImageUrl.as("profileImageUrl")

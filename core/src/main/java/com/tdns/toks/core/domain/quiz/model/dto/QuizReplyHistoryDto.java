@@ -1,22 +1,14 @@
 package com.tdns.toks.core.domain.quiz.model.dto;
 
+import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
+
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
 public class QuizReplyHistoryDto {
 
-	private final Long quizReplyHistoryId;
-	private final String answer;
-	private final Long likeNumber;
-	private final UserSimpleDTO creator;
-
-	@Getter
-	@RequiredArgsConstructor
-	public static class UserSimpleDTO {
-		private final Long userId;
-		private final String nickname;
-		private final String profileImageUrl;
-	}
+	private Long quizReplyHistoryId;
+	private String answer;
+	private Long likeNumber;
+	private UserSimpleDTO creator;
 }
