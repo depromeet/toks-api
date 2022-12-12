@@ -1,6 +1,6 @@
 package com.tdns.toks.core.domain.study.model.dto;
 
-import com.tdns.toks.core.domain.quiz.type.LatestQuizStatus;
+import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
 import lombok.Getter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ public class StudyDTO {
         private String name;
         private Integer studyUserCount;
         private Long latestQuizId;
-        private LatestQuizStatus latestQuizStatus;
+        private StudyLatestQuizStatus studyLatestQuizStatus;
         private List<TagDTO> studyTags;
     }
 }
