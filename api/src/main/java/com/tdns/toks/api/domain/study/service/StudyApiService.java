@@ -6,7 +6,6 @@ import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
 import com.tdns.toks.api.domain.study.model.mapper.StudyApiMapper;
 import com.tdns.toks.core.domain.study.model.dto.StudyDTO.InProgressStudyInfoLight;
-import com.tdns.toks.core.domain.study.model.dto.StudyTagsDTO;
 import com.tdns.toks.core.domain.study.model.dto.TagDTO;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
@@ -73,20 +72,20 @@ public class StudyApiService {
     private StudiesInfoResponse toStudyDTOs(List<Study> studies) {
         List<InProgressStudyInfoLight> output = new ArrayList<>();
         for (Study study : studies) {
+            //  todo 해당 스터디의 latestQuiz 가져오기
             output.add(InProgressStudyInfoLight.builder()
                     .id(study.getId())
                     .name(study.getName())
-                    .startDate(study.getStartDate())
-                    .endDate(study.getEndDate())
+//                            .latestQuizStatus()
+//                            .latestQuizId()
                     .studyUserCount(study.getStudyUserCount())
-                    .studyTagsDTO(getStudyTagsDTO(study.getId()))
+                    .studyTags(getStudyTagsDTO(study.getId()))
                     .build());
         }
         return new StudiesInfoResponse(output);
     }
 
-    private StudyTagsDTO getStudyTagsDTO(Long studyId) {
-        var collect = studyService.getStudyTags(studyId).stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
-        return new StudyTagsDTO(collect);
+    private List<TagDTO> getStudyTagsDTO(Long studyId) {
+        return studyService.getStudyTags(studyId).stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
     }
 }

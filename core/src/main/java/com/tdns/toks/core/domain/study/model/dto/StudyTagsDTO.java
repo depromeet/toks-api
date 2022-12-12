@@ -5,8 +5,11 @@ import lombok.Getter;
 
 import java.util.List;
 
-@Getter
-@AllArgsConstructor
 public class StudyTagsDTO {
-    private List<TagDTO> studyTags;
+
+    @Getter
+    @AllArgsConstructor
+    public static class StudyTagsDto{
+        private List<TagDTO> studyTagsDto;
+    }
 }

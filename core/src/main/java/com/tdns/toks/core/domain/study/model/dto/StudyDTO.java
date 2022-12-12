@@ -1,10 +1,11 @@
 package com.tdns.toks.core.domain.study.model.dto;
 
+import com.tdns.toks.core.domain.quiz.type.LatestQuizStatus;
 import lombok.Getter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
-import java.time.LocalDate;
+import java.util.List;
 
 public class StudyDTO {
 
@@ -14,9 +15,9 @@ public class StudyDTO {
     public static class InProgressStudyInfoLight{
         private Long id;
         private String name;
-        private LocalDate startDate;
-        private LocalDate endDate;
         private Integer studyUserCount;
-        private StudyTagsDTO studyTagsDTO;
+        private Long latestQuizId;
+        private LatestQuizStatus latestQuizStatus;
+        private List<TagDTO> studyTags;
     }
 }
