@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface StudyRepository extends JpaRepository<Study, Long> {
-    //todo Ranking 테이블명 수정
+
     @Query("select s from Study s join QuizRank r on r.studyId = s.id where r.userId =:userId and s.status = 'IN_PROGRESS'")
     List<Study> getAllInProgressStudyByUserId(@Param("userId") Long userId);
 }
