@@ -5,7 +5,7 @@ import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
 import com.tdns.toks.api.domain.study.model.mapper.StudyApiMapper;
-import com.tdns.toks.core.domain.quiz.model.dto.QuizDTO;
+import com.tdns.toks.core.domain.quiz.model.dto.QuizDTO.LatestQuizSimpleDto;
 import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.service.QuizService;
 import com.tdns.toks.core.domain.study.model.dto.StudyDTO.InProgressStudyInfoLight;
@@ -74,23 +74,26 @@ public class StudyApiService {
     }
 
     private StudiesInfoResponse toStudyDTOs(List<Study> studies, Long userId) {
-        List<InProgressStudyInfoLight> output = new ArrayList<>();
-        for (Study study : studies) {
-            Optional<Quiz> latestQuiz = studyService.getLatestQuiz(study.getId());
-            QuizDTO.LatestQuizSimpleDto latestQuizStatus = quizService.getLatestQuizStatus(latestQuiz, userId);
-            output.add(InProgressStudyInfoLight.builder()
-                    .id(study.getId())
-                    .name(study.getName())
-                    .latestQuizId(latestQuizStatus.getQuizId())
-                    .studyLatestQuizStatus(latestQuizStatus.getStudyLatestQuizStatus())
-                    .studyUserCount(study.getStudyUserCount())
-                    .studyTags(getStudyTagsDTO(study.getId()))
-                    .build());
-        }
+
+        List<InProgressStudyInfoLight> output = studies.stream().map(study -> InProgressStudyInfoLight.builder()
+                .id(study.getId())
+                .name(study.getName())
+                //todo 근데 이거 getStudyLastestQuizInfo 2번 호출하는거 너무 빡치지만 일단 map으로 변환 -? 방법이 있을까요?
+                .latestQuizId(getStudyLatestQuizInfo(study.getId(), userId).getQuizId())
+                .studyLatestQuizStatus(getStudyLatestQuizInfo(study.getId(), userId).getStudyLatestQuizStatus())
+                .studyUserCount(study.getStudyUserCount())
+                .studyTags(getStudyTagsDTO(study.getId()))
+                .build()).collect(Collectors.toList());
         return new StudiesInfoResponse(output);
     }
 
+    private LatestQuizSimpleDto getStudyLatestQuizInfo(Long studyId, Long userId) {
+        Optional<Quiz> latestQuiz = studyService.getLatestQuiz(studyId);
+        return quizService.getLatestQuizStatus(latestQuiz, userId);
+    }
+
     private List<TagDTO> getStudyTagsDTO(Long studyId) {
-        return studyService.getStudyTags(studyId).stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
+        return studyService.getStudyTags(studyId).stream()
+                .map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
     }
 }
