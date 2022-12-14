@@ -80,8 +80,8 @@ public class StudyApiService {
                 .name(study.getName())
                 //todo 근데 이거 getStudyLastestQuizInfo 2번 호출하는거 너무 빡치지만 일단 map으로 변환 -? 방법이 있을까요?
                 .latestQuizId(getStudyLatestQuizInfo(study.getId(), userId).getQuizId())
-                .studyLatestQuizStatus(getStudyLatestQuizInfo(study.getId(), userId).getStudyLatestQuizStatus())
-                .studyUserCount(study.getStudyUserCount())
+                .latestQuizStatus(getStudyLatestQuizInfo(study.getId(), userId).getStudyLatestQuizStatus())
+                .userCount(study.getStudyUserCount())
                 .studyTags(getStudyTagsDTO(study.getId()))
                 .build()).collect(Collectors.toList());
         return new StudiesInfoResponse(output);

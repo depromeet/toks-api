@@ -15,9 +15,9 @@ public class StudyDTO {
     public static class InProgressStudyInfoLight{
         private Long id;
         private String name;
-        private Integer studyUserCount;
+        private Integer userCount;
         private Long latestQuizId;
-        private StudyLatestQuizStatus studyLatestQuizStatus;
+        private StudyLatestQuizStatus latestQuizStatus;
         private List<TagDTO> studyTags;
     }
 }
