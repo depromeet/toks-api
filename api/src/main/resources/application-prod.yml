@@ -4,6 +4,16 @@ spring:
     username:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    oauth2:
+      front-redirect-uri: https://tokstudy.com/login/kakaoauth
+      client:
+        registration:
+          kakao:
+            redirect-uri: https://tokstudy.com/login/oauth2/code/kakao
+  redis:
+    host:
+    port:
 url:
   prefix: <prod url>
   study-path: /study

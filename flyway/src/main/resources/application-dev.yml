@@ -1,0 +1,6 @@
+## spring
+spring:
+  flyway:
+    url: ENC(BY6VAr47KyyXdp9uEf8nZvPJOq5wy1iDUx+Mp8iiXR1z56eXYQ5G/Bdnd+dKb8c1wouhcIinVGLW70m3sMUZIKujCoPHC3Hg9skjmTosiSQZxqw7bfb2J03XbTxajZjI)
+    user: ENC(UtAQq0wJP1yq/sKgs9VlGA==)
+    password: ENC(CaqON8H5YtJGrygzgHFAU2h0H1zbYqKn)

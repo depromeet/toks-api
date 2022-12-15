@@ -3,9 +3,9 @@ package com.tdns.toks.api.domain.study.controller;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
+import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 import com.tdns.toks.api.domain.study.service.StudyApiService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
-import com.tdns.toks.core.common.type.JwtToken;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -35,7 +35,7 @@ public class StudyController {
             summary = "스터디 생성"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = JwtToken.class))}),
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = StudyApiResponse.class))}),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
@@ -82,4 +82,23 @@ public class StudyController {
         studyApiService.joinStudy(studyId);
         return ResponseDto.noContent();
     }
+
+    @GetMapping("/tag")
+    @Operation(
+            method = "GET",
+            summary = "스터디 생성용 폼 데이터 조회"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = TagResponse.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    public ResponseEntity<TagResponse> getTagByKeyword(
+            @RequestParam String keyword
+    ) {
+        var response = studyApiService.getTagByKeyword(keyword);
+        return ResponseDto.ok(response);
+    }
+
 }

@@ -1,6 +1,23 @@
 spring:
   datasource:
-    url: ENC(DwYyxQoCx8IKDKfwGBg3wIJmaJVObgxQhxO++DuyoClJxxE00G3eAIJtZWelrgk3OCBoZz0Ayp3yGTb+DuoZOxsXCq4YhnOtAPL0+bW9vyTvDe2Iiq+A2IxDWS+ZDoBRm1Ay2DHaHnrwdNQMEqj4xQ==)
+    url: ENC(en7/4fExjy595I898lm8B3ctoWtvIZoGVdcMoSctjBGBn2LmTuG9588zCrKzjvwK/B9704N3NmJL05W/BEutO5tkQffoybsHmJghWwTiZ0y4FsQSwY9oBQ6+3edZrkTip9xtxlnkDfs6p8FmDTfWRBYxQPcAnJuHKHePGmh9d8E=)
     username: ENC(XZgCSKYBjOGxjU5koULVISqUMWSqaLygaIJwHEXq9ZyI2S0AQmvE97XuakgjFPMv)
     password: ENC(17+mE7X+dMMjiJu+7CuwVp2bhhwKCw85SJpBGMBAgL0STOUgszKa7Yozd1FYeCPn)
     driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    oauth2:
+      front-redirect-uri: http://localhost:3000/login/kakaoauth
+      client:
+        registration:
+          kakao:
+            redirect-uri: https://api.tokstudy.com/login/oauth2/code/kakao
+  devtools:
+    restart:
+      enabled: false
+  redis:
+    host: ENC(cXBlIptXDX2pcubu7UkhXSHJv+dGZYLk92wWAxKXox4/7P/4OLN+UGicp2NGg8r4G+16MNwovBrrcNwgDm7XZuPbsFUiMvQONYsIzUM9d/qVwpGdgmXsFRiyi/Djw9Oq)
+    port: 6379
+url:
+  prefix: <dev url>
+  study-path: /study
+  join-path: /join

@@ -1,33 +1,28 @@
 package com.tdns.toks.core.domain.user.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tdns.toks.core.common.type.JwtToken;
 import com.tdns.toks.core.domain.user.model.entity.User;
+
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-@Builder
 @Getter
-@Setter
-@AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Schema(name = "UserDetailDto", description = "User 디테일 정보")
-public class UserDetailDTO implements UserDetails {
+public class UserDetailDTO implements UserDetails, OAuth2User {
 
     private final User user;
 
     private JwtToken jwtToken;
+
     private Map<String, Object> attributes;
 
     public UserDetailDTO(User user) {
@@ -47,7 +42,8 @@ public class UserDetailDTO implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getUpwd();
+        //필수 오버라이드 항목이나 미사용.
+        return null;
     }
 
     @Override
@@ -73,6 +69,17 @@ public class UserDetailDTO implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getName() {
+        //필수 오버라이드 항목이나 미사용.
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getAttribute(String name) {
+        return OAuth2User.super.getAttribute(name);
     }
 
     public static UserDTO get() {

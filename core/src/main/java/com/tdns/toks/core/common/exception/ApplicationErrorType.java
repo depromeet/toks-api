@@ -1,12 +1,16 @@
 package com.tdns.toks.core.common.exception;
 
+import org.springframework.http.HttpStatus;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 /**
  * 주의! error code 값을 변경할 때는 클라이언트에서 혹시 사용하고 있지 않은지 꼭 확인해야 합니다!
  */
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 @AllArgsConstructor
 public enum ApplicationErrorType {
     /**
@@ -22,11 +26,20 @@ public enum ApplicationErrorType {
     INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, -20027, "error.invalid.access.token"),
     INVALID_LOGIN_INFO(HttpStatus.BAD_REQUEST, -20007, "try.again"/*Invalid Login Info*/),
     TO_JSON_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, -40015, "try.again"),
-    UNKNOWN_USER(HttpStatus.UNAUTHORIZED, -10006, "try.again"),
-    UNAUTHORIZED_USER(HttpStatus.UNAUTHORIZED, -10006, "try.again"),
-    ALREADY_JOIN_USER(HttpStatus.BAD_REQUEST, -10008, "이미 해당 스터디에 가입한 유저입니다."),
-    ALREADY_FINISH_STUDY(HttpStatus.BAD_REQUEST, -10009, "이미 끝난 스터디에는 가입할 수 없습니다."),
-    OVER_MAX_HEADCOUNT(HttpStatus.BAD_REQUEST, -10010, "가입 인원이 초과된 스터디입니다");
+    UNKNOWN_USER(HttpStatus.BAD_REQUEST, -10006, "try.again"),
+    UNAUTHORIZED_USER(HttpStatus.BAD_REQUEST, -10006, "try.again"),
+    NO_PROVIDER(HttpStatus.NO_CONTENT, -20010, "no provider"),
+    DUPLICATED_NICKNAME(HttpStatus.CONFLICT, -20011, "duplicated nickname"),
+    AUTHENTICATION_FAIL(HttpStatus.UNAUTHORIZED, -20012, "authentication failed"),
+
+    EMPTY_TOKEN(HttpStatus.BAD_REQUEST, -20013, "no token"),
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, -20014, "error.invalid.refresh.token"),
+    ALREADY_LIKE_USER_QUIZ(HttpStatus.BAD_REQUEST, -20015, "error.invalid.already-like-user-quiz"),
+    ALREADY_SUBMITTED_USER_QUIZ(HttpStatus.BAD_REQUEST, -20016, "error.invalid.submit-user-quiz"),
+    ALREADY_FINISH_STUDY(HttpStatus.BAD_REQUEST, -20017, "error.invalid.already-finish-study"),
+    OVER_MAX_HEADCOUNT(HttpStatus.BAD_REQUEST, -20018, "error.invalid.max-headcount"),
+    ALREADY_JOIN_USER(HttpStatus.BAD_REQUEST, -20019, "error.invalid.already-join-user");
+
     @Getter
     private HttpStatus httpStatus;
 

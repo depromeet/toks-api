@@ -2,6 +2,9 @@ package com.tdns.toks.core.config.security;
 
 import com.tdns.toks.core.common.filter.ExceptionHandlerFilter;
 import com.tdns.toks.core.common.filter.JwtAuthenticationFilter;
+import com.tdns.toks.core.common.security.oauth.CustomOAuth2UserService;
+import com.tdns.toks.core.common.security.oauth.OAuth2FailureHandler;
+import com.tdns.toks.core.common.security.oauth.OAuth2SuccessHandler;
 import com.tdns.toks.core.common.service.UserDetailService;
 import com.tdns.toks.core.common.type.CORSType;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -24,7 +26,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -38,21 +39,33 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuth2FailureHandler oAuth2FailureHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().disable().csrf().disable()
+        http.httpBasic().disable()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
+                .csrf().disable()
                 .formLogin().disable()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(permitUrl).permitAll()
-                .antMatchers(HttpMethod.GET, "/**").authenticated()
-                .antMatchers(HttpMethod.POST, "/**").authenticated()
-                .antMatchers(HttpMethod.DELETE, "/**").authenticated()
-                .antMatchers(HttpMethod.PUT, "/**").authenticated()
-                .antMatchers(HttpMethod.PATCH, "/**").authenticated()
-                .anyRequest().permitAll();
+                    .antMatchers(permitUrl).permitAll()
+                    .anyRequest().authenticated()
+                .and()
+                .oauth2Login()
+                    .loginPage("/login/social") // 추후 프론트 url 맞춰야 함
+                    .authorizationEndpoint()
+                    .baseUri("/oauth2/authorize")
+                    .and()
+                    .userInfoEndpoint().userService(customOAuth2UserService)
+                .and()
+                    .successHandler(oAuth2SuccessHandler)
+                    .failureHandler(oAuth2FailureHandler);
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class);
