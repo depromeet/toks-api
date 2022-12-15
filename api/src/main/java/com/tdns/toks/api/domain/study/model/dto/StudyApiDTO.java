@@ -48,8 +48,8 @@ public class StudyApiDTO {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "capacity", description = "스터디 규모")
         private StudyCapacity capacity;
 
-        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "tag id list", description = "태그 id list")
-        private List<Long> tagIdList;
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "tagList", description = "tag 키워드 리스트")
+        private List<String> tagList;
 
     }
 

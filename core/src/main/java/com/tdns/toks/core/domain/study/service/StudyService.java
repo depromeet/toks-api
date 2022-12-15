@@ -1,6 +1,8 @@
 package com.tdns.toks.core.domain.study.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,11 +32,6 @@ public class StudyService {
         return studyRepository.save(study);
     }
 
-    @Transactional(readOnly = true)
-    public List<Tag> getTagListByIdList(List<Long> tagIdList) {
-        return tagRepository.findByIdIn(tagIdList);
-    }
-
     public List<StudyTag> saveAllStudyTag(List<StudyTag> studyTagList) {
         return studyTagRepository.saveAll(studyTagList);
     }
@@ -44,11 +41,6 @@ public class StudyService {
         return tagRepository.findByNameContaining(keyword);
     }
 
-    @Transactional(readOnly = true)
-    public Tag getTagByKeyword(String keyword) {
-        return tagRepository.findFirstByName(keyword);
-    }
-
     public Tag createTag(Tag tag) {
         return tagRepository.save(tag);
     }
@@ -56,6 +48,24 @@ public class StudyService {
     @Transactional(readOnly = true)
     public Study getOrThrow(final Long id) {
         return studyRepository.findById(id)
-            .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
+    }
+
+    public List<Tag> getOrCreateTagListByKeywordList(List<String> keywordList) {
+        List<Tag> tagList = tagRepository.findByName(keywordList);
+        if (tagList.size() != keywordList.size()) {
+            List<String> tagNameList = tagList.stream().map(Tag::getName).collect(Collectors.toList());
+            tagList.addAll(keywordList.stream()
+                    .filter(keyword -> !tagNameList.contains(keyword))
+                    .map(keyword -> createTag(convertToEntity(keyword)))
+                    .collect(Collectors.toList()));
+        }
+        return tagList;
+    }
+
+    private Tag convertToEntity(String keyword) {
+        return Tag.builder()
+                .name(keyword)
+                .build();
     }
 }
