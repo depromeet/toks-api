@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface StudyRepository extends JpaRepository<Study, Long> {
 
-    @Query(value = "select s from Study s join QuizRank r on r.studyId = s.id where r.userId =:userId and s.status = 'IN_PROGRESS'", nativeQuery = true)
+    @Query(value = "select s from Study s join QuizRank r on r.studyId = s.id where r.userId =:userId and s.status = 'IN_PROGRESS'", nativeQuery = false)
     List<Study> getAllInProgressStudyByUserId(@Param("userId") Long userId);
 }
