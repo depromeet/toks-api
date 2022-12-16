@@ -45,4 +45,8 @@ public class QuizService {
 		}
 		return QuizStatusType.IN_PROGRESS;
 	}
+
+	public Quiz save(final Quiz quiz) {
+		return quizRepository.save(quiz);
+	}
 }

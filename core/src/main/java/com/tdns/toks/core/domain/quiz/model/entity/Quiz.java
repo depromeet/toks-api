@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -13,11 +14,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +28,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Quiz extends BaseTimeEntity {
 
 	@Id
@@ -61,4 +66,26 @@ public class Quiz extends BaseTimeEntity {
 	@CreatedBy
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '생성자'")
 	private Long createdBy;
+
+	public static Quiz of(
+		final String quiz,
+		final QuizType quizType,
+		final String description,
+		final String answer,
+		final LocalDateTime startedAt,
+		final LocalDateTime endedAt,
+		final List<String> imageUrls,
+		final Long studyId
+	) {
+		return Quiz.builder()
+			.quiz(quiz)
+			.quizType(quizType)
+			.description(description)
+			.answer(answer)
+			.startedAt(startedAt)
+			.endedAt(endedAt)
+			.imageUrls(imageUrls)
+			.studyId(studyId)
+			.build();
+	}
 }

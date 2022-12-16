@@ -2,12 +2,17 @@ package com.tdns.toks.api.domain.quiz.controller;
 
 import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.*;
 
+import java.util.List;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tdns.toks.api.domain.quiz.service.QuizApiService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
@@ -56,6 +61,25 @@ public class QuizController {
 		@ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
 	public ResponseEntity<QuizzesResponse> getAllByStudyID(@PathVariable final Long studyId) {
 		var response = quizApiService.getAllByStudyId(studyId);
+		return ResponseDto.ok(response);
+	}
+
+	@PostMapping
+	@Operation(
+		method = "Get",
+		summary = "퀴즈 생성"
+	)
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = QuizCreateResponse.class))}),
+		@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+		@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+		@ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
+		@ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+	public ResponseEntity<QuizCreateResponse> create(
+		@RequestPart(value = "jsonData") QuizRequest request,
+		@RequestPart(value = "imageFiles") List<MultipartFile> files
+	) {
+		var response = quizApiService.create(request, files);
 		return ResponseDto.ok(response);
 	}
 }
