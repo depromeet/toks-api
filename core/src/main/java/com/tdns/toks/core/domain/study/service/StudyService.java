@@ -2,6 +2,8 @@ package com.tdns.toks.core.domain.study.service;
 
 import java.util.List;
 
+import com.tdns.toks.core.domain.user.model.entity.User;
+import com.tdns.toks.core.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class StudyService {
+    private final UserRepository userRepository;
+
     private final StudyRepository studyRepository;
 
     private final StudyTagRepository studyTagRepository;
@@ -28,6 +32,10 @@ public class StudyService {
 
     public Study save(Study study) {
         return studyRepository.save(study);
+    }
+
+    public Study getStudy(Long studyId) {
+        return studyRepository.getById(studyId);
     }
 
     @Transactional(readOnly = true)
@@ -57,5 +65,13 @@ public class StudyService {
     public Study getOrThrow(final Long id) {
         return studyRepository.findById(id)
             .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
+    }
+
+    public List<Tag> getStudyTags(Long studyId) {
+        return studyTagRepository.getStudyTagsByStudyId(studyId);
+    }
+
+    public List<User> getUsersInStudy(Long studyId) {
+        return userRepository.getUsersInStudy(studyId);
     }
 }

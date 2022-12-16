@@ -1,8 +1,11 @@
 package com.tdns.toks.core.domain.user.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.tdns.toks.core.domain.user.model.entity.User;
@@ -18,4 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long>, UserCustomRep
     Optional<User> findByEmailAndStatus(String email, UserStatus status);
 
     Optional<User> findByProviderAndProviderId(UserProvider provider, String providerId);
+
+    @Query("select u from User u join QuizRank r on r.userId = u.id where r.studyId = :studyId")
+    List<User> getUsersInStudy(@Param("studyId") Long studyId);
 }

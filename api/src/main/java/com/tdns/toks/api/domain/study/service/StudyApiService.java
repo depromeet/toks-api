@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.study.service;
 
+import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyDetailsResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
@@ -8,6 +9,7 @@ import com.tdns.toks.core.domain.study.model.dto.TagDTO;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
 import com.tdns.toks.core.domain.study.service.StudyService;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
+import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -56,5 +58,14 @@ public class StudyApiService {
         var tag = Optional.ofNullable(studyService.getTagByKeyword(keyword))
                 .orElseGet(() -> studyService.createTag(mapper.toEntity(tagCreateRequest.getKeyword())));
         return TagDTO.of(tag);
+    }
+
+    public StudyDetailsResponse getStudyDetails(Long studyId) {
+        var users = studyService.getUsersInStudy(studyId).stream()
+                .map(user -> UserSimpleDTO.toDto(user)).collect(Collectors.toList());
+        var tags = studyService.getStudyTags(studyId).stream()
+                .map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
+        var study = studyService.getStudy(studyId);
+        return StudyDetailsResponse.toResponse(study, users, tags);
     }
 }
