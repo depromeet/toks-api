@@ -1,13 +1,10 @@
 package com.tdns.toks.core.common.service;
 
-import com.amazonaws.HttpMethod;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.*;
-import com.google.common.base.Charsets;
-import com.google.common.hash.HashCode;
-import com.google.common.hash.Hashing;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.io.File;
+import java.net.URL;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.joda.time.DateTime;
@@ -15,8 +12,22 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.net.URL;
+import com.amazonaws.HttpMethod;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.amazonaws.services.s3.model.GetObjectMetadataRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
+import com.google.common.base.Charsets;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
@@ -27,17 +38,24 @@ public class S3UploadService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
-    public String uploadFiles(MultipartFile file, String pathSuffix) throws Exception {
-        String newFileName = makeNewFilename(file.getOriginalFilename(), pathSuffix);
-        return uploadToS3(file, newFileName, false);
-
+    public List<String> uploadFiles(List<MultipartFile> files, String pathSuffix) {
+        return files.stream()
+            .map(file -> {
+                String newFileName = makeNewFilename(file.getOriginalFilename(), pathSuffix);
+                try {
+                    return uploadToS3(file, newFileName, false);
+                } catch (Exception e) {
+                    log.error("[S3 UPLOAD ERROR] user id : {}", pathSuffix);
+                    throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_DATA_ARGUMENT);
+                }
+            })
+            .collect(Collectors.toList());
     }
 
     public PutObjectResult uploadToS3(String bucketName, File file) {
         return s3.putObject(new PutObjectRequest(bucketName, file.getName(), file)
                 .withCannedAcl(CannedAccessControlList.BucketOwnerFullControl));
     }
-
 
     private String uploadToS3(MultipartFile file, String fileName, boolean isPrivate) throws Exception {
         ObjectMetadata metadata = new ObjectMetadata();
@@ -51,7 +69,7 @@ public class S3UploadService {
         s3.putObject(new PutObjectRequest(bucketName, fileName, file.getInputStream(), metadata)
                 .withCannedAcl(isPrivate ? CannedAccessControlList.Private : CannedAccessControlList.PublicRead));
 
-        return fileName;
+        return s3.getUrl(bucketName, fileName).toString();
     }
 
     // 로컬에 저장된 이미지 지우기
