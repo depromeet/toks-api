@@ -22,20 +22,17 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final JwtTokenProvider jwtTokenProvider;
-
     @Value("${spring.security.oauth2.front-redirect-uri}")
     private String frontRedirectUri;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         var userDetailDTO = (UserDetailDTO) authentication.getPrincipal();
-        Cookie cookie = new Cookie("testAuthenticate", "aslfeijlkj0sf393jk38afs*lsje");
-        response.addCookie(cookie);
-
-//        var url = setRedirectUrl(userDetailDTO.getJwtToken());
-//        getRedirectStrategy().sendRedirect(request, response, url);
+        var url = setRedirectUrl(userDetailDTO.getJwtToken());
+        getRedirectStrategy().sendRedirect(request, response, url);
     }
+
+
 
     private String setRedirectUrl(JwtToken jwtToken) {
         var accessToken = jwtToken.getAccessToken();

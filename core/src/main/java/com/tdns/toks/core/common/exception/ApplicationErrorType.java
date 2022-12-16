@@ -34,6 +34,7 @@ public enum ApplicationErrorType {
     EMPTY_TOKEN(HttpStatus.BAD_REQUEST, -20013, "no token"),
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, -20014, "error.invalid.refresh.token"),
     ALREADY_LIKE_USER_QUIZ(HttpStatus.BAD_REQUEST, -20015, "error.invalid.refresh.token"),
+    NO_AUTHORIZATION(HttpStatus.UNAUTHORIZED, -20017, "error.no.authorization"),
     ALREADY_SUBMITTED_USER_QUIZ(HttpStatus.BAD_REQUEST, -20016, "error.invalid.refresh.token");
 
     @Getter
