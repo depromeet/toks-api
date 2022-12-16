@@ -1,10 +1,13 @@
 package com.tdns.toks.core.common.security;
 
 import com.google.common.net.HttpHeaders;
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.common.type.AuthTokenType;
 import com.tdns.toks.core.common.type.JwtToken;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,12 +19,15 @@ import java.util.Date;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class JwtTokenProvider {	// JWT토큰 생성 및 유효성을 검증하는 컴포넌트
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
 
-    private long tokenValidMillisecond = 1000L * 60 * 60; // 1시간 토큰 유효
-    private long refreshTokenValidMillisecond = 1000L * 60 * 60 * 24 * 30; // 30일 토큰 유효
+//    private long tokenValidMillisecond = 1000L * 60 * 60; // 1시간 토큰 유효
+    private long tokenValidMillisecond = 1000L * 60; // 1분 테스트
+//    private long refreshTokenValidMillisecond = 1000L * 60 * 60 * 24 * 30; // 30일 토큰 유효
+    private long refreshTokenValidMillisecond = 1000L * 60 * 2; // 2분 테스트
 
     @PostConstruct
     protected void init() {
