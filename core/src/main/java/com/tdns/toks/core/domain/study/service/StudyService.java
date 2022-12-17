@@ -2,6 +2,8 @@ package com.tdns.toks.core.domain.study.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -52,15 +54,15 @@ public class StudyService {
     }
 
     public List<Tag> getOrCreateTagListByKeywordList(List<String> keywordList) {
-        List<Tag> tagList = tagRepository.findByName(keywordList);
-        if (tagList.size() != keywordList.size()) {
-            List<String> tagNameList = tagList.stream().map(Tag::getName).collect(Collectors.toList());
-            tagList.addAll(keywordList.stream()
-                    .filter(keyword -> !tagNameList.contains(keyword))
+        List<Tag> tags = tagRepository.findByName(keywordList);
+        if (tags.size() != keywordList.size()) {
+            Map<String, Long> tagNameIdMap = tags.stream().collect(Collectors.toMap(Tag::getName, Tag::getId));
+            tags.addAll(keywordList.stream()
+                    .filter(keyword -> !tagNameIdMap.containsKey(keyword))
                     .map(keyword -> createTag(convertToEntity(keyword)))
                     .collect(Collectors.toList()));
         }
-        return tagList;
+        return tags;
     }
 
     private Tag convertToEntity(String keyword) {
