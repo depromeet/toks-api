@@ -47,6 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.getAuthToken(request);
 
+        // permitUrl에 포함되지 않고 토큰이 없는 경우 에러 발생
         if (!Arrays.stream(permitUrl).anyMatch(fl -> request.getServletPath().contains(fl)) && StringUtils.isEmpty(token)) {
             throw new ApplicationErrorException(ApplicationErrorType.INVALID_ACCESS_TOKEN);
         }
