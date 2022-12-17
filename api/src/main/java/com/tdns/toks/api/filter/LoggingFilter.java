@@ -61,7 +61,7 @@ public class LoggingFilter extends OncePerRequestFilter {
 			json = mapper.writeValueAsString(map);
 			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("[JSON PARSE ERROR] {}", e.getMessage(), e);
 		}
 		return json;
 	}
