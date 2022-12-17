@@ -66,7 +66,7 @@ public class QuizController {
 
 	@PostMapping
 	@Operation(
-		method = "Get",
+		method = "Post",
 		summary = "퀴즈 생성"
 	)
 	@ApiResponses(value = {
