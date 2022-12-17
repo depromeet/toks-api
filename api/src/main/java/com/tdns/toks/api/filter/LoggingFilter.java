@@ -30,15 +30,27 @@ public class LoggingFilter extends OncePerRequestFilter {
 		ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
 		filterChain.doFilter(requestWrapper, responseWrapper);
 
-		log.info("[Request] {}", request.getMethod() + request.getRequestURI() + getQueryString(request));
-		log.info("[Request Headers] {}", getHeaders(request));
-		log.info("[Request Body] {}", contentBody(requestWrapper.getContentAsByteArray()));
-		log.info("[Response Body] {}", contentBody(responseWrapper.getContentAsByteArray()));
+		log.info("\n[Request] {} \n"
+			+ "[Request Headers] {} \n"
+			+ "[Request Body] {} \n"
+			+ "[Response Body] {}",
+			getRequest(request),
+			getHeaders(request),
+			contentBody(requestWrapper.getContentAsByteArray()),
+			contentBody(responseWrapper.getContentAsByteArray())
+		);
 
 		responseWrapper.copyBodyToResponse();
 	}
 
-	private Map<String, String> getHeaders(HttpServletRequest request) {
+	private String getRequest(HttpServletRequest request) {
+		String result = "";
+		result = request.getMethod() + " " + request.getRequestURI();
+		result += request.getQueryString() != null ? "?" + request.getQueryString() : "";
+		return result;
+	}
+
+	private String getHeaders(HttpServletRequest request) {
 		Map<String, String> headerMap = new HashMap<>();
 
 		Enumeration<String> headerArray = request.getHeaderNames();
@@ -46,11 +58,15 @@ public class LoggingFilter extends OncePerRequestFilter {
 			String headerName = headerArray.nextElement();
 			headerMap.put(headerName, request.getHeader(headerName));
 		}
-		return headerMap;
-	}
 
-	private String getQueryString(HttpServletRequest request) {
-		return request.getQueryString() != null ? "?" + request.getQueryString() : "";
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(headerMap);
+		} catch (IOException e) {
+			log.error("[JSON PARSE ERROR] {}", e.getMessage(), e);
+		}
+		return json;
 	}
 
 	private String contentBody(final byte[] contents) {
@@ -58,7 +74,6 @@ public class LoggingFilter extends OncePerRequestFilter {
 		String json = "";
 		try {
 			Map map = mapper.readValue(new String(contents), Map.class);
-			json = mapper.writeValueAsString(map);
 			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
 		} catch (IOException e) {
 			log.error("[JSON PARSE ERROR] {}", e.getMessage(), e);
