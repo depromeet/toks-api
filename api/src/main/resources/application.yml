@@ -62,11 +62,11 @@ cloud:
     region:
       static: ap-northeast-2
     credentials:
-      access-key: ENC(jK+9F60zXpVOGvhQxJTcQmWq3WudTMDevw4xzRq0uby3C4AsoTDFDJTHwTZmZ5bCbTIwgfDzdPlNu+59OvjUTA==)
-      secret-key: ENC(U12n+g77036NbW3qLUm7vxKBf1z2JL1hgHdkYrZUolUJM0prmIj5kDTGTZTfhJhJP9p6Voc6aOlH8BcBoc28hh+SZYYDsm8kK/oyQk3Aidk=)
+      access-key: ENC(6idhGUehK+L1MtXUCONoZMpozvTEt0b5cK6a8PDaBOlBegaWCIxcr28jh7NCbHRtQtUYTTwIPYVfGa8KTfYjFQ==)
+      secret-key: ENC(6tPbHY36pQo7x7dF1v80xRcajQoQU81d/tgDbxECK5whJohWjCCj19QIuA5lIdE5kzgINGpbtiwo4k+4Qlesj0LzKlcRdGeBTyey1AjQl/8=)
 
     s3:
-      bucket: tdns
+      bucket: ENC(LZJ5s+QVjQfyf7KQb+bTMwbd+CN2Ji9j4ipsVleNo0b7hYBdTGN6nINAFtvXQLwhIk1RfjI+d8MlbyTLMyJ+CQ==)
       upload:
         path.review: public/review
       cdn:
