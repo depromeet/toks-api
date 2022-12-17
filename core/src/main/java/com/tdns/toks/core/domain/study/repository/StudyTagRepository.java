@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface StudyTagRepository extends JpaRepository<StudyTag, Long> {
 
-    @Query("select t from StudyTag st left join Tag t on t.id = st.tagId where st.studyId = :studyId")
+    @Query("select t from StudyTag st left join Tag t on t.id = st.tagId where st.studyId =:studyId")
     List<Tag> getStudyTagsByStudyId(@Param("studyId") Long studyId);
 }

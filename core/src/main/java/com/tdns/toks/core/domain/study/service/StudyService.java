@@ -1,7 +1,10 @@
 package com.tdns.toks.core.domain.study.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
+import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,8 @@ public class StudyService {
     private final StudyTagRepository studyTagRepository;
 
     private final TagRepository tagRepository;
+
+    private final QuizRepository quizRepository;
 
     public Study save(Study study) {
         return studyRepository.save(study);
@@ -61,14 +66,18 @@ public class StudyService {
         return tagRepository.save(tag);
     }
 
+    public List<Tag> getStudyTags(Long studyId) {
+        return studyTagRepository.getStudyTagsByStudyId(studyId);
+    }
+
     @Transactional(readOnly = true)
     public Study getOrThrow(final Long id) {
         return studyRepository.findById(id)
             .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
     }
 
-    public List<Tag> getStudyTags(Long studyId) {
-        return studyTagRepository.getStudyTagsByStudyId(studyId);
+    public Optional<Quiz> getLatestQuiz(Long studyId) {
+        return quizRepository.findFirstByStudyIdOrderByCreatedAtDesc(studyId);
     }
 
     public List<User> getUsersInStudy(Long studyId) {

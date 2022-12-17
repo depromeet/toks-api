@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "StudyController-V1", description = "STUDY API")
 @RestController
-@RequestMapping(path = "/api/v1/study", produces = "application/json")
+@RequestMapping(path = "/api/v1/studies", produces = "application/json")
 @RequiredArgsConstructor
 public class StudyController {
     private final StudyApiService studyApiService;
@@ -90,6 +90,23 @@ public class StudyController {
             @Validated @RequestBody TagCreateRequest tagCreateRequest
     ) {
         var response = studyApiService.getOrCreateKeyword(tagCreateRequest);
+        return ResponseDto.ok(response);
+    }
+
+    @GetMapping
+    @Operation(
+            method = "GET",
+            summary = "사용자 스터디 목록 조회"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = StudiesInfoResponse.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    public ResponseEntity<StudiesInfoResponse> getUserStudies(
+    ) {
+        var response = studyApiService.getStudies();
         return ResponseDto.ok(response);
     }
 
