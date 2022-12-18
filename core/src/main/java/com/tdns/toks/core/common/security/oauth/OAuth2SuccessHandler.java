@@ -31,6 +31,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         var userDetailDTO = (UserDetailDTO) authentication.getPrincipal();
 
         String host = request.getRequestURL().toString().replace(request.getRequestURI(), "");
+
+        if(host.contains("tokstudy.com")){
+            host = "https://tokstudy.com";
+        }
+
         var url = setRedirectUrl(host + frontRedirectUri, userDetailDTO.getJwtToken());
         getRedirectStrategy().sendRedirect(request, response, url);
     }
