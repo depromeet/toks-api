@@ -15,7 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -59,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Authentication auth = getAuthentication(UserDTO.convertEntityToDTO(user));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } else {
-                throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_LOGIN_INFO);
+                throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_ACCESS_TOKEN);
             }
         }
         else {
