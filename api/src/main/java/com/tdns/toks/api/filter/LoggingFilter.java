@@ -31,12 +31,14 @@ public class LoggingFilter extends OncePerRequestFilter {
 		filterChain.doFilter(requestWrapper, responseWrapper);
 
 		log.info("\n[Request] {} \n"
-			+ "[Request Headers] {} \n"
-			+ "[Request Body] {} \n"
-			+ "[Response Body] {}",
+				+ "[Request Headers] {} \n"
+				+ "[Request Body] {} \n"
+				+ "[Status Code] {} \n"
+				+ "[Response Body] {}",
 			getRequest(request),
 			getHeaders(request),
 			contentBody(requestWrapper.getContentAsByteArray()),
+			response.getStatus(),
 			contentBody(responseWrapper.getContentAsByteArray())
 		);
 
