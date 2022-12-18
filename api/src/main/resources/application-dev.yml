@@ -6,7 +6,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   security:
     oauth2:
-      front-redirect-uri: /login/kakaoauth
+      localhost: http://localhost:3000
       client:
         registration:
           kakao:

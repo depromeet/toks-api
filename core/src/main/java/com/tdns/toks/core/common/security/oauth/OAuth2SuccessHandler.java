@@ -21,19 +21,20 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final JwtTokenProvider jwtTokenProvider;
-
-    @Value("${spring.security.oauth2.front-redirect-uri}")
+    @Value("${spring.security.front-redirect-uri}")
     private String frontRedirectUri;
+
+    @Value("${spring.security.oauth2.localhost}")
+    private String local;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         var userDetailDTO = (UserDetailDTO) authentication.getPrincipal();
 
-        String host = request.getRequestURL().toString().replace(request.getRequestURI(), "");
+        String host = "https://tokstudy.com";
 
-        if(host.contains("tokstudy.com")){
-            host = "https://tokstudy.com";
+        if (!request.getHeader("host").equals("https://tokstudy.com")) {
+            host = local;
         }
 
         var url = setRedirectUrl(host + frontRedirectUri, userDetailDTO.getJwtToken());
