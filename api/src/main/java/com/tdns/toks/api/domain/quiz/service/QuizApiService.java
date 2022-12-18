@@ -17,6 +17,7 @@ import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import com.tdns.toks.core.domain.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +58,8 @@ public class QuizApiService {
 		final QuizRequest quizRequest,
 		final List<MultipartFile> multipartFiles
 	) {
-		List<String> urls = s3UploadService.uploadFiles(multipartFiles, UserDetailDTO.get().getId().toString());
-		return QuizCreateResponse.toResponse(quizService.save(mapper.toEntity(quizRequest, urls)));
+		var urls = s3UploadService.uploadFiles(multipartFiles, UserDetailDTO.get().getId().toString());
+		val quizzes = quizService.save(mapper.toEntity(quizRequest, urls));
+		return QuizCreateResponse.toResponse(quizzes);
 	}
 }
