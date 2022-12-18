@@ -54,7 +54,7 @@ public class StudyService {
     }
 
     public List<Tag> getOrCreateTagListByKeywordList(List<String> keywordList) {
-        List<Tag> tags = tagRepository.findByName(keywordList);
+        List<Tag> tags = tagRepository.findByNameIn(keywordList);
         if (tags.size() != keywordList.size()) {
             Map<String, Long> tagNameIdMap = tags.stream().collect(Collectors.toMap(Tag::getName, Tag::getId));
             tags.addAll(keywordList.stream()
