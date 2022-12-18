@@ -2,6 +2,7 @@ package com.tdns.toks.core.common.service;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,13 +40,17 @@ public class S3UploadService {
     private String bucketName;
 
     public List<String> uploadFiles(List<MultipartFile> files, String pathSuffix) {
+        List<String> keys = new ArrayList<>();
+
         return files.stream()
             .map(file -> {
                 String newFileName = makeNewFilename(file.getOriginalFilename(), pathSuffix);
+                keys.add(newFileName);
                 try {
                     return uploadToS3(file, newFileName, false);
                 } catch (Exception e) {
                     log.error("[S3 UPLOAD ERROR] user id : {}", pathSuffix);
+                    deleteNewFile(keys);
                     throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_DATA_ARGUMENT);
                 }
             })
@@ -115,5 +120,10 @@ public class S3UploadService {
         }
 
         return url.toString();
+    }
+
+    // S3 Bucket 에 저장된 이미지 지우기
+    private void deleteNewFile(List<String> keys) {
+        keys.forEach(key -> s3.deleteObject(bucketName, key));
     }
 }
