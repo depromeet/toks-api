@@ -29,14 +29,16 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         var userDetailDTO = (UserDetailDTO) authentication.getPrincipal();
-        var url = setRedirectUrl(userDetailDTO.getJwtToken());
+
+        String host = request.getRequestURL().toString().replace(request.getRequestURI(), "");
+        var url = setRedirectUrl(host + frontRedirectUri, userDetailDTO.getJwtToken());
         getRedirectStrategy().sendRedirect(request, response, url);
     }
 
-    private String setRedirectUrl(JwtToken jwtToken) {
+    private String setRedirectUrl(String redirectURL, JwtToken jwtToken) {
         var accessToken = jwtToken.getAccessToken();
         var refreshToken = jwtToken.getRefreshToken();
-        return UriComponentsBuilder.fromUriString(frontRedirectUri)
+        return UriComponentsBuilder.fromUriString(redirectURL)
                 .queryParam("accessToken", accessToken)
                 .queryParam("refreshToken", refreshToken)
                 .build().toUriString();
