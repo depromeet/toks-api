@@ -61,9 +61,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_ACCESS_TOKEN);
             }
         }
-        else {
-            throw new SilentApplicationErrorException(ApplicationErrorType.NO_AUTHORIZATION);
-        }
         filterChain.doFilter(request, response);
     }
 
