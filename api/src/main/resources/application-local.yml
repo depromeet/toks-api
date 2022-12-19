@@ -5,6 +5,13 @@ spring:
     username:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    generate-ddl: false
+    database: mysql
+    database-platform: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
   security:
     oauth2:
       localhost: http://localhost:8080

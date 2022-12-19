@@ -4,6 +4,13 @@ spring:
     username: ENC(XZgCSKYBjOGxjU5koULVISqUMWSqaLygaIJwHEXq9ZyI2S0AQmvE97XuakgjFPMv)
     password: ENC(17+mE7X+dMMjiJu+7CuwVp2bhhwKCw85SJpBGMBAgL0STOUgszKa7Yozd1FYeCPn)
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+    generate-ddl: false
+    database: mysql
+    database-platform: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
   security:
     oauth2:
       localhost: http://localhost:3000
@@ -15,7 +22,7 @@ spring:
     restart:
       enabled: false
   redis:
-    host: ENC(cXBlIptXDX2pcubu7UkhXSHJv+dGZYLk92wWAxKXox4/7P/4OLN+UGicp2NGg8r4G+16MNwovBrrcNwgDm7XZuPbsFUiMvQONYsIzUM9d/qVwpGdgmXsFRiyi/Djw9Oq)
+    host: ENC(P17UqLHtbnPOcrTHSNcDYUMQQU6t650oGfGqDpEUnfOvjdagKLgniJMEQrPChh38Y97a7SYAVyTaSWpN/QoVNbiWVAJ4lORPTzIvMEUsHb43wYPnUj7+u0IxDP9HCkvX1jTuLrpebTfPKm4ILF/oiA==)
     port: 6379
 url:
   prefix: <dev url>
