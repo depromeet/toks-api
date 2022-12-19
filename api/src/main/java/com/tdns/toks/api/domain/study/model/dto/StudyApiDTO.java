@@ -1,5 +1,15 @@
 package com.tdns.toks.api.domain.study.model.dto;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.tdns.toks.core.common.model.entity.EnumValue;
 import com.tdns.toks.core.common.utils.EnumConvertUtil;
 import com.tdns.toks.core.common.utils.UrlConvertUtil;
@@ -8,15 +18,13 @@ import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
 import com.tdns.toks.core.domain.study.type.StudyCapacity;
 import com.tdns.toks.core.domain.user.model.dto.UserDTO;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class StudyApiDTO {
     @Builder
@@ -34,17 +42,17 @@ public class StudyApiDTO {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "description", description = "설명설명")
         private String description;
 
-        @NotEmpty(message = "시작 일자는 필수 항목 입니다.")
+        @NotNull(message = "시작 일자는 필수 항목 입니다.")
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "startDate", description = "시작 일자 yyyy-MM-dd")
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         private LocalDate startDate;
 
-        @NotEmpty(message = "종료 일자는 필수 항목 입니다.")
+        @NotNull(message = "종료 일자는 필수 항목 입니다.")
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "endDate", description = "종료 일자 yyyy-MM-dd")
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         private LocalDate endDate;
 
-        @NotEmpty(message = "스터디 규모는 필수 항목 입니다.")
+        @NotNull(message = "스터디 규모는 필수 항목 입니다.")
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "capacity", description = "스터디 규모")
         private StudyCapacity capacity;
 
