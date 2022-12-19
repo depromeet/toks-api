@@ -8,13 +8,6 @@ spring:
       enabled: true
       max-file-size: 100MB
       max-request-size: 100MB
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: validate
-    generate-ddl: false
-    database: mysql
-    database-platform: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
 
   # kakao login
   security:
