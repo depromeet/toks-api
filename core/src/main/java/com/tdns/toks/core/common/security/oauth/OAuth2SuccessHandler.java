@@ -1,6 +1,5 @@
 package com.tdns.toks.core.common.security.oauth;
 
-import com.tdns.toks.core.common.security.JwtTokenProvider;
 import com.tdns.toks.core.common.type.JwtToken;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +28,12 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+
         var userDetailDTO = (UserDetailDTO) authentication.getPrincipal();
 
         String host = "https://tokstudy.com";
 
-        if (!request.getHeader("host").equals("https://tokstudy.com")) {
+        if (!"https://tokstudy.com".equals(request.getHeader("origin"))) {
             host = local;
         }
 
