@@ -4,6 +4,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,7 +39,7 @@ public class QuizLikeController {
 		@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
 		@ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
-	public ResponseEntity<QuizLikeResponse> like(@Validated final QuizLikeRequest request) {
+	public ResponseEntity<QuizLikeResponse> like(@Validated @RequestBody final QuizLikeRequest request) {
 		var response = quizLikeApiService.like(request);
 		return ResponseDto.ok(response);
 	}

@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,7 +42,7 @@ public class QuizReplyHistoryController {
 		@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
 		@ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
-	public ResponseEntity<QuizReplyHistoryResponse> submit(@Validated final QuizReplyHistoryRequest request) {
+	public ResponseEntity<QuizReplyHistoryResponse> submit(@Validated @RequestBody final QuizReplyHistoryRequest request) {
 		var response = quizReplyHistoryApiService.submit(request);
 		return ResponseDto.ok(response);
 	}
