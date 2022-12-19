@@ -1,9 +1,12 @@
 package com.tdns.toks.core.config.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -45,6 +48,8 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
     private final OAuth2FailureHandler oAuth2FailureHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
 
+    ObjectMapper objectMapper = new ObjectMapper();
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().disable()
@@ -58,6 +63,13 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers(permitUrl).permitAll()
                     .anyRequest().authenticated()
+                .and()
+                .exceptionHandling()
+                    .authenticationEntryPoint((request, response, authException) -> {
+                            response.setContentType("application/json");
+                            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                            response.getWriter().write(objectMapper.writeValueAsString(ApplicationErrorType.NO_AUTHORIZATION));
+                    })
                 .and()
                 .oauth2Login()
                     .authorizationEndpoint()
