@@ -20,7 +20,6 @@ spring:
   security:
     front-redirect-uri: /login/kakaoauth
     oauth2:
-      front-redirect-uri: /login/kakaoauth
       client:
         registration:
           kakao:
@@ -76,8 +75,8 @@ cloud:
 
 # security
 security:
-  permit-url: /api-docs/**,/configuration/**,/swagger-ui/**,/webjars/**,/actuator/health,/swagger/**,/swagger/index.html, /login/**, /api/v1/user/renew
-  filter-skip: /actuator/health,/api-docs,/configuration,/swagger,/swagger-ui,/webjars,/swagger/**, /api/v1/user/renew
+  permit-url: /api-docs/**,/configuration/**,/swagger-ui/**,/webjars/**,/actuator/health,/swagger/**,/swagger/index.html,/login/**,/api/v1/user/renew
+  filter-skip: /actuator/health,/api-docs,/configuration,/swagger,/swagger-ui,/webjars,/swagger/**,/api/v1/user/renew,/login
 
 # swagger
 springdoc:

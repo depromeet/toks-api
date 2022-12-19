@@ -58,7 +58,6 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
-                    .loginPage("/login/social") // 추후 프론트 url 맞춰야 함
                     .authorizationEndpoint()
                     .baseUri("/oauth2/authorize")
                     .and()
@@ -104,6 +103,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowedHeaders(CORSType.CONFIGURATION.getAllowHeaders());
         configuration.setAllowedMethods(CORSType.CONFIGURATION.getAllowMethods());
         configuration.setMaxAge(CORSType.CONFIGURATION.getMaxAge());
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
