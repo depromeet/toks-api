@@ -1,13 +1,5 @@
 package com.tdns.toks.core.config.security;
 
-import com.tdns.toks.core.common.filter.ExceptionHandlerFilter;
-import com.tdns.toks.core.common.filter.JwtAuthenticationFilter;
-import com.tdns.toks.core.common.security.oauth.CustomOAuth2UserService;
-import com.tdns.toks.core.common.security.oauth.OAuth2FailureHandler;
-import com.tdns.toks.core.common.security.oauth.OAuth2SuccessHandler;
-import com.tdns.toks.core.common.service.UserDetailService;
-import com.tdns.toks.core.common.type.CORSType;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +17,16 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.tdns.toks.core.common.filter.ExceptionHandlerFilter;
+import com.tdns.toks.core.common.filter.JwtAuthenticationFilter;
+import com.tdns.toks.core.common.security.oauth.CustomOAuth2UserService;
+import com.tdns.toks.core.common.security.oauth.OAuth2FailureHandler;
+import com.tdns.toks.core.common.security.oauth.OAuth2SuccessHandler;
+import com.tdns.toks.core.common.service.UserDetailService;
+import com.tdns.toks.core.common.type.CORSType;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -100,7 +102,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     protected CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(CORSType.CONFIGURATION.getAllowOrigins());
+        configuration.setAllowedOriginPatterns(CORSType.CONFIGURATION.getAllowOrigins());
         configuration.setAllowedHeaders(CORSType.CONFIGURATION.getAllowHeaders());
         configuration.setAllowedMethods(CORSType.CONFIGURATION.getAllowMethods());
         configuration.setMaxAge(CORSType.CONFIGURATION.getMaxAge());
