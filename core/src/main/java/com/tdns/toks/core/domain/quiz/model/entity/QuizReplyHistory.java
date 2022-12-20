@@ -27,7 +27,6 @@ public class QuizReplyHistory extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	// TODO: 답변 포맷 논의
 	@Column(nullable = false, columnDefinition = "TEXT COMMENT '정답'")
 	private String answer;
 

@@ -45,8 +45,7 @@ public class Quiz extends BaseTimeEntity {
 
 	@Column(columnDefinition = "VARCHAR(255) COMMENT '퀴즈 설명'")
 	private String description;
-
-	// TODO: 정답 포맷 논의
+	
 	@Column(nullable = false, columnDefinition = "TEXT COMMENT '정답'")
 	private String answer;
 

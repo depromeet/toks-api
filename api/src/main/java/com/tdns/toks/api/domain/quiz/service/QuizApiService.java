@@ -3,11 +3,11 @@ package com.tdns.toks.api.domain.quiz.service;
 import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.*;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.tdns.toks.api.domain.quiz.model.mapper.QuizMapper;
 import com.tdns.toks.core.common.service.S3UploadService;
@@ -55,10 +55,9 @@ public class QuizApiService {
 	}
 
 	public QuizCreateResponse create(
-		final QuizRequest quizRequest,
-		final List<MultipartFile> multipartFiles
+		final QuizRequest quizRequest
 	) {
-		var urls = s3UploadService.uploadFiles(multipartFiles, UserDetailDTO.get().getId().toString());
+		var urls = s3UploadService.uploadFiles(Optional.ofNullable(quizRequest.getImageFiles()).orElse(Collections.emptyList()), UserDetailDTO.get().getId().toString());
 		val quizzes = quizService.save(mapper.toEntity(quizRequest, urls));
 		return QuizCreateResponse.toResponse(quizzes);
 	}
