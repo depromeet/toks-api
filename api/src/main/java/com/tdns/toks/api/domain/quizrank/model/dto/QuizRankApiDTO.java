@@ -13,7 +13,7 @@ public class QuizRankApiDTO {
 	@RequiredArgsConstructor
 	@Schema(name = "QuizRanksApiResponse", description = "Ranks 응답 모델")
 	public static class QuizRanksApiResponse {
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "ranks", description = "rank 리스트")
-		private final List<QuizRankDTO> quizRanksDto;
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizRanks", description = "rank 리스트")
+		private final List<QuizRankDTO> quizRanks;
 	}
 }
