@@ -28,7 +28,7 @@ public class QuizReplyHistory extends BaseTimeEntity {
 	private Long id;
 
 	// TODO: 답변 포맷 논의
-	@Column(nullable = false, columnDefinition = "JSON COMMENT '정답'")
+	@Column(nullable = false, columnDefinition = "TEXT COMMENT '정답'")
 	private String answer;
 
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '퀴즈 id'")

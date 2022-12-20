@@ -47,7 +47,7 @@ public class Quiz extends BaseTimeEntity {
 	private String description;
 
 	// TODO: 정답 포맷 논의
-	@Column(nullable = false, columnDefinition = "JSON COMMENT '정답'")
+	@Column(nullable = false, columnDefinition = "TEXT COMMENT '정답'")
 	private String answer;
 
 	@Column(nullable = false, columnDefinition = "DATETIME COMMENT '시작시간'")
