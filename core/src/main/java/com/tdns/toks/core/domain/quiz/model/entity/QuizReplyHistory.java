@@ -2,11 +2,13 @@ package com.tdns.toks.core.domain.quiz.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
 
@@ -18,14 +20,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 public class QuizReplyHistory extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	// TODO: 답변 포맷 논의
-	@Column(nullable = false, columnDefinition = "JSON COMMENT '정답'")
+	@Column(nullable = false, columnDefinition = "TEXT COMMENT '정답'")
 	private String answer;
 
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '퀴즈 id'")
