@@ -34,7 +34,7 @@ public class QuizController {
 
 	@GetMapping("/{quizId}")
 	@Operation(
-		method = "Get",
+		method = "GET",
 		summary = "퀴즈 단건 조회"
 	)
 	@ApiResponses(value = {
@@ -50,7 +50,7 @@ public class QuizController {
 
 	@GetMapping("/studies/{studyId}")
 	@Operation(
-		method = "Get",
+		method = "GET",
 		summary = "퀴즈 다건 조회"
 	)
 	@ApiResponses(value = {

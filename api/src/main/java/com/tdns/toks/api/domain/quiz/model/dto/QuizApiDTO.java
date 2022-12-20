@@ -22,38 +22,38 @@ public class QuizApiDTO {
 	@RequiredArgsConstructor
 	@Schema(name = "QuizSimpleResponse", description = "QUIZ 단일 조회 응답 모델")
 	public static class QuizSimpleResponse {
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quiz id", description = "quiz id")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizId", description = "quiz id")
 		private final Long quizId;
 
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quiz", description = "quiz")
 		private final String quiz;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quiz type", description = "quiz type")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizType", description = "quiz type")
 		private final QuizType quizType;
 
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "description", description = "description")
 		private final String description;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "started at", description = "started at")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "startedAt", description = "started at")
 		private final LocalDateTime startedAt;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "ended at", description = "ended at")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "endedAt", description = "ended at")
 		private final LocalDateTime endedAt;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "duration of second", description = "duration of second")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "durationOfSecond", description = "duration of second")
 		private final Long durationOfSecond;
 
 		@JsonFormat(timezone = "Asia/Seoul")
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "timestamp", description = "timestamp")
 		private final Timestamp timestamp;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "image urls", description = "image urls")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "imageUrls", description = "image urls")
 		private final List<String> imageUrls;
 
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "creator", description = "creator")
 		private final UserSimpleDTO creator;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "study id", description = "study id")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "studyId", description = "study id")
 		private final Long studyId;
 
 		public static QuizSimpleResponse toResponse(QuizSimpleDTO quizSimpleDTO) {
@@ -77,25 +77,25 @@ public class QuizApiDTO {
 	@RequiredArgsConstructor
 	@Schema(name = "QuizResponse", description = "QUIZ 조회 응답 모델")
 	public static class QuizResponse {
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quiz id", description = "quiz id")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizId", description = "quiz id")
 		private final Long quizId;
 
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quiz", description = "quiz")
 		private final String quiz;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quiz type", description = "quiz type")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizType", description = "quiz type")
 		private final QuizType quizType;
 
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "description", description = "description")
 		private final String description;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "started at", description = "started at")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "startedAt", description = "started at")
 		private final LocalDateTime startedAt;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "ended at", description = "ended at")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "endedAt", description = "ended at")
 		private final LocalDateTime endedAt;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "duration of second", description = "duration of second")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "durationOfSecond", description = "duration of second")
 		private final Long durationOfSecond;
 
 		@JsonFormat(timezone = "Asia/Seoul")
@@ -108,10 +108,10 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "unSubmitters", description = "unSubmitters")
 		private final List<UserSimpleDTO> unSubmitters;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "study id", description = "study id")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "studyId", description = "study id")
 		private final Long studyId;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "study id", description = "study id")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizStatus", description = "study id")
 		private final QuizStatusType quizStatus;
 
 		public static QuizResponse toResponse(QuizSimpleDTO quizSimpleDTO, List<UserSimpleDTO> unSubmitter, QuizStatusType quizStatus) {
@@ -134,9 +134,9 @@ public class QuizApiDTO {
 
 	@Getter
 	@RequiredArgsConstructor
-	@Schema(name = "QuizResponse", description = "QUIZ 조회 응답 모델")
+	@Schema(name = "QuizzesResponse", description = "QUIZ 조회 응답 모델")
 	public static class QuizzesResponse {
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizzes response", description = "quizzes response")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizzes", description = "quizzes 리스트")
 		private final List<QuizResponse> quizzes;
 	}
 
