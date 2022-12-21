@@ -2,11 +2,14 @@ package com.tdns.toks.core.domain.study.service;
 
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.StudyTag;
+import com.tdns.toks.core.domain.study.model.entity.StudyUser;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
 import com.tdns.toks.core.domain.study.repository.StudyRepository;
 import com.tdns.toks.core.domain.study.repository.StudyTagRepository;
+import com.tdns.toks.core.domain.study.repository.StudyUserRepository;
 import com.tdns.toks.core.domain.study.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,12 +18,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class StudyService {
     private final StudyRepository studyRepository;
+
+    private final StudyUserRepository studyUserRepository;
 
     private final StudyTagRepository studyTagRepository;
 
@@ -65,5 +74,18 @@ public class StudyService {
         return Tag.builder()
                 .name(keyword)
                 .build();
+    }
+
+    public Study getStudy(long studyId) {
+        return studyRepository.findById(studyId).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.COULDNT_FIND_ANY_DATA));
+    }
+
+    public StudyUser saveStudyUser(StudyUser studyUser) {
+        return studyUserRepository.save(studyUser);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existStudyUser(long userId, long studyId) {
+        return studyUserRepository.existsByUserIdAndStudyId(userId, studyId);
     }
 }

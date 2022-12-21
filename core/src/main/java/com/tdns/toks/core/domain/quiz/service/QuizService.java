@@ -72,4 +72,8 @@ public class QuizService {
         }
         return new LatestQuizSimpleDto(StudyLatestQuizStatus.CHECKED, latestQuiz.getId());
     }
+
+	public Quiz save(final Quiz quiz) {
+		return quizRepository.save(quiz);
+	}
 }

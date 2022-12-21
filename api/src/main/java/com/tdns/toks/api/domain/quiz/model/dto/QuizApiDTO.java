@@ -5,13 +5,18 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
+import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -136,5 +141,77 @@ public class QuizApiDTO {
 	public static class QuizzesResponse {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizzes", description = "quizzes 리스트")
 		private final List<QuizResponse> quizzes;
+	}
+
+	@Data
+	@Schema(name = "QuizRequest", description = "QUIZ REPLY HISTORY 생성 요청 모델")
+	public static class QuizRequest {
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quiz", description = "quiz")
+		private String quiz;
+
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizType", description = "quizType")
+		private QuizType quizType;
+
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "description", description = "description")
+		private String description;
+
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "answer", description = "answer")
+		private String answer;
+
+		@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "startedAt", description = "startedAt")
+		private LocalDateTime startedAt;
+
+		@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "endedAt", description = "endedAt")
+		private LocalDateTime endedAt;
+
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "studyId", description = "studyId")
+		private Long studyId;
+
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "imageFiles", description = "imageFiles")
+		List<MultipartFile> imageFiles;
+	}
+
+	@Getter
+	@RequiredArgsConstructor
+	@Schema(name = "QuizCreateResponse", description = "QUIZ 생성 응답 모델")
+	public static class QuizCreateResponse {
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quiz id", description = "quizId")
+		private final Long quizId;
+
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quiz", description = "quiz")
+		private final String quiz;
+
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizType", description = "quizType")
+		private final QuizType quizType;
+
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "description", description = "description")
+		private final String description;
+
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "startedAt", description = "startedAt")
+		private final LocalDateTime startedAt;
+
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "endedAt", description = "endedAt")
+		private final LocalDateTime endedAt;
+
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "imageUrls", description = "imageUrls")
+		private final List<String> imageUrls;
+
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "study id", description = "study id")
+		private final Long studyId;
+
+		public static QuizCreateResponse toResponse(Quiz quiz) {
+			return new QuizCreateResponse(
+				quiz.getId(),
+				quiz.getQuiz(),
+				quiz.getQuizType(),
+				quiz.getDescription(),
+				quiz.getStartedAt(),
+				quiz.getEndedAt(),
+				quiz.getImageUrls(),
+				quiz.getStudyId()
+			);
+		}
 	}
 }
