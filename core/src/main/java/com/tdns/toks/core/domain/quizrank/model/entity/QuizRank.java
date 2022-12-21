@@ -49,7 +49,7 @@ public class QuizRank extends BaseTimeEntity {
 		this.studyId = studyId;
 	}
 
-	public void plusScore() {
-		this.score++;
+	public void plusScore(int score) {
+		this.score += score;
 	}
 }

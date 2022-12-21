@@ -24,7 +24,7 @@ public class QuizRankService {
 	public void updateScore(final Long userId, final Long studyId) {
 		var quizRank =  quizRankRepository.findByUserIdAndStudyId(userId, studyId)
 			.orElseGet(() -> save(userId, studyId));
-		quizRank.plusScore();
+		quizRank.plusScore(1);
 	}
 
 	public QuizRank save(final Long userId, final Long studyId) {
