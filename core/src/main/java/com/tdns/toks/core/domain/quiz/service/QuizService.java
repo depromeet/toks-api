@@ -1,23 +1,21 @@
 package com.tdns.toks.core.domain.quiz.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizDTO.LatestQuizSimpleDto;
+import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
+import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.repository.QuizReplyReplyHistoryRepository;
+import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
+import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
 import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tdns.toks.core.common.exception.ApplicationErrorType;
-import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
-import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
-import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
-import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
-import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
-
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -51,7 +49,8 @@ public class QuizService {
         return QuizStatusType.IN_PROGRESS;
     }
 
-    public LatestQuizSimpleDto getLatestQuizStatus(Optional<Quiz> quiz, Long userId) {
+    public LatestQuizSimpleDto getLatestQuizStatus(Long studyId, Long userId) {
+        Optional<Quiz> quiz = quizRepository.findFirstByStudyIdOrderByCreatedAtDesc(studyId);
         if (quiz.isEmpty()) {
             return new LatestQuizSimpleDto(StudyLatestQuizStatus.CHECKED, -1L);
         }

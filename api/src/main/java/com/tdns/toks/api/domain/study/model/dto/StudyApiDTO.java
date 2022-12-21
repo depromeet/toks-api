@@ -1,15 +1,5 @@
 package com.tdns.toks.api.domain.study.model.dto;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.tdns.toks.core.common.model.entity.EnumValue;
 import com.tdns.toks.core.common.utils.EnumConvertUtil;
 import com.tdns.toks.core.common.utils.UrlConvertUtil;
@@ -19,13 +9,16 @@ import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
 import com.tdns.toks.core.domain.study.type.StudyCapacity;
 import com.tdns.toks.core.domain.user.model.dto.UserDTO;
-
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class StudyApiDTO {
     @Builder
@@ -147,5 +140,20 @@ public class StudyApiDTO {
     public static class StudiesInfoResponse{
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "studies", description = "참여 스터디 목록")
         private List<InProgressStudyInfoLight> studies;
+
+//        public static StudiesInfoResponse toResponse(List<Study> studies, LatestQuizSimpleDto latestQuizDto, List<TagDTO> tags) {
+//            List<InProgressStudyInfoLight> output = studies.stream().map(study -> {
+//                LatestQuizSimpleDto latestQuizDto =
+//                return InProgressStudyInfoLight.builder()
+//                        .id(study.getId())
+//                        .name(study.getName())
+//                        .latestQuizId(latestQuizDto.getQuizId())
+//                        .latestQuizStatus(latestQuizDto.getStudyLatestQuizStatus())
+//                        .userCount(study.getStudyUserCount())
+//                        .studyTags(tags)
+//                        .build();
+//            }).collect(Collectors.toList());
+//            return new StudiesInfoResponse(output);
+//        }
     }
 }

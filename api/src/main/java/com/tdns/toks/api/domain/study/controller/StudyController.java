@@ -1,21 +1,12 @@
 package com.tdns.toks.api.domain.study.controller;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudiesInfoResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 import com.tdns.toks.api.domain.study.service.StudyApiService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,10 +14,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "StudyController-V1", description = "STUDY API")
 @RestController
-@RequestMapping(path = "/api/v1/study", produces = "application/json")
+@RequestMapping(path = "/api/v1/studies", produces = "application/json")
 @RequiredArgsConstructor
 public class StudyController {
     private final StudyApiService studyApiService;
@@ -81,6 +75,23 @@ public class StudyController {
             @RequestParam String keyword
     ) {
         var response = studyApiService.getTagByKeyword(keyword);
+        return ResponseDto.ok(response);
+    }
+
+    @GetMapping
+    @Operation(
+            method = "GET",
+            summary = "사용자 스터디 목록 조회"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = StudiesInfoResponse.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    public ResponseEntity<StudiesInfoResponse> getUserStudies(
+    ) {
+        var response = studyApiService.getStudies();
         return ResponseDto.ok(response);
     }
 }
