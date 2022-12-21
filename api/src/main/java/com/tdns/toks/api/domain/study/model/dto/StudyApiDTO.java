@@ -140,20 +140,5 @@ public class StudyApiDTO {
     public static class StudiesInfoResponse{
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "studies", description = "참여 스터디 목록")
         private List<InProgressStudyInfoLight> studies;
-
-//        public static StudiesInfoResponse toResponse(List<Study> studies, LatestQuizSimpleDto latestQuizDto, List<TagDTO> tags) {
-//            List<InProgressStudyInfoLight> output = studies.stream().map(study -> {
-//                LatestQuizSimpleDto latestQuizDto =
-//                return InProgressStudyInfoLight.builder()
-//                        .id(study.getId())
-//                        .name(study.getName())
-//                        .latestQuizId(latestQuizDto.getQuizId())
-//                        .latestQuizStatus(latestQuizDto.getStudyLatestQuizStatus())
-//                        .userCount(study.getStudyUserCount())
-//                        .studyTags(tags)
-//                        .build();
-//            }).collect(Collectors.toList());
-//            return new StudiesInfoResponse(output);
-//        }
     }
 }

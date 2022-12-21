@@ -115,15 +115,8 @@ public class StudyApiService {
         var userStudies = userService.getUserStudies(userDTO.getId());
         return new StudiesInfoResponse(userStudies.stream().map(study -> {
             QuizDTO.LatestQuizSimpleDto latestQuizStatus = quizService.getLatestQuizStatus(study.getId(), userDTO.getId());
-            List<TagDTO> tagDTOS = tagService.getStudyTagsDTO(study.getId());
-            return InProgressStudyInfoLight.builder()
-                    .id(study.getId())
-                    .name(study.getName())
-                    .latestQuizId(latestQuizStatus.getQuizId())
-                    .latestQuizStatus(latestQuizStatus.getStudyLatestQuizStatus())
-                    .userCount(study.getStudyUserCount())
-                    .studyTags(tagDTOS)
-                    .build();
+            List<TagDTO> tags = tagService.getStudyTagsDTO(study.getId());
+            return InProgressStudyInfoLight.toDto(study, latestQuizStatus, tags);
         }).collect(Collectors.toList()));
     }
 }
