@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -69,9 +70,9 @@ public class StudyApiService {
         return Study.builder()
                 .name(studyCreateRequest.getName())
                 .description(studyCreateRequest.getDescription())
-                .startDate(studyCreateRequest.getStartDate())
-                .endDate(studyCreateRequest.getEndDate())
-                .status(StudyStatus.getStatus(studyCreateRequest.getStartDate(), studyCreateRequest.getEndDate(), LocalDate.now()))
+                .startedAt(studyCreateRequest.getStartedAt())
+                .endedAt(studyCreateRequest.getEndedAt())
+                .status(StudyStatus.getStatus(studyCreateRequest.getStartedAt(), studyCreateRequest.getEndedAt(), LocalDateTime.now()))
                 .capacity(studyCreateRequest.getCapacity())
                 .studyUserCount(0)
                 .leaderId(userId)

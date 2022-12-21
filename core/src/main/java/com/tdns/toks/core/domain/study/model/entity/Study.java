@@ -7,7 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -27,10 +27,10 @@ public class Study extends BaseTimeEntity implements Serializable {
     private String description;
 
     @Column(columnDefinition = "DATETIME COMMENT '시작 일자'")
-    private LocalDate startDate;
+    private LocalDateTime startedAt;
 
     @Column(columnDefinition = "DATETIME COMMENT '종료 일자'")
-    private LocalDate endDate;
+    private LocalDateTime endedAt;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "VARCHAR(20) COMMENT '스터디 설명'")

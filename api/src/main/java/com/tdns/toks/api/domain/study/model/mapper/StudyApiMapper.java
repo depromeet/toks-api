@@ -8,6 +8,7 @@ import com.tdns.toks.core.domain.study.type.StudyStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,9 +18,9 @@ public class StudyApiMapper {
         return Study.builder()
                 .name(studyCreateRequest.getName())
                 .description(studyCreateRequest.getDescription())
-                .startDate(studyCreateRequest.getStartDate())
-                .endDate(studyCreateRequest.getEndDate())
-                .status(StudyStatus.getStatus(studyCreateRequest.getStartDate(), studyCreateRequest.getEndDate(), LocalDate.now()))
+                .startedAt(studyCreateRequest.getStartedAt())
+                .endedAt(studyCreateRequest.getEndedAt())
+                .status(StudyStatus.getStatus(studyCreateRequest.getStartedAt(), studyCreateRequest.getEndedAt(), LocalDateTime.now()))
                 .capacity(studyCreateRequest.getCapacity())
                 .studyUserCount(0)
                 .leaderId(userId)
