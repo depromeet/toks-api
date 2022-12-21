@@ -1,6 +1,7 @@
 package com.tdns.toks.core.domain.quizrank.repository;
 
 import static com.tdns.toks.core.domain.quizrank.model.entity.QQuizRank.*;
+import static com.tdns.toks.core.domain.study.model.entity.QStudyUser.*;
 import static com.tdns.toks.core.domain.user.model.entity.QUser.*;
 
 import java.util.List;
@@ -21,7 +22,6 @@ public class CustomQuizRankRepositoryImpl implements CustomQuizRankRepository {
 	public List<QuizRankDTO> retrieveByStudyId(final Long studyId) {
 		return jpaQueryFactory.select(
 				Projections.fields(QuizRankDTO.class,
-					quizRank.id.as("quizRankId"),
 					quizRank.score.as("score"),
 					Projections.fields(UserSimpleDTO.class,
 						user.id.as("userId"),
@@ -30,11 +30,14 @@ public class CustomQuizRankRepositoryImpl implements CustomQuizRankRepository {
 					).as("user")
 				)
 			)
-			.from()
-			.where(quizRank.studyId.eq(studyId)
+			.from(quizRank)
+			.where(studyUser.studyId.eq(studyId)
 				.and(user.status.eq(UserStatus.ACTIVE)))
+			.rightJoin(studyUser)
+			.on(quizRank.studyId.eq(studyUser.studyId)
+				.and(quizRank.userId.eq(studyUser.userId)))
 			.innerJoin(user)
-			.on(quizRank.userId.eq(user.id))
+			.on(studyUser.userId.eq(user.id))
 			.orderBy(quizRank.score.desc())
 			.fetch();
 	}
