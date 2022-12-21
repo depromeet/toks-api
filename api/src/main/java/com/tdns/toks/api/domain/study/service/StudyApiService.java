@@ -59,13 +59,6 @@ public class StudyApiService {
     }
 
 
-    public TagDTO getOrCreateKeyword(TagCreateRequest tagCreateRequest) {
-        var keyword = tagCreateRequest.getKeyword().trim();
-        var tag = Optional.ofNullable(studyService.getTagByKeyword(keyword))
-                .orElseGet(() -> studyService.createTag(mapper.toEntity(tagCreateRequest.getKeyword())));
-        return TagDTO.of(tag);
-    }
-
     public void joinStudy(long studyId) {
         var userDTO = UserDetailDTO.get();
         var study = studyService.getStudy(studyId);
