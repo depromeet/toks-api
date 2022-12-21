@@ -7,6 +7,7 @@ import com.tdns.toks.core.domain.user.model.dto.UserDTO;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,6 +25,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    @Value("#{'${security.filter-skip}' .split(',')}")
+    private final List<String> filterSkipUrl;
+
+    @Value("${security.permit-url}")
+    private final String[] permitUrl;
 
     private final JwtTokenProvider jwtTokenProvider; // JWT 토큰을 생성 및 검증 모듈 클래스
     private final UserService userService;

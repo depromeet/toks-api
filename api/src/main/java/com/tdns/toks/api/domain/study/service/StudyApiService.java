@@ -40,12 +40,12 @@ public class StudyApiService {
         var userDTO = UserDetailDTO.get();
         var study = studyService.save(mapper.toEntity(studyCreateRequest, userDTO.getId()));
 
-        List<Tag> tagList = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(studyCreateRequest.getTagIdList())) {
-            tagList = studyService.getTagListByIdList(studyCreateRequest.getTagIdList());
-            studyService.saveAllStudyTag(mapper.toEntity(tagList, study.getId()));
+        List<Tag> tags = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(studyCreateRequest.getTagList())) {
+            tags = studyService.getOrCreateTagListByKeywordList(studyCreateRequest.getTagList());
+            studyService.saveAllStudyTag(mapper.toEntity(tags, study.getId()));
         }
-        return StudyApiResponse.toResponse(study, userDTO, tagList);
+        return StudyApiResponse.toResponse(study, userDTO, tags);
     }
 
     public StudyFormResponse getFormData() {
