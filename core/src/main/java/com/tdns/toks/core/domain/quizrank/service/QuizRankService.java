@@ -18,7 +18,25 @@ public class QuizRankService {
 	private final QuizRankRepository quizRankRepository;
 
 	public List<QuizRankDTO> getByStudyId(final Long studyId) {
-		return quizRankRepository.retrieveByStudyId(studyId);
+		var dto = quizRankRepository.retrieveByStudyId(studyId);
+		return calculateRank(dto);
+	}
+
+	private List<QuizRankDTO> calculateRank(final List<QuizRankDTO> dtos) {
+		int rank = 1;
+		int prevScore = 0;
+
+		for (QuizRankDTO dto : dtos) {
+			if (dto.getScore() == null) {
+				break;
+			}
+			if (dto.getScore() < prevScore) {
+				rank++;
+			}
+			dto.updateRank(rank);
+			prevScore = dto.getScore();
+		}
+		return dtos;
 	}
 
 	public void updateScore(final Long userId, final Long studyId) {
