@@ -1,15 +1,5 @@
 package com.tdns.toks.core.domain.quiz.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
-import com.tdns.toks.core.domain.quiz.model.dto.QuizDTO.LatestQuizSimpleDto;
-import com.tdns.toks.core.domain.quiz.repository.QuizReplyReplyHistoryRepository;
-import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
