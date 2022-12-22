@@ -12,14 +12,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.StudyTag;
+import com.tdns.toks.core.domain.study.model.entity.StudyUser;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
 import com.tdns.toks.core.domain.study.repository.StudyRepository;
 import com.tdns.toks.core.domain.study.repository.StudyTagRepository;
+import com.tdns.toks.core.domain.study.repository.StudyUserRepository;
 import com.tdns.toks.core.domain.study.repository.TagRepository;
-
+import com.tdns.toks.core.domain.study.type.StudyStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -28,6 +37,8 @@ public class StudyService {
     private final UserRepository userRepository;
 
     private final StudyRepository studyRepository;
+
+    private final StudyUserRepository studyUserRepository;
 
     private final StudyTagRepository studyTagRepository;
 
@@ -39,15 +50,6 @@ public class StudyService {
         return studyRepository.save(study);
     }
 
-    public Study getStudy(Long studyId) {
-        return studyRepository.getById(studyId);
-    }
-
-    @Transactional(readOnly = true)
-    public List<Tag> getTagListByIdList(List<Long> tagIdList) {
-        return tagRepository.findByIdIn(tagIdList);
-    }
-
     public List<StudyTag> saveAllStudyTag(List<StudyTag> studyTagList) {
         return studyTagRepository.saveAll(studyTagList);
     }
@@ -57,30 +59,49 @@ public class StudyService {
         return tagRepository.findByNameContaining(keyword);
     }
 
-    @Transactional(readOnly = true)
-    public Tag getTagByKeyword(String keyword) {
-        return tagRepository.findFirstByName(keyword);
-    }
-
     public Tag createTag(Tag tag) {
         return tagRepository.save(tag);
-    }
-
-    public List<Tag> getStudyTags(Long studyId) {
-        return studyTagRepository.getStudyTagsByStudyId(studyId);
     }
 
     @Transactional(readOnly = true)
     public Study getOrThrow(final Long id) {
         return studyRepository.findById(id)
-            .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
     }
 
-    public Optional<Quiz> getLatestQuiz(Long studyId) {
-        return quizRepository.findFirstByStudyIdOrderByCreatedAtDesc(studyId);
+    public List<Tag> getOrCreateTagListByKeywordList(List<String> keywordList) {
+        List<Tag> tags = tagRepository.findByNameIn(keywordList);
+        if (tags.size() != keywordList.size()) {
+            Map<String, Long> tagNameIdMap = tags.stream().collect(Collectors.toMap(Tag::getName, Tag::getId));
+            tags.addAll(keywordList.stream()
+                    .filter(keyword -> !tagNameIdMap.containsKey(keyword))
+                    .map(keyword -> createTag(convertToEntity(keyword)))
+                    .collect(Collectors.toList()));
+        }
+        return tags;
     }
 
-    public List<User> getUsersInStudy(Long studyId) {
-        return userRepository.getUsersInStudy(studyId);
+    private Tag convertToEntity(String keyword) {
+        return Tag.builder()
+                .name(keyword)
+                .build();
+    }
+
+    public Study getStudy(long studyId) {
+        return studyRepository.findById(studyId).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.COULDNT_FIND_ANY_DATA));
+    }
+
+    public StudyUser saveStudyUser(StudyUser studyUser) {
+        return studyUserRepository.save(studyUser);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existStudyUser(long userId, long studyId) {
+        return studyUserRepository.existsByUserIdAndStudyId(userId, studyId);
+    }
+
+    public boolean isFinishedStudy(Long studyId) {
+        Study study = getStudy(studyId);
+        return study.getStatus() == StudyStatus.FINISH;
     }
 }

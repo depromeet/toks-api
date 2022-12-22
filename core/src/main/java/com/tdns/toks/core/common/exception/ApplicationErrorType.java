@@ -32,9 +32,13 @@ public enum ApplicationErrorType {
     DUPLICATED_NICKNAME(HttpStatus.CONFLICT, -20011, "duplicated nickname"),
     AUTHENTICATION_FAIL(HttpStatus.UNAUTHORIZED, -20012, "authentication failed"),
     EMPTY_TOKEN(HttpStatus.BAD_REQUEST, -20013, "no token"),
+    NO_AUTHORIZATION(HttpStatus.UNAUTHORIZED, -20017, "error.no.authorization"),
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, -20014, "error.invalid.refresh.token"),
-    ALREADY_LIKE_USER_QUIZ(HttpStatus.BAD_REQUEST, -20015, "error.invalid.refresh.token"),
-    ALREADY_SUBMITTED_USER_QUIZ(HttpStatus.BAD_REQUEST, -20016, "error.invalid.refresh.token");
+    ALREADY_LIKE_USER_QUIZ(HttpStatus.BAD_REQUEST, -20015, "error.already.liked"),
+    ALREADY_SUBMITTED_USER_QUIZ(HttpStatus.BAD_REQUEST, -20016, "error.already.submitted"),
+    ALREADY_FINISH_STUDY(HttpStatus.BAD_REQUEST, -20017, "error.invalid.already-finish-study"),
+    OVER_MAX_HEADCOUNT(HttpStatus.BAD_REQUEST, -20018, "error.invalid.max-headcount"),
+    ALREADY_JOIN_USER(HttpStatus.BAD_REQUEST, -20019, "error.invalid.already-join-user");
 
     @Getter
     private HttpStatus httpStatus;

@@ -1,20 +1,35 @@
 package com.tdns.toks.api.domain.study.service;
 
+import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudiesInfoResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyDetailsResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudiesInfoResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
 import com.tdns.toks.api.domain.study.model.mapper.StudyApiMapper;
+import com.tdns.toks.core.domain.quiz.model.dto.QuizDTO;
+import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
+import com.tdns.toks.core.domain.quiz.service.QuizService;
+import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
+import com.tdns.toks.core.domain.study.model.dto.StudyDTO.InProgressStudyInfoLight;
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizDTO.LatestQuizSimpleDto;
 import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.service.QuizService;
 import com.tdns.toks.core.domain.study.model.dto.StudyDTO.InProgressStudyInfoLight;
 import com.tdns.toks.core.domain.study.model.dto.TagDTO;
 import com.tdns.toks.core.domain.study.model.entity.Study;
+import com.tdns.toks.core.domain.study.model.entity.StudyUser;
+import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
 import com.tdns.toks.core.domain.study.service.StudyService;
+import com.tdns.toks.core.domain.study.service.TagService;
+import com.tdns.toks.core.domain.study.type.StudyCapacity;
+import com.tdns.toks.core.domain.study.type.StudyStatus;
+import com.tdns.toks.core.domain.study.type.StudyUserStatus;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
+import com.tdns.toks.core.domain.user.service.UserService;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 import com.tdns.toks.core.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +37,11 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagCreateRequest;
 import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 
 @Service
@@ -43,12 +57,12 @@ public class StudyApiService {
         var userDTO = UserDetailDTO.get();
         var study = studyService.save(mapper.toEntity(studyCreateRequest, userDTO.getId()));
 
-        List<Tag> tagList = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(studyCreateRequest.getTagIdList())) {
-            tagList = studyService.getTagListByIdList(studyCreateRequest.getTagIdList());
-            studyService.saveAllStudyTag(mapper.toEntity(tagList, study.getId()));
+        List<Tag> tags = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(studyCreateRequest.getTagList())) {
+            tags = studyService.getOrCreateTagListByKeywordList(studyCreateRequest.getTagList());
+            studyService.saveAllStudyTag(mapper.toEntity(tags, study.getId()));
         }
-        return StudyApiResponse.toResponse(study, userDTO, tagList);
+        return StudyApiResponse.toResponse(study, userDTO, tags);
     }
 
     public StudyFormResponse getFormData() {
@@ -62,41 +76,65 @@ public class StudyApiService {
     }
 
 
-    public TagDTO getOrCreateKeyword(TagCreateRequest tagCreateRequest) {
-        var keyword = tagCreateRequest.getKeyword().trim();
-        var tag = Optional.ofNullable(studyService.getTagByKeyword(keyword))
-                .orElseGet(() -> studyService.createTag(mapper.toEntity(tagCreateRequest.getKeyword())));
-        return TagDTO.of(tag);
+    public void joinStudy(long studyId) {
+        var userDTO = UserDetailDTO.get();
+        var study = studyService.getStudy(studyId);
+        joinStudy(study, userDTO.getId());
+    }
+
+    private Study convertToEntity(StudyCreateRequest studyCreateRequest, Long userId) {
+        return Study.builder()
+                .name(studyCreateRequest.getName())
+                .description(studyCreateRequest.getDescription())
+                .startDate(studyCreateRequest.getStartDate())
+                .endDate(studyCreateRequest.getEndDate())
+                .status(StudyStatus.getStatus(studyCreateRequest.getStartDate(), studyCreateRequest.getEndDate(), LocalDate.now()))
+                .capacity(studyCreateRequest.getCapacity())
+                .studyUserCount(0)
+                .leaderId(userId)
+                .build();
+    }
+
+    private StudyUser convertToEntity(long userId, long studyId) {
+        return StudyUser.builder()
+                .userId(userId)
+                .studyId(studyId)
+                .status(StudyUserStatus.ACTIVE) //1차 MVP 때는 승인&수락 기능이 빠지기 때문에 ACTIVE, 추후 생성 시에는 REQUEST로 변경 예정
+                .build();
+    }
+
+    private StudyUser joinStudy(Study study, long userId) {
+        {
+            if (StudyStatus.FINISH.equals(study.getStatus())) {
+                throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_FINISH_STUDY);
+            }
+            if (StudyCapacity.headCountIsOver(study.getCapacity(), study.getStudyUserCount())) {
+                throw new SilentApplicationErrorException(ApplicationErrorType.OVER_MAX_HEADCOUNT);
+            }
+            if (studyService.existStudyUser(userId, study.getId())) {
+                throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_JOIN_USER);
+            }
+            var studyUser = studyService.saveStudyUser(convertToEntity(userId, study.getId()));
+            study.updateStudyUserCount(1);
+            return studyUser;
+        }
     }
 
     public StudiesInfoResponse getStudies() {
-        var userDTO = UserDetailDTO.get();
-        var userStudies = userService.getUserStudies(userDTO.getId());
-        return toStudyDTOs(userStudies, userDTO.getId());
-    }
-
-    private StudiesInfoResponse toStudyDTOs(List<Study> studies, Long userId) {
-
-        List<InProgressStudyInfoLight> output = studies.stream().map(study -> InProgressStudyInfoLight.builder()
-                .id(study.getId())
-                .name(study.getName())
-                //todo 근데 이거 getStudyLastestQuizInfo 2번 호출하는거 너무 빡치지만 일단 map으로 변환 -? 방법이 있을까요?
-                .latestQuizId(getStudyLatestQuizInfo(study.getId(), userId).getQuizId())
-                .latestQuizStatus(getStudyLatestQuizInfo(study.getId(), userId).getStudyLatestQuizStatus())
-                .userCount(study.getStudyUserCount())
-                .studyTags(getStudyTagsDTO(study.getId()))
-                .build()).collect(Collectors.toList());
-        return new StudiesInfoResponse(output);
-    }
-
-    private LatestQuizSimpleDto getStudyLatestQuizInfo(Long studyId, Long userId) {
-        Optional<Quiz> latestQuiz = studyService.getLatestQuiz(studyId);
-        return quizService.getLatestQuizStatus(latestQuiz, userId);
-    }
-
-    private List<TagDTO> getStudyTagsDTO(Long studyId) {
-        return studyService.getStudyTags(studyId).stream()
-                .map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
+        var userId = UserDetailDTO.get().getId();
+        var userStudies = userService.getUserStudyIds(userId);
+        return new StudiesInfoResponse(userStudies.stream()
+                .filter(studyUser -> !studyService.isFinishedStudy(studyUser.getStudyId()))
+                .map(studyUser -> {
+            Long studyId = studyUser.getStudyId();
+            Study study = studyService.getStudy(studyId);
+            List<TagDTO> tags = tagService.getStudyTagsDTO(studyId);
+            Quiz studyLatestQuiz = quizService.getStudyLatestQuiz(studyId);
+            if(studyLatestQuiz.getId() == -1){
+                return InProgressStudyInfoLight.toDto(study, new QuizDTO.LatestQuizSimpleDto(StudyLatestQuizStatus.PENDING, -1L) , tags);
+            }
+            return InProgressStudyInfoLight.toDto(study, new QuizDTO.LatestQuizSimpleDto(quizService.getStudyLatestQuizStatus(studyLatestQuiz, userId), studyLatestQuiz.getId()), tags);
+        }).collect(Collectors.toList()));
     }
 
     public StudyDetailsResponse getStudyDetails(Long studyId) {

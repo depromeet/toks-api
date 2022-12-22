@@ -16,6 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,22 +37,22 @@ public class StudyApiDTO {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "description", description = "설명설명")
         private String description;
 
-        @NotEmpty(message = "시작 일자는 필수 항목 입니다.")
+        @NotNull(message = "시작 일자는 필수 항목 입니다.")
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "startDate", description = "시작 일자 yyyy-MM-dd")
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         private LocalDate startDate;
 
-        @NotEmpty(message = "종료 일자는 필수 항목 입니다.")
+        @NotNull(message = "종료 일자는 필수 항목 입니다.")
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "endDate", description = "종료 일자 yyyy-MM-dd")
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         private LocalDate endDate;
 
-        @NotEmpty(message = "스터디 규모는 필수 항목 입니다.")
+        @NotNull(message = "스터디 규모는 필수 항목 입니다.")
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "capacity", description = "스터디 규모")
         private StudyCapacity capacity;
 
-        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "tag id list", description = "태그 id list")
-        private List<Long> tagIdList;
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "tagList", description = "tag 키워드 리스트")
+        private List<String> tagList;
 
     }
 
