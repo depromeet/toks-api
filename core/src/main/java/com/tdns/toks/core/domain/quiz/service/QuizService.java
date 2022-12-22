@@ -4,7 +4,7 @@ import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
 import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
-import com.tdns.toks.core.domain.quiz.repository.QuizReplyReplyHistoryRepository;
+import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
 import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuizService {
     private final QuizRepository quizRepository;
-    private final QuizReplyReplyHistoryRepository quizReplyReplyHistoryRepository;
+    private final QuizReplyHistoryRepository quizReplyHistoryRepository;
 
     public Quiz getOrThrow(final Long id) {
         return quizRepository.findById(id)
@@ -56,7 +56,7 @@ public class QuizService {
         QuizStatusType quizStatus = getQuizStatus(quiz.getStartedAt(), quiz.getEndedAt());
         // 퀴즈 진행 중
         if (quizStatus.equals(QuizStatusType.IN_PROGRESS)) {
-            if (quizReplyReplyHistoryRepository.existsByQuizIdAndCreatedBy(quiz.getId(), userId)) { // 푼 경우
+            if (quizReplyHistoryRepository.existsByQuizIdAndCreatedBy(quiz.getId(), userId)) { // 푼 경우
                 return StudyLatestQuizStatus.SOLVED;
             }
             return StudyLatestQuizStatus.UNSOLVED;
