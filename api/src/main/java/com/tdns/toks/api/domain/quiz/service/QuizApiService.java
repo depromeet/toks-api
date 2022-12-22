@@ -40,11 +40,12 @@ public class QuizApiService {
 		var results = new ArrayList<QuizResponse>();
 
 		for (QuizSimpleDTO quiz : quizzes) {
-			var unSubmitter = unSubmitters.stream()
+			var unSubmitter = new ArrayList<>(unSubmitters.stream()
 				.filter(userSimpleByQuizIdDTO -> userSimpleByQuizIdDTO.getQuizId().equals(quiz.getQuizId()))
 				.findFirst()
 				.map(UserSimpleByQuizIdDTO::getUsers)
-				.orElseGet(Collections::emptyList);
+				.orElseGet(Collections::emptyList));
+			unSubmitter.remove(quiz.getCreator());
 			results.add(QuizResponse.toResponse(
 				quiz,
 				unSubmitter,
