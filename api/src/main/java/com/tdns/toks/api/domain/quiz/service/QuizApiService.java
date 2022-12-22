@@ -13,8 +13,9 @@ import com.tdns.toks.api.domain.quiz.model.mapper.QuizMapper;
 import com.tdns.toks.core.common.service.S3UploadService;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
 import com.tdns.toks.core.domain.quiz.service.QuizService;
+import com.tdns.toks.core.domain.study.service.StudyUserService;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
-import com.tdns.toks.core.domain.user.service.UserService;
+import com.tdns.toks.core.domain.user.model.dto.UserSimpleByQuizIdDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -24,7 +25,7 @@ import lombok.val;
 @Transactional
 public class QuizApiService {
 	private final QuizService quizService;
-	private final UserService userService;
+	private final StudyUserService studyUserService;
 	private final S3UploadService s3UploadService;
 
 	private final QuizMapper mapper;
@@ -34,7 +35,7 @@ public class QuizApiService {
 	}
 
 	public QuizzesResponse getAllByStudyId(final Long studyId) {
-		var unSubmitters = userService.filterUnSubmitterByStudyId(studyId);
+		var unSubmitters = studyUserService.filterUnSubmitterByStudyId(studyId);
 		var quizzes = quizService.retrieveByStudyId(studyId);
 		var results = new ArrayList<QuizResponse>();
 
@@ -42,8 +43,8 @@ public class QuizApiService {
 			var unSubmitter = unSubmitters.stream()
 				.filter(userSimpleByQuizIdDTO -> userSimpleByQuizIdDTO.getQuizId().equals(quiz.getQuizId()))
 				.findFirst()
-				.get()
-				.getUsers();
+				.map(UserSimpleByQuizIdDTO::getUsers)
+				.orElseGet(Collections::emptyList);
 			results.add(QuizResponse.toResponse(
 				quiz,
 				unSubmitter,
