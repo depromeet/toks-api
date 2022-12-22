@@ -4,7 +4,6 @@ import com.tdns.toks.api.domain.study.model.mapper.StudyApiMapper;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizDTO;
-import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.service.QuizService;
 import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
 import com.tdns.toks.core.domain.study.model.dto.StudyDTO.InProgressStudyInfoLight;
@@ -115,10 +114,10 @@ public class StudyApiService {
         return new StudiesInfoResponse(userStudies.stream()
                 .filter(studyUser -> !studyService.isFinishedStudy(studyUser.getStudyId()))
                 .map(studyUser -> {
-            Long studyId = studyUser.getStudyId();
-            Study study = studyService.getStudy(studyId);
-            List<TagDTO> tags = tagService.getStudyTagsDTO(studyId);
-            Quiz studyLatestQuiz = quizService.getStudyLatestQuiz(studyId);
+            var studyId = studyUser.getStudyId();
+            var study = studyService.getStudy(studyId);
+            var tags = tagService.getStudyTagsDTO(studyId);
+            var studyLatestQuiz = quizService.getStudyLatestQuiz(studyId);
             if(studyLatestQuiz.getId() == -1){
                 return InProgressStudyInfoLight.toDto(study, new QuizDTO.LatestQuizSimpleDto(StudyLatestQuizStatus.PENDING, -1L) , tags);
             }
@@ -129,7 +128,7 @@ public class StudyApiService {
     public StudyDetailsResponse getStudyDetails(Long studyId) {
         var users = studyService.getUsersInStudy(studyId).stream()
                 .map(user -> UserSimpleDTO.toDto(user)).collect(Collectors.toList());
-        List<TagDTO> tags = tagService.getStudyTagsDTO(studyId);
+        var tags = tagService.getStudyTagsDTO(studyId);
         var study = studyService.getStudy(studyId);
         return StudyDetailsResponse.toResponse(study, users, tags);
     }
