@@ -1,26 +1,27 @@
 package com.tdns.toks.core.domain.user.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.common.security.JwtTokenProvider;
+import com.tdns.toks.core.domain.study.model.entity.StudyUser;
+import com.tdns.toks.core.domain.study.repository.StudyUserRepository;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleByQuizIdDTO;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final StudyUserRepository studyUserRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional(readOnly = true)
@@ -57,6 +58,11 @@ public class UserService {
     public void deleteRefreshToken(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
         user.setRefreshToken("logout");
+    }
+
+
+    public List<StudyUser> getUserStudyIds(Long userId) {
+        return studyUserRepository.findAllByUserId(userId);
     }
 
     public List<UserSimpleByQuizIdDTO> filterUnSubmitterByStudyId(Long studyId) {
