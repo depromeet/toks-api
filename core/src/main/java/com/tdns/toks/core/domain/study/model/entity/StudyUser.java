@@ -19,16 +19,16 @@ import java.io.Serializable;
 public class StudyUser extends BaseTimeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "스터디 유저 번호")
+    @Column(name = "id", columnDefinition = "BIGINT COMMENT '스터디 유저 번호'")
     private Long id;
 
-    @Column(name = "user_id", columnDefinition = "유저 번호")
+    @Column(name = "user_id", columnDefinition = "BIGINT COMMENT '유저 번호'")
     private Long userId;
 
-    @Column(name = "study_id", columnDefinition = "스터디 번호")
+    @Column(name = "study_id", columnDefinition = "BIGINT COMMENT '스터디 번호'")
     private Long studyId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, columnDefinition = "스터디 유저 상태")
+    @Column(name = "status", nullable = false, columnDefinition = "VARCHAR(10) COMMENT '스터디 유저 상태'")
     private StudyUserStatus status;
 }
