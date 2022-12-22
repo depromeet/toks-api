@@ -38,8 +38,8 @@ public class CustomQuizRankRepositoryImpl implements CustomQuizRankRepository {
 				.and(quizRank.userId.eq(studyUser.userId)))
 			.innerJoin(user)
 			.on(studyUser.userId.eq(user.id))
-			.orderBy(user.nickname.asc())
 			.orderBy(quizRank.score.desc())
+			.orderBy(user.nickname.asc())
 			.fetch();
 	}
 }
