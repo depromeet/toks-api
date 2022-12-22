@@ -45,6 +45,7 @@ public class QuizApiService {
 					.findFirst()
 					.map(UserSimpleByQuizIdDTO::getUsers)
 					.orElseGet(Collections::emptyList));
+				// 퀴즈 출제자는 퀴즈 답변을 출제할 수 없으므로, 미제출자에서 제외
 				unSubmitter.remove(quiz.getCreator());
 
 				return QuizResponse.toResponse(
