@@ -11,4 +11,6 @@ public interface StudyUserRepository extends JpaRepository<StudyUser, Long> {
     boolean existsByUserIdAndStudyId(long userId, long studyId);
 
     List<StudyUser> findAllByUserId(long userId);
+
+    List<StudyUser> findAllByStudyId(long studyId);
 }

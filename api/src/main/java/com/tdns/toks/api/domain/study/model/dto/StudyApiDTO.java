@@ -9,6 +9,7 @@ import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
 import com.tdns.toks.core.domain.study.type.StudyCapacity;
 import com.tdns.toks.core.domain.user.model.dto.UserDTO;
+import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -140,5 +141,45 @@ public class StudyApiDTO {
     public static class StudiesInfoResponse{
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "studies", description = "참여 스터디 목록")
         private List<InProgressStudyInfoLight> studies;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @Builder
+    @Schema(name = "StudyDetailsResponse", description = "스터디 상세 정보 반환 모델")
+    public static class StudyDetailsResponse{
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "id", description = "스터디 id")
+        private Long id;
+
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "name", description = "스터디 이름")
+        private String name;
+
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "description", description = "스터디 설명")
+        private String description;
+
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "startDate", description = "2022-11-12")
+        private LocalDate startDate;
+
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "endDate", description = "2022-12-21")
+        private LocalDate endDate;
+
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "users", description = "참여중인 사용자 목록")
+        private List<UserSimpleDTO> users;
+
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "tags", description = "스터디 태그 목록")
+        private List<TagDTO> tags;
+
+        public static StudyDetailsResponse toResponse(Study study, List<UserSimpleDTO> users, List<TagDTO> tags) {
+            return StudyDetailsResponse.builder()
+                    .id(study.getId())
+                    .name(study.getName())
+                    .description(study.getDescription())
+                    .startDate(study.getStartDate())
+                    .endDate(study.getEndDate())
+                    .users(users)
+                    .tags(tags)
+                    .build();
+        }
     }
 }

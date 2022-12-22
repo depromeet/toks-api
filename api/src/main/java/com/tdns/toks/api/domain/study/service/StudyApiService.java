@@ -1,17 +1,12 @@
 package com.tdns.toks.api.domain.study.service;
 
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudiesInfoResponse;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
 import com.tdns.toks.api.domain.study.model.mapper.StudyApiMapper;
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizDTO;
-import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.service.QuizService;
 import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
 import com.tdns.toks.core.domain.study.model.dto.StudyDTO.InProgressStudyInfoLight;
-import com.tdns.toks.core.common.exception.ApplicationErrorType;
-import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.study.model.dto.TagDTO;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.StudyUser;
@@ -22,6 +17,7 @@ import com.tdns.toks.core.domain.study.type.StudyCapacity;
 import com.tdns.toks.core.domain.study.type.StudyStatus;
 import com.tdns.toks.core.domain.study.type.StudyUserStatus;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
+import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 import com.tdns.toks.core.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -33,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.*;
 
 @Service
 @RequiredArgsConstructor
@@ -41,9 +37,9 @@ import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 public class StudyApiService {
     private final StudyService studyService;
     private final UserService userService;
-    private final QuizService quizService;
     private final TagService tagService;
     private final StudyApiMapper mapper;
+    private final QuizService quizService;
 
     public StudyApiResponse createStudy(StudyCreateRequest studyCreateRequest) {
         var userDTO = UserDetailDTO.get();
@@ -118,14 +114,22 @@ public class StudyApiService {
         return new StudiesInfoResponse(userStudies.stream()
                 .filter(studyUser -> !studyService.isFinishedStudy(studyUser.getStudyId()))
                 .map(studyUser -> {
-            Long studyId = studyUser.getStudyId();
-            Study study = studyService.getStudy(studyId);
-            List<TagDTO> tags = tagService.getStudyTagsDTO(studyId);
-            Quiz studyLatestQuiz = quizService.getStudyLatestQuiz(studyId);
+            var studyId = studyUser.getStudyId();
+            var study = studyService.getStudy(studyId);
+            var tags = tagService.getStudyTagsDTO(studyId);
+            var studyLatestQuiz = quizService.getStudyLatestQuiz(studyId);
             if(studyLatestQuiz.getId() == -1){
                 return InProgressStudyInfoLight.toDto(study, new QuizDTO.LatestQuizSimpleDto(StudyLatestQuizStatus.PENDING, -1L) , tags);
             }
             return InProgressStudyInfoLight.toDto(study, new QuizDTO.LatestQuizSimpleDto(quizService.getStudyLatestQuizStatus(studyLatestQuiz, userId), studyLatestQuiz.getId()), tags);
         }).collect(Collectors.toList()));
+    }
+
+    public StudyDetailsResponse getStudyDetails(Long studyId) {
+        var users = studyService.getUsersInStudy(studyId).stream()
+                .map(user -> UserSimpleDTO.toDto(user)).collect(Collectors.toList());
+        var tags = tagService.getStudyTagsDTO(studyId);
+        var study = studyService.getStudy(studyId);
+        return StudyDetailsResponse.toResponse(study, users, tags);
     }
 }
