@@ -7,7 +7,11 @@ import lombok.Getter;
 @Getter
 public class QuizRankDTO {
 
-	private Long quizRankId;
 	private Integer score;
+	private Integer rank;
 	private UserSimpleDTO user;
+
+	public void updateRank(Integer rank) {
+		this.rank = rank;
+	}
 }

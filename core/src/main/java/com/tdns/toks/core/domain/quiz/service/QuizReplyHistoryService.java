@@ -1,24 +1,22 @@
 package com.tdns.toks.core.domain.quiz.service;
 
-import java.util.List;
-
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizReplyHistoryDto;
 import com.tdns.toks.core.domain.quiz.model.entity.QuizReplyHistory;
-import com.tdns.toks.core.domain.quiz.repository.QuizReplyReplyHistoryRepository;
-
+import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class QuizReplyHistoryService {
-	private final QuizReplyReplyHistoryRepository quizReplyHistoryRepository;
+	private final QuizReplyHistoryRepository quizReplyHistoryRepository;
 
 	public QuizReplyHistory save(final QuizReplyHistory quizReplyHistory) {
 		return quizReplyHistoryRepository.save(quizReplyHistory);
