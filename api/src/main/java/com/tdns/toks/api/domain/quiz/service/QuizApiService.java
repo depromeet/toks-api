@@ -5,13 +5,13 @@ import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tdns.toks.api.domain.quiz.model.mapper.QuizMapper;
 import com.tdns.toks.core.common.service.S3UploadService;
-import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
 import com.tdns.toks.core.domain.quiz.service.QuizService;
 import com.tdns.toks.core.domain.study.service.StudyUserService;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
@@ -37,21 +37,22 @@ public class QuizApiService {
 	public QuizzesResponse getAllByStudyId(final Long studyId) {
 		var unSubmitters = studyUserService.filterUnSubmitterByStudyId(studyId);
 		var quizzes = quizService.retrieveByStudyId(studyId);
-		var results = new ArrayList<QuizResponse>();
 
-		for (QuizSimpleDTO quiz : quizzes) {
-			var unSubmitter = new ArrayList<>(unSubmitters.stream()
-				.filter(userSimpleByQuizIdDTO -> userSimpleByQuizIdDTO.getQuizId().equals(quiz.getQuizId()))
-				.findFirst()
-				.map(UserSimpleByQuizIdDTO::getUsers)
-				.orElseGet(Collections::emptyList));
-			unSubmitter.remove(quiz.getCreator());
-			results.add(QuizResponse.toResponse(
-				quiz,
-				unSubmitter,
-				quizService.getQuizStatus(quiz.getStartedAt(), quiz.getEndedAt()))
-			);
-		}
+		var results = quizzes.stream()
+			.map(quiz -> {
+				var unSubmitter = new ArrayList<>(unSubmitters.stream()
+					.filter(userSimpleByQuizIdDTO -> userSimpleByQuizIdDTO.getQuizId().equals(quiz.getQuizId()))
+					.findFirst()
+					.map(UserSimpleByQuizIdDTO::getUsers)
+					.orElseGet(Collections::emptyList));
+				unSubmitter.remove(quiz.getCreator());
+
+				return QuizResponse.toResponse(
+					quiz,
+					unSubmitter,
+					quizService.getQuizStatus(quiz.getStartedAt(), quiz.getEndedAt()));
+			})
+			.collect(Collectors.toList());
 
 		return new QuizzesResponse(results);
 	}
