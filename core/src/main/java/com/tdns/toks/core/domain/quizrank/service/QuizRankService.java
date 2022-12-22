@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tdns.toks.core.domain.quizrank.model.dto.QuizRankDTO;
+import com.tdns.toks.core.domain.quizrank.model.entity.QuizRank;
 import com.tdns.toks.core.domain.quizrank.repository.QuizRankRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,15 @@ public class QuizRankService {
 			prevScore = dto.getScore();
 		}
 		return dtos;
+	}
+
+	public void updateScore(final Long userId, final Long studyId) {
+		var quizRank =  quizRankRepository.findByUserIdAndStudyId(userId, studyId)
+			.orElseGet(() -> save(userId, studyId));
+		quizRank.plusScore(1);
+	}
+
+	public QuizRank save(final Long userId, final Long studyId) {
+		return quizRankRepository.save(QuizRank.of(0, userId, studyId));
 	}
 }
