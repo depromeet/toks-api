@@ -10,7 +10,7 @@ import com.tdns.toks.core.domain.user.type.UserProvider;
 import com.tdns.toks.core.domain.user.type.UserStatus;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>, UserCustomRepository {
+public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     boolean existsByNickname(String Nickname);
