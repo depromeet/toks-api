@@ -6,7 +6,9 @@ import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
 import com.tdns.toks.api.domain.study.model.mapper.StudyApiMapper;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizDTO;
+import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.service.QuizService;
+import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
 import com.tdns.toks.core.domain.study.model.dto.StudyDTO.InProgressStudyInfoLight;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
@@ -111,12 +113,19 @@ public class StudyApiService {
     }
 
     public StudiesInfoResponse getStudies() {
-        var userDTO = UserDetailDTO.get();
-        var userStudies = userService.getUserStudies(userDTO.getId());
-        return new StudiesInfoResponse(userStudies.stream().map(study -> {
-            QuizDTO.LatestQuizSimpleDto latestQuizStatus = quizService.getLatestQuizStatus(study.getId(), userDTO.getId());
-            List<TagDTO> tags = tagService.getStudyTagsDTO(study.getId());
-            return InProgressStudyInfoLight.toDto(study, latestQuizStatus, tags);
+        var userId = UserDetailDTO.get().getId();
+        var userStudies = userService.getUserStudyIds(userId);
+        return new StudiesInfoResponse(userStudies.stream()
+                .filter(studyUser -> !studyService.isFinishedStudy(studyUser.getStudyId()))
+                .map(studyUser -> {
+            Long studyId = studyUser.getStudyId();
+            Study study = studyService.getStudy(studyId);
+            List<TagDTO> tags = tagService.getStudyTagsDTO(studyId);
+            Quiz studyLatestQuiz = quizService.getStudyLatestQuiz(studyId);
+            if(studyLatestQuiz.getId() == -1){
+                return InProgressStudyInfoLight.toDto(study, new QuizDTO.LatestQuizSimpleDto(StudyLatestQuizStatus.PENDING, -1L) , tags);
+            }
+            return InProgressStudyInfoLight.toDto(study, new QuizDTO.LatestQuizSimpleDto(quizService.getStudyLatestQuizStatus(studyLatestQuiz, userId), studyLatestQuiz.getId()), tags);
         }).collect(Collectors.toList()));
     }
 }
