@@ -60,22 +60,8 @@ public class UserService {
         user.setRefreshToken("logout");
     }
 
-
     public List<StudyUser> getUserStudyIds(Long userId) {
         return studyUserRepository.findAllByUserId(userId);
-    }
-
-    public List<UserSimpleByQuizIdDTO> filterUnSubmitterByStudyId(Long studyId) {
-        var submitters = userRepository.retrieveSubmittedByStudyId(studyId);
-        var participants = userRepository.retrieveParticipantByStudyId(studyId);
-        var result = new ArrayList<UserSimpleByQuizIdDTO>();
-
-        for (UserSimpleByQuizIdDTO submitter : submitters) {
-            var unSubmitters = new ArrayList<>(participants);
-            unSubmitters.removeAll(submitter.getUsers());
-            result.add(new UserSimpleByQuizIdDTO(submitter.getQuizId(), unSubmitters));
-        }
-        return result;
     }
 
     private boolean isNicknameDuplicated(String nickname) {

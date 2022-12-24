@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface StudyUserRepository extends JpaRepository<StudyUser, Long> {
+public interface StudyUserRepository extends JpaRepository<StudyUser, Long>, StudyUserCustomRepository {
     boolean existsByUserIdAndStudyId(long userId, long studyId);
 
     List<StudyUser> findAllByUserId(long userId);

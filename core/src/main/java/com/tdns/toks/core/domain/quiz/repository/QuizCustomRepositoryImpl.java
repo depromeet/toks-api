@@ -66,6 +66,7 @@ public class QuizCustomRepositoryImpl implements QuizCustomRepository {
 			.where(quiz1.studyId.eq(studyId))
 			.innerJoin(user)
 			.on(quiz1.createdBy.eq(user.id))
+			.orderBy(quiz1.createdAt.desc())
 			.fetch();
 	}
 }
