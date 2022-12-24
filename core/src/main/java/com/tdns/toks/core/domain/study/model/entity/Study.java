@@ -33,11 +33,11 @@ public class Study extends BaseTimeEntity implements Serializable {
     private LocalDateTime endedAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "VARCHAR(20) COMMENT '스터디 설명'")
+    @Column(nullable = false, columnDefinition = "VARCHAR(20) COMMENT '스터디 상태'")
     private StudyStatus status;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "VARCHAR(10) COMMENT '스터디 설명'")
+    @Column(nullable = false, columnDefinition = "VARCHAR(10) COMMENT '스터디 인원'")
     private StudyCapacity capacity;
 
     @Column(nullable = false, columnDefinition = "TINYINT COMMENT '스터디 참여 중인 인원'")

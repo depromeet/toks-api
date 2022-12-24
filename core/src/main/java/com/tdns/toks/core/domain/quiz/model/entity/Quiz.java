@@ -76,15 +76,35 @@ public class Quiz extends BaseTimeEntity {
 		final List<String> imageUrls,
 		final Long studyId
 	) {
-		return Quiz.builder()
-			.quiz(quiz)
-			.quizType(quizType)
-			.description(description)
-			.answer(answer)
-			.startedAt(startedAt)
-			.endedAt(endedAt)
-			.imageUrls(imageUrls)
-			.studyId(studyId)
-			.build();
+		return new Quiz(
+			quiz,
+			quizType,
+			description,
+			answer,
+			startedAt,
+			endedAt,
+			imageUrls,
+			studyId
+		);
+	}
+
+	public Quiz(
+		final String quiz,
+		final QuizType quizType,
+		final String description,
+		final String answer,
+		final LocalDateTime startedAt,
+		final LocalDateTime endedAt,
+		final List<String> imageUrls,
+		final Long studyId
+	) {
+		this.quiz = quiz;
+		this.quizType = quizType;
+		this.description = description;
+		this.answer = answer;
+		this.startedAt = startedAt;
+		this.endedAt = endedAt;
+		this.imageUrls = imageUrls;
+		this.studyId = studyId;
 	}
 }

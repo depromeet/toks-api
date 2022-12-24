@@ -1,17 +1,9 @@
 package com.tdns.toks.core.domain.study.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
+import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.StudyTag;
 import com.tdns.toks.core.domain.study.model.entity.StudyUser;
@@ -20,16 +12,23 @@ import com.tdns.toks.core.domain.study.repository.StudyRepository;
 import com.tdns.toks.core.domain.study.repository.StudyTagRepository;
 import com.tdns.toks.core.domain.study.repository.StudyUserRepository;
 import com.tdns.toks.core.domain.study.repository.TagRepository;
+import com.tdns.toks.core.domain.study.type.StudyStatus;
+import com.tdns.toks.core.domain.user.model.entity.User;
+import com.tdns.toks.core.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class StudyService {
+    private final UserRepository userRepository;
+
     private final StudyRepository studyRepository;
 
     private final StudyUserRepository studyUserRepository;
@@ -37,6 +36,8 @@ public class StudyService {
     private final StudyTagRepository studyTagRepository;
 
     private final TagRepository tagRepository;
+
+    private final QuizRepository quizRepository;
 
     public Study save(Study study) {
         return studyRepository.save(study);
@@ -90,5 +91,17 @@ public class StudyService {
     @Transactional(readOnly = true)
     public boolean existStudyUser(long userId, long studyId) {
         return studyUserRepository.existsByUserIdAndStudyId(userId, studyId);
+    }
+
+    public boolean isFinishedStudy(Long studyId) {
+        Study study = getStudy(studyId);
+        return study.getStatus() == StudyStatus.FINISH;
+    }
+
+    public List<User> getUsersInStudy(Long studyId) {
+        return studyUserRepository.findAllByStudyId(studyId).stream()
+                .map(studyUser -> userRepository.findById(studyUser.getUserId())
+                        .orElseThrow(()->new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER)))
+                .collect(Collectors.toList());
     }
 }
