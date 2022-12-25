@@ -6,6 +6,7 @@ import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizDTO;
 import com.tdns.toks.core.domain.quiz.service.QuizService;
 import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
+import com.tdns.toks.core.domain.study.model.dto.StudyDTO;
 import com.tdns.toks.core.domain.study.model.dto.StudyDTO.InProgressStudyInfoLight;
 import com.tdns.toks.core.domain.study.model.dto.TagDTO;
 import com.tdns.toks.core.domain.study.model.entity.Study;
@@ -24,7 +25,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -132,5 +132,18 @@ public class StudyApiService {
         var tags = tagService.getStudyTagsDTO(studyId);
         var study = studyService.getStudy(studyId);
         return StudyDetailsResponse.toResponse(study, users, tags);
+    }
+
+    public FinishedStudiesInfoResponse getFinishedStudies() {
+        var userId = UserDetailDTO.get().getId();
+        var userFinishedStudies = userService.getUserStudyIds(userId);
+        return new FinishedStudiesInfoResponse(userFinishedStudies.stream()
+                .filter(finishedStudy -> studyService.isFinishedStudy(finishedStudy.getStudyId()))
+                .map(finishedStudy -> {
+                    var studyId = finishedStudy.getStudyId();
+                    var study = studyService.getStudy(studyId);
+                    var tags = tagService.getStudyTagsDTO(studyId);
+                    return StudyDTO.FinishedStudyInfoLight.toDto(study, tags);
+                }).collect(Collectors.toList()));
     }
 }

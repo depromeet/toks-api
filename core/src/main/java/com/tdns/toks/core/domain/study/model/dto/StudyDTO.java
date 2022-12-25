@@ -33,4 +33,23 @@ public class StudyDTO {
                     .build();
         }
     }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class FinishedStudyInfoLight {
+        private Long id;
+        private String name;
+        private Integer userCount;
+        private List<TagDTO> studyTags;
+
+        public static FinishedStudyInfoLight toDto(Study study, List<TagDTO> tags) {
+            return FinishedStudyInfoLight.builder()
+                    .id(study.getId())
+                    .name(study.getName())
+                    .userCount(study.getStudyUserCount())
+                    .studyTags(tags)
+                    .build();
+        }
+    }
 }
