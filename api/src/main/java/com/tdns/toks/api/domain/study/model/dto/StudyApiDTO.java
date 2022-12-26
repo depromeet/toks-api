@@ -87,7 +87,7 @@ public class StudyApiDTO {
 
         private UserDTO user;
 
-        private List<TagDTO> tagList;
+        private List<TagDTO> tags;
 
         public static StudyApiResponse toResponse(Study study, UserDTO userDTO, List<Tag> tagList) {
             StudyApiResponse response = new StudyApiResponse();
@@ -99,7 +99,7 @@ public class StudyApiDTO {
             response.capacity = study.getCapacity();
             response.inviteUrl = UrlConvertUtil.convertToInviteUrl(study.getId());
             response.user = userDTO;
-            response.tagList = tagList.stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
+            response.tags = tagList.stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
             return response;
         }
     }
