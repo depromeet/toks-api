@@ -1,23 +1,8 @@
 package com.tdns.toks.api.domain.study.controller;
 
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.*;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudiesInfoResponse;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.tdns.toks.api.domain.study.service.StudyApiService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
-import com.tdns.toks.core.domain.study.model.dto.TagDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -29,8 +14,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -148,6 +131,24 @@ public class StudyController {
             @PathVariable final Long studyId
     ) {
         var response = studyApiService.getStudyDetails(studyId);
+        return ResponseDto.ok(response);
+    }
+
+    @GetMapping("/{studyId}/enter")
+    @Operation(
+            method = "GET",
+            summary = "참여 스터디 정보 조회"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = StudyEntranceDetailsResponse.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    public ResponseEntity<StudyEntranceDetailsResponse> getStudyEntranceDetails(
+            @PathVariable final Long studyId
+    ) {
+        var response = studyApiService.getStudyEntranceDetails(studyId);
         return ResponseDto.ok(response);
     }
 }
