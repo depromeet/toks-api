@@ -88,7 +88,7 @@ public class StudyApiDTO {
 
         private UserDTO user;
 
-        private List<TagDTO> tagList;
+        private List<TagDTO> tags;
 
         public static StudyApiResponse toResponse(Study study, UserDTO userDTO, List<Tag> tagList) {
             StudyApiResponse response = new StudyApiResponse();
@@ -100,7 +100,7 @@ public class StudyApiDTO {
             response.capacity = study.getCapacity();
             response.inviteUrl = UrlConvertUtil.convertToInviteUrl(study.getId());
             response.user = userDTO;
-            response.tagList = tagList.stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
+            response.tags = tagList.stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
             return response;
         }
     }
@@ -191,6 +191,46 @@ public class StudyApiDTO {
                     .startedAt(study.getStartedAt())
                     .endedAt(study.getEndedAt())
                     .users(users)
+                    .tags(tags)
+                    .build();
+        }
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @Builder
+    @Schema(name = "StudyEntranceDetailsResponse", description = "참여 스터디 정보 반환 모델")
+    public static class StudyEntranceDetailsResponse{
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "id", description = "스터디 id")
+        private Long id;
+
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "name", description = "스터디 이름")
+        private String name;
+
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "description", description = "스터디 설명")
+        private String description;
+
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "startedAt", description = "시작 일자 ex: 2000-10-31T01:30:00.000-05:00")
+        private LocalDateTime startedAt;
+
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "endedAt", description = "종료 일자 ex: 2000-10-31T01:30:00.000-05:00")
+        private LocalDateTime endedAt;
+
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "capacity", description = "SMALL || MEDIUM || LARGE")
+        private StudyCapacity capacity;
+
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "tags", description = "스터디 태그 목록")
+        private List<TagDTO> tags;
+
+        public static StudyEntranceDetailsResponse toResponse(Study study, List<TagDTO> tags) {
+            return StudyEntranceDetailsResponse.builder()
+                    .id(study.getId())
+                    .name(study.getName())
+                    .description(study.getDescription())
+                    .capacity(study.getCapacity())
+                    .startedAt(study.getStartedAt())
+                    .endedAt(study.getEndedAt())
                     .tags(tags)
                     .build();
         }

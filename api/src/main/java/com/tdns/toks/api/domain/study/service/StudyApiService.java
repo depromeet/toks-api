@@ -134,6 +134,12 @@ public class StudyApiService {
         return StudyDetailsResponse.toResponse(study, users, tags);
     }
 
+    public StudyEntranceDetailsResponse getStudyEntranceDetails(Long studyId) {
+        var tags = tagService.getStudyTagsDTO(studyId);
+        var study = studyService.getStudy(studyId);
+        return StudyEntranceDetailsResponse.toResponse(study, tags);
+    }
+
     public FinishedStudiesInfoResponse getFinishedStudies() {
         var userId = UserDetailDTO.get().getId();
         var userFinishedStudies = userService.getUserStudyIds(userId);

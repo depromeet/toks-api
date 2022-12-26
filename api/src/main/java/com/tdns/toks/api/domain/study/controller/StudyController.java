@@ -134,6 +134,24 @@ public class StudyController {
         return ResponseDto.ok(response);
     }
 
+    @GetMapping("/{studyId}/enter")
+    @Operation(
+            method = "GET",
+            summary = "참여 스터디 정보 조회"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = StudyEntranceDetailsResponse.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    public ResponseEntity<StudyEntranceDetailsResponse> getStudyEntranceDetails(
+            @PathVariable final Long studyId
+    ) {
+        var response = studyApiService.getStudyEntranceDetails(studyId);
+        return ResponseDto.ok(response);
+    }
+
     @GetMapping("/finished")
     @Operation(
             method = "GET",
