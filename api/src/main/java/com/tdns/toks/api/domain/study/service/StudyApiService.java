@@ -7,7 +7,7 @@ import com.tdns.toks.core.domain.quiz.model.dto.QuizDTO;
 import com.tdns.toks.core.domain.quiz.service.QuizService;
 import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
 import com.tdns.toks.core.domain.study.model.dto.StudyDTO;
-import com.tdns.toks.core.domain.study.model.dto.StudyDTO.InProgressStudyInfoLight;
+import com.tdns.toks.core.domain.study.model.dto.StudyDTO.StudyInfoLight;
 import com.tdns.toks.core.domain.study.model.dto.TagDTO;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.StudyUser;
@@ -109,21 +109,30 @@ public class StudyApiService {
         }
     }
 
-    public StudiesInfoResponse getStudies() {
+    public StudiesInfoResponse getAllStudies() {
+        var userId = UserDetailDTO.get().getId();
+        var userStudies = userService.getUserStudyIds(userId);
+        return new StudiesInfoResponse(userStudies.stream()
+                .map(this::convertToResponse).collect(Collectors.toList()));
+    }
+
+    public StudiesInfoResponse getInProgressStudies() {
         var userId = UserDetailDTO.get().getId();
         var userStudies = userService.getUserStudyIds(userId);
         return new StudiesInfoResponse(userStudies.stream()
                 .filter(studyUser -> !studyService.isFinishedStudy(studyUser.getStudyId()))
-                .map(studyUser -> {
-            var studyId = studyUser.getStudyId();
-            var study = studyService.getStudy(studyId);
-            var tags = tagService.getStudyTagsDTO(studyId);
-            var studyLatestQuiz = quizService.getStudyLatestQuiz(studyId);
-            if(studyLatestQuiz.getId() == -1){
-                return InProgressStudyInfoLight.toDto(study, new QuizDTO.LatestQuizSimpleDto(StudyLatestQuizStatus.PENDING, -1L) , tags);
-            }
-            return InProgressStudyInfoLight.toDto(study, new QuizDTO.LatestQuizSimpleDto(quizService.getStudyLatestQuizStatus(studyLatestQuiz, userId), studyLatestQuiz.getId()), tags);
-        }).collect(Collectors.toList()));
+                .map(this::convertToResponse).collect(Collectors.toList()));
+    }
+
+    public StudyInfoLight convertToResponse(StudyUser studyUser) {
+        var studyId = studyUser.getStudyId();
+        var study = studyService.getStudy(studyId);
+        var tags = tagService.getStudyTagsDTO(studyId);
+        var studyLatestQuiz = quizService.getStudyLatestQuiz(studyId);
+        if (studyLatestQuiz.getId() == -1) {
+            return StudyInfoLight.toDto(study, new QuizDTO.LatestQuizSimpleDto(StudyLatestQuizStatus.PENDING, -1L), tags);
+        }
+        return StudyInfoLight.toDto(study, new QuizDTO.LatestQuizSimpleDto(quizService.getStudyLatestQuizStatus(studyLatestQuiz, studyUser.getUserId()), studyLatestQuiz.getId()), tags);
     }
 
     public StudyDetailsResponse getStudyDetails(Long studyId) {

@@ -14,7 +14,7 @@ public class StudyDTO {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class InProgressStudyInfoLight{
+    public static class StudyInfoLight {
         private Long id;
         private String name;
         private Integer userCount;
@@ -22,8 +22,8 @@ public class StudyDTO {
         private StudyLatestQuizStatus latestQuizStatus;
         private List<TagDTO> studyTags;
 
-        public static InProgressStudyInfoLight toDto(Study study, LatestQuizSimpleDto latestQuizSimpleDto, List<TagDTO> tags) {
-            return InProgressStudyInfoLight.builder()
+        public static StudyInfoLight toDto(Study study, LatestQuizSimpleDto latestQuizSimpleDto, List<TagDTO> tags) {
+            return StudyInfoLight.builder()
                     .id(study.getId())
                     .name(study.getName())
                     .latestQuizId(latestQuizSimpleDto.getQuizId())
