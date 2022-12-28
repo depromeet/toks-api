@@ -116,7 +116,7 @@ public class StudyController {
         return ResponseDto.ok(response);
     }
 
-    @GetMapping("in-progress")
+    @GetMapping("/in-progress")
     @Operation(
             method = "GET",
             summary = "진행중 사용자 스터디 목록 조회"
