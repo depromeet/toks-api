@@ -33,7 +33,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String host = "https://tokstudy.com";
 
-        if (!"https://tokstudy.com".equals(request.getHeader("origin"))) {
+        String referer = request.getHeader("Referer");
+        if (referer == null || !referer.contains("https://tokstudy.com")) {
             host = local;
         }
 
