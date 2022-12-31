@@ -1,9 +1,7 @@
 package com.tdns.toks.core.domain.quiz.type;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
 public enum QuizType {
 
