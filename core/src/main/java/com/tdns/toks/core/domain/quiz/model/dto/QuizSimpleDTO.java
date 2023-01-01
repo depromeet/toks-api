@@ -12,7 +12,7 @@ import lombok.Getter;
 public class QuizSimpleDTO {
 	private Long quizId;
 
-	private String quiz;
+	private String question;
 
 	private QuizType quizType;
 
@@ -28,5 +28,5 @@ public class QuizSimpleDTO {
 
 	private Long studyId;
 
-	private Long quizRound;
+	private Integer round;
 }

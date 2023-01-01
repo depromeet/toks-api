@@ -37,7 +37,7 @@ public class Quiz extends BaseTimeEntity {
 	private Long id;
 
 	@Column(nullable = false, columnDefinition = "VARCHAR(255) COMMENT '퀴즈'")
-	private String quiz;
+	private String question;
 
 	@Column(nullable = false, columnDefinition = "VARCHAR(10) COMMENT '퀴즈 타입'")
 	@Enumerated(EnumType.STRING)
@@ -62,43 +62,49 @@ public class Quiz extends BaseTimeEntity {
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '스터디 id'")
 	private Long studyId;
 
+	@Column(nullable = false, columnDefinition = "TINYINT COMMENT '퀴즈 회차'")
+	private Integer round;
+
 	@CreatedBy
 	@Column(nullable = false, columnDefinition = "BIGINT COMMENT '생성자'")
 	private Long createdBy;
 
 	public static Quiz of(
-		final String quiz,
+		final String question,
 		final QuizType quizType,
 		final String description,
 		final String answer,
 		final LocalDateTime startedAt,
 		final LocalDateTime endedAt,
 		final List<String> imageUrls,
-		final Long studyId
+		final Long studyId,
+		final Integer round
 	) {
 		return new Quiz(
-			quiz,
+			question,
 			quizType,
 			description,
 			answer,
 			startedAt,
 			endedAt,
 			imageUrls,
-			studyId
+			studyId,
+			round
 		);
 	}
 
 	public Quiz(
-		final String quiz,
+		final String question,
 		final QuizType quizType,
 		final String description,
 		final String answer,
 		final LocalDateTime startedAt,
 		final LocalDateTime endedAt,
 		final List<String> imageUrls,
-		final Long studyId
+		final Long studyId,
+		final Integer round
 	) {
-		this.quiz = quiz;
+		this.question = question;
 		this.quizType = quizType;
 		this.description = description;
 		this.answer = answer;
@@ -106,5 +112,6 @@ public class Quiz extends BaseTimeEntity {
 		this.endedAt = endedAt;
 		this.imageUrls = imageUrls;
 		this.studyId = studyId;
+		this.round = round;
 	}
 }

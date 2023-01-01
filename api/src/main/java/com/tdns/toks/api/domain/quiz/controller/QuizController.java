@@ -74,7 +74,7 @@ public class QuizController {
 		@ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
 	public ResponseEntity<QuizCreateResponse> create(
-		 @Validated  @ModelAttribute QuizRequest quizRequest
+		 @Validated @ModelAttribute QuizRequest quizRequest
 	) {
 		var response = quizApiService.create(quizRequest);
 		return ResponseDto.ok(response);

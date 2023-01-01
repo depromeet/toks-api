@@ -30,8 +30,8 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizId", description = "quiz id")
 		private final Long quizId;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quiz", description = "quiz")
-		private final String quiz;
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "question", description = "question")
+		private final String question;
 
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizType", description = "quiz type")
 		private final QuizType quizType;
@@ -61,13 +61,13 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "studyId", description = "study id")
 		private final Long studyId;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizRound", description = "quiz round")
-		private final Long quizRound;
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "round", description = "round")
+		private final Integer round;
 
 		public static QuizSimpleResponse toResponse(QuizSimpleDTO quizSimpleDTO) {
 			return new QuizSimpleResponse(
 				quizSimpleDTO.getQuizId(),
-				quizSimpleDTO.getQuiz(),
+				quizSimpleDTO.getQuestion(),
 				quizSimpleDTO.getQuizType(),
 				quizSimpleDTO.getDescription(),
 				quizSimpleDTO.getStartedAt(),
@@ -77,7 +77,7 @@ public class QuizApiDTO {
 				quizSimpleDTO.getImageUrls(),
 				quizSimpleDTO.getCreator(),
 				quizSimpleDTO.getStudyId(),
-				quizSimpleDTO.getQuizRound()
+				quizSimpleDTO.getRound()
 			);
 		}
 	}
@@ -89,8 +89,8 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizId", description = "quiz id")
 		private final Long quizId;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quiz", description = "quiz")
-		private final String quiz;
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "question", description = "question")
+		private final String question;
 
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizType", description = "quiz type")
 		private final QuizType quizType;
@@ -123,13 +123,13 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizStatus", description = "study id")
 		private final QuizStatusType quizStatus;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizRound", description = "quiz round")
-		private final Long quizRound;
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "round", description = "round")
+		private final Integer round;
 
 		public static QuizResponse toResponse(QuizSimpleDTO quizSimpleDTO, List<UserSimpleDTO> unSubmitter, QuizStatusType quizStatus) {
 			return new QuizResponse(
 				quizSimpleDTO.getQuizId(),
-				quizSimpleDTO.getQuiz(),
+				quizSimpleDTO.getQuestion(),
 				quizSimpleDTO.getQuizType(),
 				quizSimpleDTO.getDescription(),
 				quizSimpleDTO.getStartedAt(),
@@ -140,7 +140,7 @@ public class QuizApiDTO {
 				unSubmitter,
 				quizSimpleDTO.getStudyId(),
 				quizStatus,
-				quizSimpleDTO.getQuizRound()
+				quizSimpleDTO.getRound()
 			);
 		}
 	}
@@ -157,8 +157,8 @@ public class QuizApiDTO {
 	@Schema(name = "QuizRequest", description = "QUIZ REPLY HISTORY 생성 요청 모델")
 	public static class QuizRequest {
 		@NotNull(message = "퀴즈 답변은 필수 항목입니다.")
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quiz", description = "quiz")
-		private String quiz;
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "question", description = "question")
+		private String question;
 
 		@NotNull(message = "퀴즈 타입은 필수 항목입니다.")
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizType", description = "quizType")
@@ -186,6 +186,10 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "studyId", description = "studyId")
 		private Long studyId;
 
+		@NotNull(message = "round는 필수 항목입니다.")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "round", description = "round")
+		private Integer round;
+
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "imageFiles", description = "imageFiles")
 		List<MultipartFile> imageFiles;
 	}
@@ -197,8 +201,8 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quiz id", description = "quizId")
 		private final Long quizId;
 
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quiz", description = "quiz")
-		private final String quiz;
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "question", description = "question")
+		private final String question;
 
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizType", description = "quizType")
 		private final QuizType quizType;
@@ -218,16 +222,20 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "study id", description = "study id")
 		private final Long studyId;
 
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "round", description = "round")
+		private final Integer round;
+
 		public static QuizCreateResponse toResponse(Quiz quiz) {
 			return new QuizCreateResponse(
 				quiz.getId(),
-				quiz.getQuiz(),
+				quiz.getQuestion(),
 				quiz.getQuizType(),
 				quiz.getDescription(),
 				quiz.getStartedAt(),
 				quiz.getEndedAt(),
 				quiz.getImageUrls(),
-				quiz.getStudyId()
+				quiz.getStudyId(),
+				quiz.getRound()
 			);
 		}
 	}
