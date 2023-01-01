@@ -16,10 +16,10 @@ public enum StudyStatus implements EnumModel{
     public static StudyStatus getStatus(LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime now) {
         if (now.isBefore(startedAt)) {
             return READY;
-        } else if (endedAt.isBefore(now)) {
-            return IN_PROGRESS;
-        } else {
+        } else if (now.isAfter(endedAt)) {
             return FINISH;
+        } else {
+            return IN_PROGRESS;
         }
     }
 
