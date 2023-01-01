@@ -4,6 +4,7 @@ import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.*;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -73,7 +74,7 @@ public class QuizController {
 		@ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
 	public ResponseEntity<QuizCreateResponse> create(
-		@ModelAttribute QuizRequest quizRequest
+		 @Validated @ModelAttribute QuizRequest quizRequest
 	) {
 		var response = quizApiService.create(quizRequest);
 		return ResponseDto.ok(response);
