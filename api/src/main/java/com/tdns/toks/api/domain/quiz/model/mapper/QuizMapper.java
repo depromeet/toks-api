@@ -15,14 +15,15 @@ public class QuizMapper {
 		final List<String> urls
 	) {
 		return Quiz.of(
-			request.getQuiz(),
+			request.getQuestion(),
 			request.getQuizType(),
 			request.getDescription(),
 			request.getAnswer(),
 			request.getStartedAt(),
 			request.getEndedAt(),
 			urls,
-			request.getStudyId()
+			request.getStudyId(),
+			request.getRound()
 		);
 	}
 }

@@ -52,14 +52,14 @@ public class StudyUserCustomRepositoryImpl implements StudyUserCustomRepository 
 				.from(studyUser)
 				.where(studyUser.studyId.eq(studyId)
 					.and(user.status.eq(UserStatus.ACTIVE))
-					.and(quiz1.studyId.eq(studyId)))
+					.and(quiz.studyId.eq(studyId)))
 				.innerJoin(user)
 				.on(studyUser.userId.eq(user.id))
-				.leftJoin(quiz1)
-				.on(studyUser.studyId.eq(quiz1.studyId))
-				.transform(groupBy(quiz1.id).as(
+				.leftJoin(quiz)
+				.on(studyUser.studyId.eq(quiz.studyId))
+				.transform(groupBy(quiz.id).as(
 					Projections.fields(UserSimpleByQuizIdDTO.class,
-						quiz1.id.as("quizId"),
+						quiz.id.as("quizId"),
 						list(Projections.fields(UserSimpleDTO.class,
 							user.id.as("userId"),
 							user.nickname.as("nickname"),

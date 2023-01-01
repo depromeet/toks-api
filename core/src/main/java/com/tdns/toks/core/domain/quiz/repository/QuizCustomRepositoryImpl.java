@@ -21,14 +21,15 @@ public class QuizCustomRepositoryImpl implements QuizCustomRepository {
 	public Optional<QuizSimpleDTO> retrieveById(Long id) {
 		return Optional.ofNullable(jpaQueryFactory.select(
 				Projections.fields(QuizSimpleDTO.class,
-					quiz1.id.as("quizId"),
-					quiz1.quiz.as("quiz"),
-					quiz1.quizType.as("quizType"),
-					quiz1.description.as("description"),
-					quiz1.startedAt.as("startedAt"),
-					quiz1.endedAt.as("endedAt"),
-					quiz1.imageUrls.as("imageUrls"),
-					quiz1.studyId.as("studyId"),
+					quiz.id.as("quizId"),
+					quiz.question.as("question"),
+					quiz.quizType.as("quizType"),
+					quiz.description.as("description"),
+					quiz.startedAt.as("startedAt"),
+					quiz.endedAt.as("endedAt"),
+					quiz.imageUrls.as("imageUrls"),
+					quiz.studyId.as("studyId"),
+					quiz.round.as("round"),
 					Projections.fields(UserSimpleDTO.class,
 						user.id.as("userId"),
 						user.nickname.as("nickname"),
@@ -36,10 +37,10 @@ public class QuizCustomRepositoryImpl implements QuizCustomRepository {
 					).as("creator")
 				)
 			)
-			.from(quiz1)
-			.where(quiz1.id.eq(id))
+			.from(quiz)
+			.where(quiz.id.eq(id))
 			.innerJoin(user)
-			.on(quiz1.createdBy.eq(user.id))
+			.on(quiz.createdBy.eq(user.id))
 			.fetchOne());
 	}
 
@@ -47,14 +48,15 @@ public class QuizCustomRepositoryImpl implements QuizCustomRepository {
 	public List<QuizSimpleDTO> retrieveByStudyId(Long studyId) {
 		return jpaQueryFactory.select(
 				Projections.fields(QuizSimpleDTO.class,
-					quiz1.id.as("quizId"),
-					quiz1.quiz.as("quiz"),
-					quiz1.quizType.as("quizType"),
-					quiz1.description.as("description"),
-					quiz1.startedAt.as("startedAt"),
-					quiz1.endedAt.as("endedAt"),
-					quiz1.imageUrls.as("imageUrls"),
-					quiz1.studyId.as("studyId"),
+					quiz.id.as("quizId"),
+					quiz.question.as("question"),
+					quiz.quizType.as("quizType"),
+					quiz.description.as("description"),
+					quiz.startedAt.as("startedAt"),
+					quiz.endedAt.as("endedAt"),
+					quiz.imageUrls.as("imageUrls"),
+					quiz.studyId.as("studyId"),
+					quiz.round.as("round"),
 					Projections.fields(UserSimpleDTO.class,
 						user.id.as("userId"),
 						user.nickname.as("nickname"),
@@ -62,11 +64,12 @@ public class QuizCustomRepositoryImpl implements QuizCustomRepository {
 					).as("creator")
 				)
 			)
-			.from(quiz1)
-			.where(quiz1.studyId.eq(studyId))
+			.from(quiz)
+			.where(quiz.studyId.eq(studyId))
 			.innerJoin(user)
-			.on(quiz1.createdBy.eq(user.id))
-			.orderBy(quiz1.createdAt.desc())
+			.on(quiz.createdBy.eq(user.id))
+			.orderBy(quiz.round.desc())
+			.orderBy(quiz.createdAt.desc())
 			.fetch();
 	}
 }
