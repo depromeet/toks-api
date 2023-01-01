@@ -8,6 +8,33 @@ spring:
       enabled: true
       max-file-size: 100MB
       max-request-size: 100MB
+  quartz:
+    enabled: true
+    scheduler-name: toks-api-scheduler
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: never
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: toks-api-scheduler
+            instanceId: AUTO
+          jobStore:
+            dataSource: toks-api
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            useProperties: true
+            tablePrefix: QRTZ_
+            misfireThreshold: 60000
+            clusterCheckinInterval: 1000
+            isClustered: true
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+    wait-for-jobs-to-complete-on-shutdown: true
 
   # kakao login
   security:

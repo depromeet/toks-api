@@ -29,6 +29,12 @@ dependencies {
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
     implementation "com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasyptVersion}"
+
+    /* quartz 관련 */
+    implementation 'org.springframework.boot:spring-boot-starter-quartz'
+    implementation 'com.mchange:c3p0:0.9.5.5'
+
+    implementation 'org.json:json:20220924'
 }
 
 test {

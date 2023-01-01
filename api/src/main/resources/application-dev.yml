@@ -24,6 +24,23 @@ spring:
   redis:
     host: ENC(P17UqLHtbnPOcrTHSNcDYUMQQU6t650oGfGqDpEUnfOvjdagKLgniJMEQrPChh38Y97a7SYAVyTaSWpN/QoVNbiWVAJ4lORPTzIvMEUsHb43wYPnUj7+u0IxDP9HCkvX1jTuLrpebTfPKm4ILF/oiA==)
     port: 6379
+  quartz:
+    enabled: true
+    scheduler-name: toks-api-scheduler
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: never
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: toks-api-scheduler
+          dataSource:
+            toks-api:
+              driver: com.mysql.cj.jdbc.Driver
+              url: ENC(en7/4fExjy595I898lm8B3ctoWtvIZoGVdcMoSctjBGBn2LmTuG9588zCrKzjvwK/B9704N3NmJL05W/BEutO5tkQffoybsHmJghWwTiZ0y4FsQSwY9oBQ6+3edZrkTip9xtxlnkDfs6p8FmDTfWRBYxQPcAnJuHKHePGmh9d8E=)
+              username: ENC(XZgCSKYBjOGxjU5koULVISqUMWSqaLygaIJwHEXq9ZyI2S0AQmvE97XuakgjFPMv)
+              password: ENC(17+mE7X+dMMjiJu+7CuwVp2bhhwKCw85SJpBGMBAgL0STOUgszKa7Yozd1FYeCPn)
 url:
   prefix: <dev url>
   study-path: /study

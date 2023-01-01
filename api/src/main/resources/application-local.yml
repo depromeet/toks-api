@@ -22,6 +22,23 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
+  quartz:
+    enabled: true
+    scheduler-name: toks-api-scheduler
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: never
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: toks-api-scheduler
+          dataSource:
+            toks-api:
+              driver: com.mysql.cj.jdbc.Driver
+              URL: jdbc:mysql://localhost:3306/tdsn
+              user:
+              password:
 url:
   prefix: http://localhost:822 #임시 프론트 url 확인 필요
   study-path: /study
