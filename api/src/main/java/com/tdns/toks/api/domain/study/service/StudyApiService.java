@@ -50,6 +50,7 @@ public class StudyApiService {
             tags = studyService.getOrCreateTagListByKeywordList(studyCreateRequest.getTagList());
             studyService.saveAllStudyTag(mapper.toEntity(tags, study.getId()));
         }
+        joinStudy(study, userDTO.getId());
         return StudyApiResponse.toResponse(study, userDTO, tags);
     }
 
