@@ -3,7 +3,8 @@ package com.tdns.toks.api.domain.study.model.dto;
 import com.tdns.toks.core.common.model.entity.EnumValue;
 import com.tdns.toks.core.common.utils.EnumConvertUtil;
 import com.tdns.toks.core.common.utils.UrlConvertUtil;
-import com.tdns.toks.core.domain.study.model.dto.StudyDTO;
+import com.tdns.toks.core.domain.study.model.dto.StudyDTO.FinishedStudyInfoLight;
+import com.tdns.toks.core.domain.study.model.dto.StudyDTO.StudyInfoLight;
 import com.tdns.toks.core.domain.study.model.dto.TagDTO;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
@@ -142,7 +143,17 @@ public class StudyApiDTO {
     @Schema(name = "StudiesInfoResponse", description = "사용자 스터디 목록 반환 모델")
     public static class StudiesInfoResponse{
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "studies", description = "참여 스터디 목록")
-        private List<StudyDTO.InProgressStudyInfoLight> studies;
+        private List<StudyInfoLight> studies;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    @Schema(name = "FinishedStudiesInfoResponse", description = "사용자 종료된 스터디 목록 반환 모델")
+    public static class FinishedStudiesInfoResponse{
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "finishedStudies", description = "종료된 참여 스터디 목록")
+        private List<FinishedStudyInfoLight> finishedStudies;
     }
 
     @AllArgsConstructor

@@ -102,7 +102,7 @@ public class StudyController {
     @GetMapping
     @Operation(
             method = "GET",
-            summary = "사용자 스터디 목록 조회"
+            summary = "사용자 모든 스터디 목록 조회"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = StudiesInfoResponse.class))}),
@@ -110,9 +110,43 @@ public class StudyController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
-    public ResponseEntity<StudiesInfoResponse> getUserStudies(
+    public ResponseEntity<StudiesInfoResponse> getUserAllStudies(
     ) {
-        var response = studyApiService.getStudies();
+        var response = studyApiService.getAllStudies();
+        return ResponseDto.ok(response);
+    }
+
+    @GetMapping("/in-progress")
+    @Operation(
+            method = "GET",
+            summary = "진행중 사용자 스터디 목록 조회"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = StudiesInfoResponse.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    public ResponseEntity<StudiesInfoResponse> getUserInProgressStudies(
+    ) {
+        var response = studyApiService.getInProgressStudies();
+        return ResponseDto.ok(response);
+    }
+
+    @GetMapping("/finished")
+    @Operation(
+            method = "GET",
+            summary = "사용자 종료된 스터디 목록 조회"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = FinishedStudiesInfoResponse.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    public ResponseEntity<FinishedStudiesInfoResponse> getUserFinishedStudies(
+    ) {
+        var response = studyApiService.getFinishedStudies();
         return ResponseDto.ok(response);
     }
 
