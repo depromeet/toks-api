@@ -19,20 +19,20 @@ public class StudyDTO {
         private Long id;
         private String name;
         private Integer userCount;
-        private StudyStatus studyStatus;
+        private StudyStatus status;
         private Long latestQuizId;
         private StudyLatestQuizStatus latestQuizStatus;
-        private List<TagDTO> studyTags;
+        private List<TagDTO> tags;
 
         public static StudyInfoLight toDto(Study study, LatestQuizSimpleDto latestQuizSimpleDto, List<TagDTO> tags) {
             return StudyInfoLight.builder()
                     .id(study.getId())
                     .name(study.getName())
-                    .studyStatus(study.getStatus())
+                    .status(study.getStatus())
                     .latestQuizId(latestQuizSimpleDto.getQuizId())
                     .latestQuizStatus(latestQuizSimpleDto.getStudyLatestQuizStatus())
                     .userCount(study.getStudyUserCount())
-                    .studyTags(tags)
+                    .tags(tags)
                     .build();
         }
     }
