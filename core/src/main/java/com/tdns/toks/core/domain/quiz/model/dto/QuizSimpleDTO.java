@@ -27,4 +27,6 @@ public class QuizSimpleDTO {
 	private UserSimpleDTO creator;
 
 	private Long studyId;
+
+	private Long quizRound;
 }
