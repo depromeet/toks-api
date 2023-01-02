@@ -8,6 +8,7 @@ import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
 import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
+import com.tdns.toks.core.domain.study.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class QuizService {
+    private final StudyRepository studyRepository;
     private final QuizRepository quizRepository;
     private final QuizReplyHistoryRepository quizReplyHistoryRepository;
 
@@ -71,6 +73,7 @@ public class QuizService {
     }
 
 	public Quiz save(final Quiz quiz) {
+        studyRepository.getById(quiz.getStudyId()).updateLatestQuizRound();
 		return quizRepository.save(quiz);
 	}
 }

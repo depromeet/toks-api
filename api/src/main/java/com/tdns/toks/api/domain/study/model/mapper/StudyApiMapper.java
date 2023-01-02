@@ -7,7 +7,6 @@ import com.tdns.toks.core.domain.study.model.entity.Tag;
 import com.tdns.toks.core.domain.study.type.StudyStatus;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +23,7 @@ public class StudyApiMapper {
                 .capacity(studyCreateRequest.getCapacity())
                 .studyUserCount(0)
                 .leaderId(userId)
+                .latestQuizRound(0)
                 .build();
     }
 
