@@ -59,13 +59,13 @@ public class QuizApiService {
 	}
 
 	public QuizCreateResponse create(
-		final QuizRequest quizRequest // TODO validation 추가
+		final QuizRequest request
 	) {
 		var urls = s3UploadService.uploadFiles(
-			Optional.ofNullable(quizRequest.getImageFiles()).orElse(Collections.emptyList()),
+			Optional.ofNullable(request.getImageFiles()).orElse(Collections.emptyList()),
 			UserDetailDTO.get().getId().toString()
 		);
-		val quizzes = quizService.save(mapper.toEntity(quizRequest, urls));
+		val quizzes = quizService.save(mapper.toEntity(request, urls));
 		return QuizCreateResponse.toResponse(quizzes);
 	}
 }

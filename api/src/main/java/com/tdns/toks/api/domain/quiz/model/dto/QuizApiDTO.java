@@ -164,8 +164,7 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizType", description = "quizType")
 		private QuizType quizType;
 
-		@NotNull(message = "퀴즈 설명은 필수 항목입니다.")
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "description", description = "description")
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "description", description = "description")
 		private String description;
 
 		@NotNull(message = "퀴즈 답변은 필수 항목입니다.")
@@ -178,9 +177,8 @@ public class QuizApiDTO {
 		private LocalDateTime startedAt;
 
 		@NotNull(message = "퀴즈 종료시간은 필수 항목입니다.")
-		@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "endedAt", description = "endedAt")
-		private LocalDateTime endedAt;
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "durationOfSecond", description = "durationOfSecond")
+		private Long durationOfSecond;
 
 		@NotNull(message = "study id는 필수 항목입니다.")
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "studyId", description = "studyId")
