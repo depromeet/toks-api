@@ -1,5 +1,11 @@
 package com.tdns.toks.core.domain.quiz.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
@@ -9,12 +15,8 @@ import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
 import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
 import com.tdns.toks.core.domain.study.repository.StudyRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional

@@ -20,7 +20,7 @@ public class QuizMapper {
 			request.getDescription(),
 			request.getAnswer(),
 			request.getStartedAt(),
-			request.getEndedAt(),
+			request.getStartedAt().plusSeconds(request.getDurationOfSecond()),
 			urls,
 			request.getStudyId(),
 			request.getRound()
