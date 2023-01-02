@@ -45,9 +45,8 @@ public class QuizReplyHistoryCustomRepositoryImpl implements QuizReplyHistoryCus
 				.and(user.status.eq(UserStatus.ACTIVE)))
 			.innerJoin(user)
 			.on(quizReplyHistory.createdBy.eq(user.id))
-			.innerJoin(quizLike)
+			.innerJoin(quizLike) // FIXME: 투표한 사람이 없는 경우, join 불가
 			.on(quizReplyHistory.id.eq(quizLike.quizReplyHistoryId))
-			.orderBy(quizReplyHistory.count().desc())
 			.orderBy(getOrderSpecifier(pageable.getSort()).toArray(OrderSpecifier[]::new))
 			.groupBy(quizReplyHistory.id)
 			.fetch();
@@ -56,12 +55,24 @@ public class QuizReplyHistoryCustomRepositoryImpl implements QuizReplyHistoryCus
 	private List<OrderSpecifier> getOrderSpecifier(Sort sort) {
 		List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
 		sort.forEach(order -> {
-				Order direction = order.isAscending() ? Order.ASC : Order.DESC;
-				String prop = order.getProperty();
+			Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+			String prop = order.getProperty();
 
-				PathBuilder orderByExpression = new PathBuilder(QuizReplyHistory.class, "quizReplyHistory");
-				orderSpecifiers.add(new OrderSpecifier(direction, orderByExpression.get(prop)));
-			});
+			if (prop.equals("likeNumber")) {
+				orderSpecifiers.add(getNumberLikeOrderSpecifier(direction));
+				return;
+			}
+
+		PathBuilder orderByExpression = new PathBuilder(QuizReplyHistory.class, "quizReplyHistory");
+			orderSpecifiers.add(new OrderSpecifier(direction, orderByExpression.get(prop)));
+		});
 		return orderSpecifiers;
+	}
+
+	private OrderSpecifier getNumberLikeOrderSpecifier(Order order) {
+		if (order == Order.ASC) {
+			return quizReplyHistory.count().asc();
+		}
+		return quizReplyHistory.count().desc();
 	}
 }
