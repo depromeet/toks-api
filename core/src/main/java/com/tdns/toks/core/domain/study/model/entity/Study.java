@@ -46,7 +46,14 @@ public class Study extends BaseTimeEntity implements Serializable {
     @Column(columnDefinition = "BIGINT COMMENT '스터디장 user_id'")
     private Long leaderId;
 
+    @Column(columnDefinition = "TINYINT COMMENT '최신 스터디 회차'")
+    private Integer latestQuizRound;
+
     public void updateStudyUserCount(int count) {
         this.studyUserCount += count;
+    }
+
+    public void updateLatestQuizRound() {
+        this.latestQuizRound += 1;
     }
 }

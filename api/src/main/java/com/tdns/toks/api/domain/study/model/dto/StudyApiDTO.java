@@ -183,6 +183,9 @@ public class StudyApiDTO {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "tags", description = "스터디 태그 목록")
         private List<TagDTO> tags;
 
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "latestQuizRound", description = "최신 스터디 회차")
+        private Integer latestQuizRound;
+
         public static StudyDetailsResponse toResponse(Study study, List<UserSimpleDTO> users, List<TagDTO> tags) {
             return StudyDetailsResponse.builder()
                     .id(study.getId())
@@ -192,6 +195,7 @@ public class StudyApiDTO {
                     .endedAt(study.getEndedAt())
                     .users(users)
                     .tags(tags)
+                    .latestQuizRound(study.getLatestQuizRound())
                     .build();
         }
     }
