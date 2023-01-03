@@ -1,26 +1,25 @@
 package com.tdns.toks.api.domain.quiz.model.dto;
 
-import java.sql.Timestamp;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
 import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME;
 
 public class QuizApiDTO {
 	@Getter
@@ -172,7 +171,8 @@ public class QuizApiDTO {
 		private String answer;
 
 		@NotNull(message = "퀴즈 시작시간은 필수 항목입니다.")
-		@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+//		@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+		@DateTimeFormat(iso = DATE_TIME)
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "startedAt", description = "startedAt")
 		private LocalDateTime startedAt;
 
