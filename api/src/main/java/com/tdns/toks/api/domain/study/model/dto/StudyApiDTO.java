@@ -9,6 +9,7 @@ import com.tdns.toks.core.domain.study.model.dto.TagDTO;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
 import com.tdns.toks.core.domain.study.type.StudyCapacity;
+import com.tdns.toks.core.domain.study.type.StudyProgress;
 import com.tdns.toks.core.domain.user.model.dto.UserDTO;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -186,6 +187,9 @@ public class StudyApiDTO {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "latestQuizRound", description = "최신 스터디 회차")
         private Integer latestQuizRound;
 
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "progress", description = "스터디 진행도")
+        private StudyProgress progress;
+
         public static StudyDetailsResponse toResponse(Study study, List<UserSimpleDTO> users, List<TagDTO> tags) {
             return StudyDetailsResponse.builder()
                     .id(study.getId())
@@ -196,6 +200,7 @@ public class StudyApiDTO {
                     .users(users)
                     .tags(tags)
                     .latestQuizRound(study.getLatestQuizRound())
+                    .progress(StudyProgress.getProgress(study.getStartedAt(), study.getEndedAt(), LocalDateTime.now()))
                     .build();
         }
     }
