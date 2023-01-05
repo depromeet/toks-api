@@ -125,7 +125,10 @@ public class QuizApiDTO {
 		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "round", description = "round")
 		private final Integer round;
 
-		public static QuizResponse toResponse(QuizSimpleDTO quizSimpleDTO, List<UserSimpleDTO> unSubmitter, QuizStatusType quizStatus) {
+		@Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "isMyQuiz", description = "퀴즈 생성자 여부")
+		private final boolean isMyQuiz;
+
+		public static QuizResponse toResponse(QuizSimpleDTO quizSimpleDTO, List<UserSimpleDTO> unSubmitter, QuizStatusType quizStatus, boolean isMyQuiz) {
 			return new QuizResponse(
 				quizSimpleDTO.getQuizId(),
 				quizSimpleDTO.getQuestion(),
@@ -139,7 +142,8 @@ public class QuizApiDTO {
 				unSubmitter,
 				quizSimpleDTO.getStudyId(),
 				quizStatus,
-				quizSimpleDTO.getRound()
+				quizSimpleDTO.getRound(),
+				isMyQuiz
 			);
 		}
 	}

@@ -37,6 +37,7 @@ public class QuizApiService {
 	public QuizzesResponse getAllByStudyId(final Long studyId) {
 		var unSubmitters = studyUserService.filterUnSubmitterByStudyId(studyId);
 		var quizzes = quizService.retrieveByStudyId(studyId);
+		var userDTO = UserDetailDTO.get();
 
 		var results = quizzes.stream()
 			.map(quiz -> {
@@ -51,7 +52,7 @@ public class QuizApiService {
 				return QuizResponse.toResponse(
 					quiz,
 					unSubmitter,
-					quizService.getQuizStatus(quiz.getStartedAt(), quiz.getEndedAt()));
+					quizService.getQuizStatus(quiz.getStartedAt(), quiz.getEndedAt()), quiz.getCreator().getUserId() == userDTO.getId());
 			})
 			.collect(Collectors.toList());
 
