@@ -36,8 +36,7 @@ public class QuizReplyHistoryService {
 	}
 
 	public List<QuizReplyHistoryDto> getAllByQuizId(final Long quizId, final Pageable pageable) {
-		var test =  quizReplyHistoryRepository.retrieveByQuizId(quizId, pageable);
-		return test;
+		return  quizReplyHistoryRepository.retrieveByQuizId(quizId, pageable);
 	}
 
 }

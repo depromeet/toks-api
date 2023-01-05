@@ -62,6 +62,8 @@ public class QuizApiService {
 	public QuizCreateResponse create(
 		final QuizRequest request
 	) {
+		quizService.checkDuplicatedRound(request.getRound());
+
 		var urls = s3UploadService.uploadFiles(
 			Optional.ofNullable(request.getImageFiles()).orElse(Collections.emptyList()),
 			UserDetailDTO.get().getId().toString()

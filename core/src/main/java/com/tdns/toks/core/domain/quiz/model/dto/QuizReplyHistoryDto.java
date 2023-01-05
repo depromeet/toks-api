@@ -9,6 +9,6 @@ public class QuizReplyHistoryDto {
 
 	private Long quizReplyHistoryId;
 	private String answer;
-	private Long likeNumber;
+	private Long likeCount;
 	private UserSimpleDTO creator;
 }

@@ -78,4 +78,10 @@ public class QuizService {
         studyRepository.getById(quiz.getStudyId()).updateLatestQuizRound();
 		return quizRepository.save(quiz);
 	}
+
+    public void checkDuplicatedRound(final Integer round) {
+        if (quizRepository.existsByRound(round)) {
+            throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_REQUEST);
+        }
+    }
 }
