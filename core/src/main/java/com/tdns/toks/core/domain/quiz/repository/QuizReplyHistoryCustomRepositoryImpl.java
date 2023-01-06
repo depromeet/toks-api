@@ -56,8 +56,8 @@ public class QuizReplyHistoryCustomRepositoryImpl implements QuizReplyHistoryCus
 			.on(quizReplyHistory.createdBy.eq(user.id))
 			.leftJoin(quizLike)
 			.on(quizReplyHistory.id.eq(quizLike.quizReplyHistoryId))
-			.orderBy(getOrderSpecifier(pageable.getSort()).toArray(OrderSpecifier[]::new))
 			.groupBy(quizReplyHistory.id)
+			.orderBy(getOrderSpecifier(pageable.getSort()).toArray(OrderSpecifier[]::new))
 			.fetch();
 	}
 
