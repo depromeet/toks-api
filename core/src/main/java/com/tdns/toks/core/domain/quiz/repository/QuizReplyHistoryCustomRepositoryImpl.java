@@ -14,6 +14,8 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizReplyHistoryDto;
@@ -22,10 +24,13 @@ import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 import com.tdns.toks.core.domain.user.type.UserStatus;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
+@Slf4j
 public class QuizReplyHistoryCustomRepositoryImpl implements QuizReplyHistoryCustomRepository {
 	private final JPAQueryFactory jpaQueryFactory;
+	private NumberPath<Long> aliasLikeCount = Expressions.numberPath(Long.class, "likeCount");
 
 	@Override
 	public List<QuizReplyHistoryDto> retrieveByQuizId(final Long quizId, final Pageable pageable) {
@@ -36,7 +41,7 @@ public class QuizReplyHistoryCustomRepositoryImpl implements QuizReplyHistoryCus
 					new CaseBuilder()
 						.when(quizLike.id.max().isNull())
 						.then(0L)
-						.otherwise(quizReplyHistory.count()).as("likeCount"),
+						.otherwise(quizReplyHistory.count()).as(aliasLikeCount),
 					Projections.fields(UserSimpleDTO.class,
 						user.id.as("userId"),
 						user.nickname.as("nickname"),
@@ -63,7 +68,7 @@ public class QuizReplyHistoryCustomRepositoryImpl implements QuizReplyHistoryCus
 			String prop = order.getProperty();
 
 			if (prop.equals("likeCount")) {
-				orderSpecifiers.addAll(getLikeCountOrderSpecifier(direction));
+				orderSpecifiers.add(getLikeCountOrderSpecifier(direction));
 				return;
 			}
 
@@ -73,15 +78,10 @@ public class QuizReplyHistoryCustomRepositoryImpl implements QuizReplyHistoryCus
 		return orderSpecifiers;
 	}
 
-	private List<OrderSpecifier> getLikeCountOrderSpecifier(Order order) {
-		List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
+	private OrderSpecifier getLikeCountOrderSpecifier(Order order) {
 		if (order == Order.ASC) {
-			orderSpecifiers.add(quizReplyHistory.count().asc());
-			orderSpecifiers.add(quizLike.id.max().asc());
-		} else {
-			orderSpecifiers.add(quizReplyHistory.count().desc());
-			orderSpecifiers.add(quizLike.id.max().desc());
+			return aliasLikeCount.asc();
 		}
-		return orderSpecifiers;
+		return aliasLikeCount.desc();
 	}
 }
