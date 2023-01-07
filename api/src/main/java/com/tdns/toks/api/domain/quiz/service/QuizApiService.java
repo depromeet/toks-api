@@ -66,11 +66,7 @@ public class QuizApiService {
 	) {
 		quizService.checkDuplicatedRound(request.getRound());
 
-		var urls = s3UploadService.uploadFiles(
-			Optional.ofNullable(request.getImageFiles()).orElse(Collections.emptyList()),
-			UserDetailDTO.get().getId().toString()
-		);
-		val quizzes = quizService.save(mapper.toEntity(request, urls));
+		val quizzes = quizService.save(mapper.toEntity(request));
 		return QuizCreateResponse.toResponse(quizzes);
 	}
 }
