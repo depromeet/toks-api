@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.study.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tdns.toks.core.common.model.entity.EnumValue;
 import com.tdns.toks.core.common.utils.EnumConvertUtil;
 import com.tdns.toks.core.common.utils.UrlConvertUtil;
@@ -18,7 +19,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -26,8 +26,6 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME;
 
 public class StudyApiDTO {
     @Builder
@@ -47,12 +45,12 @@ public class StudyApiDTO {
 
         @NotNull(message = "시작 일자는 필수 항목 입니다.")
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "startedAt", description = "시작 일자 ex: 2000-10-31T01:30:00.000-05:00")
-        @DateTimeFormat(iso = DATE_TIME)
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX", timezone = "Asia/Seoul")
         private LocalDateTime startedAt;
 
         @NotNull(message = "종료 일자는 필수 항목 입니다.")
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "endedAt", description = "종료 일자 ex: 2000-10-31T01:30:00.000-05:00")
-        @DateTimeFormat(iso = DATE_TIME)
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX", timezone = "Asia/Seoul")
         private LocalDateTime endedAt;
 
         @NotNull(message = "스터디 규모는 필수 항목 입니다.")
