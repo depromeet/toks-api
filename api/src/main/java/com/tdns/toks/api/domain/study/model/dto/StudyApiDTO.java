@@ -13,7 +13,11 @@ import com.tdns.toks.core.domain.study.type.StudyProgress;
 import com.tdns.toks.core.domain.user.model.dto.UserDTO;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
@@ -55,8 +59,8 @@ public class StudyApiDTO {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "capacity", description = "스터디 규모")
         private StudyCapacity capacity;
 
-        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "tagList", description = "tag 키워드 리스트")
-        private List<String> tagList;
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "tags", description = "tag 키워드 리스트")
+        private List<String> tags;
 
     }
 
@@ -142,7 +146,7 @@ public class StudyApiDTO {
     @Getter
     @Setter
     @Schema(name = "StudiesInfoResponse", description = "사용자 스터디 목록 반환 모델")
-    public static class StudiesInfoResponse{
+    public static class StudiesInfoResponse {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "studies", description = "참여 스터디 목록")
         private List<StudyInfoLight> studies;
     }
@@ -152,7 +156,7 @@ public class StudyApiDTO {
     @Getter
     @Setter
     @Schema(name = "FinishedStudiesInfoResponse", description = "사용자 종료된 스터디 목록 반환 모델")
-    public static class FinishedStudiesInfoResponse{
+    public static class FinishedStudiesInfoResponse {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "finishedStudies", description = "종료된 참여 스터디 목록")
         private List<FinishedStudyInfoLight> finishedStudies;
     }
@@ -162,7 +166,7 @@ public class StudyApiDTO {
     @Getter
     @Builder
     @Schema(name = "StudyDetailsResponse", description = "스터디 상세 정보 반환 모델")
-    public static class StudyDetailsResponse{
+    public static class StudyDetailsResponse {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "id", description = "스터디 id")
         private Long id;
 
@@ -210,7 +214,7 @@ public class StudyApiDTO {
     @Getter
     @Builder
     @Schema(name = "StudyEntranceDetailsResponse", description = "참여 스터디 정보 반환 모델")
-    public static class StudyEntranceDetailsResponse{
+    public static class StudyEntranceDetailsResponse {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "id", description = "스터디 id")
         private Long id;
 
