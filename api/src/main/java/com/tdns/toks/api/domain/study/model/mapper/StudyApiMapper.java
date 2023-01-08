@@ -14,12 +14,18 @@ import java.util.stream.Collectors;
 @Component
 public class StudyApiMapper {
     public Study toEntity(StudyApiDTO.StudyCreateRequest studyCreateRequest, Long userId) {
+        var studyStatus = StudyStatus.getStatus(
+                studyCreateRequest.getStartedAt(),
+                studyCreateRequest.getEndedAt(),
+                LocalDateTime.now()
+        );
+
         return Study.builder()
                 .name(studyCreateRequest.getName())
                 .description(studyCreateRequest.getDescription())
                 .startedAt(studyCreateRequest.getStartedAt())
                 .endedAt(studyCreateRequest.getEndedAt())
-                .status(StudyStatus.getStatus(studyCreateRequest.getStartedAt(), studyCreateRequest.getEndedAt(), LocalDateTime.now()))
+                .status(studyStatus)
                 .capacity(studyCreateRequest.getCapacity())
                 .studyUserCount(0)
                 .leaderId(userId)

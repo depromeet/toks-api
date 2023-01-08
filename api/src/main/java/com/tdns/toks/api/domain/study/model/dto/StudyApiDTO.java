@@ -103,7 +103,7 @@ public class StudyApiDTO {
             response.capacity = study.getCapacity();
             response.inviteUrl = UrlConvertUtil.convertToInviteUrl(study.getId());
             response.user = userDTO;
-            response.tags = tagList.stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
+            response.tags = tagList.stream().map(TagDTO::of).collect(Collectors.toList());
             return response;
         }
     }

@@ -30,7 +30,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.*;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.FinishedStudiesInfoResponse;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudiesInfoResponse;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyDetailsResponse;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyEntranceDetailsResponse;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +68,11 @@ public class StudyApiService {
 
     @Transactional(readOnly = true)
     public TagResponse getTagByKeyword(String keyword) {
-        var tagDTOList = studyService.getTagListByKeyword(keyword.trim()).stream().map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
+        var tagDTOList = studyService.getTagListByKeyword(keyword.trim())
+                .stream()
+                .map(TagDTO::of)
+                .collect(Collectors.toList());
+
         return TagResponse.of(tagDTOList);
     }
 
@@ -122,7 +133,8 @@ public class StudyApiService {
         var userStudies = userService.getUserStudyIds(userId);
         return new StudiesInfoResponse(userStudies.stream()
                 .filter(studyUser -> !studyService.isFinishedStudy(studyUser.getStudyId()))
-                .map(this::convertToResponse).collect(Collectors.toList()));
+                .map(this::convertToResponse)
+                .collect(Collectors.toList()));
     }
 
     public StudyInfoLight convertToResponse(StudyUser studyUser) {
@@ -133,32 +145,41 @@ public class StudyApiService {
         if (studyLatestQuiz.getId() == -1) {
             return StudyInfoLight.toDto(study, new QuizDTO.LatestQuizSimpleDto(StudyLatestQuizStatus.PENDING, -1L), tags);
         }
-        return StudyInfoLight.toDto(study, new QuizDTO.LatestQuizSimpleDto(quizService.getStudyLatestQuizStatus(studyLatestQuiz, studyUser.getUserId()), studyLatestQuiz.getId()), tags);
+        var latestQuizSimpleDto = new QuizDTO.LatestQuizSimpleDto(
+                quizService.getStudyLatestQuizStatus(studyLatestQuiz, studyUser.getUserId()),
+                studyLatestQuiz.getId()
+        );
+        return StudyInfoLight.toDto(study, latestQuizSimpleDto, tags);
     }
 
     public StudyDetailsResponse getStudyDetails(Long studyId) {
         var users = studyService.getUsersInStudy(studyId).stream()
-                .map(user -> UserSimpleDTO.toDto(user)).collect(Collectors.toList());
+                .map(UserSimpleDTO::toDto)
+                .collect(Collectors.toList());
         var tags = tagService.getStudyTagsDTO(studyId);
         var study = studyService.getStudy(studyId);
+
         return StudyDetailsResponse.toResponse(study, users, tags);
     }
 
     public StudyEntranceDetailsResponse getStudyEntranceDetails(Long studyId) {
         var tags = tagService.getStudyTagsDTO(studyId);
         var study = studyService.getStudy(studyId);
+
         return StudyEntranceDetailsResponse.toResponse(study, tags);
     }
 
     public FinishedStudiesInfoResponse getFinishedStudies() {
         var userId = UserDetailDTO.get().getId();
         var userFinishedStudies = userService.getUserStudyIds(userId);
+
         return new FinishedStudiesInfoResponse(userFinishedStudies.stream()
                 .filter(finishedStudy -> studyService.isFinishedStudy(finishedStudy.getStudyId()))
                 .map(finishedStudy -> {
                     var studyId = finishedStudy.getStudyId();
                     var study = studyService.getStudy(studyId);
                     var tags = tagService.getStudyTagsDTO(studyId);
+                    
                     return StudyDTO.FinishedStudyInfoLight.toDto(study, tags);
                 }).collect(Collectors.toList()));
     }
