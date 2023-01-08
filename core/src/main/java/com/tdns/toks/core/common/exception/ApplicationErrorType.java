@@ -44,7 +44,15 @@ public enum ApplicationErrorType {
     ALREADY_SUBMITTED_USER_QUIZ(HttpStatus.BAD_REQUEST, -20016, "error.already.submitted"),
     ALREADY_FINISH_STUDY(HttpStatus.BAD_REQUEST, -20017, "error.invalid.already-finish-study"),
     OVER_MAX_HEADCOUNT(HttpStatus.BAD_REQUEST, -20018, "error.invalid.max-headcount"),
-    ALREADY_JOIN_USER(HttpStatus.BAD_REQUEST, -20019, "error.invalid.already-join-user");
+    ALREADY_JOIN_USER(HttpStatus.BAD_REQUEST, -20019, "error.invalid.already-join-user"),
+    ALREADY_EXISTS_QUIZ_ROUND(HttpStatus.BAD_REQUEST, -20020, "퀴즈 라운드가 이미 존재합니다."),
+
+    /**
+     * Study Error Type
+     **/
+    NOT_FOUND_STUDY(HttpStatus.NOT_FOUND, -30000, "스터디를 찾을 수 없습니다."),
+
+    ;
 
     @Getter
     private HttpStatus httpStatus;

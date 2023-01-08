@@ -1,11 +1,5 @@
 package com.tdns.toks.core.domain.quiz.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
@@ -15,8 +9,12 @@ import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
 import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
 import com.tdns.toks.core.domain.study.repository.StudyRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -51,7 +49,7 @@ public class QuizService {
         return QuizStatusType.IN_PROGRESS;
     }
 
-    public Quiz getStudyLatestQuiz(Long studyId){
+    public Quiz getStudyLatestQuiz(Long studyId) {
         return quizRepository.findFirstByStudyIdOrderByCreatedAtDesc(studyId)
                 .orElse(Quiz.builder().id(-1L).build()); // 퀴즈가 없는 경우 id = -1인 Quiz 반환
     }
@@ -74,14 +72,14 @@ public class QuizService {
         return StudyLatestQuizStatus.PENDING;
     }
 
-	public Quiz save(final Quiz quiz) {
+    public Quiz save(final Quiz quiz) {
         studyRepository.getById(quiz.getStudyId()).updateLatestQuizRound();
-		return quizRepository.save(quiz);
-	}
+        return quizRepository.save(quiz);
+    }
 
     public void checkDuplicatedRound(final Integer round) {
         if (quizRepository.existsByRound(round)) {
-            throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_REQUEST);
+            throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_EXISTS_QUIZ_ROUND);
         }
     }
 }

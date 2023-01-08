@@ -91,7 +91,8 @@ public class StudyService {
     }
 
     public Study getStudy(long studyId) {
-        return studyRepository.findById(studyId).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.COULDNT_FIND_ANY_DATA));
+        return studyRepository.findById(studyId)
+                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_STUDY, "not found study " + studyId));
     }
 
     public StudyUser saveStudyUser(StudyUser studyUser) {
