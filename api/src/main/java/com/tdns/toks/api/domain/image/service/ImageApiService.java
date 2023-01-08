@@ -23,9 +23,10 @@ public class ImageApiService {
         var userDTO = UserDetailDTO.get();
         var imageUrl = s3UploadService.uploadSingleFile(image, userDTO.getId().toString());
 
-        log.info("uploadImage / imageurl" + imageUrl);
+        log.info("uploadImage / imageUrl : " + imageUrl);
 
-        return ImageUploadResponse.toResponse(imageService.saveImageUrl(imageUrl, userDTO.getId()));
+        var imageUploadLog = imageService.saveImageUrl(imageUrl, userDTO.getId());
+        return ImageUploadResponse.toResponse(imageUploadLog);
 
     }
 }

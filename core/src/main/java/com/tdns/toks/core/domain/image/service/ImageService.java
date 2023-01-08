@@ -12,11 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class ImageService {
     private final ImageRepository imageRepository;
 
+    @Transactional
     public Image saveImageUrl(String imageUrl, Long userId) {
-        return imageRepository.save(Image.builder()
+        var image = Image.builder()
                 .imageUrl(imageUrl)
                 .createdBy(userId)
-                .build());
-    }
+                .build();
 
+        return imageRepository.save(image);
+    }
 }
