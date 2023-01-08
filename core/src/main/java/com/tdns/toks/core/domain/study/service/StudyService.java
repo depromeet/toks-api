@@ -3,7 +3,6 @@ package com.tdns.toks.core.domain.study.service;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
-import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.StudyTag;
 import com.tdns.toks.core.domain.study.model.entity.StudyUser;
@@ -19,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,10 +37,15 @@ public class StudyService {
 
     private final TagRepository tagRepository;
 
-    private final QuizRepository quizRepository;
-
     public Study save(Study study) {
+        if (!studyDatesValidate(study.getStartedAt(), study.getEndedAt())) {
+            throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_REQUEST);
+        }
         return studyRepository.save(study);
+    }
+
+    private boolean studyDatesValidate(LocalDateTime startDate, LocalDateTime endDate) {
+        return startDate.isBefore(endDate);
     }
 
     public List<StudyTag> saveAllStudyTag(List<StudyTag> studyTagList) {

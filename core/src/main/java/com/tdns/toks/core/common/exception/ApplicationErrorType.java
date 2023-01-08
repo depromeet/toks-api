@@ -1,11 +1,9 @@
 package com.tdns.toks.core.common.exception;
 
-import org.springframework.http.HttpStatus;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 /**
  * 주의! error code 값을 변경할 때는 클라이언트에서 혹시 사용하고 있지 않은지 꼭 확인해야 합니다!
@@ -26,6 +24,10 @@ public enum ApplicationErrorType {
     INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, -20027, "error.invalid.access.token"),
     INVALID_LOGIN_INFO(HttpStatus.BAD_REQUEST, -20007, "try.again"/*Invalid Login Info*/),
     TO_JSON_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, -40015, "try.again"),
+
+    /**
+     * Auth or User Error Type
+     */
     UNKNOWN_USER(HttpStatus.BAD_REQUEST, -10006, "try.again"),
     UNAUTHORIZED_USER(HttpStatus.BAD_REQUEST, -10006, "try.again"),
     NO_PROVIDER(HttpStatus.NO_CONTENT, -20010, "no provider"),
@@ -34,6 +36,10 @@ public enum ApplicationErrorType {
     EMPTY_TOKEN(HttpStatus.BAD_REQUEST, -20013, "no token"),
     NO_AUTHORIZATION(HttpStatus.UNAUTHORIZED, -20017, "error.no.authorization"),
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, -20014, "error.invalid.refresh.token"),
+
+    /**
+     * Quiz Error Type
+     */
     ALREADY_LIKE_USER_QUIZ(HttpStatus.BAD_REQUEST, -20015, "error.already.liked"),
     ALREADY_SUBMITTED_USER_QUIZ(HttpStatus.BAD_REQUEST, -20016, "error.already.submitted"),
     ALREADY_FINISH_STUDY(HttpStatus.BAD_REQUEST, -20017, "error.invalid.already-finish-study"),

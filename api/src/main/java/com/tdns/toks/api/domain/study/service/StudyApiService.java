@@ -47,8 +47,8 @@ public class StudyApiService {
         var study = studyService.save(mapper.toEntity(studyCreateRequest, userDTO.getId()));
 
         List<Tag> tags = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(studyCreateRequest.getTagList())) {
-            tags = studyService.getOrCreateTagListByKeywordList(studyCreateRequest.getTagList());
+        if (CollectionUtils.isNotEmpty(studyCreateRequest.getTags())) {
+            tags = studyService.getOrCreateTagListByKeywordList(studyCreateRequest.getTags());
             studyService.saveAllStudyTag(mapper.toEntity(tags, study.getId()));
         }
         joinStudy(study, userDTO.getId());

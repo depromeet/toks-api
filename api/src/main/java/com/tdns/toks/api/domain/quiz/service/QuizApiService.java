@@ -4,6 +4,7 @@ import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -52,7 +53,8 @@ public class QuizApiService {
 				return QuizResponse.toResponse(
 					quiz,
 					unSubmitter,
-					quizService.getQuizStatus(quiz.getStartedAt(), quiz.getEndedAt()), quiz.getCreator().getUserId() == userDTO.getId());
+					quizService.getQuizStatus(quiz.getStartedAt(), quiz.getEndedAt()),
+					Objects.equals(quiz.getCreator().getUserId(), userDTO.getId()));
 			})
 			.collect(Collectors.toList());
 
@@ -64,11 +66,7 @@ public class QuizApiService {
 	) {
 		quizService.checkDuplicatedRound(request.getRound());
 
-		var urls = s3UploadService.uploadFiles(
-			Optional.ofNullable(request.getImageFiles()).orElse(Collections.emptyList()),
-			UserDetailDTO.get().getId().toString()
-		);
-		val quizzes = quizService.save(mapper.toEntity(request, urls));
+		val quizzes = quizService.save(mapper.toEntity(request));
 		return QuizCreateResponse.toResponse(quizzes);
 	}
 }

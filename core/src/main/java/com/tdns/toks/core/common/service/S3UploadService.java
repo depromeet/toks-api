@@ -1,11 +1,15 @@
 package com.tdns.toks.core.common.service;
 
-import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.amazonaws.HttpMethod;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.*;
+import com.google.common.base.Charsets;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.joda.time.DateTime;
@@ -13,22 +17,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.HttpMethod;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
-import com.amazonaws.services.s3.model.GetObjectMetadataRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
-import com.google.common.base.Charsets;
-import com.google.common.hash.HashCode;
-import com.google.common.hash.Hashing;
-import com.tdns.toks.core.common.exception.ApplicationErrorType;
-import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -55,6 +48,16 @@ public class S3UploadService {
                 }
             })
             .collect(Collectors.toList());
+    }
+
+    public String uploadSingleFile(MultipartFile file, String pathSuffix) {
+        String newFileName = makeNewFilename(file.getOriginalFilename(), pathSuffix);
+        try {
+            return uploadToS3(file, newFileName, false);
+        } catch (Exception e) {
+            log.error("[S3 UPLOAD ERROR] user id : {}", pathSuffix);
+            throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_DATA_ARGUMENT);
+        }
     }
 
     public PutObjectResult uploadToS3(String bucketName, File file) {

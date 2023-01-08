@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.study.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tdns.toks.core.common.model.entity.EnumValue;
 import com.tdns.toks.core.common.utils.EnumConvertUtil;
 import com.tdns.toks.core.common.utils.UrlConvertUtil;
@@ -13,8 +14,11 @@ import com.tdns.toks.core.domain.study.type.StudyProgress;
 import com.tdns.toks.core.domain.user.model.dto.UserDTO;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -22,8 +26,6 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME;
 
 public class StudyApiDTO {
     @Builder
@@ -43,20 +45,20 @@ public class StudyApiDTO {
 
         @NotNull(message = "시작 일자는 필수 항목 입니다.")
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "startedAt", description = "시작 일자 ex: 2000-10-31T01:30:00.000-05:00")
-        @DateTimeFormat(iso = DATE_TIME)
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX", timezone = "Asia/Seoul")
         private LocalDateTime startedAt;
 
         @NotNull(message = "종료 일자는 필수 항목 입니다.")
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "endedAt", description = "종료 일자 ex: 2000-10-31T01:30:00.000-05:00")
-        @DateTimeFormat(iso = DATE_TIME)
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX", timezone = "Asia/Seoul")
         private LocalDateTime endedAt;
 
         @NotNull(message = "스터디 규모는 필수 항목 입니다.")
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "capacity", description = "스터디 규모")
         private StudyCapacity capacity;
 
-        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "tagList", description = "tag 키워드 리스트")
-        private List<String> tagList;
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "tags", description = "tag 키워드 리스트")
+        private List<String> tags;
 
     }
 
@@ -142,7 +144,7 @@ public class StudyApiDTO {
     @Getter
     @Setter
     @Schema(name = "StudiesInfoResponse", description = "사용자 스터디 목록 반환 모델")
-    public static class StudiesInfoResponse{
+    public static class StudiesInfoResponse {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "studies", description = "참여 스터디 목록")
         private List<StudyInfoLight> studies;
     }
@@ -152,7 +154,7 @@ public class StudyApiDTO {
     @Getter
     @Setter
     @Schema(name = "FinishedStudiesInfoResponse", description = "사용자 종료된 스터디 목록 반환 모델")
-    public static class FinishedStudiesInfoResponse{
+    public static class FinishedStudiesInfoResponse {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, name = "finishedStudies", description = "종료된 참여 스터디 목록")
         private List<FinishedStudyInfoLight> finishedStudies;
     }
@@ -162,7 +164,7 @@ public class StudyApiDTO {
     @Getter
     @Builder
     @Schema(name = "StudyDetailsResponse", description = "스터디 상세 정보 반환 모델")
-    public static class StudyDetailsResponse{
+    public static class StudyDetailsResponse {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "id", description = "스터디 id")
         private Long id;
 
@@ -210,7 +212,7 @@ public class StudyApiDTO {
     @Getter
     @Builder
     @Schema(name = "StudyEntranceDetailsResponse", description = "참여 스터디 정보 반환 모델")
-    public static class StudyEntranceDetailsResponse{
+    public static class StudyEntranceDetailsResponse {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "id", description = "스터디 id")
         private Long id;
 
