@@ -16,7 +16,9 @@ public class TagService {
     private final StudyTagRepository studyTagRepository;
 
     public List<TagDTO> getStudyTagsDTO(Long studyId) {
-        return studyTagRepository.getStudyTagsByStudyId(studyId).stream()
-                .map(tag -> TagDTO.of(tag)).collect(Collectors.toList());
+        return studyTagRepository.getStudyTagsByStudyId(studyId)
+                .stream()
+                .map(TagDTO::of)
+                .collect(Collectors.toList());
     }
 }

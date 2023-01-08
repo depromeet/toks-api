@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,14 +67,20 @@ public class StudyService {
     }
 
     public List<Tag> getOrCreateTagListByKeywordList(List<String> keywordList) {
-        List<Tag> tags = tagRepository.findByNameIn(keywordList);
-        if (tags.size() != keywordList.size()) {
-            Map<String, Long> tagNameIdMap = tags.stream().collect(Collectors.toMap(Tag::getName, Tag::getId));
-            tags.addAll(keywordList.stream()
-                    .filter(keyword -> !tagNameIdMap.containsKey(keyword))
-                    .map(keyword -> createTag(convertToEntity(keyword)))
-                    .collect(Collectors.toList()));
+        var tags = tagRepository.findByNameIn(keywordList);
+
+        if (tags.size() == keywordList.size()) {
+            return tags;
         }
+
+        var tagNameIdMap = tags.stream()
+                .collect(Collectors.toMap(Tag::getName, Tag::getId));
+
+        tags.addAll(keywordList.stream()
+                .filter(keyword -> !tagNameIdMap.containsKey(keyword))
+                .map(keyword -> createTag(convertToEntity(keyword)))
+                .collect(Collectors.toList()));
+
         return tags;
     }
 
@@ -104,9 +109,10 @@ public class StudyService {
     }
 
     public List<User> getUsersInStudy(Long studyId) {
-        return studyUserRepository.findAllByStudyId(studyId).stream()
+        return studyUserRepository.findAllByStudyId(studyId)
+                .stream()
                 .map(studyUser -> userRepository.findById(studyUser.getUserId())
-                        .orElseThrow(()->new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER)))
+                        .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER)))
                 .collect(Collectors.toList());
     }
 }

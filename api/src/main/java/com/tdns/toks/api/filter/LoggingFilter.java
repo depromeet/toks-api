@@ -20,13 +20,15 @@ import java.util.Map;
 @Component
 public class LoggingFilter extends OncePerRequestFilter {
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-		ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
-		ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
-		filterChain.doFilter(requestWrapper, responseWrapper);
+        ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
+        ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
+        filterChain.doFilter(requestWrapper, responseWrapper);
 
+        // TODO : 서비스 에러 우선적으로 확인하기 위해서 잠시 로깅을 주석처리
+/*
 		log.info("\n[Request] {} \n"
 				+ "[Request Headers] {} \n"
 				+ "[Request Body] {} \n"
@@ -38,48 +40,49 @@ public class LoggingFilter extends OncePerRequestFilter {
 			response.getStatus(),
 			contentBody(responseWrapper.getContentAsByteArray())
 		);
+*/
 
-		responseWrapper.copyBodyToResponse();
-	}
+        responseWrapper.copyBodyToResponse();
+    }
 
-	private String getRequest(HttpServletRequest request) {
-		String result = "";
-		result = request.getMethod() + " " + request.getRequestURI();
-		result += request.getQueryString() != null ? "?" + request.getQueryString() : "";
-		return result;
-	}
+    private String getRequest(HttpServletRequest request) {
+        String result = "";
+        result = request.getMethod() + " " + request.getRequestURI();
+        result += request.getQueryString() != null ? "?" + request.getQueryString() : "";
+        return result;
+    }
 
-	private String getHeaders(HttpServletRequest request) {
-		Map<String, String> headerMap = new HashMap<>();
+    private String getHeaders(HttpServletRequest request) {
+        Map<String, String> headerMap = new HashMap<>();
 
-		Enumeration<String> headerArray = request.getHeaderNames();
-		while (headerArray.hasMoreElements()) {
-			String headerName = headerArray.nextElement();
-			headerMap.put(headerName, request.getHeader(headerName));
-		}
+        Enumeration<String> headerArray = request.getHeaderNames();
+        while (headerArray.hasMoreElements()) {
+            String headerName = headerArray.nextElement();
+            headerMap.put(headerName, request.getHeader(headerName));
+        }
 
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		try {
-			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(headerMap);
-		} catch (IOException e) {
-			log.error("[JSON PARSE ERROR] {}", e.getMessage(), e);
-		}
-		return json;
-	}
+        ObjectMapper mapper = new ObjectMapper();
+        String json = "";
+        try {
+            json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(headerMap);
+        } catch (IOException e) {
+            log.error("[JSON PARSE ERROR] {}", e.getMessage(), e);
+        }
+        return json;
+    }
 
-	private String contentBody(final byte[] contents) {
-		if (contents.length == 0) {
-			return "";
-		}
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		try {
-			Map map = mapper.readValue(new String(contents), Map.class);
-			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
-		} catch (IOException e) {
-			log.error("[JSON PARSE ERROR] {}", e.getMessage(), e);
-		}
-		return json;
-	}
+    private String contentBody(final byte[] contents) {
+        if (contents.length == 0) {
+            return "";
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        String json = "";
+        try {
+            Map map = mapper.readValue(new String(contents), Map.class);
+            json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
+        } catch (IOException e) {
+            log.error("[JSON PARSE ERROR] {}", e.getMessage(), e);
+        }
+        return json;
+    }
 }

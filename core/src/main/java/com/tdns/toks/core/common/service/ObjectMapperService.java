@@ -17,7 +17,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ObjectMapperService {
-
     private final ObjectMapper objectMapper;
 
     public <T> T getFromJson(String json) {

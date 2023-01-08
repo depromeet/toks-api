@@ -2,7 +2,12 @@ package com.tdns.toks.core.common.service;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.*;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.amazonaws.services.s3.model.GetObjectMetadataRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.google.common.base.Charsets;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
@@ -36,18 +41,18 @@ public class S3UploadService {
         List<String> keys = new ArrayList<>();
 
         return files.stream()
-            .map(file -> {
-                String newFileName = makeNewFilename(file.getOriginalFilename(), pathSuffix);
-                keys.add(newFileName);
-                try {
-                    return uploadToS3(file, newFileName, false);
-                } catch (Exception e) {
-                    log.error("[S3 UPLOAD ERROR] user id : {}", pathSuffix);
-                    deleteNewFile(keys);
-                    throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_DATA_ARGUMENT);
-                }
-            })
-            .collect(Collectors.toList());
+                .map(file -> {
+                    String newFileName = makeNewFilename(file.getOriginalFilename(), pathSuffix);
+                    keys.add(newFileName);
+                    try {
+                        return uploadToS3(file, newFileName, false);
+                    } catch (Exception e) {
+                        log.error("[S3 UPLOAD ERROR] user id : {}", pathSuffix);
+                        deleteNewFile(keys);
+                        throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_DATA_ARGUMENT);
+                    }
+                })
+                .collect(Collectors.toList());
     }
 
     public String uploadSingleFile(MultipartFile file, String pathSuffix) {

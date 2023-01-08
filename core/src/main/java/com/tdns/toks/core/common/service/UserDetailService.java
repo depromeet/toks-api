@@ -17,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserDetailService implements UserDetailsService {
     private final UserRepository userRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userEntity = userRepository.findByEmail(username);
