@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
@@ -16,4 +17,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     Tag findFirstByName(String keyword);
 
     List<Tag> findByNameIn(List<String> keywordList);
+
+    List<Tag> findByNameIn(Set<String> keywords);
 }

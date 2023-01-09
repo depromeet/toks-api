@@ -66,17 +66,24 @@ public class StudyService {
                 .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
     }
 
+    // 태그명이 중복인 경우 체크, 태그가 공백 데이터가 있는 경우, 태그가 공백인 경우 등을 제외시킴
     public List<Tag> getOrCreateTagListByKeywordList(List<String> keywordList) {
-        var tags = tagRepository.findByNameIn(keywordList);
+        var keywords = keywordList
+                .stream()
+                .map(tag -> tag.replaceAll(" ", ""))
+                .filter(tag -> !tag.isBlank())
+                .collect(Collectors.toSet());
 
-        if (tags.size() == keywordList.size()) {
+        var tags = tagRepository.findByNameIn(keywords);
+
+        if (tags.size() == keywords.size()) {
             return tags;
         }
 
         var tagNameIdMap = tags.stream()
                 .collect(Collectors.toMap(Tag::getName, Tag::getId));
 
-        var newTags = keywordList.stream()
+        var newTags = keywords.stream()
                 .filter(keyword -> !tagNameIdMap.containsKey(keyword))
                 .map(this::convertToEntity)
                 .collect(Collectors.toList());
