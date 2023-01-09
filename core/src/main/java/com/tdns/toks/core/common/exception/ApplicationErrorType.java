@@ -46,6 +46,8 @@ public enum ApplicationErrorType {
     OVER_MAX_HEADCOUNT(HttpStatus.BAD_REQUEST, -20018, "error.invalid.max-headcount"),
     ALREADY_JOIN_USER(HttpStatus.BAD_REQUEST, -20019, "error.invalid.already-join-user"),
     ALREADY_EXISTS_QUIZ_ROUND(HttpStatus.BAD_REQUEST, -20020, "퀴즈 라운드가 이미 존재합니다."),
+    NOT_FOUND_QUIZ_ERROR(HttpStatus.NOT_FOUND, -20021, "해당 퀴즈가 존재하지 않습니다."),
+
 
     /**
      * Study Error Type

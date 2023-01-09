@@ -60,6 +60,9 @@ public class QuizApiDTO {
         private final Integer round;
 
         public static QuizSimpleResponse toResponse(QuizSimpleDTO quizSimpleDTO) {
+            var durationOfSecond = Duration.between(quizSimpleDTO.getStartedAt(), quizSimpleDTO.getEndedAt()).getSeconds();
+            var timeStamp = new Timestamp(System.currentTimeMillis());
+
             return new QuizSimpleResponse(
                     quizSimpleDTO.getQuizId(),
                     quizSimpleDTO.getQuestion(),
@@ -67,8 +70,8 @@ public class QuizApiDTO {
                     quizSimpleDTO.getDescription(),
                     quizSimpleDTO.getStartedAt(),
                     quizSimpleDTO.getEndedAt(),
-                    Duration.between(quizSimpleDTO.getStartedAt(), quizSimpleDTO.getEndedAt()).getSeconds(),
-                    new Timestamp(System.currentTimeMillis()),
+                    durationOfSecond,
+                    timeStamp,
                     quizSimpleDTO.getImageUrls(),
                     quizSimpleDTO.getCreator(),
                     quizSimpleDTO.getStudyId(),

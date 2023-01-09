@@ -34,7 +34,8 @@ public class QuizApiService {
     private final QuizMapper mapper;
 
     public QuizSimpleResponse getById(final Long id) {
-        return QuizSimpleResponse.toResponse(quizService.retrieveByIdOrThrow(id));
+        var quiz = quizService.retrieveByIdOrThrow(id);
+        return QuizSimpleResponse.toResponse(quiz);
     }
 
     public QuizzesResponse getAllByStudyId(final Long studyId) {

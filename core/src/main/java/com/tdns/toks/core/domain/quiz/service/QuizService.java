@@ -8,7 +8,6 @@ import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
 import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
-import com.tdns.toks.core.domain.study.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,18 +19,17 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class QuizService {
-    private final StudyRepository studyRepository;
     private final QuizRepository quizRepository;
     private final QuizReplyHistoryRepository quizReplyHistoryRepository;
 
     public Quiz getOrThrow(final Long id) {
         return quizRepository.findById(id)
-                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
+                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_QUIZ_ERROR));
     }
 
     public QuizSimpleDTO retrieveByIdOrThrow(final Long id) {
         return quizRepository.retrieveById(id)
-                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
+                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_QUIZ_ERROR));
     }
 
     public List<QuizSimpleDTO> retrieveByStudyId(final Long studyId) {
