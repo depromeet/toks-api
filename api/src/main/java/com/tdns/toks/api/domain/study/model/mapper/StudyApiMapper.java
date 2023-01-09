@@ -13,6 +13,9 @@ import java.util.stream.Collectors;
 
 @Component
 public class StudyApiMapper {
+    private static Integer INIT_STUDY_USER_COUNT = 0;
+    private static Integer INIT_STUDY_QUIZ_ROUND = 0;
+
     public Study toEntity(StudyApiDTO.StudyCreateRequest studyCreateRequest, Long userId) {
         var studyStatus = StudyStatus.getStatus(
                 studyCreateRequest.getStartedAt(),
@@ -27,14 +30,16 @@ public class StudyApiMapper {
                 .endedAt(studyCreateRequest.getEndedAt())
                 .status(studyStatus)
                 .capacity(studyCreateRequest.getCapacity())
-                .studyUserCount(0)
+                .studyUserCount(INIT_STUDY_USER_COUNT)
                 .leaderId(userId)
-                .latestQuizRound(0)
+                .latestQuizRound(INIT_STUDY_QUIZ_ROUND)
                 .build();
     }
 
-    public List<StudyTag> toEntity(List<Tag> tagList, Long studyId) {
-        return tagList.stream().map(tag -> toEntity(tag.getId(), studyId)).collect(Collectors.toList());
+    public List<StudyTag> toEntity(List<Tag> tags, Long studyId) {
+        return tags.stream()
+                .map(tag -> toEntity(tag.getId(), studyId))
+                .collect(Collectors.toList());
     }
 
     public StudyTag toEntity(long tagId, long studyId) {

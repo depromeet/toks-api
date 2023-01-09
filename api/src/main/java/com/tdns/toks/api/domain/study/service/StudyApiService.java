@@ -11,7 +11,6 @@ import com.tdns.toks.core.domain.study.model.dto.StudyDTO.StudyInfoLight;
 import com.tdns.toks.core.domain.study.model.dto.TagDTO;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.StudyUser;
-import com.tdns.toks.core.domain.study.model.entity.Tag;
 import com.tdns.toks.core.domain.study.service.StudyService;
 import com.tdns.toks.core.domain.study.service.TagService;
 import com.tdns.toks.core.domain.study.type.StudyCapacity;
@@ -21,13 +20,11 @@ import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 import com.tdns.toks.core.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections4.CollectionUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.FinishedStudiesInfoResponse;
@@ -39,6 +36,7 @@ import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyEntrance
 import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
 import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -53,12 +51,12 @@ public class StudyApiService {
         var userDTO = UserDetailDTO.get();
         var study = studyService.save(mapper.toEntity(studyCreateRequest, userDTO.getId()));
 
-        List<Tag> tags = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(studyCreateRequest.getTags())) {
-            tags = studyService.getOrCreateTagListByKeywordList(studyCreateRequest.getTags());
-            studyService.saveAllStudyTag(mapper.toEntity(tags, study.getId()));
-        }
+        var tags = studyService.getOrCreateTagListByKeywordList(studyCreateRequest.getTags());
+        studyService.saveAllStudyTag(mapper.toEntity(tags, study.getId()));
+
         joinStudy(study, userDTO.getId());
+
+        log.info("create study uid : {} / studyId : {}", userDTO.getId(), study.getId());
         return StudyApiResponse.toResponse(study, userDTO, tags);
     }
 

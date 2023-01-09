@@ -47,8 +47,8 @@ public class StudyService {
         return startDate.isBefore(endDate);
     }
 
-    public List<StudyTag> saveAllStudyTag(List<StudyTag> studyTagList) {
-        return studyTagRepository.saveAll(studyTagList);
+    public List<StudyTag> saveAllStudyTag(List<StudyTag> studyTags) {
+        return studyTagRepository.saveAll(studyTags);
     }
 
     @Transactional(readOnly = true)
@@ -76,10 +76,14 @@ public class StudyService {
         var tagNameIdMap = tags.stream()
                 .collect(Collectors.toMap(Tag::getName, Tag::getId));
 
-        tags.addAll(keywordList.stream()
+        var newTags = keywordList.stream()
                 .filter(keyword -> !tagNameIdMap.containsKey(keyword))
-                .map(keyword -> createTag(convertToEntity(keyword)))
-                .collect(Collectors.toList()));
+                .map(this::convertToEntity)
+                .collect(Collectors.toList());
+
+        var savedTags = tagRepository.saveAll(newTags);
+
+        tags.addAll(savedTags);
 
         return tags;
     }
