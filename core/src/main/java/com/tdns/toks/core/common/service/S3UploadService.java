@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// TODO: S3 이미지 prefix 개선 필요 -> 유저가 아닌 도메인 단위가 맞습니다
 @Component
 @RequiredArgsConstructor
 @Slf4j

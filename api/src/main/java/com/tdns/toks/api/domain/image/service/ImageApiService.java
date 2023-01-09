@@ -20,13 +20,12 @@ public class ImageApiService {
     private final ImageService imageService;
 
     public ImageUploadResponse uploadImage(MultipartFile image) {
-        var userDTO = UserDetailDTO.get();
-        var imageUrl = s3UploadService.uploadSingleFile(image, userDTO.getId().toString());
+        var uid = UserDetailDTO.get().getId();
+        var imageUrl = s3UploadService.uploadSingleFile(image, uid.toString());
 
-        log.info("uploadImage / imageUrl : " + imageUrl);
+        log.info("uploadImage / uid : {} / imageUrl {}", uid, imageUrl);
 
-        var imageUploadLog = imageService.saveImageUrl(imageUrl, userDTO.getId());
+        var imageUploadLog = imageService.saveImageUrl(imageUrl, uid);
         return ImageUploadResponse.toResponse(imageUploadLog);
-
     }
 }
