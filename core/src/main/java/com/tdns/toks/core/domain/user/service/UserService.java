@@ -5,14 +5,12 @@ import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.common.security.JwtTokenProvider;
 import com.tdns.toks.core.domain.study.model.entity.StudyUser;
 import com.tdns.toks.core.domain.study.repository.StudyUserRepository;
-import com.tdns.toks.core.domain.user.model.dto.UserSimpleByQuizIdDTO;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +28,7 @@ public class UserService {
     }
 
     public User getUser(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.COULDNT_FIND_ANY_DATA));
+        return userRepository.findById(id).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
     }
 
     public String updateNickname(Long id, String nickname) {
