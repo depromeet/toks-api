@@ -73,12 +73,11 @@ public class QuizService {
     }
 
     public Quiz save(final Quiz quiz) {
-        studyRepository.getById(quiz.getStudyId()).updateLatestQuizRound();
         return quizRepository.save(quiz);
     }
 
-    public void checkDuplicatedRound(final Integer round) {
-        if (quizRepository.existsByRound(round)) {
+    public void checkDuplicatedRound(final Long studyId, final Integer round) {
+        if (quizRepository.existsByStudyIdAndRound(studyId, round)) {
             throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_EXISTS_QUIZ_ROUND);
         }
     }
