@@ -23,9 +23,14 @@ public class StudyApiMapper {
                 LocalDateTime.now()
         );
 
+        var studyDescription = "";
+        if (studyCreateRequest.getDescription() != null) {
+            studyDescription = studyCreateRequest.getDescription();
+        }
+
         return Study.builder()
                 .name(studyCreateRequest.getName())
-                .description(studyCreateRequest.getDescription())
+                .description(studyDescription)
                 .startedAt(studyCreateRequest.getStartedAt())
                 .endedAt(studyCreateRequest.getEndedAt())
                 .status(studyStatus)

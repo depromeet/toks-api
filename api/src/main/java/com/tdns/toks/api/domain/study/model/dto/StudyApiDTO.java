@@ -39,7 +39,7 @@ public class StudyApiDTO {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "name", description = "이름이름")
         private String name;
 
-        @NotEmpty(message = "스터디 설명은 필수 항목 입니다.")
+//        @NotEmpty(message = "스터디 설명은 필수 항목 입니다.")
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "description", description = "설명설명")
         private String description;
 
