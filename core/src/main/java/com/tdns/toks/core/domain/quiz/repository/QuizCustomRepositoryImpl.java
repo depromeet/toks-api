@@ -23,6 +23,7 @@ public class QuizCustomRepositoryImpl implements QuizCustomRepository {
 				Projections.fields(QuizSimpleDTO.class,
 					quiz.id.as("quizId"),
 					quiz.question.as("question"),
+					quiz.answer.as("answer"),
 					quiz.quizType.as("quizType"),
 					quiz.description.as("description"),
 					quiz.startedAt.as("startedAt"),

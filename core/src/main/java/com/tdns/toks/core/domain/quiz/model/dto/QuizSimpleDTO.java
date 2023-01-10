@@ -14,6 +14,8 @@ public class QuizSimpleDTO {
 
 	private String question;
 
+	private String answer;
+
 	private QuizType quizType;
 
 	private String description;

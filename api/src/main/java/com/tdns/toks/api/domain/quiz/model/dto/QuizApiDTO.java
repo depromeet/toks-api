@@ -1,21 +1,23 @@
 package com.tdns.toks.api.domain.quiz.model.dto;
 
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
 import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class QuizApiDTO {
     @Getter
@@ -27,6 +29,9 @@ public class QuizApiDTO {
 
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "question", description = "question")
         private final String question;
+
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "answer", description = "answer")
+        private final String answer;
 
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizType", description = "quiz type")
         private final QuizType quizType;
@@ -66,6 +71,7 @@ public class QuizApiDTO {
             return new QuizSimpleResponse(
                     quizSimpleDTO.getQuizId(),
                     quizSimpleDTO.getQuestion(),
+                    quizSimpleDTO.getAnswer(),
                     quizSimpleDTO.getQuizType(),
                     quizSimpleDTO.getDescription(),
                     quizSimpleDTO.getStartedAt(),
