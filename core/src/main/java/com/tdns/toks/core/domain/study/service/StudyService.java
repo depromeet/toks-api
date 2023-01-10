@@ -1,5 +1,12 @@
 package com.tdns.toks.core.domain.study.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
@@ -14,13 +21,8 @@ import com.tdns.toks.core.domain.study.repository.TagRepository;
 import com.tdns.toks.core.domain.study.type.StudyStatus;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
@@ -126,5 +128,9 @@ public class StudyService {
                 .map(studyUser -> userRepository.findById(studyUser.getUserId())
                         .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER)))
                 .collect(Collectors.toList());
+    }
+
+    public Long deleteAllByLeaderId(Long leaderId) {
+        return studyRepository.deleteAllByLeaderId(leaderId);
     }
 }

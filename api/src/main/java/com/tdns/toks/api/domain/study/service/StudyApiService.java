@@ -1,5 +1,13 @@
 package com.tdns.toks.api.domain.study.service;
 
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.*;
+
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.tdns.toks.api.domain.study.model.mapper.StudyApiMapper;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
@@ -19,22 +27,9 @@ import com.tdns.toks.core.domain.study.type.StudyUserStatus;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 import com.tdns.toks.core.domain.user.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.stream.Collectors;
-
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.FinishedStudiesInfoResponse;
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudiesInfoResponse;
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyDetailsResponse;
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyEntranceDetailsResponse;
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 
 @Slf4j
 @Service
@@ -182,5 +177,9 @@ public class StudyApiService {
                     var tags = tagService.getStudyTagsDTO(studyId);
                     return StudyDTO.FinishedStudyInfoLight.toDto(study, tags);
                 }).collect(Collectors.toList()));
+    }
+
+    public Long deleteAllByLeaderId(Long leaderId) {
+        return studyService.deleteAllByLeaderId(leaderId);
     }
 }
