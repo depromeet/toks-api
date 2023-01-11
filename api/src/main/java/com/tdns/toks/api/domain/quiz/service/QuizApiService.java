@@ -38,6 +38,7 @@ public class QuizApiService {
         return QuizSimpleResponse.toResponse(quiz);
     }
 
+    // TODO : 조회 로직 개선 필요
     public QuizzesResponse getAllByStudyId(final Long studyId) {
         var unSubmitters = studyUserService.filterUnSubmitterByStudyId(studyId);
         var quizzes = quizService.retrieveByStudyId(studyId);
@@ -65,18 +66,14 @@ public class QuizApiService {
     }
 
     public QuizCreateResponse create(QuizRequest request) {
-        // 사용자 조회
         var userDTO = UserDetailDTO.get();
-        // 스터디 조회
         var study = studyService.getStudy(request.getStudyId());
 
-        // 어떤 스터디에 라운드가 중복되었는지
         quizService.checkDuplicatedRound(request.getStudyId(), request.getRound());
 
         var quiz = mapper.toEntity(request);
         var savedQuiz = quizService.save(quiz);
 
-        // 라운드 하나 올려주기
         study.updateLatestQuizRound();
 
         log.info("create quiz uid : {} / quizId : {}", userDTO.getId(), quiz.getId());
