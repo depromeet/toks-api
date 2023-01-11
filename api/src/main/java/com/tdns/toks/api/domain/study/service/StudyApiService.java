@@ -67,7 +67,8 @@ public class StudyApiService {
 
     @Transactional(readOnly = true)
     public TagResponse getTagByKeyword(String keyword) {
-        var tagDTOList = studyService.getTagListByKeyword(keyword.trim())
+        var nonBlankKeyword = keyword.replaceAll(" ", "");
+        var tagDTOList = studyService.getTagListByKeyword(nonBlankKeyword)
                 .stream()
                 .map(TagDTO::of)
                 .collect(Collectors.toList());
