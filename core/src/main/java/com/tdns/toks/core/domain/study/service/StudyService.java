@@ -1,12 +1,5 @@
 package com.tdns.toks.core.domain.study.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
@@ -21,8 +14,13 @@ import com.tdns.toks.core.domain.study.repository.TagRepository;
 import com.tdns.toks.core.domain.study.type.StudyStatus;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -65,7 +63,16 @@ public class StudyService {
     @Transactional(readOnly = true)
     public Study getOrThrow(final Long id) {
         return studyRepository.findById(id)
-                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_STUDY));
+    }
+
+    @Transactional(readOnly = true)
+    public void isExists(final Long id) {
+        var isExistsStudy = studyRepository.existsById(id);
+
+        if (!isExistsStudy) {
+            throw new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_STUDY);
+        }
     }
 
     // 태그명이 중복인 경우 체크, 태그가 공백 데이터가 있는 경우, 태그가 공백인 경우 등을 제외시킴

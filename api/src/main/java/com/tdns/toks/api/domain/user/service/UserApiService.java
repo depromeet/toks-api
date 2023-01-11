@@ -25,7 +25,7 @@ public class UserApiService {
     }
 
     public UserRenewAccessTokenResponse renewAccessToken(UserRenewAccessTokenRequest userRenewAccessTokenRequest) {
-        String accessToken = userService.renewAccessToken(userRenewAccessTokenRequest.getRefreshToken());
+        var accessToken = userService.renewAccessToken(userRenewAccessTokenRequest.getRefreshToken());
         return new UserRenewAccessTokenResponse(accessToken);
     }
 
