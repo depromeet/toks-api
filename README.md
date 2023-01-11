@@ -1,14 +1,22 @@
 # 12th-5-toks
+<img src="https://user-images.githubusercontent.com/39111133/211819220-5e204157-818a-4b2b-be45-a0c1ea6b1a1b.png">
 
 ## 🖐 소개
-시은 파트
-
+> 똑스는 활기 넘치는 스터디 환경을 제공합니다!
+> 
+> 퀴즈를 출제하고, 푸는 방식으로 스터디원의 적극적 참여를 유도합니다!
 ## 🔨 기술 스택
-시은 파트
 
-|         Backend (API)         |         
-| :---------------------------: | 
-| ![Nestjs](https://img.shields.io/badge/nestjs-white?style=flat-square&logo=nestjs&color=E0234E) ![GoogleCloud](https://img.shields.io/badge/GoogleCloud-4285F4?style=flat-square&logo=GoogleCloud&logoColor=white) ![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat&logo=amazon-aws&logoColor=white) ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=Firebase&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white) ![AmazonDynamoDB](https://img.shields.io/badge/AmazonDynamoDB-4053D6?style=flat-square&logo=AmazonDynamoDB&logoColor=white) ![Sentry](https://img.shields.io/badge/Sentry-362D59?style=flat-square&logo=Sentry&logoColor=white)|
+
+
+|                                                                                                                                                                                                                                                                **Backend (API)**                                                                                                                                                                                                                                                                |         
+|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:| 
+| ![Spring boot](https://img.shields.io/badge/SpringBoot-6DB33F?style=flat-square&logo=SpringBoot&logoColor=white) ![Spring Security](https://img.shields.io/badge/SpringSecurity-6DB33F?style=flat-square&logo=SpringSecurity&logoColor=white) ![Gradle](https://img.shields.io/badge/Gradle-white?style=flat-square&logo=gradle&color=02303A) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white) ![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=Redis&logoColor=white) 
+|                                                                                                                                                                                                                                                                **Infra & CI/CD**                                                                                                                                                                                                                                                                |
+|     ![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=AmazonAWS&logoColor=white) ![ECS](https://img.shields.io/badge/ECS-FF9900?style=flat-square&logo=AmazonECS&logoColor=white) ![CloudWatch](https://img.shields.io/badge/CloudWatch-FF4F8B?style=flat-square&logo=AmazonCloudWatch&logoColor=white) ![Git Action](https://img.shields.io/badge/GitAction-2088FF?style=flat-square&logo=GithubActions&logoColor=white) ![S3](https://img.shields.io/badge/S3-569A31?style=flat-square&logo=AmazonS3&logoColor=white)     
+
+
+
 
 ## 🔖 주요 기능
 선우 파트
