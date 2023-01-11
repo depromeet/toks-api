@@ -36,6 +36,7 @@ public enum ApplicationErrorType {
     EMPTY_TOKEN(HttpStatus.BAD_REQUEST, -20013, "no token"),
     NO_AUTHORIZATION(HttpStatus.UNAUTHORIZED, -20017, "error.no.authorization"),
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, -20014, "error.invalid.refresh.token"),
+    NOT_FOUND_USER(HttpStatus.NOT_FOUND, -20020, "사용자 정보를 찾을 수 없습니다."),
 
     /**
      * Quiz Error Type

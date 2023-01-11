@@ -28,7 +28,8 @@ public class UserService {
     }
 
     public User getUser(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
+        return userRepository.findById(id)
+                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER));
     }
 
     public String updateNickname(Long id, String nickname) {
@@ -54,7 +55,7 @@ public class UserService {
     }
 
     public void deleteRefreshToken(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
+        User user = userRepository.findById(userId).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER));
         user.setRefreshToken("logout");
     }
 

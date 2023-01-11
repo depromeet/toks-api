@@ -133,7 +133,7 @@ public class StudyService {
         return studyUserRepository.findAllByStudyId(studyId)
                 .stream()
                 .map(studyUser -> userRepository.findById(studyUser.getUserId())
-                        .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER)))
+                        .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER)))
                 .collect(Collectors.toList());
     }
 
