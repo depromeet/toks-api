@@ -10,9 +10,9 @@
 
 ## 기술 스택
 
-|         Backend (API)         |         
-| :---------------------------: | 
-| ![Nestjs](https://img.shields.io/badge/nestjs-white?style=flat-square&logo=nestjs&color=E0234E) ![GoogleCloud](https://img.shields.io/badge/GoogleCloud-4285F4?style=flat-square&logo=GoogleCloud&logoColor=white) ![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat&logo=amazon-aws&logoColor=white) ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=Firebase&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white) ![AmazonDynamoDB](https://img.shields.io/badge/AmazonDynamoDB-4053D6?style=flat-square&logo=AmazonDynamoDB&logoColor=white) ![Sentry](https://img.shields.io/badge/Sentry-362D59?style=flat-square&logo=Sentry&logoColor=white)|
+|                        Server                                |
+| :----------------------------------------------------------: |
+| ![Spring Boot](https://img.shields.io/badge/SpringBoot-white?style=flat-square&logo=spring-boot&color=6DB33F&logoColor=white) ![Spring Security](https://img.shields.io/badge/SpringSecurity-6DB33F?style=flat-square&logo=spring-security&logoColor=white) ![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat&logo=amazon-aws&logoColor=white)  ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white)|
 
 ## 주요 기능
 - 퀴즈 출제 및 풀이를 하며 적극적인 참여를 유도해요
