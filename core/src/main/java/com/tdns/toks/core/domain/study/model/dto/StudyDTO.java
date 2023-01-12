@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class StudyDTO {
@@ -25,10 +26,11 @@ public class StudyDTO {
         private List<TagDTO> tags;
 
         public static StudyInfoLight toDto(Study study, LatestQuizSimpleDto latestQuizSimpleDto, List<TagDTO> tags) {
+            var studyStatus = StudyStatus.getStatus(study.getStartedAt(), study.getEndedAt(), LocalDateTime.now());
             return StudyInfoLight.builder()
                     .id(study.getId())
                     .name(study.getName())
-                    .status(study.getStatus())
+                    .status(studyStatus)
                     .latestQuizId(latestQuizSimpleDto.getQuizId())
                     .latestQuizStatus(latestQuizSimpleDto.getStudyLatestQuizStatus())
                     .userCount(study.getStudyUserCount())
