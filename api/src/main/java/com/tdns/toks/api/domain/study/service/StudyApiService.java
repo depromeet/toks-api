@@ -12,7 +12,7 @@ import com.tdns.toks.core.domain.study.model.dto.TagDTO;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.StudyUser;
 import com.tdns.toks.core.domain.study.service.StudyService;
-import com.tdns.toks.core.domain.study.service.TagService;
+import com.tdns.toks.core.domain.study.service.StudyTagService;
 import com.tdns.toks.core.domain.study.type.StudyCapacity;
 import com.tdns.toks.core.domain.study.type.StudyStatus;
 import com.tdns.toks.core.domain.study.type.StudyUserStatus;
@@ -44,7 +44,7 @@ import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 public class StudyApiService {
     private final StudyService studyService;
     private final UserService userService;
-    private final TagService tagService;
+    private final StudyTagService tagService;
     private final StudyApiMapper mapper;
     private final QuizService quizService;
 

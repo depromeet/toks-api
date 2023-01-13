@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class TagService {
+public class StudyTagService {
     private final StudyTagRepository studyTagRepository;
 
     public List<TagDTO> getStudyTagsDTO(Long studyId) {
