@@ -115,6 +115,10 @@ public class StudyService {
                 .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_STUDY, "not found study " + studyId));
     }
 
+    public List<Study> findStudyAll(List<Long> studyIds) {
+        return studyRepository.findAllById(studyIds);
+    }
+
     public StudyUser saveStudyUser(StudyUser studyUser) {
         return studyUserRepository.save(studyUser);
     }

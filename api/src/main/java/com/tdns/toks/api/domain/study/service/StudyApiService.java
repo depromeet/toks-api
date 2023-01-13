@@ -135,11 +135,32 @@ public class StudyApiService {
 
     public StudiesInfoResponse getInProgressStudies() {
         var userId = UserDetailDTO.get().getId();
-        var userStudies = userService.getUserStudyIds(userId);
-        return new StudiesInfoResponse(userStudies.stream()
-                .filter(studyUser -> !studyService.isFinishedStudy(studyUser.getStudyId()))
-                .map(this::convertToResponse)
-                .collect(Collectors.toList()));
+        var studyUsers = userService.getUserStudyIds(userId);
+        var usersStudyIds = studyUsers.stream()
+                .map(StudyUser::getStudyId)
+                .collect(Collectors.toList());
+
+        var studies = studyService.findStudyAll(usersStudyIds)
+                .stream()
+                .filter(s -> s.getStatus() != StudyStatus.FINISH)
+                .map(aa -> getStudyInfo(aa, userId))
+                .collect(Collectors.toList());
+
+        return new StudiesInfoResponse(studies);
+    }
+
+    // 1차 개선 -> 태그 관련 정보를 레디스로
+    public StudyInfoLight getStudyInfo(Study study, Long uid) {
+        var tags = tagService.getStudyTagsDTO(study.getId());
+        var studyLatestQuiz = quizService.getStudyLatestQuiz(study.getId());
+        if (studyLatestQuiz.getId() == -1) {
+            return StudyInfoLight.toDto(study, new QuizDTO.LatestQuizSimpleDto(StudyLatestQuizStatus.PENDING, -1L), tags);
+        }
+        var latestQuizSimpleDto = new QuizDTO.LatestQuizSimpleDto(
+                quizService.getStudyLatestQuizStatus(studyLatestQuiz, uid),
+                studyLatestQuiz.getId()
+        );
+        return StudyInfoLight.toDto(study, latestQuizSimpleDto, tags);
     }
 
     public StudyInfoLight convertToResponse(StudyUser studyUser) {
