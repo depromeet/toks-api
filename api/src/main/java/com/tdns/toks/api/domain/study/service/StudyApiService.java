@@ -36,7 +36,7 @@ import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyEntrance
 import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
 import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 
-// TODO : 개선 작업 필요
+// TODO : 개선 작업 필요 -> 스터디의 상태를 쿼리파람으로 받아서 하도록 구현해야 함.. 현재 로직은 잘못된 로직 (상태에 따라 API를 모두 만드는 건 바람직하지 않음)
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -204,14 +204,19 @@ public class StudyApiService {
         var userId = UserDetailDTO.get().getId();
         var userFinishedStudies = userService.getUserStudyIds(userId);
 
-        return new FinishedStudiesInfoResponse(userFinishedStudies.stream()
-                .filter(finishedStudy -> studyService.isFinishedStudy(finishedStudy.getStudyId()))
+        var usersStudyIds = userFinishedStudies.stream()
+                .map(StudyUser::getStudyId)
+                .collect(Collectors.toList());
+
+        var response = studyService.findStudyAll(usersStudyIds)
+                .stream()
+                .filter(finishedStudy -> finishedStudy.getStatus() == StudyStatus.FINISH)
                 .map(finishedStudy -> {
-                    var studyId = finishedStudy.getStudyId();
-                    var study = studyService.getStudy(studyId);
-                    var tags = tagService.getStudyTagsDTO(studyId);
-                    return StudyDTO.FinishedStudyInfoLight.toDto(study, tags);
-                }).collect(Collectors.toList()));
+                    var tags = tagService.getStudyTagsDTO(finishedStudy.getId());
+                    return StudyDTO.FinishedStudyInfoLight.toDto(finishedStudy, tags);
+                }).collect(Collectors.toList());
+
+        return new FinishedStudiesInfoResponse(response);
     }
 
     public Long deleteAllByLeaderId(Long leaderId) {

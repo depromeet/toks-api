@@ -37,6 +37,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+// TODO : 해당 클래스에 있는 조회 로직에 대해 개선 작업이 필요함
 @Tag(name = "StudyController-V1", description = "STUDY API")
 @RestController
 @RequestMapping(path = "/api/v1/studies", produces = MediaType.APPLICATION_JSON_VALUE)
