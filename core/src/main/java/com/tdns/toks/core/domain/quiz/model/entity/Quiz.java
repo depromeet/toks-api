@@ -1,28 +1,17 @@
 package com.tdns.toks.core.domain.quiz.model.entity;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -55,7 +44,7 @@ public class Quiz extends BaseTimeEntity {
 	@Column(nullable = false, columnDefinition = "DATETIME COMMENT '종료시간'")
 	private LocalDateTime endedAt;
 
-	@Column(columnDefinition = "VARCHAR(255) COMMENT '이미지 url 리스트'")
+	@Column(columnDefinition = "VARCHAR(512) COMMENT '이미지 url 리스트'")
 	@Convert(converter = StringArrayConverter.class)
 	private List<String> imageUrls;
 
