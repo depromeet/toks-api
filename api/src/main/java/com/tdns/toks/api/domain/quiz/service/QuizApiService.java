@@ -9,6 +9,8 @@ import com.tdns.toks.core.domain.study.service.StudyService;
 import com.tdns.toks.core.domain.study.service.StudyUserService;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleByQuizIdDTO;
+import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
+import com.tdns.toks.core.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,11 +22,7 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizCreateResponse;
-import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizRequest;
-import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizResponse;
-import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizSimpleResponse;
-import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizzesResponse;
+import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.*;
 
 @Slf4j
 @Service
@@ -34,6 +32,7 @@ public class QuizApiService {
     private final QuizService quizService;
     private final StudyUserService studyUserService;
     private final StudyService studyService;
+    private final UserService userService;
 
     private final QuizMapper mapper;
 
@@ -48,6 +47,11 @@ public class QuizApiService {
         var quizzes = quizService.retrieveByStudyId(studyId);
         var userDTO = UserDetailDTO.get();
 
+        //DB 한번 더 조회 하는게 걸리는데 UserDTO 에서 UserSimpleDTO 만드는 방법 떠오르지 않음..
+        var user = userService.getUser(userDTO.getId());
+        UserSimpleDTO userSimpleDTO = UserSimpleDTO.toDto(user);
+
+
         var results = quizzes.stream()
                 .map(quiz -> {
                     var unSubmitter = new ArrayList<>(unSubmitters.stream()
@@ -58,11 +62,15 @@ public class QuizApiService {
                     // 퀴즈 출제자는 퀴즈 답변을 출제할 수 없으므로, 미제출자에서 제외
                     unSubmitter.remove(quiz.getCreator());
 
+                    //미제출자에 없다면? -> 풀었다 (true)
+                    boolean isSolved = !unSubmitter.contains(userSimpleDTO);
+
                     return QuizResponse.toResponse(
                             quiz,
                             unSubmitter,
                             quizService.getQuizStatus(quiz.getStartedAt(), quiz.getEndedAt()),
-                            Objects.equals(quiz.getCreator().getUserId(), userDTO.getId()));
+                            Objects.equals(quiz.getCreator().getUserId(), userDTO.getId()),
+                            isSolved);
                 })
                 .collect(Collectors.toList());
 

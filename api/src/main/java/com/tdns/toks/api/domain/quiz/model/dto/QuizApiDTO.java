@@ -1,23 +1,21 @@
 package com.tdns.toks.api.domain.quiz.model.dto;
 
-import java.sql.Timestamp;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
 import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class QuizApiDTO {
     @Getter
@@ -133,7 +131,11 @@ public class QuizApiDTO {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "isMyQuiz", description = "퀴즈 생성자 여부")
         private final boolean isMyQuiz;
 
-        public static QuizResponse toResponse(QuizSimpleDTO quizSimpleDTO, List<UserSimpleDTO> unSubmitter, QuizStatusType quizStatus, boolean isMyQuiz) {
+        // 시은 풀었는지 안풀었는지 확인 필드
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "isSolved", description = "퀴즈 풀이 여부")
+        private final boolean isSolved;
+
+        public static QuizResponse toResponse(QuizSimpleDTO quizSimpleDTO, List<UserSimpleDTO> unSubmitter, QuizStatusType quizStatus, boolean isMyQuiz, boolean isSolved) {
             return new QuizResponse(
                     quizSimpleDTO.getQuizId(),
                     quizSimpleDTO.getQuestion(),
@@ -148,7 +150,8 @@ public class QuizApiDTO {
                     quizSimpleDTO.getStudyId(),
                     quizStatus,
                     quizSimpleDTO.getRound(),
-                    isMyQuiz
+                    isMyQuiz,
+                    isSolved
             );
         }
     }
