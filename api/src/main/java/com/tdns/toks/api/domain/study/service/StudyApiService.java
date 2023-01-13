@@ -126,11 +126,16 @@ public class StudyApiService {
     public StudiesInfoResponse getAllStudies() {
         var userId = UserDetailDTO.get().getId();
         var userStudies = userService.getUserStudyIds(userId);
-        var response = userStudies.stream()
-                .map(this::convertToResponse)
+        var usersStudyIds = userStudies.stream()
+                .map(StudyUser::getStudyId)
                 .collect(Collectors.toList());
 
-        return new StudiesInfoResponse(response);
+        var studies = studyService.findStudyAll(usersStudyIds)
+                .stream()
+                .map(aa -> getStudyInfo(aa, userId))
+                .collect(Collectors.toList());
+
+        return new StudiesInfoResponse(studies);
     }
 
     public StudiesInfoResponse getInProgressStudies() {
