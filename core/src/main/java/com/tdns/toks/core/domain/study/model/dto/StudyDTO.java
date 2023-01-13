@@ -21,6 +21,7 @@ public class StudyDTO {
         private String name;
         private Integer userCount;
         private StudyStatus status;
+        private LocalDateTime startedAt;
         private Long latestQuizId;
         private StudyLatestQuizStatus latestQuizStatus;
         private List<TagDTO> tags;
@@ -31,6 +32,7 @@ public class StudyDTO {
                     .id(study.getId())
                     .name(study.getName())
                     .status(studyStatus)
+                    .startedAt(study.getStartedAt())
                     .latestQuizId(latestQuizSimpleDto.getQuizId())
                     .latestQuizStatus(latestQuizSimpleDto.getStudyLatestQuizStatus())
                     .userCount(study.getStudyUserCount())
