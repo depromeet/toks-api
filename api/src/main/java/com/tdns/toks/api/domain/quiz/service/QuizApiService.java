@@ -4,6 +4,7 @@ import com.tdns.toks.api.domain.quiz.model.mapper.QuizMapper;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
+import com.tdns.toks.core.domain.quiz.service.QuizLikeService;
 import com.tdns.toks.core.domain.quiz.service.QuizService;
 import com.tdns.toks.core.domain.study.service.StudyService;
 import com.tdns.toks.core.domain.study.service.StudyUserService;
@@ -33,6 +34,7 @@ public class QuizApiService {
     private final StudyUserService studyUserService;
     private final StudyService studyService;
     private final UserService userService;
+    private final QuizLikeService quizLikeService;
 
     private final QuizMapper mapper;
 
@@ -64,13 +66,23 @@ public class QuizApiService {
 
                     //미제출자에 없다면? -> 풀었다 (true)
                     boolean isSolved = !unSubmitter.contains(userSimpleDTO);
+                    boolean voted = quizLikeService.isVoted(user.getId(), quiz.getQuizId());
+
+                    String quizSolveStep = "NONE";
+                    if (isSolved) {
+                        if (voted) {
+                            quizSolveStep = "VOTED";
+                        } else {
+                            quizSolveStep = "SOLVED";
+                        }
+                    }
 
                     return QuizResponse.toResponse(
                             quiz,
                             unSubmitter,
                             quizService.getQuizStatus(quiz.getStartedAt(), quiz.getEndedAt()),
                             Objects.equals(quiz.getCreator().getUserId(), userDTO.getId()),
-                            isSolved);
+                            quizSolveStep);
                 })
                 .collect(Collectors.toList());
 

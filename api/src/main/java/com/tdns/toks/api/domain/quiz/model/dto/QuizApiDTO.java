@@ -132,10 +132,10 @@ public class QuizApiDTO {
         private final boolean isMyQuiz;
 
         // 시은 풀었는지 안풀었는지 확인 필드
-        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "isSolved", description = "퀴즈 풀이 여부")
-        private final boolean isSolved;
+        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizSolveStep", description = "퀴즈 풀이 단계")
+        private final String quizSolveStep;
 
-        public static QuizResponse toResponse(QuizSimpleDTO quizSimpleDTO, List<UserSimpleDTO> unSubmitter, QuizStatusType quizStatus, boolean isMyQuiz, boolean isSolved) {
+        public static QuizResponse toResponse(QuizSimpleDTO quizSimpleDTO, List<UserSimpleDTO> unSubmitter, QuizStatusType quizStatus, boolean isMyQuiz, String quizSolveStep) {
             return new QuizResponse(
                     quizSimpleDTO.getQuizId(),
                     quizSimpleDTO.getQuestion(),
@@ -151,7 +151,7 @@ public class QuizApiDTO {
                     quizStatus,
                     quizSimpleDTO.getRound(),
                     isMyQuiz,
-                    isSolved
+                    quizSolveStep
             );
         }
     }

@@ -25,4 +25,8 @@ public class QuizLikeService {
 			throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_LIKE_USER_QUIZ);
 		}
 	}
+
+	public boolean isVoted(final Long userId, final Long quizId) {
+		return quizLikeRepository.countByUserIdAndQuizId(userId, quizId) == 1;
+	}
 }
