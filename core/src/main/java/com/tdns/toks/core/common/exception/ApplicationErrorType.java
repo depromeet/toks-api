@@ -48,6 +48,7 @@ public enum ApplicationErrorType {
     ALREADY_JOIN_USER(HttpStatus.BAD_REQUEST, -20019, "error.invalid.already-join-user"),
     ALREADY_EXISTS_QUIZ_ROUND(HttpStatus.BAD_REQUEST, -20020, "퀴즈 라운드가 이미 존재합니다."),
     NOT_FOUND_QUIZ_ERROR(HttpStatus.NOT_FOUND, -20021, "해당 퀴즈가 존재하지 않습니다."),
+    STILL_OPEN_LATEST_QUIZ(HttpStatus.CONFLICT, -20022, "마지막 퀴즈가 끝나지 않았습니다"),
 
 
     /**

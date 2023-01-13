@@ -1,6 +1,9 @@
 package com.tdns.toks.api.domain.quiz.service;
 
 import com.tdns.toks.api.domain.quiz.model.mapper.QuizMapper;
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
+import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.service.QuizService;
 import com.tdns.toks.core.domain.study.service.StudyService;
 import com.tdns.toks.core.domain.study.service.StudyUserService;
@@ -11,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
@@ -69,7 +73,21 @@ public class QuizApiService {
         var userDTO = UserDetailDTO.get();
         var study = studyService.getStudy(request.getStudyId());
 
-        quizService.checkDuplicatedRound(request.getStudyId(), request.getRound());
+//        quizService.checkDuplicatedRound(request.getStudyId(), request.getRound());
+
+//시은 마지막 퀴즈 검증
+        Quiz latestQuiz = quizService.getStudyLatestQuiz(request.getStudyId());
+        if (latestQuiz.getId() != -1) {
+            if (latestQuiz.getRound() >= request.getRound()) {
+                throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_EXISTS_QUIZ_ROUND);
+            }
+
+            if (latestQuiz.getEndedAt().isAfter(LocalDateTime.now())) {
+                throw new SilentApplicationErrorException(ApplicationErrorType.STILL_OPEN_LATEST_QUIZ);
+            }
+        }
+//시은 마지막 퀴즈 검증 끝
+
 
         var quiz = mapper.toEntity(request);
         var savedQuiz = quizService.save(quiz);
