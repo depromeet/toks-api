@@ -24,6 +24,7 @@ public class QuizLikeApiService {
     private final QuizService quizService;
     private final QuizLikeMapper mapper;
 
+    // TODO : 최대한 가독성 있도록, DB는 2 ~ 4번 정도만 탈 수 있도록
     public QuizLikeApiDTO.QuizLikeResponse like(final QuizLikeRequest request) {
         var user = UserDetailDTO.get();
 

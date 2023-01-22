@@ -20,6 +20,7 @@ import java.util.Map;
 @Component
 public class LoggingFilter extends OncePerRequestFilter {
 
+    // TODO : 로깅을 DB (no-sql 혹은 rdb에 저장)
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 

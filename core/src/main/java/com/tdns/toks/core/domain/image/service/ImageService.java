@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ImageService {
     private final ImageRepository imageRepository;
-    
-    public Image saveImageUrl(String imageUrl, Long userId) {
+
+    public Image saveImage(String imageUrl, Long userId) {
         var image = Image.builder()
                 .imageUrl(imageUrl)
                 .createdBy(userId)

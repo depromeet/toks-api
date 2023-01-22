@@ -36,6 +36,7 @@ import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyEntrance
 import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
 import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 
+// TODO : 단건 조회시, 한번에 쿼리가 조회되도록 구현
 // TODO : 개선 작업 필요 -> 스터디의 상태를 쿼리파람으로 받아서 하도록 구현해야 함.. 현재 로직은 잘못된 로직 (상태에 따라 API를 모두 만드는 건 바람직하지 않음)
 @Slf4j
 @Service
@@ -65,6 +66,7 @@ public class StudyApiService {
         return new StudyFormResponse();
     }
 
+    // TODO : 태그 저장시 발생하는 동시성 문제에 대해서, Mqueue 혹은 RedisonClient를 토유해 해결해야함
     @Transactional(readOnly = true)
     public TagResponse getTagByKeyword(String keyword) {
         var nonBlankKeyword = keyword.replaceAll(" ", "");
@@ -183,6 +185,8 @@ public class StudyApiService {
         return StudyInfoLight.toDto(study, latestQuizSimpleDto, tags);
     }
 
+    // TODO : 스터디 조회시, 전체, 진행, 종료 등에 대한 상태값을 Param 기반으로 조회 진행
+    // TODO : 스터디 조회시 비동기 멀티 스레드 기반으로 조회
     public StudyDetailsResponse getStudyDetails(Long studyId) {
         var users = studyService.getUsersInStudy(studyId).stream()
                 .map(UserSimpleDTO::toDto)

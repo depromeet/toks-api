@@ -25,7 +25,7 @@ public class ImageApiService {
 
         log.info("uploadImage / uid : {} / imageUrl {}", uid, imageUrl);
 
-        var imageUploadLog = imageService.saveImageUrl(imageUrl, uid);
+        var imageUploadLog = imageService.saveImage(imageUrl, uid);
         return ImageUploadResponse.toResponse(imageUploadLog);
     }
 }

@@ -43,6 +43,7 @@ public class QuizApiService {
         return QuizSimpleResponse.toResponse(quiz);
     }
 
+    // TODO : 가독성 있는 로직으로 구현하기
     // TODO : 조회 로직 개선 필요
     public QuizzesResponse getAllByStudyId(final Long studyId) {
         var unSubmitters = studyUserService.filterUnSubmitterByStudyId(studyId);
