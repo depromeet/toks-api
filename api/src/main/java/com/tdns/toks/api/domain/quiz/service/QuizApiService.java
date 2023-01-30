@@ -6,6 +6,7 @@ import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.service.QuizLikeService;
 import com.tdns.toks.core.domain.quiz.service.QuizService;
+import com.tdns.toks.core.domain.quiz.type.QuizSolveStatus;
 import com.tdns.toks.core.domain.study.service.StudyService;
 import com.tdns.toks.core.domain.study.service.StudyUserService;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
@@ -23,7 +24,11 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.*;
+import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizCreateResponse;
+import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizRequest;
+import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizResponse;
+import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizSimpleResponse;
+import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizzesResponse;
 
 @Slf4j
 @Service
@@ -52,7 +57,7 @@ public class QuizApiService {
 
         //DB 한번 더 조회 하는게 걸리는데 UserDTO 에서 UserSimpleDTO 만드는 방법 떠오르지 않음..
         var user = userService.getUser(userDTO.getId());
-        UserSimpleDTO userSimpleDTO = UserSimpleDTO.toDto(user);
+        var userSimpleDTO = UserSimpleDTO.toDto(user);
 
 
         var results = quizzes.stream()
@@ -66,24 +71,18 @@ public class QuizApiService {
                     unSubmitter.remove(quiz.getCreator());
 
                     //미제출자에 없다면? -> 풀었다 (true)
-                    boolean isSolved = !unSubmitter.contains(userSimpleDTO);
-                    boolean voted = quizLikeService.isVoted(user.getId(), quiz.getQuizId());
+                    var isSolved = !unSubmitter.contains(userSimpleDTO);
+                    var isVoted = quizLikeService.isVoted(user.getId(), quiz.getQuizId());
 
-                    String quizSolveStep = "NONE";
-                    if (isSolved) {
-                        if (voted) {
-                            quizSolveStep = "VOTED";
-                        } else {
-                            quizSolveStep = "SOLVED";
-                        }
-                    }
+                    var quizSolveStep = QuizSolveStatus.of(isSolved, isVoted);
 
                     return QuizResponse.toResponse(
                             quiz,
                             unSubmitter,
                             quizService.getQuizStatus(quiz.getStartedAt(), quiz.getEndedAt()),
                             Objects.equals(quiz.getCreator().getUserId(), userDTO.getId()),
-                            quizSolveStep);
+                            quizSolveStep
+                    );
                 })
                 .collect(Collectors.toList());
 

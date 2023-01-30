@@ -3,6 +3,7 @@ package com.tdns.toks.api.domain.quiz.model.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
 import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
+import com.tdns.toks.core.domain.quiz.type.QuizSolveStatus;
 import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
@@ -133,9 +134,10 @@ public class QuizApiDTO {
 
         // 시은 풀었는지 안풀었는지 확인 필드
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "quizSolveStep", description = "퀴즈 풀이 단계")
-        private final String quizSolveStep;
+        private final QuizSolveStatus quizSolveStep;
 
-        public static QuizResponse toResponse(QuizSimpleDTO quizSimpleDTO, List<UserSimpleDTO> unSubmitter, QuizStatusType quizStatus, boolean isMyQuiz, String quizSolveStep) {
+        public static QuizResponse toResponse(QuizSimpleDTO quizSimpleDTO, List<UserSimpleDTO> unSubmitter, QuizStatusType quizStatus, boolean isMyQuiz, QuizSolveStatus quizSolveStep) {
+
             return new QuizResponse(
                     quizSimpleDTO.getQuizId(),
                     quizSimpleDTO.getQuestion(),
