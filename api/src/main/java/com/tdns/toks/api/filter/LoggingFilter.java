@@ -1,6 +1,8 @@
 package com.tdns.toks.api.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tdns.toks.core.domain.actionlog.event.publish.SystemActionLogEventPublish;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -18,11 +20,15 @@ import java.util.Map;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class LoggingFilter extends OncePerRequestFilter {
+    private final SystemActionLogEventPublish systemActionLogEventPublish;
 
-    // TODO : 로깅을 DB (no-sql 혹은 rdb에 저장)
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        var httpServletRequest = (HttpServletRequest) request;
+
+        systemActionLogEventPublish.publish(httpServletRequest);
 
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);

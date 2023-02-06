@@ -22,4 +22,16 @@ public class AsyncConfig extends AsyncConfigurerSupport {
 
         return executor.generate();
     }
+
+    @Bean(name = "systemActionLogExecutor")
+    public ThreadPoolTaskExecutor systemActionLogExecutor() {
+        var executor = new ExecutorGenerator(
+                5,
+                10,
+                10,
+                "systemActionLogExecutor"
+        );
+
+        return executor.generate();
+    }
 }

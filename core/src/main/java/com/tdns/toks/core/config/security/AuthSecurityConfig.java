@@ -2,6 +2,14 @@ package com.tdns.toks.core.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.core.common.filter.ExceptionHandlerFilter;
+import com.tdns.toks.core.common.filter.JwtAuthenticationFilter;
+import com.tdns.toks.core.common.security.oauth.CustomOAuth2UserService;
+import com.tdns.toks.core.common.security.oauth.OAuth2FailureHandler;
+import com.tdns.toks.core.common.security.oauth.OAuth2SuccessHandler;
+import com.tdns.toks.core.common.service.UserDetailService;
+import com.tdns.toks.core.common.type.CORSType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -20,16 +28,6 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import com.tdns.toks.core.common.filter.ExceptionHandlerFilter;
-import com.tdns.toks.core.common.filter.JwtAuthenticationFilter;
-import com.tdns.toks.core.common.security.oauth.CustomOAuth2UserService;
-import com.tdns.toks.core.common.security.oauth.OAuth2FailureHandler;
-import com.tdns.toks.core.common.security.oauth.OAuth2SuccessHandler;
-import com.tdns.toks.core.common.service.UserDetailService;
-import com.tdns.toks.core.common.type.CORSType;
-
-import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -58,27 +56,27 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .formLogin().disable()
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                    .antMatchers(permitUrl).permitAll()
-                    .anyRequest().authenticated()
+                .antMatchers(permitUrl).permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
-                    .authenticationEntryPoint((request, response, authException) -> {
-                            response.setContentType("application/json");
-                            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                            response.getWriter().write(objectMapper.writeValueAsString(ApplicationErrorType.NO_AUTHORIZATION));
-                    })
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.setContentType("application/json");
+                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                    response.getWriter().write(objectMapper.writeValueAsString(ApplicationErrorType.NO_AUTHORIZATION));
+                })
                 .and()
                 .oauth2Login()
-                    .authorizationEndpoint()
-                    .baseUri("/oauth2/authorize")
-                    .and()
-                    .userInfoEndpoint().userService(customOAuth2UserService)
+                .authorizationEndpoint()
+                .baseUri("/oauth2/authorize")
                 .and()
-                    .successHandler(oAuth2SuccessHandler)
-                    .failureHandler(oAuth2FailureHandler);
+                .userInfoEndpoint().userService(customOAuth2UserService)
+                .and()
+                .successHandler(oAuth2SuccessHandler)
+                .failureHandler(oAuth2FailureHandler);
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class);
@@ -86,9 +84,11 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui",
+        web.ignoring().antMatchers(
+                "/v2/api-docs", "/configuration/ui",
                 "**/swagger-resources/**", "/configuration/security",
-                "/swagger-ui.html", "/webjars/**", "/swagger/**");
+                "/swagger-ui.html", "/webjars/**", "/swagger/**", "/swagger-ui/index.html"
+        );
     }
 
     // 중복로그인 방지를 위한 로직
