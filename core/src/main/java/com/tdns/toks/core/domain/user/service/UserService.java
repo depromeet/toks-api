@@ -66,4 +66,8 @@ public class UserService {
     private boolean isNicknameDuplicated(String nickname) {
         return userRepository.existsByNickname(nickname);
     }
+
+    public Long countAllUsers() {
+        return userRepository.count();
+    }
 }
