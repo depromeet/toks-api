@@ -38,7 +38,7 @@ public class StudyService {
 
     public Study save(Study study) {
         if (!studyDatesValidate(study.getStartedAt(), study.getEndedAt())) {
-            throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_REQUEST, "스터디 시작일이 종료일 보다 앞섭니다.");
+            throw new SilentApplicationErrorException(ApplicationErrorType.CHECK_START_END_DATE, "스터디 시작일이 종료일 보다 앞섭니다.");
         }
         return studyRepository.save(study);
     }
