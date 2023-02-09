@@ -16,7 +16,7 @@ public class DailyStatisticsJob {
         var userCount = userService.countAllUsers();
 
         var request = new CruiserRequest(
-                ":pray: *1시간 단위 극락 알림* :pray:\n- 현재 유저수 : " + userCount
+                ":pray: *극락 알림* :pray:\n- 전체 유저수 : " + userCount
         );
         cruiserClient.send(request);
     }

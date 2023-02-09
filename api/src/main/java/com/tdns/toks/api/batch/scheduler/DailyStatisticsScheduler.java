@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class DailyStatisticsScheduler {
     private final DailyStatisticsJob dailyStatisticsJob;
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 0 9 * * *")
     public void dailyStatisticsJob() {
         dailyStatisticsJob.dailyStatisticsJob();
     }
