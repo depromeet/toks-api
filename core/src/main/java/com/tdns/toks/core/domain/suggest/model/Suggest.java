@@ -31,10 +31,10 @@ public class Suggest extends BaseTimeEntity implements Serializable {
     private Long id;
 
     private Long uid;
-
-    @Column(columnDefinition = "TEXT")
+    
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Enumerated(EnumType.STRING)
