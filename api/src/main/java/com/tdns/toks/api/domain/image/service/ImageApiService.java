@@ -36,7 +36,7 @@ public class ImageApiService {
         validateMultipartFile(images);
 
         var imageUrl = s3UploadService.uploadFiles(images, uid.toString());
-        log.info("uploadImage / uid : {} / imageUrl {}", uid, imageUrl);
+        log.info("[Image Upload] userId : {} || imageUrls {}", uid, imageUrl);
         var imageUploadLog = imageService.saveImage(imageUrl, uid, extraInfo);
         return ImageUploadResponse.toResponse(imageUploadLog);
     }
