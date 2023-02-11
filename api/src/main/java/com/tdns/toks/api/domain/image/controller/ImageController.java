@@ -1,6 +1,5 @@
 package com.tdns.toks.api.domain.image.controller;
 
-import com.tdns.toks.api.domain.image.model.dto.ImageApiDTO;
 import com.tdns.toks.api.domain.image.model.dto.ImageApiDTO.ImageUploadResponse;
 import com.tdns.toks.api.domain.image.service.ImageApiService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
@@ -20,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Slf4j
 @Tag(name = "ImageConroller-V1", description = "IMAGE API")
 @RestController
@@ -34,15 +35,16 @@ public class ImageController {
             summary = "이미지 생성"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ImageApiDTO.ImageUploadResponse.class))}),
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ImageUploadResponse.class))}),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
     public ResponseEntity<ImageUploadResponse> uploadImage(
-            @RequestPart(name = "image", required = true) MultipartFile image
+            @RequestPart(name = "extra") String extraInfo,
+            @RequestPart(name = "image", required = true) List<MultipartFile> images
     ) {
-        var response = imageApiService.uploadImage(image);
+        var response = imageApiService.uploadImage(images, extraInfo);
         return ResponseDto.created(response);
     }
 }
