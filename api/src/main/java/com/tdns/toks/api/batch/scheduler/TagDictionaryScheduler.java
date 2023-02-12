@@ -11,7 +11,7 @@ public class TagDictionaryScheduler {
     private final TagDictionaryJob tagDictionaryJob;
 
     /**
-     * 30초 단위로 Tag 사전 배치 잡 시작
+     * 5초 단위로 Tag 사전 배치 잡 시작
      */
     @Scheduled(cron = "0/5 * * * * *")
     public void runJob() {

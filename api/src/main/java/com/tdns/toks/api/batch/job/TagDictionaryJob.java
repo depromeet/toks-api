@@ -2,6 +2,7 @@ package com.tdns.toks.api.batch.job;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tdns.toks.api.domain.study.event.model.TagEventModel;
+import com.tdns.toks.api.domain.study.service.TagDictionaryEventService;
 import com.tdns.toks.core.common.utils.MapperUtil;
 import com.tdns.toks.core.domain.study.model.entity.StudyTag;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
@@ -9,14 +10,11 @@ import com.tdns.toks.core.domain.study.repository.StudyTagRepository;
 import com.tdns.toks.core.domain.study.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.tdns.toks.api.domain.study.event.subscribe.TagDictionaryEventSubscribe.TAG_DICTIONARY_EVENT_QUEUE;
 
 @Slf4j
 @Component
@@ -24,13 +22,11 @@ import static com.tdns.toks.api.domain.study.event.subscribe.TagDictionaryEventS
 public class TagDictionaryJob {
     private final TagRepository tagRepository;
     private final StudyTagRepository studyTagRepository;
-    private final RedisTemplate<String, String> redisTemplate;
-    private static final int EVENT_QUEUE_MESSAGE_SIZE = 3;
+    private final TagDictionaryEventService tagDictionaryEventService;
 
     public void run() {
-        var messages = redisTemplate.opsForList()
-                .rightPop(TAG_DICTIONARY_EVENT_QUEUE, EVENT_QUEUE_MESSAGE_SIZE);
-
+        var messages = tagDictionaryEventService.pop();
+        
         if (Objects.requireNonNull(messages).isEmpty()) {
             return;
         }
