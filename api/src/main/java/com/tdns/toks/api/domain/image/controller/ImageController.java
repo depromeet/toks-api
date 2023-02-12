@@ -1,6 +1,7 @@
 package com.tdns.toks.api.domain.image.controller;
 
 import com.tdns.toks.api.domain.image.model.dto.ImageApiDTO.ImageUploadResponse;
+import com.tdns.toks.api.domain.image.model.dto.ImageApiDTO.ImageBulkUploadResponse;
 import com.tdns.toks.api.domain.image.service.ImageApiService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,6 +28,7 @@ import java.util.List;
 @RequestMapping(path = "/api/v1/images")
 @RequiredArgsConstructor
 public class ImageController {
+
     private final ImageApiService imageApiService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -41,10 +43,29 @@ public class ImageController {
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
     public ResponseEntity<ImageUploadResponse> uploadImage(
+            @RequestPart(name = "image", required = true) MultipartFile image
+    ) {
+        var response = imageApiService.uploadSingleImage(image);
+        return ResponseDto.created(response);
+    }
+
+
+    @PostMapping(value = "/bulk-load", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(
+            method = "POST",
+            summary = "이미지 최대 10개 생성"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ImageBulkUploadResponse.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    public ResponseEntity<ImageBulkUploadResponse> bulkUploadImages(
             @RequestPart(name = "extra") String extraInfo,
             @RequestPart(name = "image", required = true) List<MultipartFile> images
     ) {
-        var response = imageApiService.uploadImage(images, extraInfo);
+        var response = imageApiService.uploadImages(images, extraInfo);
         return ResponseDto.created(response);
     }
 }

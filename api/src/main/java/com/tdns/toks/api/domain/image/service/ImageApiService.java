@@ -1,6 +1,7 @@
 package com.tdns.toks.api.domain.image.service;
 
 import com.tdns.toks.api.domain.image.model.dto.ImageApiDTO.ImageUploadResponse;
+import com.tdns.toks.api.domain.image.model.dto.ImageApiDTO.ImageBulkUploadResponse;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.common.service.S3UploadService;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +31,17 @@ public class ImageApiService {
 
     private final ImageService imageService;
 
-    public ImageUploadResponse uploadImage(List<MultipartFile> images, String extraInfo) {
+    public ImageUploadResponse uploadSingleImage(MultipartFile image) {
+        var uid = UserDetailDTO.get().getId();
+        var imageUrl = s3UploadService.uploadSingleFile(image, uid.toString());
+
+        log.info("[Image Upload] userId : {} || imageUrls {}", uid, imageUrl);
+
+        var imageUploadLog = imageService.saveImage(Collections.singletonList(imageUrl), uid, "extra");
+        return new ImageUploadResponse(imageUploadLog.getId(), imageUrl);
+    }
+
+    public ImageBulkUploadResponse uploadImages(List<MultipartFile> images, String extraInfo) {
         var uid = UserDetailDTO.get().getId();
 
         if(extraInfo == null) extraInfo = "extra";
@@ -38,7 +50,7 @@ public class ImageApiService {
         var imageUrl = s3UploadService.uploadFiles(images, uid.toString());
         log.info("[Image Upload] userId : {} || imageUrls {}", uid, imageUrl);
         var imageUploadLog = imageService.saveImage(imageUrl, uid, extraInfo);
-        return ImageUploadResponse.toResponse(imageUploadLog);
+        return ImageBulkUploadResponse.toResponse(imageUploadLog);
     }
 
     // 첨부된 파일이 없을 때, 10장 초과일 때 Exception
