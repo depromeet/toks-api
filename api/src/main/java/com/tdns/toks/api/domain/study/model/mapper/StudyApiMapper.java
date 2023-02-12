@@ -1,6 +1,7 @@
 package com.tdns.toks.api.domain.study.model.mapper;
 
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO;
+import com.tdns.toks.core.common.utils.MapperUtil;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.StudyTag;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
@@ -16,7 +17,7 @@ public class StudyApiMapper {
     private static Integer INIT_STUDY_USER_COUNT = 0;
     private static Integer INIT_STUDY_QUIZ_ROUND = 0;
 
-    public Study toEntity(StudyApiDTO.StudyCreateRequest studyCreateRequest, Long userId) {
+    public Study toEntity(StudyApiDTO.StudyCreateRequest studyCreateRequest, Long userId, List<String> tags) {
         var studyStatus = StudyStatus.getStatus(
                 studyCreateRequest.getStartedAt(),
                 studyCreateRequest.getEndedAt(),
@@ -38,6 +39,7 @@ public class StudyApiMapper {
                 .studyUserCount(INIT_STUDY_USER_COUNT)
                 .leaderId(userId)
                 .latestQuizRound(INIT_STUDY_QUIZ_ROUND)
+                .tags(MapperUtil.writeValueAsString(tags))
                 .build();
     }
 

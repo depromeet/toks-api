@@ -53,15 +53,15 @@ public class StudyApiService {
 
     public StudyApiResponse createStudy(StudyCreateRequest studyCreateRequest) {
         var userDTO = UserDetailDTO.get();
-        var study = studyService.save(mapper.toEntity(studyCreateRequest, userDTO.getId()));
+        var tagNames = studyCreateRequest.getTags().stream().map(
+                t -> t.replaceAll(" ", "")
+        ).collect(Collectors.toList());
+
+        var study = studyService.save(mapper.toEntity(studyCreateRequest, userDTO.getId(), tagNames));
 
         joinStudy(study, userDTO.getId());
 
         log.info("create study uid : {} / studyId : {}", userDTO.getId(), study.getId());
-
-        var tagNames = studyCreateRequest.getTags().stream().map(
-                t -> t.replaceAll(" ", "")
-        ).collect(Collectors.toList());
 
         tagDictionaryEventPublish.publish(study.getId(), tagNames);
 

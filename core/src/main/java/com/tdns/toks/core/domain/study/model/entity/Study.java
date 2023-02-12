@@ -3,9 +3,20 @@ package com.tdns.toks.core.domain.study.model.entity;
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
 import com.tdns.toks.core.domain.study.type.StudyCapacity;
 import com.tdns.toks.core.domain.study.type.StudyStatus;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -48,6 +59,9 @@ public class Study extends BaseTimeEntity implements Serializable {
 
     @Column(columnDefinition = "TINYINT COMMENT '최신 스터디 회차'")
     private Integer latestQuizRound;
+
+    @Column(columnDefinition = "VARCHAR(512)")
+    private String tags;
 
     public void updateStudyUserCount(int count) {
         this.studyUserCount += count;
