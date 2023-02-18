@@ -24,9 +24,6 @@ public enum ApplicationErrorType {
     INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, -20027, "error.invalid.access.token"),
     INVALID_LOGIN_INFO(HttpStatus.BAD_REQUEST, -20007, "try.again"/*Invalid Login Info*/),
     TO_JSON_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, -40015, "try.again"),
-    CONVERT_STRING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 10100, "String 변환 오류"),
-    CONVERT_ARRAY_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 10101, "List 변환 오류"),
-    NO_IMAGE(HttpStatus.BAD_REQUEST, 10102, "전달된 이미지 없음"),
 
     /**
      * Auth or User Error Type
@@ -52,7 +49,6 @@ public enum ApplicationErrorType {
     ALREADY_EXISTS_QUIZ_ROUND(HttpStatus.BAD_REQUEST, -20020, "퀴즈 라운드가 이미 존재합니다."),
     NOT_FOUND_QUIZ_ERROR(HttpStatus.NOT_FOUND, -20021, "해당 퀴즈가 존재하지 않습니다."),
     STILL_OPEN_LATEST_QUIZ(HttpStatus.CONFLICT, -20022, "마지막 퀴즈가 끝나지 않았습니다"),
-    EXCEEDED_IMAGE_UPLOAD_LIMIT(HttpStatus.BAD_REQUEST, 30007, "사진 등록 갯수를 초과했습니다."),
 
 
     /**

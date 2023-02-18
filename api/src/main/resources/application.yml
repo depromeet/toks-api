@@ -91,7 +91,3 @@ springdoc:
 monitor:
   slack:
     cruiser: ENC(TIydYqpYJ4LIrazfFdSk0FLwfHeZ8KVgTtwtMtDT5NzlYtSxMvbn3OETKAcZCkN9Q658p5wa0IMEePSKyvAd1EA1UEBnG9aXYMGhsqg3ex4m0/Wgr8X0wIG9GY8MrBZ/T29dH+tGZIMsxX04soR30F3tRlWSnfcFdbvPkiBjRkc=)
-
-# etc
-config:
-  image-limit: 10

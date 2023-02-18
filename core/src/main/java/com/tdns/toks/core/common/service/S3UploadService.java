@@ -2,7 +2,12 @@ package com.tdns.toks.core.common.service;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.*;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.amazonaws.services.s3.model.GetObjectMetadataRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.google.common.base.Charsets;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
@@ -34,17 +39,17 @@ public class S3UploadService {
     private String bucketName;
 
     public List<String> uploadFiles(List<MultipartFile> files, String pathSuffix) {
-        List<String> output = new ArrayList<>();
+        List<String> keys = new ArrayList<>();
+
         return files.stream()
                 .map(file -> {
                     String newFileName = makeNewFilename(file.getOriginalFilename(), pathSuffix);
+                    keys.add(newFileName);
                     try {
-                        String savedUrl = uploadToS3(file, newFileName, false);
-                        output.add(savedUrl);
-                        return savedUrl;
+                        return uploadToS3(file, newFileName, false);
                     } catch (Exception e) {
                         log.error("[S3 UPLOAD ERROR] user id : {}", pathSuffix);
-                        deleteNewFile(output);
+                        deleteNewFile(keys);
                         throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_DATA_ARGUMENT);
                     }
                 })
@@ -59,6 +64,11 @@ public class S3UploadService {
             log.error("[S3 UPLOAD ERROR] user id : {}", pathSuffix);
             throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_DATA_ARGUMENT);
         }
+    }
+
+    public PutObjectResult uploadToS3(String bucketName, File file) {
+        return s3.putObject(new PutObjectRequest(bucketName, file.getName(), file)
+                .withCannedAcl(CannedAccessControlList.BucketOwnerFullControl));
     }
 
     private String uploadToS3(MultipartFile file, String fileName, boolean isPrivate) throws Exception {
