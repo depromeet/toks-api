@@ -1,9 +1,18 @@
 package com.tdns.toks.core.domain.study.model.entity;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @Getter
@@ -24,4 +33,8 @@ public class StudyTag extends BaseTimeEntity implements Serializable {
     @Column(name = "tag_id", columnDefinition = "BIGINT COMMENT '태그 번호'")
     private Long tagId;
 
+    public StudyTag(Long studyId, Long id) {
+        this.studyId = studyId;
+        this.tagId = id;
+    }
 }

@@ -39,7 +39,7 @@ public class StudyApiDTO {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "name", description = "이름이름")
         private String name;
 
-//        @NotEmpty(message = "스터디 설명은 필수 항목 입니다.")
+        //        @NotEmpty(message = "스터디 설명은 필수 항목 입니다.")
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "description", description = "설명설명")
         private String description;
 
@@ -104,6 +104,20 @@ public class StudyApiDTO {
             response.inviteUrl = UrlConvertUtil.convertToInviteUrl(study.getId());
             response.user = userDTO;
             response.tags = tagList.stream().map(TagDTO::of).collect(Collectors.toList());
+            return response;
+        }
+
+        public static StudyApiResponse of(Study study, UserDTO userDTO, List<TagDTO> tagDtos) {
+            StudyApiResponse response = new StudyApiResponse();
+            response.id = study.getId();
+            response.name = study.getName();
+            response.description = study.getDescription();
+            response.startedAt = study.getStartedAt();
+            response.endedAt = study.getEndedAt();
+            response.capacity = study.getCapacity();
+            response.inviteUrl = UrlConvertUtil.convertToInviteUrl(study.getId());
+            response.user = userDTO;
+            response.tags = tagDtos;
             return response;
         }
     }

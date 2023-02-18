@@ -34,4 +34,16 @@ public class AsyncConfig extends AsyncConfigurerSupport {
 
         return executor.generate();
     }
+
+    @Bean(name = "tagDictionaryExecutor")
+    public ThreadPoolTaskExecutor tagDictionaryExecutor() {
+        var executor = new ExecutorGenerator(
+                5,
+                10,
+                10,
+                "tagDictionaryExecutor"
+        );
+
+        return executor.generate();
+    }
 }

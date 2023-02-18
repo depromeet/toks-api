@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.study.service;
 
+import com.tdns.toks.api.domain.study.event.publish.TagDictionaryEventPublish;
 import com.tdns.toks.api.domain.study.model.mapper.StudyApiMapper;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
@@ -43,6 +44,7 @@ import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 @RequiredArgsConstructor
 @Transactional
 public class StudyApiService {
+    private final TagDictionaryEventPublish tagDictionaryEventPublish;
     private final StudyService studyService;
     private final UserService userService;
     private final StudyTagService tagService;
@@ -51,15 +53,24 @@ public class StudyApiService {
 
     public StudyApiResponse createStudy(StudyCreateRequest studyCreateRequest) {
         var userDTO = UserDetailDTO.get();
-        var study = studyService.save(mapper.toEntity(studyCreateRequest, userDTO.getId()));
+        var tagNames = studyCreateRequest.getTags().stream().map(
+                t -> t.replaceAll(" ", "")
+        ).collect(Collectors.toList());
 
-        var tags = studyService.getOrCreateTagListByKeywordList(studyCreateRequest.getTags());
-        studyService.saveAllStudyTag(mapper.toEntity(tags, study.getId()));
+        var study = studyService.save(mapper.toEntity(studyCreateRequest, userDTO.getId(), tagNames));
 
         joinStudy(study, userDTO.getId());
 
         log.info("create study uid : {} / studyId : {}", userDTO.getId(), study.getId());
-        return StudyApiResponse.toResponse(study, userDTO, tags);
+
+        tagDictionaryEventPublish.publish(study.getId(), tagNames);
+
+        var tagDto = tagNames
+                .stream()
+                .map(t -> TagDTO.of(null, t))
+                .collect(Collectors.toList());
+
+        return StudyApiResponse.of(study, userDTO, tagDto);
     }
 
     public StudyFormResponse getFormData() {
