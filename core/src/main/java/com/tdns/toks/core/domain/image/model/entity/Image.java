@@ -26,7 +26,7 @@ public class Image extends BaseTimeEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "VARCHAR(2047) COMMENT '이미지 URL'")
+    @Column(columnDefinition = "VARCHAR(512) COMMENT '퀴즈 url'")
     private String imageUrl;
 
     // TODO : 생성하는 인원에 대한 정보가 없으면?
@@ -34,6 +34,6 @@ public class Image extends BaseTimeEntity implements Serializable {
     @Column(columnDefinition = "BIGINT COMMENT '생성 user_id'")
     private Long createdBy;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '이미지 저장 정보'")
-    private String extra;
+    // extra field가 필요할듯
+    // private String extra;
 }

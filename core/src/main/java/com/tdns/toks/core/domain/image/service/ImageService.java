@@ -1,13 +1,10 @@
 package com.tdns.toks.core.domain.image.service;
 
-import com.tdns.toks.core.common.utils.ArrayConvertUtil;
 import com.tdns.toks.core.domain.image.model.entity.Image;
 import com.tdns.toks.core.domain.image.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional
@@ -15,12 +12,12 @@ import java.util.List;
 public class ImageService {
     private final ImageRepository imageRepository;
 
-    public Image saveImage(List<String> imageUrl, Long userId, String extraInfo) {
+    public Image saveImage(String imageUrl, Long userId) {
         var image = Image.builder()
-                .imageUrl(ArrayConvertUtil.convertToString(imageUrl))
+                .imageUrl(imageUrl)
                 .createdBy(userId)
-                .extra(extraInfo)
                 .build();
+
         return imageRepository.save(image);
     }
 }
