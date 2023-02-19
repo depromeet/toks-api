@@ -26,15 +26,14 @@ public class TagDictionaryJob {
 
     public void run() {
         var messages = tagDictionaryEventService.pop();
-        
+
         if (Objects.requireNonNull(messages).isEmpty()) {
             return;
         }
 
         var events = Objects.requireNonNull(messages)
                 .stream()
-                .map(message -> MapperUtil.readValue(message, new TypeReference<TagEventModel>() {
-                }))
+                .map(message -> MapperUtil.readValue(message, new TypeReference<TagEventModel>() {}))
                 .collect(Collectors.toSet());
 
         savedTagJob(events);
@@ -49,8 +48,13 @@ public class TagDictionaryJob {
      * @param events
      */
     private void savedTagJob(Set<TagEventModel> events) {
+        var tags = tagRepository.findAll()
+                .stream()
+                .map(Tag::getName)
+                .collect(Collectors.toSet());
+
         var savedTags = events.stream()
-                .filter(tag -> !tagRepository.existsByName(tag.getTagName()))
+                .filter(tag -> !tags.contains(tag.getTagName()))
                 .map(tag -> new Tag(tag.getStudyId(), tag.getTagName()))
                 .collect(Collectors.toList());
 

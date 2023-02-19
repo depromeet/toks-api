@@ -12,7 +12,7 @@ public class TagDictionaryEventService {
     private final RedisTemplate<String, String> redisTemplate;
 
     private final static String TAG_DICTIONARY_EVENT_QUEUE = "tag:dictionary:event-queue";
-    private static final int EVENT_QUEUE_MESSAGE_SIZE = 3;
+    private static final int EVENT_QUEUE_MESSAGE_SIZE = 5;
 
     public List<String> pop() {
         return redisTemplate.opsForList()
