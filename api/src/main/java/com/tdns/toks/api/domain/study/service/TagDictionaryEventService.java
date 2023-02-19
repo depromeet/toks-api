@@ -1,11 +1,13 @@
 package com.tdns.toks.api.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TagDictionaryEventService {
@@ -15,8 +17,12 @@ public class TagDictionaryEventService {
     private static final int EVENT_QUEUE_MESSAGE_SIZE = 5;
 
     public List<String> pop() {
-        return redisTemplate.opsForList()
+        var events = redisTemplate.opsForList()
                 .rightPop(TAG_DICTIONARY_EVENT_QUEUE, EVENT_QUEUE_MESSAGE_SIZE);
+
+        log.info("tag dictionary event queue pop, size is {}", EVENT_QUEUE_MESSAGE_SIZE);
+
+        return events;
     }
 
     /**
@@ -26,5 +32,7 @@ public class TagDictionaryEventService {
     public void push(List<String> events) {
         redisTemplate.opsForList()
                 .leftPushAll(TAG_DICTIONARY_EVENT_QUEUE, events);
+
+        log.info("tag dictionary event queue push, size is {}", events.size());
     }
 }
