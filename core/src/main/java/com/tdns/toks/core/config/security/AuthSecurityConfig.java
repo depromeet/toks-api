@@ -1,7 +1,6 @@
 package com.tdns.toks.core.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.filter.ExceptionHandlerFilter;
 import com.tdns.toks.core.common.filter.JwtAuthenticationFilter;
 import com.tdns.toks.core.common.security.oauth.CustomOAuth2UserService;
@@ -10,11 +9,11 @@ import com.tdns.toks.core.common.security.oauth.OAuth2SuccessHandler;
 import com.tdns.toks.core.common.service.UserDetailService;
 import com.tdns.toks.core.common.type.CORSType;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -32,6 +31,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
 public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${security.permit-url}")
@@ -64,9 +64,11 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, authException) -> {
-                    response.setContentType("application/json");
-                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                    response.getWriter().write(objectMapper.writeValueAsString(ApplicationErrorType.NO_AUTHORIZATION));
+                    log.info("로그인 취소 및 오류");
+                    response.sendRedirect("https://tokstudy.com");
+//                    response.setContentType("application/json");
+//                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//                    response.getWriter().write(objectMapper.writeValueAsString(ApplicationErrorType.NO_AUTHORIZATION));
                 })
                 .and()
                 .oauth2Login()
