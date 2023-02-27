@@ -16,6 +16,11 @@ public class SystemActionLogEventSubscribe {
     @Async(value = "systemActionLogExecutor")
     @EventListener(SystemActionLogEventModel.class)
     public void subscribe(SystemActionLogEventModel model) {
+        /** health check는 action logging에서 제외시킴 */
+        if (model.getPath().startsWith("/actuator/health")) {
+            return;
+        }
+
         var systemActionLog = new SystemActionLog(
                 model.getIpAddress(),
                 model.getPath(),
