@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,5 +70,11 @@ public class UserService {
 
     public Long countAllUsers() {
         return userRepository.count();
+    }
+
+    public Long countNewUsers() {
+        var endAt = LocalDateTime.now();
+        var startAt = endAt.minusDays(1);
+        return userRepository.countByCreatedAtBetween(startAt, endAt);
     }
 }

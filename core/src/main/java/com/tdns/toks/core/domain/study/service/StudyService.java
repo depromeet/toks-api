@@ -144,4 +144,10 @@ public class StudyService {
     public Long deleteAllByLeaderId(Long leaderId) {
         return studyRepository.deleteAllByLeaderId(leaderId);
     }
+
+    public Long countNewStudyCount() {
+        var endAt = LocalDateTime.now();
+        var startAt = endAt.minusDays(1);
+        return studyRepository.countByCreatedAtBetween(startAt, endAt);
+    }
 }
