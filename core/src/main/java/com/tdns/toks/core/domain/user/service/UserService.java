@@ -61,7 +61,7 @@ public class UserService {
     }
 
     public List<StudyUser> getUserStudyIds(Long userId) {
-        return studyUserRepository.findAllByUserId(userId);
+        return studyUserRepository.findAllJoinedStudyByUserId(userId);
     }
 
     private boolean isNicknameDuplicated(String nickname) {

@@ -14,6 +14,7 @@ import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.StudyUser;
 import com.tdns.toks.core.domain.study.service.StudyService;
 import com.tdns.toks.core.domain.study.service.StudyTagService;
+import com.tdns.toks.core.domain.study.service.StudyUserService;
 import com.tdns.toks.core.domain.study.type.StudyCapacity;
 import com.tdns.toks.core.domain.study.type.StudyStatus;
 import com.tdns.toks.core.domain.study.type.StudyUserStatus;
@@ -50,6 +51,7 @@ public class StudyApiService {
     private final StudyTagService tagService;
     private final StudyApiMapper mapper;
     private final QuizService quizService;
+    private final StudyUserService studyUserService;
 
     public StudyApiResponse createStudy(StudyCreateRequest studyCreateRequest) {
         var userDTO = UserDetailDTO.get();
@@ -236,5 +238,10 @@ public class StudyApiService {
 
     public Long deleteAllByLeaderId(Long leaderId) {
         return studyService.deleteAllByLeaderId(leaderId);
+    }
+
+    public void leaveStudy(Long studyId) {
+        var userId = UserDetailDTO.get().getId();
+        studyUserService.leaveStudy(studyId, userId);
     }
 }
