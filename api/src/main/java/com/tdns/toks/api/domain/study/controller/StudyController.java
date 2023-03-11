@@ -3,6 +3,7 @@ package com.tdns.toks.api.domain.study.controller;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.*;
 import com.tdns.toks.api.domain.study.service.StudyApiService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
+import com.tdns.toks.core.domain.study.type.StudyUserStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -113,8 +114,10 @@ public class StudyController {
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
     public ResponseEntity<StudiesInfoResponse> getUserAllStudies(
+            @RequestParam(defaultValue = "ACTIVE") StudyUserStatus status
+
     ) {
-        var response = studyApiService.getAllStudies();
+        var response = studyApiService.getAllStudies(status);
         return ResponseDto.ok(response);
     }
 
@@ -130,8 +133,9 @@ public class StudyController {
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
     public ResponseEntity<StudiesInfoResponse> getUserInProgressStudies(
+            @RequestParam(defaultValue = "ACTIVE") StudyUserStatus status
     ) {
-        var response = studyApiService.getInProgressStudies();
+        var response = studyApiService.getInProgressStudies(status);
         return ResponseDto.ok(response);
     }
 
@@ -147,8 +151,9 @@ public class StudyController {
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
     public ResponseEntity<FinishedStudiesInfoResponse> getUserFinishedStudies(
+            @RequestParam(defaultValue = "ACTIVE") StudyUserStatus status
     ) {
-        var response = studyApiService.getFinishedStudies();
+        var response = studyApiService.getFinishedStudies(status);
         return ResponseDto.ok(response);
     }
 

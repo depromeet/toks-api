@@ -138,9 +138,9 @@ public class StudyApiService {
         }
     }
 
-    public StudiesInfoResponse getAllStudies() {
+    public StudiesInfoResponse getAllStudies(StudyUserStatus status) {
         var userId = UserDetailDTO.get().getId();
-        var userStudies = userService.getUserStudyIds(userId);
+        var userStudies = userService.getUserStudyIds(userId, status);
         var usersStudyIds = userStudies.stream()
                 .map(StudyUser::getStudyId)
                 .collect(Collectors.toList());
@@ -153,9 +153,9 @@ public class StudyApiService {
         return new StudiesInfoResponse(studies);
     }
 
-    public StudiesInfoResponse getInProgressStudies() {
+    public StudiesInfoResponse getInProgressStudies(StudyUserStatus status) {
         var userId = UserDetailDTO.get().getId();
-        var studyUsers = userService.getUserStudyIds(userId);
+        var studyUsers = userService.getUserStudyIds(userId, status);
         var usersStudyIds = studyUsers.stream()
                 .map(StudyUser::getStudyId)
                 .collect(Collectors.toList());
@@ -217,9 +217,9 @@ public class StudyApiService {
         return StudyEntranceDetailsResponse.toResponse(study, tags);
     }
 
-    public FinishedStudiesInfoResponse getFinishedStudies() {
+    public FinishedStudiesInfoResponse getFinishedStudies(StudyUserStatus status) {
         var userId = UserDetailDTO.get().getId();
-        var userFinishedStudies = userService.getUserStudyIds(userId);
+        var userFinishedStudies = userService.getUserStudyIds(userId, status);
 
         var usersStudyIds = userFinishedStudies.stream()
                 .map(StudyUser::getStudyId)

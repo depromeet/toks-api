@@ -5,6 +5,7 @@ import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.common.security.JwtTokenProvider;
 import com.tdns.toks.core.domain.study.model.entity.StudyUser;
 import com.tdns.toks.core.domain.study.repository.StudyUserRepository;
+import com.tdns.toks.core.domain.study.type.StudyUserStatus;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -60,8 +61,8 @@ public class UserService {
         user.setRefreshToken("logout");
     }
 
-    public List<StudyUser> getUserStudyIds(Long userId) {
-        return studyUserRepository.findAllJoinedStudyByUserId(userId);
+    public List<StudyUser> getUserStudyIds(Long userId, StudyUserStatus status) {
+        return studyUserRepository.findAllJoinedStudyByUserId(userId, status);
     }
 
     private boolean isNicknameDuplicated(String nickname) {
