@@ -1,5 +1,7 @@
 package com.tdns.toks.api.domain.study.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.FinishedStudiesInfoResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudiesInfoResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
@@ -26,6 +27,7 @@ import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 import com.tdns.toks.api.domain.study.service.StudyApiService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
+import com.tdns.toks.core.domain.study.type.StudyStatus;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -120,7 +122,7 @@ public class StudyController {
     @GetMapping
     @Operation(
             method = "GET",
-            summary = "사용자 모든 스터디 목록 조회"
+            summary = "사용자 스터디 목록 조회"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = StudiesInfoResponse.class))}),
@@ -128,43 +130,8 @@ public class StudyController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
-    public ResponseEntity<StudiesInfoResponse> getUserAllStudies(
-    ) {
-        var response = studyApiService.getAllStudies();
-        return ResponseDto.ok(response);
-    }
-
-    @GetMapping("/in-progress")
-    @Operation(
-            method = "GET",
-            summary = "진행중 사용자 스터디 목록 조회"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = StudiesInfoResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
-    public ResponseEntity<StudiesInfoResponse> getUserInProgressStudies(
-    ) {
-        var response = studyApiService.getInProgressStudies();
-        return ResponseDto.ok(response);
-    }
-
-    @GetMapping("/finished")
-    @Operation(
-            method = "GET",
-            summary = "사용자 종료된 스터디 목록 조회"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = FinishedStudiesInfoResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
-    public ResponseEntity<FinishedStudiesInfoResponse> getUserFinishedStudies(
-    ) {
-        var response = studyApiService.getFinishedStudies();
+    public ResponseEntity<StudiesInfoResponse> getUserAllStudiesByStatus(@RequestParam List<StudyStatus> statuses) {
+        var response = studyApiService.getUserAllStudiesByStatus(statuses);
         return ResponseDto.ok(response);
     }
 
