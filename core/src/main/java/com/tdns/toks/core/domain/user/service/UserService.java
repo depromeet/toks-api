@@ -61,8 +61,8 @@ public class UserService {
         user.setRefreshToken("logout");
     }
 
-    public List<StudyUser> getUserStudyIds(Long userId, StudyUserStatus status) {
-        return studyUserRepository.findAllJoinedStudyByUserId(userId, status);
+    public List<StudyUser> getUserStudyIds(Long userId, StudyUserStatus joinedStatus) {
+        return studyUserRepository.findAllJoinedStudyByUserId(userId, joinedStatus);
     }
 
     private boolean isNicknameDuplicated(String nickname) {

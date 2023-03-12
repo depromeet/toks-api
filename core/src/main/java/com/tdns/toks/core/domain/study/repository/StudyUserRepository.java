@@ -18,8 +18,8 @@ public interface StudyUserRepository extends JpaRepository<StudyUser, Long>, Stu
 
     List<StudyUser> findAllByStudyId(long studyId);
 
-    @Query(value = "select su from StudyUser su where su.userId = :userId and su.status = :status")
-    List<StudyUser> findAllJoinedStudyByUserId (@Param("userId") long userId, @Param("status") StudyUserStatus status);
+    @Query(value = "select su from StudyUser su where su.userId = :userId and su.status = :joinedStatus")
+    List<StudyUser> findAllJoinedStudyByUserId (@Param("userId") long userId, @Param("joinedStatus") StudyUserStatus joinedStatus);
 
     Optional<StudyUser> findByStudyIdAndUserId(long studyId, long userId);
 }

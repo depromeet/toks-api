@@ -1,35 +1,9 @@
 package com.tdns.toks.api.domain.study.controller;
 
-import java.util.List;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudiesInfoResponse;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyDetailsResponse;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyEntranceDetailsResponse;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.*;
 import com.tdns.toks.api.domain.study.service.StudyApiService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.study.type.StudyStatus;
-
 import com.tdns.toks.core.domain.study.type.StudyUserStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,6 +14,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import java.util.List;
 
 // TODO : 해당 클래스에 있는 조회 로직에 대해 개선 작업이 필요함
 @Tag(name = "StudyController-V1", description = "STUDY API")
@@ -133,10 +116,10 @@ public class StudyController {
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
     public ResponseEntity<StudiesInfoResponse> getUserAllStudiesByStatus(
-            @RequestParam List<StudyStatus> statuses,
-            @RequestParam StudyUserStatus status
+            @RequestParam(defaultValue = "") List<StudyStatus> studyStatuses,
+            @RequestParam(defaultValue = "ACTIVE") StudyUserStatus joinStatus
     ) {
-        var response = studyApiService.getUserAllStudiesByStatus(statuses, status);
+        var response = studyApiService.getUserAllStudiesByStatus(studyStatuses, joinStatus);
         return ResponseDto.ok(response);
     }
 

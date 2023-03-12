@@ -1,12 +1,5 @@
 package com.tdns.toks.core.domain.study.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
@@ -21,8 +14,13 @@ import com.tdns.toks.core.domain.study.repository.TagRepository;
 import com.tdns.toks.core.domain.study.type.StudyStatus;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -117,8 +115,8 @@ public class StudyService {
                 .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_STUDY, "not found study " + studyId));
     }
 
-    public List<Study> findAllStudiesByStatus(List<Long> studyIds, List<StudyStatus> statuses) {
-        return studyRepository.retrieveByIdsAndStatuses(studyIds, statuses);
+    public List<Study> findAllStudiesByStatus(List<Long> studyIds, List<StudyStatus> studyStatuses) {
+        return studyRepository.retrieveByIdsAndStatuses(studyIds, studyStatuses);
     }
 
     public StudyUser saveStudyUser(StudyUser studyUser) {
