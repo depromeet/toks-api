@@ -1,5 +1,14 @@
 package com.tdns.toks.api.domain.study.service;
 
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.tdns.toks.api.domain.study.event.publish.TagDictionaryEventPublish;
 import com.tdns.toks.api.domain.study.model.mapper.StudyApiMapper;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
@@ -7,36 +16,21 @@ import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizDTO;
 import com.tdns.toks.core.domain.quiz.service.QuizService;
 import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
-import com.tdns.toks.core.domain.study.model.dto.StudyDTO;
 import com.tdns.toks.core.domain.study.model.dto.StudyDTO.StudyInfoLight;
 import com.tdns.toks.core.domain.study.model.dto.TagDTO;
 import com.tdns.toks.core.domain.study.model.entity.Study;
 import com.tdns.toks.core.domain.study.model.entity.StudyUser;
 import com.tdns.toks.core.domain.study.service.StudyService;
 import com.tdns.toks.core.domain.study.service.StudyTagService;
-import com.tdns.toks.core.domain.study.service.StudyUserService;
 import com.tdns.toks.core.domain.study.type.StudyCapacity;
 import com.tdns.toks.core.domain.study.type.StudyStatus;
 import com.tdns.toks.core.domain.study.type.StudyUserStatus;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 import com.tdns.toks.core.domain.user.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.stream.Collectors;
-
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.FinishedStudiesInfoResponse;
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudiesInfoResponse;
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyDetailsResponse;
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyEntranceDetailsResponse;
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 
 // TODO : 단건 조회시, 한번에 쿼리가 조회되도록 구현
 // TODO : 개선 작업 필요 -> 스터디의 상태를 쿼리파람으로 받아서 하도록 구현해야 함.. 현재 로직은 잘못된 로직 (상태에 따라 API를 모두 만드는 건 바람직하지 않음)
@@ -51,7 +45,6 @@ public class StudyApiService {
     private final StudyTagService tagService;
     private final StudyApiMapper mapper;
     private final QuizService quizService;
-    private final StudyUserService studyUserService;
 
     public StudyApiResponse createStudy(StudyCreateRequest studyCreateRequest) {
         var userDTO = UserDetailDTO.get();
@@ -138,33 +131,17 @@ public class StudyApiService {
         }
     }
 
-    public StudiesInfoResponse getAllStudies(StudyUserStatus status) {
+    public StudiesInfoResponse getUserAllStudiesByStatus(List<StudyStatus> statuses, StudyUserStatus status) {
         var userId = UserDetailDTO.get().getId();
         var userStudies = userService.getUserStudyIds(userId, status);
         var usersStudyIds = userStudies.stream()
-                .map(StudyUser::getStudyId)
-                .collect(Collectors.toList());
+            .map(StudyUser::getStudyId)
+            .collect(Collectors.toList());
 
-        var studies = studyService.findStudyAll(usersStudyIds)
-                .stream()
-                .map(aa -> getStudyInfo(aa, userId))
-                .collect(Collectors.toList());
-
-        return new StudiesInfoResponse(studies);
-    }
-
-    public StudiesInfoResponse getInProgressStudies(StudyUserStatus status) {
-        var userId = UserDetailDTO.get().getId();
-        var studyUsers = userService.getUserStudyIds(userId, status);
-        var usersStudyIds = studyUsers.stream()
-                .map(StudyUser::getStudyId)
-                .collect(Collectors.toList());
-
-        var studies = studyService.findStudyAll(usersStudyIds)
-                .stream()
-                .filter(s -> s.getStatus() != StudyStatus.FINISH)
-                .map(aa -> getStudyInfo(aa, userId))
-                .collect(Collectors.toList());
+        var studies = studyService.findAllStudiesByStatus(usersStudyIds, statuses)
+            .stream()
+            .map(study -> getStudyInfo(study, userId))
+            .collect(Collectors.toList());
 
         return new StudiesInfoResponse(studies);
     }
@@ -217,31 +194,7 @@ public class StudyApiService {
         return StudyEntranceDetailsResponse.toResponse(study, tags);
     }
 
-    public FinishedStudiesInfoResponse getFinishedStudies(StudyUserStatus status) {
-        var userId = UserDetailDTO.get().getId();
-        var userFinishedStudies = userService.getUserStudyIds(userId, status);
-
-        var usersStudyIds = userFinishedStudies.stream()
-                .map(StudyUser::getStudyId)
-                .collect(Collectors.toList());
-
-        var response = studyService.findStudyAll(usersStudyIds)
-                .stream()
-                .filter(finishedStudy -> finishedStudy.getStatus() == StudyStatus.FINISH)
-                .map(finishedStudy -> {
-                    var tags = tagService.getStudyTagsDTO(finishedStudy.getId());
-                    return StudyDTO.FinishedStudyInfoLight.toDto(finishedStudy, tags);
-                }).collect(Collectors.toList());
-
-        return new FinishedStudiesInfoResponse(response);
-    }
-
     public Long deleteAllByLeaderId(Long leaderId) {
         return studyService.deleteAllByLeaderId(leaderId);
-    }
-
-    public void leaveStudy(Long studyId) {
-        var userId = UserDetailDTO.get().getId();
-        studyUserService.leaveStudy(studyId, userId);
     }
 }
