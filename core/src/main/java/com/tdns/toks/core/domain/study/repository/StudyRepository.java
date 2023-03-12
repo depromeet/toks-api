@@ -1,14 +1,15 @@
 package com.tdns.toks.core.domain.study.repository;
 
-import com.tdns.toks.core.domain.study.model.entity.Study;
+import java.time.LocalDateTime;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import com.tdns.toks.core.domain.study.model.entity.Study;
 
 @Repository
-public interface StudyRepository extends JpaRepository<Study, Long> {
-    Long deleteAllByLeaderId(Long leaderId);
+public interface StudyRepository extends JpaRepository<Study, Long>, StudyCustomRepository {
+	Long deleteAllByLeaderId(Long leaderId);
 
-    Long countByCreatedAtBetween(LocalDateTime startAt, LocalDateTime endAt);
+	Long countByCreatedAtBetween(LocalDateTime startAt, LocalDateTime endAt);
 }

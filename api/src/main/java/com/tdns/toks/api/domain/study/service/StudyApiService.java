@@ -132,17 +132,13 @@ public class StudyApiService {
     }
 
     public StudiesInfoResponse getUserAllStudiesByStatus(List<StudyStatus> statuses) {
-        var userId = 5l;
+        var userId = UserDetailDTO.get().getId();
         var userStudies = userService.getUserStudyIds(userId);
         var usersStudyIds = userStudies.stream()
             .map(StudyUser::getStudyId)
             .collect(Collectors.toList());
 
-        if (statuses.isEmpty()) {
-            statuses = List.of(StudyStatus.values());
-        }
-
-        var studies = studyService.findStudyAllByStatus(usersStudyIds, statuses)
+        var studies = studyService.findAllStudiesByStatus(usersStudyIds, statuses)
             .stream()
             .map(study -> getStudyInfo(study, userId))
             .collect(Collectors.toList());

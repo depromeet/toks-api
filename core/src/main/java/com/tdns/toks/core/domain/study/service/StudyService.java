@@ -117,13 +117,8 @@ public class StudyService {
                 .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_STUDY, "not found study " + studyId));
     }
 
-    public List<Study> findStudyAllByStatus(List<Long> studyIds, List<StudyStatus> statuses) {
-        return studyRepository.findAllById(studyIds)
-            .stream()
-            .filter(study -> statuses
-                .stream()
-                .anyMatch(studyStatus -> study.getStatus().equals(studyStatus)))
-            .collect(Collectors.toList());
+    public List<Study> findAllStudiesByStatus(List<Long> studyIds, List<StudyStatus> statuses) {
+        return studyRepository.retrieveByIdsAndStatuses(studyIds, statuses);
     }
 
     public StudyUser saveStudyUser(StudyUser studyUser) {
