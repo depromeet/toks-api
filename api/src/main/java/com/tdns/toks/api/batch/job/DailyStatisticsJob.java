@@ -27,8 +27,8 @@ public class DailyStatisticsJob {
 
         var request = new CruiserRequest(
                 ":pray: *극락 알림* :pray:"
-                        + "\n- 전체 유저수 : " + userCount
-                        + "\n- 신규 유저수 : " + newUserCount
+                        + "\n- 전체 가입자 : " + userCount
+                        + "\n- 신규 가입자 : " + newUserCount
                         + "\n- 신규 등록 스터디 : " + newStudyCount
                         + "\n- Api Call Count : " + apiCallCount
                         + "\n- Daily Tag Count : " + tagStaticsCount.getDailyCount()
