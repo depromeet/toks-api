@@ -130,7 +130,7 @@ public class StudyController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
             @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
-    public ResponseEntity<StudiesInfoResponse> getUserAllStudiesByStatus(@RequestParam List<StudyStatus> statuses) {
+    public ResponseEntity<StudiesInfoResponse> getUserAllStudiesByStatus(@RequestParam(defaultValue = "") List<StudyStatus> statuses) {
         var response = studyApiService.getUserAllStudiesByStatus(statuses);
         return ResponseDto.ok(response);
     }
