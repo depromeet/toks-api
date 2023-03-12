@@ -55,6 +55,7 @@ public enum ApplicationErrorType {
      * Study Error Type
      **/
     NOT_FOUND_STUDY(HttpStatus.NOT_FOUND, -30000, "스터디를 찾을 수 없습니다."),
+    NOT_JOINED_STUDY(HttpStatus.NOT_FOUND, -30001, "스터디에 참여하고있지 않습니다."),
 
     ;
 

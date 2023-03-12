@@ -1,6 +1,10 @@
 package com.tdns.toks.core.domain.study.service;
 
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
+import com.tdns.toks.core.domain.study.model.entity.StudyUser;
 import com.tdns.toks.core.domain.study.repository.StudyUserRepository;
+import com.tdns.toks.core.domain.study.type.StudyUserStatus;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleByQuizIdDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,5 +38,11 @@ public class StudyUserService {
 
                     return new UserSimpleByQuizIdDTO(participant.getQuizId(), unSubmitters);
                 }).collect(Collectors.toList());
+    }
+
+    public void leaveStudy(Long studyId, Long userId) {
+        StudyUser studyUser = studyUserRepository.findByStudyIdAndUserId(studyId, userId)
+                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_JOINED_STUDY));
+        studyUser.setStatus(StudyUserStatus.INACTIVE);
     }
 }
