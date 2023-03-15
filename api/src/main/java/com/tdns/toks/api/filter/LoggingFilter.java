@@ -26,9 +26,7 @@ public class LoggingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var httpServletRequest = (HttpServletRequest) request;
-
-        systemActionLogEventPublish.publish(httpServletRequest);
+        systemActionLogEventPublish.publish(request);
 
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
@@ -85,7 +83,7 @@ public class LoggingFilter extends OncePerRequestFilter {
         ObjectMapper mapper = new ObjectMapper();
         String json = "";
         try {
-            Map map = mapper.readValue(new String(contents), Map.class);
+            var map = mapper.readValue(new String(contents), Map.class);
             json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
         } catch (IOException e) {
             log.error("[JSON PARSE ERROR] {}", e.getMessage(), e);

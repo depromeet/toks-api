@@ -4,6 +4,9 @@ spring:
     username: ENC(XZgCSKYBjOGxjU5koULVISqUMWSqaLygaIJwHEXq9ZyI2S0AQmvE97XuakgjFPMv)
     password: ENC(17+mE7X+dMMjiJu+7CuwVp2bhhwKCw85SJpBGMBAgL0STOUgszKa7Yozd1FYeCPn)
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 10
   jpa:
     show-sql: false
     hibernate:

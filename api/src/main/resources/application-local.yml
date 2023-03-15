@@ -5,6 +5,9 @@ spring:
     username:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 10
   jpa:
     show-sql: true
     hibernate:

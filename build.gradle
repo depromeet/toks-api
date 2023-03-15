@@ -85,75 +85,60 @@ subprojects { subproject ->
         }
 
         dependencies {
-
-            // for spring web
-            // tomcat사용
+            /* spring starter */
             implementation('org.springframework.boot:spring-boot-starter-web')
-//            implementation('org.springframework.boot:spring-boot-starter-web') {
-//                exclude module: 'spring-boot-starter-tomcat'
-//            }
-//            implementation('org.springframework.boot:spring-boot-starter-undertow')
             implementation 'org.springframework.boot:spring-boot-starter-webflux'
-            implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
-
-            //for Test
-            testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:0.3.5")
-
-            // for security
+            implementation 'org.springframework.boot:spring-boot-starter-validation'
             implementation 'org.springframework.boot:spring-boot-starter-security'
             implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-
-            // for api
-            //외부 통신 시 주석 제거
-//            implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
-
-            // for validation
-            implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-            // for database, cache
-            implementation 'mysql:mysql-connector-java:8.0.28'
             implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
             implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-            //webflux 도입 시 주석 제거
-//            implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
 
-            // for aws
+            /* reactor */
+            implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+
+            /* database */
+            implementation 'mysql:mysql-connector-java:8.0.28'
+
+            /* aws */
             implementation "io.awspring.cloud:spring-cloud-starter-aws-secrets-manager-config:${awsSecretManagerVersion}"
 
-            // for apache commons
+            /* apache common utils */
             implementation 'org.apache.commons:commons-lang3:3.12.0'
             implementation 'org.apache.commons:commons-collections4:4.4'
             implementation 'org.apache.commons:commons-pool2:2.11.1'
 
-            // for documentation
+            /* swagger */
             implementation "org.springdoc:springdoc-openapi-ui:${springdocOpenapiUIVersion}"
 
-            // for google
+            /* google utils */
             implementation 'com.google.guava:guava:31.1-jre'
 
-            // for logging
+            /* log */
             implementation "ch.qos.logback:logback-classic:${logbackVersion}"
             implementation "ch.qos.logback:logback-access:${logbackVersion}"
             implementation "ch.qos.logback:logback-core:${logbackVersion}"
 
-            // for lombok
+            /* lombok */
             compileOnly 'org.projectlombok:lombok'
             annotationProcessor 'org.projectlombok:lombok'
 
-            // for hibernate-spatial
+            /* hibernate-spatial */
             implementation group: 'org.hibernate', name: 'hibernate-spatial', version: '5.6.0.Final'
 
-            // for jwt
+            /* jwt */
             implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
             implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
             runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
 
-
+            /* spring dev tools */
             developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+            /* test */
             testImplementation 'org.springframework.boot:spring-boot-starter-test'
             testImplementation 'io.projectreactor:reactor-test'
             testImplementation 'org.springframework.security:spring-security-test'
-
+            testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:0.3.5")
             testImplementation 'com.drewnoakes:metadata-extractor:2.16.0'
         }
     }
@@ -173,7 +158,6 @@ jacocoTestReport {
         html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
     }
 }
-
 
 
 jacoco {
