@@ -16,7 +16,6 @@
 |                                                                                                                                                                                                                                                                   **Infra**                                                                                                                                                                                                                                                                    |
 |    ![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=AmazonAWS&logoColor=white) ![ECS](https://img.shields.io/badge/ECS-FF9900?style=flat-square&logo=AmazonECS&logoColor=white) ![CloudWatch](https://img.shields.io/badge/CloudWatch-FF4F8B?style=flat-square&logo=AmazonCloudWatch&logoColor=white) ![Git Action](https://img.shields.io/badge/GitAction-2088FF?style=flat-square&logo=GithubActions&logoColor=white) ![S3](https://img.shields.io/badge/S3-569A31?style=flat-square&logo=AmazonS3&logoColor=white)     
 
-
 ## 주요 기능
 - 퀴즈 출제 및 풀이를 하며 적극적인 참여를 유도해요
 - 퀴즈 답변 투표를 통해 순위를 제공하여 즐거운 스터디 경험 향상시켜요
