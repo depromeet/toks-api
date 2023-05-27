@@ -42,7 +42,7 @@ public class StudyController {
     private final StudyApiService studyApiService;
 
     @PostMapping
-    @Operation(method = "POST", summary = "스터디 생성")
+    @Operation(summary = "스터디 생성")
     public ResponseEntity<StudyApiResponse> createStudy(
             @Validated @RequestBody StudyCreateRequest studyCreateRequest
     ) {
@@ -51,7 +51,7 @@ public class StudyController {
     }
 
     @GetMapping("/form-data")
-    @Operation(method = "GET", summary = "스터디 생성용 폼 데이터 조회")
+    @Operation(summary = "스터디 생성용 폼 데이터 조회")
     public ResponseEntity<StudyFormResponse> getFormData(
     ) {
         var response = studyApiService.getFormData();
@@ -59,7 +59,7 @@ public class StudyController {
     }
 
     @PostMapping("/{studyId}/join")
-    @Operation(method = "POST", summary = "스터디 가입")
+    @Operation(summary = "스터디 가입")
     public ResponseEntity<Void> joinStudy(
             @Parameter(name = "studyId", in = ParameterIn.PATH, description = "스터디 id", required = true, example = "1")
             @PathVariable("studyId") @Valid @Positive @NotNull(message = "스터디 id는 필수 항목 입니다.") Long studyId
@@ -69,7 +69,7 @@ public class StudyController {
     }
 
     @GetMapping("/tag")
-    @Operation(method = "GET", summary = "스터디 생성 태그 키워드 조회")
+    @Operation(summary = "스터디 생성 태그 키워드 조회")
     public ResponseEntity<TagResponse> getTagByKeyword(
             @RequestParam String keyword
     ) {
@@ -78,7 +78,7 @@ public class StudyController {
     }
 
     @GetMapping
-    @Operation(method = "GET", summary = "사용자 스터디 목록 조회")
+    @Operation(summary = "사용자 스터디 목록 조회")
     public ResponseEntity<StudiesInfoResponse> getUserAllStudiesByStatus(
             @RequestParam(defaultValue = "") List<StudyStatus> studyStatuses, // TODO : ?????????????????
             @RequestParam(defaultValue = "ACTIVE") StudyUserStatus joinStatus
@@ -88,7 +88,7 @@ public class StudyController {
     }
 
     @GetMapping("/{studyId}")
-    @Operation(method = "GET", summary = "스터디 정보 단일 조회")
+    @Operation(summary = "스터디 정보 단일 조회")
     public ResponseEntity<StudyDetailsResponse> getStudyDetails(
             @PathVariable final Long studyId
     ) {
@@ -97,7 +97,7 @@ public class StudyController {
     }
 
     @GetMapping("/{studyId}/enter")
-    @Operation(method = "GET", summary = "참여 스터디 정보 조회")
+    @Operation(summary = "참여 스터디 정보 조회")
     public ResponseEntity<StudyEntranceDetailsResponse> getStudyEntranceDetails(
             @PathVariable final Long studyId
     ) {
@@ -106,7 +106,7 @@ public class StudyController {
     }
 
     @DeleteMapping("/users/{userId}")
-    @Operation(method = "DELETE", summary = "스터디 삭제")
+    @Operation(summary = "스터디 삭제")
     public ResponseEntity<Long> delete(
             @PathVariable final Long userId
     ) {
@@ -115,7 +115,7 @@ public class StudyController {
     }
 
     @PostMapping("/{studyId}/leave")
-    @Operation(method = "POST", summary = "스터디 탈퇴")
+    @Operation(summary = "스터디 탈퇴")
     public ResponseEntity<Void> leaveStudy(
             @PathVariable("studyId") @Valid @Positive @NotNull(message = "스터디 id는 필수 항목 입니다.") Long studyId
     ) {

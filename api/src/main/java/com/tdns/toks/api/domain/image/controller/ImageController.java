@@ -22,7 +22,7 @@ public class ImageController {
     private final ImageApiService imageApiService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(method = "POST", summary = "이미지 생성")
+    @Operation(summary = "이미지 생성")
     public ResponseEntity<ImageUploadResponse> uploadImage(
             @RequestPart(name = "image") MultipartFile image
     ) {

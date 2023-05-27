@@ -28,14 +28,14 @@ public class QuizReplyHistoryController {
     private final QuizReplyHistoryApiService quizReplyHistoryApiService;
 
     @PostMapping
-    @Operation(method = "POST", summary = "퀴즈 답변 제출")
+    @Operation(summary = "퀴즈 답변 제출")
     public ResponseEntity<QuizReplyHistoryResponse> submit(@Validated @RequestBody final QuizReplyHistoryRequest request) {
         var response = quizReplyHistoryApiService.submit(request);
         return ResponseDto.ok(response);
     }
 
     @GetMapping("/quizzes/{quizId}")
-    @Operation(method = "Get", summary = "퀴즈 답변 다건 조회")
+    @Operation(summary = "퀴즈 답변 다건 조회")
     public ResponseEntity<QuizReplyHistoriesResponse> getAllByQuizId(
             @PathVariable final Long quizId,
             final Pageable pageable

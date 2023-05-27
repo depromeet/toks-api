@@ -21,7 +21,7 @@ public class QuizRankController {
     private final QuizRankApiService quizRankApiService;
 
     @GetMapping("studies/{studyId}")
-    @Operation(method = "GET", summary = "순위 조회")
+    @Operation(summary = "순위 조회")
     public ResponseEntity<QuizRankApiDTO.QuizRanksApiResponse> getByStudyId(@PathVariable final Long studyId) {
         var response = quizRankApiService.getByStudyId(studyId);
         return ResponseDto.ok(response);
