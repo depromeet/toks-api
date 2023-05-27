@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+// 배치 분리하기
 @Component
 @RequiredArgsConstructor
 public class DailyStatisticsScheduler {

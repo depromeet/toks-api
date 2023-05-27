@@ -1,6 +1,10 @@
 package com.tdns.toks.api.domain.user.service;
 
-import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.*;
+import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserInfoResponse;
+import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserRenewAccessTokenRequest;
+import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserRenewAccessTokenResponse;
+import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserUpdateNicknameRequest;
+import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserUpdateNicknameResponse;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.service.UserService;
