@@ -56,6 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    // ????
     public Authentication getAuthentication(UserDTO user) {
         return new UsernamePasswordAuthenticationToken(
                 user,
@@ -64,4 +65,3 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         );
     }
 }
-

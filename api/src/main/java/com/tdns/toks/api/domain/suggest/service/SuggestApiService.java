@@ -31,7 +31,7 @@ public class SuggestApiService {
         var savedSuggest = suggestService.save(suggest);
 
         cruiserClient.send(new CruiserRequest(
-                ":white_check_mark: *똑스에게 제안했어요* :white_check_mark:\n- uid : " + savedSuggest.getUid() +"\n- 닉네임 : " + userDTO.getNickname() + "\n- 제목 : " + savedSuggest.getTitle() + "\n- 본문 : " + savedSuggest.getContent()
+                ":white_check_mark: *똑스에게 제안했어요* :white_check_mark:\n- uid : " + savedSuggest.getUid() + "\n- 닉네임 : " + userDTO.getNickname() + "\n- 제목 : " + savedSuggest.getTitle() + "\n- 본문 : " + savedSuggest.getContent()
         ));
 
         return SuggestResponse.of(savedSuggest);

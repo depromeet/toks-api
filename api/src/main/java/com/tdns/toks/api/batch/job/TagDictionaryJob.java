@@ -33,7 +33,8 @@ public class TagDictionaryJob {
 
         var events = Objects.requireNonNull(messages)
                 .stream()
-                .map(message -> MapperUtil.readValue(message, new TypeReference<TagEventModel>() {}))
+                .map(message -> MapperUtil.readValue(message, new TypeReference<TagEventModel>() {
+                }))
                 .collect(Collectors.toSet());
 
         savedTagJob(events);

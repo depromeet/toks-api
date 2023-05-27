@@ -22,9 +22,7 @@ public class SuggestController {
 
     @Operation(summary = "똑스에게 제안하기")
     @PostMapping
-    public ResponseEntity<?> register(
-            @RequestBody SuggestRegisterRequest request
-    ) {
+    public ResponseEntity<?> register(@RequestBody SuggestRegisterRequest request) {
         var response = suggestApiService.register(request);
         return ResponseDto.created(response);
     }

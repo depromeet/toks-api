@@ -1,13 +1,23 @@
 package com.tdns.toks.core.domain.user.model.entity;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
-import com.tdns.toks.core.domain.user.model.dto.UserDTO;
 import com.tdns.toks.core.domain.user.type.UserProvider;
 import com.tdns.toks.core.domain.user.type.UserRole;
 import com.tdns.toks.core.domain.user.type.UserStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @Getter
@@ -23,10 +33,10 @@ public class User extends BaseTimeEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, columnDefinition =  "VARCHAR(255) COMMENT '회원 이메일'")
+    @Column(unique = true, columnDefinition = "VARCHAR(255) COMMENT '회원 이메일'")
     private String email;
 
-    @Column(columnDefinition =  "VARCHAR(255) COMMENT '회원 닉네임'")
+    @Column(columnDefinition = "VARCHAR(255) COMMENT '회원 닉네임'")
     private String nickname;
 
     @Column(columnDefinition = "VARCHAR(255) COMMENT '작은 프로필 이미지 URL'")

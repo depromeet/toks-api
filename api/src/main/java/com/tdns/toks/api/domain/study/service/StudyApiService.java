@@ -29,7 +29,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.*;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudiesInfoResponse;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyDetailsResponse;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyEntranceDetailsResponse;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
+import static com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 
 // TODO : 단건 조회시, 한번에 쿼리가 조회되도록 구현
 // TODO : 개선 작업 필요 -> 스터디의 상태를 쿼리파람으로 받아서 하도록 구현해야 함.. 현재 로직은 잘못된 로직 (상태에 따라 API를 모두 만드는 건 바람직하지 않음)
@@ -135,13 +141,13 @@ public class StudyApiService {
         var userId = UserDetailDTO.get().getId();
         var userStudies = userService.getUserStudyIds(userId, joinedStatus);
         var usersStudyIds = userStudies.stream()
-            .map(StudyUser::getStudyId)
-            .collect(Collectors.toList());
+                .map(StudyUser::getStudyId)
+                .collect(Collectors.toList());
 
         var studies = studyService.findAllStudiesByStatus(usersStudyIds, studyStatuses)
-            .stream()
-            .map(study -> getStudyInfo(study, userId))
-            .collect(Collectors.toList());
+                .stream()
+                .map(study -> getStudyInfo(study, userId))
+                .collect(Collectors.toList());
 
         return new StudiesInfoResponse(studies);
     }

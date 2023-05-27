@@ -13,13 +13,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RequiredArgsConstructor
 public class CruiserConfig {
     private final CruiserProperties cruiserProperties;
+
+    // TODO : Webclient Builder 추가하기
     private final WebClient.Builder webClient;
 
     @Bean
     public CruiserClient slackCruiser() {
-        return new SlackCruiser(
-                cruiserProperties,
-                webClient
-        );
+        return new SlackCruiser(cruiserProperties, webClient);
     }
 }

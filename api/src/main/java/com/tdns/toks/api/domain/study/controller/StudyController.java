@@ -1,6 +1,12 @@
 package com.tdns.toks.api.domain.study.controller;
 
-import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.*;
+import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudiesInfoResponse;
+import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyApiResponse;
+import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyCreateRequest;
+import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyDetailsResponse;
+import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyEntranceDetailsResponse;
+import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.StudyFormResponse;
+import com.tdns.toks.api.domain.study.model.dto.StudyApiDTO.TagResponse;
 import com.tdns.toks.api.domain.study.service.StudyApiService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.study.type.StudyStatus;
@@ -8,16 +14,19 @@ import com.tdns.toks.core.domain.study.type.StudyUserStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -33,16 +42,7 @@ public class StudyController {
     private final StudyApiService studyApiService;
 
     @PostMapping
-    @Operation(
-            method = "POST",
-            summary = "스터디 생성"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = StudyApiResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    @Operation(summary = "스터디 생성")
     public ResponseEntity<StudyApiResponse> createStudy(
             @Validated @RequestBody StudyCreateRequest studyCreateRequest
     ) {
@@ -51,16 +51,7 @@ public class StudyController {
     }
 
     @GetMapping("/form-data")
-    @Operation(
-            method = "GET",
-            summary = "스터디 생성용 폼 데이터 조회"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = StudyFormResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    @Operation(summary = "스터디 생성용 폼 데이터 조회")
     public ResponseEntity<StudyFormResponse> getFormData(
     ) {
         var response = studyApiService.getFormData();
@@ -68,16 +59,7 @@ public class StudyController {
     }
 
     @PostMapping("/{studyId}/join")
-    @Operation(
-            method = "POST",
-            summary = "스터디 가입"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    @Operation(summary = "스터디 가입")
     public ResponseEntity<Void> joinStudy(
             @Parameter(name = "studyId", in = ParameterIn.PATH, description = "스터디 id", required = true, example = "1")
             @PathVariable("studyId") @Valid @Positive @NotNull(message = "스터디 id는 필수 항목 입니다.") Long studyId
@@ -87,16 +69,7 @@ public class StudyController {
     }
 
     @GetMapping("/tag")
-    @Operation(
-            method = "GET",
-            summary = "스터디 생성 태그 키워드 조회"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = TagResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    @Operation(summary = "스터디 생성 태그 키워드 조회")
     public ResponseEntity<TagResponse> getTagByKeyword(
             @RequestParam String keyword
     ) {
@@ -105,18 +78,9 @@ public class StudyController {
     }
 
     @GetMapping
-    @Operation(
-            method = "GET",
-            summary = "사용자 스터디 목록 조회"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = StudiesInfoResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    @Operation(summary = "사용자 스터디 목록 조회")
     public ResponseEntity<StudiesInfoResponse> getUserAllStudiesByStatus(
-            @RequestParam(defaultValue = "") List<StudyStatus> studyStatuses,
+            @RequestParam(defaultValue = "") List<StudyStatus> studyStatuses, // TODO : ?????????????????
             @RequestParam(defaultValue = "ACTIVE") StudyUserStatus joinStatus
     ) {
         var response = studyApiService.getUserAllStudiesByStatus(studyStatuses, joinStatus);
@@ -124,16 +88,7 @@ public class StudyController {
     }
 
     @GetMapping("/{studyId}")
-    @Operation(
-            method = "GET",
-            summary = "스터디 정보 단일 조회"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = StudyDetailsResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    @Operation(summary = "스터디 정보 단일 조회")
     public ResponseEntity<StudyDetailsResponse> getStudyDetails(
             @PathVariable final Long studyId
     ) {
@@ -142,16 +97,7 @@ public class StudyController {
     }
 
     @GetMapping("/{studyId}/enter")
-    @Operation(
-            method = "GET",
-            summary = "참여 스터디 정보 조회"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = StudyEntranceDetailsResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    @Operation(summary = "참여 스터디 정보 조회")
     public ResponseEntity<StudyEntranceDetailsResponse> getStudyEntranceDetails(
             @PathVariable final Long studyId
     ) {
@@ -160,37 +106,19 @@ public class StudyController {
     }
 
     @DeleteMapping("/users/{userId}")
-    @Operation(
-        method = "DELETE",
-        summary = "스터디 삭제"
-    )
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "successful operation", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = StudyEntranceDetailsResponse.class))}),
-        @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
-        @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
-        @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
-        @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    @Operation(summary = "스터디 삭제")
     public ResponseEntity<Long> delete(
-        @PathVariable final Long userId
+            @PathVariable final Long userId
     ) {
         var response = studyApiService.deleteAllByLeaderId(userId);
         return ResponseDto.ok(response);
     }
 
     @PostMapping("/{studyId}/leave")
-    @Operation(
-            method = "POST",
-            summary = "스터디 탈퇴"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Invalid Access Token", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)})
+    @Operation(summary = "스터디 탈퇴")
     public ResponseEntity<Void> leaveStudy(
             @PathVariable("studyId") @Valid @Positive @NotNull(message = "스터디 id는 필수 항목 입니다.") Long studyId
-    ){
+    ) {
         studyApiService.leaveStudy(studyId);
         return ResponseDto.noContent();
     }
