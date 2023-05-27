@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "SuggestController-V1", description = "SUGGEST API")
+@Tag(name = "똑스에게 제안하기", description = "SUGGEST API")
 @RestController
 @RequestMapping(path = "/api/v1/suggests", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor

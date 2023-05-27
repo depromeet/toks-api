@@ -2,7 +2,6 @@ package com.tdns.toks.core.domain.user.model.dto;
 
 import com.tdns.toks.core.common.type.JwtToken;
 import com.tdns.toks.core.domain.user.model.entity.User;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -82,6 +81,9 @@ public class UserDetailDTO implements UserDetails, OAuth2User {
         return OAuth2User.super.getAttribute(name);
     }
 
+    /**
+     * TODO : 변경 필요
+     */
     public static UserDTO get() {
         UserDTO userDTO = null;
         try {

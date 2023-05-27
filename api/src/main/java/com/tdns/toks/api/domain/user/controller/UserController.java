@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "UserController-V1", description = "USER API")
+@Tag(name = "사용자 관리 서비스", description = "USER API")
 @RestController
 @RequestMapping(path = "/api/v1/user", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
@@ -43,8 +43,9 @@ public class UserController {
         return ResponseDto.created(response);
     }
 
+    @Deprecated(since = "1", forRemoval = true)
     @PostMapping("/renew")
-    @Operation(summary = "사용자 accessToken 갱신 요청")
+    @Operation(summary = "사용자 accessToken 갱신 요청", description = "/api/v1/auth/renew 로 변경")
     public ResponseEntity<UserRenewAccessTokenResponse> renewAccessToken(
             @RequestBody UserRenewAccessTokenRequest userRenewAccessTokenRequest
     ) {
@@ -52,8 +53,9 @@ public class UserController {
         return ResponseDto.created(response);
     }
 
+    @Deprecated(since = "1", forRemoval = true)
     @PatchMapping("/logout")
-    @Operation(summary = "사용자 로그아웃, refreshToken 삭제 처리")
+    @Operation(summary = "사용자 로그아웃, refreshToken 삭제 처리", description = "/api/v1/auth/logout 로 변경")
     public ResponseEntity<Void> userLogout() {
         userApiService.deleteRefreshToken();
         return ResponseDto.noContent();
