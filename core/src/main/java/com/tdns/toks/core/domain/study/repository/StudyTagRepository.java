@@ -6,12 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
 public interface StudyTagRepository extends JpaRepository<StudyTag, Long> {
-
-    @Query("select t from StudyTag st left join Tag t on t.id = st.tagId where st.studyId =:studyId")
+    @Transactional(readOnly = true)
+    @Query("SELECT t FROM StudyTag st LEFT JOIN Tag t ON t.id = st.tagId WHERE st.studyId =:studyId")
     List<Tag> getStudyTagsByStudyId(@Param("studyId") Long studyId);
 }
