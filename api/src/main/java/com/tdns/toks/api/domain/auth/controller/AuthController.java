@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Deprecated(since = "1", forRemoval = true)
 @Tag(name = "인증인가 관리", description = "Auth")
 @RestController
 @RequestMapping(path = "/api/v1/auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
+    @Deprecated(since = "1", forRemoval = true)
     @PostMapping("/renew")
     @Operation(summary = "사용자 accessToken 갱신 요청")
     public ResponseEntity<UserApiDTO.UserRenewAccessTokenResponse> renewAccessToken(
@@ -30,6 +32,7 @@ public class AuthController {
         return ResponseDto.created(response);
     }
 
+    @Deprecated(since = "1", forRemoval = true)
     @PatchMapping("/logout")
     @Operation(summary = "사용자 로그아웃, refreshToken 삭제 처리")
     public ResponseEntity<Void> userLogout() {

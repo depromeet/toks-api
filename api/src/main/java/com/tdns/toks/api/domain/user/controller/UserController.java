@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Deprecated(since = "1", forRemoval = true)
 @Tag(name = "사용자 관리 서비스", description = "USER API")
 @RestController
 @RequestMapping(path = "/api/v1/user", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserApiService userApiService;
 
+    @Deprecated(since = "1", forRemoval = true)
     @GetMapping
     @Operation(summary = "사용자 정보 조회")
     public ResponseEntity<UserInfoResponse> getUserInformation(
@@ -34,6 +36,7 @@ public class UserController {
         return ResponseDto.ok(response);
     }
 
+    @Deprecated(since = "1", forRemoval = true)
     @PatchMapping("/nickname")
     @Operation(summary = "사용자 닉네임 설정")
     public ResponseEntity<UserUpdateNicknameResponse> updateNickname(

@@ -33,7 +33,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
-// TODO : 해당 클래스에 있는 조회 로직에 대해 개선 작업이 필요함
+@Deprecated(since = "1", forRemoval = true)
 @Tag(name = "StudyController-V1", description = "STUDY API")
 @RestController
 @RequestMapping(path = "/api/v1/studies", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,6 +41,7 @@ import java.util.List;
 public class StudyController {
     private final StudyApiService studyApiService;
 
+    @Deprecated(since = "1", forRemoval = true)
     @PostMapping
     @Operation(summary = "스터디 생성")
     public ResponseEntity<StudyApiResponse> createStudy(
@@ -50,6 +51,7 @@ public class StudyController {
         return ResponseDto.created(response);
     }
 
+    @Deprecated(since = "1", forRemoval = true)
     @GetMapping("/form-data")
     @Operation(summary = "스터디 생성용 폼 데이터 조회")
     public ResponseEntity<StudyFormResponse> getFormData(
@@ -58,6 +60,7 @@ public class StudyController {
         return ResponseDto.ok(response);
     }
 
+    @Deprecated(since = "1", forRemoval = true)
     @PostMapping("/{studyId}/join")
     @Operation(summary = "스터디 가입")
     public ResponseEntity<Void> joinStudy(
@@ -68,6 +71,7 @@ public class StudyController {
         return ResponseDto.noContent();
     }
 
+    @Deprecated(since = "1", forRemoval = true)
     @GetMapping("/tag")
     @Operation(summary = "스터디 생성 태그 키워드 조회")
     public ResponseEntity<TagResponse> getTagByKeyword(
@@ -77,6 +81,7 @@ public class StudyController {
         return ResponseDto.ok(response);
     }
 
+    @Deprecated(since = "1", forRemoval = true)
     @GetMapping
     @Operation(summary = "사용자 스터디 목록 조회")
     public ResponseEntity<StudiesInfoResponse> getUserAllStudiesByStatus(
@@ -87,6 +92,7 @@ public class StudyController {
         return ResponseDto.ok(response);
     }
 
+    @Deprecated(since = "1", forRemoval = true)
     @GetMapping("/{studyId}")
     @Operation(summary = "스터디 정보 단일 조회")
     public ResponseEntity<StudyDetailsResponse> getStudyDetails(
@@ -96,6 +102,7 @@ public class StudyController {
         return ResponseDto.ok(response);
     }
 
+    @Deprecated(since = "1", forRemoval = true)
     @GetMapping("/{studyId}/enter")
     @Operation(summary = "참여 스터디 정보 조회")
     public ResponseEntity<StudyEntranceDetailsResponse> getStudyEntranceDetails(
@@ -105,6 +112,7 @@ public class StudyController {
         return ResponseDto.ok(response);
     }
 
+    @Deprecated(since = "1", forRemoval = true)
     @DeleteMapping("/users/{userId}")
     @Operation(summary = "스터디 삭제")
     public ResponseEntity<Long> delete(
@@ -114,6 +122,7 @@ public class StudyController {
         return ResponseDto.ok(response);
     }
 
+    @Deprecated(since = "1", forRemoval = true)
     @PostMapping("/{studyId}/leave")
     @Operation(summary = "스터디 탈퇴")
     public ResponseEntity<Void> leaveStudy(

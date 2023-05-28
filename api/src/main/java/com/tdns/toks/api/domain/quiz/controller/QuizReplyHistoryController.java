@@ -20,6 +20,7 @@ import static com.tdns.toks.api.domain.quiz.model.dto.QuizReplyHistoryApiDTO.Qui
 import static com.tdns.toks.api.domain.quiz.model.dto.QuizReplyHistoryApiDTO.QuizReplyHistoryRequest;
 import static com.tdns.toks.api.domain.quiz.model.dto.QuizReplyHistoryApiDTO.QuizReplyHistoryResponse;
 
+@Deprecated(since = "1", forRemoval = true)
 @Tag(name = "QuizReplyHistoryController-V1", description = "QUIZ REPLY HISTORY API")
 @RestController
 @RequestMapping(path = "/api/v1/quiz-reply-histories", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -27,6 +28,7 @@ import static com.tdns.toks.api.domain.quiz.model.dto.QuizReplyHistoryApiDTO.Qui
 public class QuizReplyHistoryController {
     private final QuizReplyHistoryApiService quizReplyHistoryApiService;
 
+    @Deprecated(since = "1", forRemoval = true)
     @PostMapping
     @Operation(summary = "퀴즈 답변 제출")
     public ResponseEntity<QuizReplyHistoryResponse> submit(@Validated @RequestBody final QuizReplyHistoryRequest request) {
@@ -34,6 +36,7 @@ public class QuizReplyHistoryController {
         return ResponseDto.ok(response);
     }
 
+    @Deprecated(since = "1", forRemoval = true)
     @GetMapping("/quizzes/{quizId}")
     @Operation(summary = "퀴즈 답변 다건 조회")
     public ResponseEntity<QuizReplyHistoriesResponse> getAllByQuizId(

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Deprecated(since = "1", forRemoval = true)
 @Tag(name = "똑스에게 제안하기", description = "SUGGEST API")
 @RestController
 @RequestMapping(path = "/api/v1/suggests", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SuggestController {
     private final SuggestApiService suggestApiService;
 
+    @Deprecated(since = "1", forRemoval = true)
     @Operation(summary = "똑스에게 제안하기")
     @PostMapping
     public ResponseEntity<?> register(@RequestBody SuggestRegisterRequest request) {

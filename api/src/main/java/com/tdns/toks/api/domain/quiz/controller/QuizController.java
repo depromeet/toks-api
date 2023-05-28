@@ -20,6 +20,7 @@ import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizRequest;
 import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizSimpleResponse;
 import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizzesResponse;
 
+@Deprecated(since = "1", forRemoval = true)
 @Tag(name = "QuizController-V1", description = "QUIZ API")
 @RestController
 @RequestMapping(path = "/api/v1/quizzes", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -27,6 +28,7 @@ import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizzesResponse
 public class QuizController {
     private final QuizApiService quizApiService;
 
+    @Deprecated(since = "1", forRemoval = true)
     @GetMapping("/{quizId}")
     @Operation(summary = "퀴즈 단건 조회", description = "상세 설명을 기록")
     public ResponseEntity<QuizSimpleResponse> getById(@PathVariable final Long quizId) {
@@ -34,6 +36,7 @@ public class QuizController {
         return ResponseDto.ok(response);
     }
 
+    @Deprecated(since = "1", forRemoval = true)
     @GetMapping("/studies/{studyId}")
     @Operation(summary = "퀴즈 다건 조회")
     public ResponseEntity<QuizzesResponse> getAllByStudyID(@PathVariable final Long studyId) {
@@ -41,6 +44,7 @@ public class QuizController {
         return ResponseDto.ok(response);
     }
 
+    @Deprecated(since = "1", forRemoval = true)
     @PostMapping
     @Operation(summary = "퀴즈 생성")
     public ResponseEntity<QuizCreateResponse> create(
