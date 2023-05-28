@@ -89,7 +89,10 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(
                 "/v2/api-docs", "/configuration/ui",
                 "**/swagger-resources/**", "/configuration/security",
-                "/swagger-ui.html", "/webjars/**", "/swagger/**", "/swagger-ui/index.html"
+                "/swagger-ui.html", "/webjars/**", "/swagger/**", "/swagger-ui/index.html",
+
+                // 임시로 추가, 인증인가 모듈에 대한 개선 필요..
+                "/api/v1/categories"
         );
     }
 

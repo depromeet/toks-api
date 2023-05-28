@@ -35,7 +35,8 @@ public class UserService {
     }
 
     public String updateNickname(Long id, String nickname) {
-        var user = userRepository.findById(id).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
         if (isNicknameDuplicated(nickname)) {
             throw new SilentApplicationErrorException(ApplicationErrorType.DUPLICATED_NICKNAME);
         }
@@ -48,7 +49,8 @@ public class UserService {
             throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_REFRESH_TOKEN);
         }
         var email = jwtTokenProvider.getUid(requestRefreshToken);
-        var user = userRepository.findByEmail(email).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
+        var user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
         var userRefreshToken = user.getRefreshToken();
         if (!requestRefreshToken.equals(userRefreshToken)) {
             throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_REFRESH_TOKEN);
@@ -57,7 +59,8 @@ public class UserService {
     }
 
     public void deleteRefreshToken(Long userId) {
-        var user = userRepository.findById(userId).orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER));
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER));
         user.setRefreshToken("logout");
     }
 
