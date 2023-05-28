@@ -9,7 +9,15 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,6 +33,9 @@ public class Quiz extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+    @Column(name = "category_id")
+    private String categoryId;
+
 	@Column(nullable = false, columnDefinition = "VARCHAR(255) COMMENT '퀴즈'")
 	private String question;
 
@@ -34,7 +45,7 @@ public class Quiz extends BaseTimeEntity {
 
 	@Column(columnDefinition = "VARCHAR(255) COMMENT '퀴즈 설명'")
 	private String description;
-	
+
 	@Column(nullable = false, columnDefinition = "TEXT COMMENT '정답'")
 	private String answer;
 
