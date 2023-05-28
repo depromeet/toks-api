@@ -50,7 +50,6 @@ public enum ApplicationErrorType {
     NOT_FOUND_QUIZ_ERROR(HttpStatus.NOT_FOUND, -20021, "해당 퀴즈가 존재하지 않습니다."),
     STILL_OPEN_LATEST_QUIZ(HttpStatus.CONFLICT, -20022, "마지막 퀴즈가 끝나지 않았습니다"),
 
-
     /**
      * Study Error Type
      **/

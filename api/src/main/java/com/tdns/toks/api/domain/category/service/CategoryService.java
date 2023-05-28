@@ -9,8 +9,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -18,18 +20,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
-    private List<CategoryModel> categoryModels = Collections.emptyList();
+    private Map<String, CategoryModel> categoryModels = Collections.emptyMap();
 
     @Scheduled(cron = "0 */5 * * * *")
     public void refreshCategories() {
         categoryModels = refresh();
     }
 
-    private List<CategoryModel> refresh() {
+    private Map<String, CategoryModel> refresh() {
         var categories = categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))
                 .stream()
                 .map(CategoryModel::from)
-                .collect(Collectors.toList());
+                .collect(Collectors.toMap(CategoryModel::getId, Function.identity()));
 
         log.info("refresh categories info success");
 
@@ -41,6 +43,6 @@ public class CategoryService {
             categoryModels = refresh();
         }
 
-        return new CategoryResponse(categoryModels);
+        return new CategoryResponse(new ArrayList<>(categoryModels.values()));
     }
 }
