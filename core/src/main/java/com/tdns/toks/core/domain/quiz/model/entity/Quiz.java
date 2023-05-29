@@ -1,6 +1,7 @@
 package com.tdns.toks.core.domain.quiz.model.entity;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
+import com.tdns.toks.core.common.model.converter.StringArrayConverter;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
