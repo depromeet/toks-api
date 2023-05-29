@@ -1,6 +1,6 @@
 package com.tdns.toks.core.common.exception;
 
-import com.tdns.toks.core.common.model.entity.ResponseCommonEntity;
+import com.tdns.toks.core.common.model.entity.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Primary;
@@ -45,18 +45,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     private <T extends ApplicationErrorException> ResponseEntity<Object> handleApplicationRuntimeException(WebRequest request, T ex) {
-        ApplicationErrorType responseStatusType = ex.getResponseStatusType();
-        Object data = ex.getData();
-        String errorMessage = StringUtils.isNotEmpty(ex.getCustomMessage()) ? ex.getCustomMessage() : ex.getMessage();
+        var responseStatusType = ex.getResponseStatusType();
+        var data = ex.getData();
+        var errorMessage = StringUtils.isNotEmpty(ex.getCustomMessage()) ? ex.getCustomMessage() : ex.getMessage();
 
-        ResponseCommonEntity<Object> responseCommonEntity = ResponseCommonEntity.builder()
+        var errorResponse = ErrorResponse.builder()
                 .status(responseStatusType.getHttpStatus().name())
-                .code(responseStatusType.getCode())
                 .data(data)
                 .message(errorMessage)
                 .build();
 
-        return handleExceptionInternal(ex, responseCommonEntity, new HttpHeaders(), responseStatusType.getHttpStatus(), request);
+        return handleExceptionInternal(ex, errorResponse, new HttpHeaders(), responseStatusType.getHttpStatus(), request);
     }
 
     @ExceptionHandler(value = EmptyResultDataAccessException.class)
@@ -88,18 +87,27 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+            MethodArgumentNotValidException ex,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request
+    ) {
         return handleApplicationErrorException(request, new ApplicationErrorException(ApplicationErrorType.INVALID_DATA_ARGUMENT, ex, ex.getBindingResult().getFieldError().getDefaultMessage()));
     }
 
     @Override
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body,
-                                                             HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleExceptionInternal(
+            Exception ex,
+            Object body,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request
+    ) {
         if (ex instanceof SilentApplicationErrorException) {
-            ApplicationErrorException aEE = (ApplicationErrorException) ex;
-            log.error("SilentApplicationErrorException.{} [code = {}]", aEE.getResponseStatusType().name(), aEE.getResponseStatusType().getCode());
+            var aEE = (ApplicationErrorException) ex;
+            log.error("SilentApplicationErrorException.{}", aEE.getResponseStatusType().name());
         } else if (ex instanceof ApplicationErrorException) {
-            ApplicationErrorException aEE = (ApplicationErrorException) ex;
+            var aEE = (ApplicationErrorException) ex;
             log.error("ApplicationErrorType.{}", aEE.getResponseStatusType().name(), ex);
         } else {
             log.error("", ex);

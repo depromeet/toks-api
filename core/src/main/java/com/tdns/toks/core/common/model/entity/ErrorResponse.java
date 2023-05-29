@@ -14,29 +14,25 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseCommonEntity<T> implements Serializable {
+public class ErrorResponse<T> implements Serializable {
     private long timestamp;
     private String status;
-    private Integer code;
     private String message;
     private T data;
 
-    public ResponseCommonEntity(String status, Integer code, String message) {
+    public ErrorResponse(String status, String message) {
         this.status = status;
-        this.code = code;
         this.message = message;
         this.timestamp = Instant.now().toEpochMilli();
     }
 
-    public ResponseCommonEntity(Integer code, String message) {
-        this.code = code;
+    public ErrorResponse(String message) {
         this.message = message;
         this.timestamp = Instant.now().toEpochMilli();
     }
 
-    public ResponseCommonEntity(String status, Integer code, String message, T data) {
+    public ErrorResponse(String status, String message, T data) {
         this.status = status;
-        this.code = code;
         this.message = message;
         this.timestamp = Instant.now().toEpochMilli();
         this.data = data;

@@ -31,4 +31,7 @@ public class QuizCommentLike extends BaseTimeEntity {
     private Long quizId;
 
     private Long uid;
+
+    // TODO : 추가 필요
+    // private Long commentId;
 }
