@@ -32,6 +32,6 @@ public class QuizCommentLike extends BaseTimeEntity {
 
     private Long uid;
 
-    // TODO : 추가 필요
-    // private Long commentId;
+    @Column(name = "comment_id")
+    private Long commentId;
 }
