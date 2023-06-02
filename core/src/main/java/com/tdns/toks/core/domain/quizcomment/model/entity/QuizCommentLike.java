@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @Getter
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class QuizCommentLike extends BaseTimeEntity {
+public class QuizCommentLike extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
