@@ -3,6 +3,8 @@ package com.tdns.toks.core.common.type;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import static com.tdns.toks.core.common.security.Constants.TOKS_AUTH_HEADER_KEY;
+
 @Getter
 @AllArgsConstructor
 public enum CommonHeaderType {
@@ -18,6 +20,7 @@ public enum CommonHeaderType {
     ACCEPT_LANGUAGE("accept-language"),
     CONTENT_TYPE("Content-Type"),
     AUTHORIZATION("Authorization"),
+    X_TOKS_AUTH_TOKEN(TOKS_AUTH_HEADER_KEY),
     CACHE_CONTROL("Cache-Control"),
     REQUESTED_WITH("X-Requested-With"),
     REQUEST_IP("X-Request-Id"),

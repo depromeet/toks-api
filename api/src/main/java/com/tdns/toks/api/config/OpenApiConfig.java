@@ -16,6 +16,8 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 
+import static com.tdns.toks.core.common.security.Constants.TOKS_AUTH_HEADER_KEY;
+
 @Configuration
 public class OpenApiConfig {
 
@@ -23,14 +25,14 @@ public class OpenApiConfig {
     public OpenAPI openAPI(@Value("${springdoc.version}") String appVersion) {
         return new OpenAPI()
             .addServersItem(new Server().url("/"))
-            .components(new Components().addSecuritySchemes("Authorization",
+            .components(new Components().addSecuritySchemes(TOKS_AUTH_HEADER_KEY,
                 new SecurityScheme()
                     .type(SecurityScheme.Type.APIKEY)
                     .in(SecurityScheme.In.HEADER)
-                    .name("Authorization")
+                    .name(TOKS_AUTH_HEADER_KEY)
                     .description("인증이 필요한 경우 ex) bearer xxxxxxx")
             ))
-            .security(List.of(new SecurityRequirement().addList("Authorization")))
+            .security(List.of(new SecurityRequirement().addList(TOKS_AUTH_HEADER_KEY)))
             .externalDocs(new ExternalDocumentation())
             .info(new Info()
                     .title("TOKS API Documents")

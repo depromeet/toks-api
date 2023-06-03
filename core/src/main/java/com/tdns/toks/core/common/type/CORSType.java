@@ -29,6 +29,7 @@ public enum CORSType {
             CommonHeaderType.ACCEPT_LANGUAGE.getName(),
             CommonHeaderType.CONTENT_TYPE.getName(),
             CommonHeaderType.AUTHORIZATION.getName(),
+            CommonHeaderType.X_TOKS_AUTH_TOKEN.getName(),
             CommonHeaderType.CACHE_CONTROL.getName(),
             CommonHeaderType.REQUESTED_WITH.getName(),
             CommonHeaderType.REQUEST_IP.getName(),
