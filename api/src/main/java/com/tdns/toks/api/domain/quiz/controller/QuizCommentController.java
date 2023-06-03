@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "QuizCommentController-V1", description = "QUIZ Comment API")
+@Tag(name = "퀴즈 댓글 관리", description = "QUIZ Comment API")
 @RestController
 @RequestMapping(path = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
