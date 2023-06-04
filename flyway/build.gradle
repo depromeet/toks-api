@@ -24,11 +24,11 @@ dependencies {
     implementation "org.flywaydb:flyway-core:${flywayVersion}"
 }
 
-
 // default flyway configuration : local
 flyway {
     StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-    encryptor.setPassword("${encryptorPassword}"); //<-- your Jasypt password can come from anywhere.  Hopefully somewhere more secure than this.
+    // your Jasypt password can come from anywhere.  Hopefully somewhere more secure than this.
+    encryptor.setPassword("${encryptorPassword}");
     encryptor.setAlgorithm("PBEWithMD5AndDES");
     def flywayFile = file('src/main/resources/application-' + "${buildPhase}" + '.yml')
 
