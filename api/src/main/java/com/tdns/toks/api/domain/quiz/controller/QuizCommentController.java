@@ -1,6 +1,7 @@
 package com.tdns.toks.api.domain.quiz.controller;
 
 import com.tdns.toks.api.domain.quiz.service.QuizCommentService;
+import com.tdns.toks.core.common.annotation.UserDto;
 import com.tdns.toks.core.common.model.dto.PageableResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,6 +25,12 @@ public class QuizCommentController {
     @GetMapping("/quiz/test")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("testHere");
+    }
+
+    @Operation(summary = "api v2 토큰 테스트", description = "토큰 리졸버 확인용")
+    @GetMapping("/quiz/token")
+    public ResponseEntity<String> test(@UserDto String email) {
+        return ResponseEntity.ok(email);
     }
 
     @Operation(summary = "댓글 다건 조회", description = "내림차순으로 제공")
