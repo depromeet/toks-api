@@ -84,9 +84,9 @@ public class JwtTokenProvider {	// JWT토큰 생성 및 유효성을 검증하�
     public String getAuthToken(HttpServletRequest request) {
         String accessToken = request.getHeader(TOKS_AUTH_HEADER_KEY); //인증토큰 값 가져오기
 
-        if (StringUtils.startsWithIgnoreCase(accessToken, AuthTokenType.BEARER_TYPE.getTokenType())) {
+        /*if (StringUtils.startsWithIgnoreCase(accessToken, AuthTokenType.BEARER_TYPE.getTokenType())) {
             return StringUtils.replaceIgnoreCase(accessToken, AuthTokenType.BEARER_TYPE.getTokenType(), "");
-        }
+        }*/
 
         if (StringUtils.isNotEmpty(accessToken)) {
             return accessToken;

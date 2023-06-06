@@ -90,10 +90,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/v2/api-docs", "/configuration/ui",
                 "**/swagger-resources/**", "/configuration/security",
                 "/swagger-ui.html", "/webjars/**", "/swagger/**", "/swagger-ui/index.html",
-
-                // 임시로 추가, 인증인가 모듈에 대한 개선 필요..
-                "/api/v1/categories",
-
+                
                 // v2 API 시큐리티 적용 제외
                 "/api/v2/**"
         );
