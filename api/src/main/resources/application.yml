@@ -36,7 +36,9 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   jwt:
-    secret: ENC(BF9EmOQPpQJ8n8uZwUgw37wHFDBQg9wCNHiZUcDnNTbQbHwUd//RIfjiCO38GavO7PIuCKm11FFVhKG1HofyiljZBCCD83eOzw9lWZi6VXE=)
+#    이전 시크릿 값 (향후 기간 동안 문제 없으면 추후 삭제하겠습니다)
+#    secret: ENC(BF9EmOQPpQJ8n8uZwUgw37wHFDBQg9wCNHiZUcDnNTbQbHwUd//RIfjiCO38GavO7PIuCKm11FFVhKG1HofyiljZBCCD83eOzw9lWZi6VXE=)
+    secret: ENC(ofbBXNe4Vl4UfHa8Kwsth0QTGo5Y4xn0dzs5AbdiedG32jSZCHyOzdFXqVhh2KAXzNuNT9F4ni2I6JEZ4Tsah4Js1u8HhZnrMkFtpq1rUJM=)
 
 server:
   port: 8080

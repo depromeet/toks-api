@@ -1,6 +1,5 @@
 package com.tdns.toks.core.common.security;
 
-import com.google.common.net.HttpHeaders;
 import com.tdns.toks.core.common.type.AuthTokenType;
 import com.tdns.toks.core.common.type.JwtToken;
 import io.jsonwebtoken.Claims;

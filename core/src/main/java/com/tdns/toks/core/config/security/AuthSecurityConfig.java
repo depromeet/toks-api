@@ -2,7 +2,6 @@ package com.tdns.toks.core.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tdns.toks.core.common.filter.ExceptionHandlerFilter;
-import com.tdns.toks.core.common.filter.JwtAuthenticationFilter;
 import com.tdns.toks.core.common.security.oauth.CustomOAuth2UserService;
 import com.tdns.toks.core.common.security.oauth.OAuth2FailureHandler;
 import com.tdns.toks.core.common.security.oauth.OAuth2SuccessHandler;
@@ -40,7 +39,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailService customUserDetailService;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final OAuth2FailureHandler oAuth2FailureHandler;
@@ -80,8 +79,9 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(oAuth2SuccessHandler)
                 .failureHandler(oAuth2FailureHandler);
 
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class);
+        http.addFilterBefore(exceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class);
     }
 
     @Override
@@ -92,7 +92,10 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-ui.html", "/webjars/**", "/swagger/**", "/swagger-ui/index.html",
 
                 // 임시로 추가, 인증인가 모듈에 대한 개선 필요..
-                "/api/v1/categories"
+                "/api/v1/categories",
+
+                // v2 API 시큐리티 적용 제외
+                "/api/v2/**"
         );
     }
 
