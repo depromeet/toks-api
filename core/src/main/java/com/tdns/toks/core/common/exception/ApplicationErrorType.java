@@ -21,7 +21,6 @@ public enum ApplicationErrorType {
     COULDNT_FIND_ANY_DATA(HttpStatus.BAD_REQUEST, "try.again"),
     CLIENT_ABORT(HttpStatus.BAD_REQUEST, "try.again"),
     FROM_JSON_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "try.again"),
-    INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "error.invalid.access.token"),
     INVALID_LOGIN_INFO(HttpStatus.BAD_REQUEST, "try.again"/*Invalid Login Info*/),
     TO_JSON_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "try.again"),
 
@@ -35,6 +34,9 @@ public enum ApplicationErrorType {
     AUTHENTICATION_FAIL(HttpStatus.UNAUTHORIZED, "authentication failed"),
     EMPTY_TOKEN(HttpStatus.BAD_REQUEST, "no token"),
     NO_AUTHORIZATION(HttpStatus.UNAUTHORIZED, "error.no.authorization"),
+    INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "error.invalid.access.token"),
+    TOKEN_INTERNAL_ERROR(HttpStatus.UNAUTHORIZED, "토큰 verify 실패 (토큰 내부 값 오류)"),
+    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 토큰"),
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "error.invalid.refresh.token"),
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."),
 
