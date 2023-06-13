@@ -22,17 +22,17 @@ public class AuthV2Controller {
     private final AuthV2Service authV2Service;
 
     @Operation(summary = "인증 사용자 본인 정보 조회")
+    @Parameter(name = "authUser", hidden = true)
     @GetMapping("/my-infos")
-    public ResponseEntity<?> getMyInfos(
-            @Parameter(hidden = true) AuthUser authUser
-    ) {
+    public ResponseEntity<?> getMyInfos(AuthUser authUser) {
         var response = authV2Service.getMyInfos(authUser);
         return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "test")
+    @Parameter(name = "authUser", hidden = true)
     @GetMapping("/test")
-    public void test(@Parameter(hidden = true) @Nullable AuthUser authUser) {
+    public void test(@Nullable AuthUser authUser) {
         if (authUser == null) {
             System.out.println("인증 없어도 ok");
         } else {

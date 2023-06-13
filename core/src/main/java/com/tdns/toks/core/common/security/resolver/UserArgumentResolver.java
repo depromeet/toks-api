@@ -32,9 +32,9 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
             NativeWebRequest webRequest,
             WebDataBinderFactory binderFactory
     ) throws Exception {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) webRequest.getNativeRequest();
+        var httpServletRequest = (HttpServletRequest) webRequest.getNativeRequest();
 
-        String accessToken = httpServletRequest.getHeader(TOKS_AUTH_HEADER_KEY);
+        var accessToken = httpServletRequest.getHeader(TOKS_AUTH_HEADER_KEY);
 
         if (accessToken == null) {
             if (parameter.isOptional()) {
