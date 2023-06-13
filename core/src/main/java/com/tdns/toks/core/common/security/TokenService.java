@@ -2,6 +2,7 @@ package com.tdns.toks.core.common.security;
 
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
+import com.tdns.toks.core.domain.auth.model.AuthToken;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.auth.model.AuthUserImpl;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
@@ -46,9 +47,9 @@ public class TokenService {
         return null;
     }
 
-    public void verifyToken(String token) {
+    public void verifyToken(AuthToken token) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(token);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(token.getToken());
 //            Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token).getBody();
             if (!claims.getBody().getExpiration().after(new Date())) { // 토큰 만료 시
                 throw new SilentApplicationErrorException(ApplicationErrorType.EXPIRED_TOKEN);
@@ -65,10 +66,9 @@ public class TokenService {
     }*/
 
 
-    public AuthUser getUserEmail(HttpServletRequest request) {
-        var token = getAuthToken(request);
+    public AuthUser getUserEmail(AuthToken token) {
         verifyToken(token);
-        var email = Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(token).getBody().getSubject();
+        var email = Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(token.getToken()).getBody().getSubject();
 
         var user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));

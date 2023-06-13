@@ -1,6 +1,7 @@
-package com.tdns.toks.core.common.resolver;
+package com.tdns.toks.core.common.security.resolver;
 
 import com.tdns.toks.core.common.security.TokenService;
+import com.tdns.toks.core.domain.auth.model.AuthToken;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -11,6 +12,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static com.tdns.toks.core.common.security.Constants.TOKS_AUTH_HEADER_KEY;
 
 @Component
 @RequiredArgsConstructor
@@ -23,8 +26,22 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(
+            MethodParameter parameter,
+            ModelAndViewContainer mavContainer,
+            NativeWebRequest webRequest,
+            WebDataBinderFactory binderFactory
+    ) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) webRequest.getNativeRequest();
-        return tokenService.getUserEmail(httpServletRequest);
+
+        String accessToken = httpServletRequest.getHeader(TOKS_AUTH_HEADER_KEY);
+
+        if (accessToken == null) {
+            accessToken = "";
+        }
+
+        var token = new AuthToken(accessToken);
+
+        return tokenService.getUserEmail(token);
     }
 }

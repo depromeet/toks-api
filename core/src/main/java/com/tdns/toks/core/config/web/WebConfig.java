@@ -1,6 +1,6 @@
 package com.tdns.toks.core.config.web;
 
-import com.tdns.toks.core.common.resolver.UserArgumentResolver;
+import com.tdns.toks.core.common.security.resolver.UserArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
