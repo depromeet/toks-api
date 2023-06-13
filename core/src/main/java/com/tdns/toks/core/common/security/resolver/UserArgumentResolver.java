@@ -37,6 +37,10 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         String accessToken = httpServletRequest.getHeader(TOKS_AUTH_HEADER_KEY);
 
         if (accessToken == null) {
+            if (parameter.isOptional()) {
+                return null;
+            }
+
             accessToken = "";
         }
 
