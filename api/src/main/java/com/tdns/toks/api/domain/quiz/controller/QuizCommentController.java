@@ -1,13 +1,20 @@
 package com.tdns.toks.api.domain.quiz.controller;
 
+import com.tdns.toks.api.domain.quiz.model.dto.comment.QuizCommentCreateRequest;
 import com.tdns.toks.api.domain.quiz.service.QuizCommentService;
 import com.tdns.toks.core.common.model.dto.PageableResponse;
+import com.tdns.toks.core.common.model.dto.ResponseDto;
+import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,5 +35,17 @@ public class QuizCommentController {
     ) {
         var response = quizCommentService.getAll(quizId, page, size);
         return PageableResponse.makeResponse(response);
+    }
+
+    @Operation(summary = "댓글 작성")
+    @Parameter(name = "authUser", hidden = true)
+    @PostMapping("/quizzes/{quizId}/comments")
+    public ResponseEntity<?> insert(
+            AuthUser authUser,
+            @PathVariable Long quizId,
+            @RequestBody QuizCommentCreateRequest request
+    ) {
+        var response = quizCommentService.insert(authUser, quizId, request);
+        return ResponseDto.created(response);
     }
 }

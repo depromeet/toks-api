@@ -34,4 +34,10 @@ public class QuizComment extends BaseTimeEntity {
 
     @Column(columnDefinition = "TEXT")
     private String content;
+
+    public QuizComment(Long quizId, Long uid, String content) {
+        this.quizId = quizId;
+        this.uid = uid;
+        this.content = content;
+    }
 }
