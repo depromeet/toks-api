@@ -39,7 +39,10 @@ public class Quiz extends BaseTimeEntity {
     @Column(name = "category_id")
     private String categoryId;
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(255) COMMENT '퀴즈'")
+    // 멀티 모듈 만들기
+    // TODO : 해당 테이블에 데이터를 전부 말아줘야 함
+    // TODO : 컬럼 타입이 변경되어야 함
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String question;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(10) COMMENT '퀴즈 타입'")
@@ -49,12 +52,15 @@ public class Quiz extends BaseTimeEntity {
     @Column(columnDefinition = "VARCHAR(255) COMMENT '퀴즈 설명'")
     private String description;
 
+    // TODO : nullable하게 가져가야 함
     @Column(nullable = false, columnDefinition = "TEXT COMMENT '정답'")
     private String answer;
 
+    // TODO : 필요 없음
     @Column(nullable = false, columnDefinition = "DATETIME COMMENT '시작시간'")
     private LocalDateTime startedAt;
 
+    // TODO : 필요 없음
     @Column(nullable = false, columnDefinition = "DATETIME COMMENT '종료시간'")
     private LocalDateTime endedAt;
 
@@ -62,9 +68,11 @@ public class Quiz extends BaseTimeEntity {
     @Convert(converter = StringArrayConverter.class)
     private List<String> imageUrls;
 
+    // TODO : 필요 없음
     @Column(nullable = false, columnDefinition = "BIGINT COMMENT '스터디 id'")
     private Long studyId;
 
+    // TODO : 필요 없음
     @Column(nullable = false, columnDefinition = "TINYINT COMMENT '퀴즈 회차'")
     private Integer round;
 

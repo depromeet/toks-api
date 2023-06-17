@@ -4,10 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum QuizType {
-
-    MARK_DOWN,        // 마크다운
-    O_X                // O X 퀴즈
-    ;
+    // AB Image
+    A_B_IMAGE,
+    // OX 기본
+    O_X_SIMPLE,
+    // OX Image
+    O_X_IMAGE;
 }
 
 // 퀴즈 타입 정의
