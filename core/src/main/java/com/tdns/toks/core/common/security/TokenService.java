@@ -9,6 +9,7 @@ import com.tdns.toks.core.domain.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,8 @@ import static com.tdns.toks.core.common.security.Constants.TOKS_AUTH_HEADER_KEY;
 @Component
 @RequiredArgsConstructor
 public class TokenService {
+    private final long accessTokenValidMillisecond = 1000L * 60 * 60 * 24 * 120; // AccessToken 120일 토큰 유효
+    private final long refreshTokenValidMillisecond = 1000L * 60 * 60 * 24 * 30; // 30일 토큰 유효
     private final UserRepository userRepository;
 
     private static String key;
@@ -33,46 +36,59 @@ public class TokenService {
 
     public String getAuthToken(HttpServletRequest request) {
         String accessToken = request.getHeader(TOKS_AUTH_HEADER_KEY); //인증토큰 값 가져오기
-
-/*
-        if (StringUtils.startsWithIgnoreCase(accessToken, AuthTokenType.BEARER_TYPE.getTokenType())) {
-            return StringUtils.replaceIgnoreCase(accessToken, AuthTokenType.BEARER_TYPE.getTokenType(), "");
-        }
-*/
-
         if (StringUtils.isNotEmpty(accessToken)) {
             return accessToken;
         }
-
         return null;
     }
 
-    public void verifyToken(AuthToken token) {
+    public void verifyToken(String token) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(token.getToken());
-//            Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token).getBody();
+            Jws<Claims> claims = Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(token);
             if (!claims.getBody().getExpiration().after(new Date())) { // 토큰 만료 시
                 throw new SilentApplicationErrorException(ApplicationErrorType.EXPIRED_TOKEN);
+            }
+            Long uid = getUserIdFromToken(token);
+            if (!userRepository.existsById(uid)) {
+                throw new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER);
+
             }
         } catch (Exception e) {
             throw new SilentApplicationErrorException(ApplicationErrorType.TOKEN_INTERNAL_ERROR);
         }
     }
 
-/*    public static String getUserEmail(HttpServletRequest request) {
-        String token = getAuthToken(request);
-        verifyToken(token);
-        return Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(token).getBody().getSubject();
-    }*/
+    public AuthUser getAuthUser(AuthToken token) {
+        verifyToken(token.getToken());
+//        var email = Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(token.getToken()).getBody().getSubject();
+//
+//        var user = userRepository.findByEmail(email)
+//                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
 
-
-    public AuthUser getUserEmail(AuthToken token) {
-        verifyToken(token);
-        var email = Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(token.getToken()).getBody().getSubject();
-
-        var user = userRepository.findByEmail(email)
+        var  id = getUserIdFromToken(token.getToken());
+        var user = userRepository.findById(id)
                 .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
+        return new AuthUserImpl(id, user.getUserRole());
+    }
 
-        return new AuthUserImpl(user.getId(), user.getUserRole());
+    public Long getUserIdFromToken(String token) {
+        return Long.valueOf((Integer) Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(token).getBody().get("uid"));
+    }
+
+    public String renewAccessToken(Long uid, String email) {
+        return jwtBuilder(uid, email, accessTokenValidMillisecond);
+    }
+
+    private String jwtBuilder(Long id, String email, long expireTime) {
+        Claims claims = Jwts.claims().setSubject(email);
+        claims.put("uid", id);
+        Date now = new Date();
+        return Jwts.builder().setClaims(claims)
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setIssuer(String.valueOf(id))
+                .setExpiration(new Date(now.getTime() + expireTime))
+                .signWith(SignatureAlgorithm.HS256, key.getBytes())
+                .compact();
     }
 }

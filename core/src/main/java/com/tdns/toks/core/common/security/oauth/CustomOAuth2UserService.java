@@ -30,11 +30,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         var oAuth2Attribute = OAuth2Attribute.of(
                 userRequest.getClientRegistration().getRegistrationId(),
                 oAuth2User.getAttributes());
-        var jwtToken = jwtTokenProvider.generateToken(oAuth2Attribute.getEmail());
         var user = userRepository.findByEmail(oAuth2Attribute.getEmail())
                 .orElseGet(() -> createUser(oAuth2Attribute));
-        user.setRefreshToken(jwtToken.getRefreshToken());
-        return new UserDetailDTO(user, oAuth2Attribute.getAttributes(), jwtToken);
+        var jwtTokenPair = jwtTokenProvider.generateTokenPair(user.getId(), user.getEmail());
+        user.setRefreshToken(jwtTokenPair.getRefreshToken());
+        userRepository.save(user);
+        return new UserDetailDTO(user, oAuth2Attribute.getAttributes(), jwtTokenPair);
     }
 
     private User createUser(OAuth2Attribute oAuth2Attribute) {
