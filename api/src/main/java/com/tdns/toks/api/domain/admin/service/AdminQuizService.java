@@ -6,5 +6,5 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AdminQuizService {
-    private final AdminQuizService adminQuizService;
+//    private final AdminQuizService adminQuizService;
 }
