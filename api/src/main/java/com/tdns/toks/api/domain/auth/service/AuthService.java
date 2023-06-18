@@ -22,7 +22,7 @@ public class AuthService {
             throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_REFRESH_TOKEN);
         }
 
-        var email = jwtTokenProvider.getUid(requestRefreshToken);
+        var email = jwtTokenProvider.getUserEmail(requestRefreshToken);
 
         var user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
@@ -32,7 +32,7 @@ public class AuthService {
             throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_REFRESH_TOKEN);
         }
 
-        var accessToken = jwtTokenProvider.renewAccessToken(user.getEmail());
+        var accessToken = jwtTokenProvider.renewAccessToken(user.getId(), user.getEmail());
 
         return new UserApiDTO.UserRenewAccessTokenResponse(accessToken);
     }

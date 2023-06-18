@@ -46,6 +46,6 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
         var token = new AuthToken(accessToken);
 
-        return tokenService.getUserEmail(token);
+        return tokenService.getAuthUser(token);
     }
 }

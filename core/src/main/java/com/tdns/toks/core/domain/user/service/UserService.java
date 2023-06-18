@@ -48,14 +48,14 @@ public class UserService {
         if (!jwtTokenProvider.verifyToken(requestRefreshToken)) {
             throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_REFRESH_TOKEN);
         }
-        var email = jwtTokenProvider.getUid(requestRefreshToken);
+        var email = jwtTokenProvider.getUserEmail(requestRefreshToken);
         var user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
         var userRefreshToken = user.getRefreshToken();
         if (!requestRefreshToken.equals(userRefreshToken)) {
             throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_REFRESH_TOKEN);
         }
-        return jwtTokenProvider.renewAccessToken(user.getEmail());
+        return jwtTokenProvider.renewAccessToken(user.getId(), user.getEmail());
     }
 
     public void deleteRefreshToken(Long userId) {
