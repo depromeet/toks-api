@@ -49,19 +49,21 @@ public class Quiz extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private QuizType quizType;
 
+    // TODO : 필요 없음
     @Column(columnDefinition = "VARCHAR(255) COMMENT '퀴즈 설명'")
     private String description;
 
+    // 정답이 존재하는 경우만???
     // TODO : nullable하게 가져가야 함
-    @Column(nullable = false, columnDefinition = "TEXT COMMENT '정답'")
+    @Column(columnDefinition = "TEXT COMMENT '정답'")
     private String answer;
 
     // TODO : 필요 없음
-    @Column(nullable = false, columnDefinition = "DATETIME COMMENT '시작시간'")
+    @Column(columnDefinition = "DATETIME COMMENT '시작시간'")
     private LocalDateTime startedAt;
 
     // TODO : 필요 없음
-    @Column(nullable = false, columnDefinition = "DATETIME COMMENT '종료시간'")
+    @Column(columnDefinition = "DATETIME COMMENT '종료시간'")
     private LocalDateTime endedAt;
 
     @Column(columnDefinition = "VARCHAR(512) COMMENT '이미지 url 리스트'")
@@ -69,11 +71,11 @@ public class Quiz extends BaseTimeEntity {
     private List<String> imageUrls;
 
     // TODO : 필요 없음
-    @Column(nullable = false, columnDefinition = "BIGINT COMMENT '스터디 id'")
+    @Column(columnDefinition = "BIGINT COMMENT '스터디 id'")
     private Long studyId;
 
     // TODO : 필요 없음
-    @Column(nullable = false, columnDefinition = "TINYINT COMMENT '퀴즈 회차'")
+    @Column(columnDefinition = "TINYINT COMMENT '퀴즈 회차'")
     private Integer round;
 
     @CreatedBy

@@ -11,8 +11,3 @@ public enum QuizType {
     // OX Image
     O_X_IMAGE;
 }
-
-// 퀴즈 타입 정의
-// TODO -> A_B
-// TODO -> O_X
-// TODO -> O_X_IMAGE
