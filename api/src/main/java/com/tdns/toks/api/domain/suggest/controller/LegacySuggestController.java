@@ -6,24 +6,21 @@ import com.tdns.toks.core.common.model.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Deprecated(since = "1", forRemoval = true)
 @Tag(name = "똑스에게 제안하기", description = "SUGGEST API")
 @RestController
-@RequestMapping(path = "/api/v1/suggests", produces = MediaType.APPLICATION_JSON_VALUE)
+// @RequestMapping(path = "/api/v1/suggests", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-public class SuggestController {
+public class LegacySuggestController {
     private final SuggestApiService suggestApiService;
 
     @Deprecated(since = "1", forRemoval = true)
     @Operation(summary = "똑스에게 제안하기")
-    @PostMapping
+   // @PostMapping
     public ResponseEntity<?> register(@RequestBody SuggestRegisterRequest request) {
         var response = suggestApiService.register(request);
         return ResponseDto.created(response);

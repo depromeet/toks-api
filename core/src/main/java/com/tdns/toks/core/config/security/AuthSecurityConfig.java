@@ -92,7 +92,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-ui.html", "/webjars/**", "/swagger/**", "/swagger-ui/index.html",
                 
                 // v2 API 시큐리티 적용 제외
-                "/api/v2/**"
+                "/api/**"
         );
     }
 

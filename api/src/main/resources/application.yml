@@ -87,7 +87,7 @@ springdoc:
     disable-swagger-default-url: true
     display-query-params-without-oauth2: true
   paths-to-match:
-    - /api/v2/**
+    - /api/**
 
 # slack
 monitor:

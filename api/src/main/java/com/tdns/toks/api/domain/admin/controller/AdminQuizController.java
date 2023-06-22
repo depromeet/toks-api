@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Admin-QuizController-V2", description = "QUIZ API")
 @RestController
-@RequestMapping(path = "/api/v2/admin/quizzes", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/v1/admin/quizzes", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class AdminQuizController {
     private final AdminQuizService adminQuizService;

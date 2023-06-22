@@ -16,15 +16,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,13 +31,13 @@ import java.util.List;
 @Deprecated(since = "1", forRemoval = true)
 @Tag(name = "StudyController-V1", description = "STUDY API")
 @RestController
-@RequestMapping(path = "/api/v1/studies", produces = MediaType.APPLICATION_JSON_VALUE)
+// @RequestMapping(path = "/api/v1/studies", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-public class StudyController {
+public class LegacyStudyController {
     private final StudyApiService studyApiService;
 
     @Deprecated(since = "1", forRemoval = true)
-    @PostMapping
+    // @PostMapping
     @Operation(summary = "스터디 생성")
     public ResponseEntity<StudyApiResponse> createStudy(
             @Validated @RequestBody StudyCreateRequest studyCreateRequest
@@ -52,7 +47,7 @@ public class StudyController {
     }
 
     @Deprecated(since = "1", forRemoval = true)
-    @GetMapping("/form-data")
+    // @GetMapping("/form-data")
     @Operation(summary = "스터디 생성용 폼 데이터 조회")
     public ResponseEntity<StudyFormResponse> getFormData(
     ) {
@@ -61,7 +56,7 @@ public class StudyController {
     }
 
     @Deprecated(since = "1", forRemoval = true)
-    @PostMapping("/{studyId}/join")
+    // @PostMapping("/{studyId}/join")
     @Operation(summary = "스터디 가입")
     public ResponseEntity<Void> joinStudy(
             @Parameter(name = "studyId", in = ParameterIn.PATH, description = "스터디 id", required = true, example = "1")
@@ -72,7 +67,7 @@ public class StudyController {
     }
 
     @Deprecated(since = "1", forRemoval = true)
-    @GetMapping("/tag")
+    //  @GetMapping("/tag")
     @Operation(summary = "스터디 생성 태그 키워드 조회")
     public ResponseEntity<TagResponse> getTagByKeyword(
             @RequestParam String keyword
@@ -82,7 +77,7 @@ public class StudyController {
     }
 
     @Deprecated(since = "1", forRemoval = true)
-    @GetMapping
+    //  @GetMapping
     @Operation(summary = "사용자 스터디 목록 조회")
     public ResponseEntity<StudiesInfoResponse> getUserAllStudiesByStatus(
             @RequestParam(defaultValue = "") List<StudyStatus> studyStatuses, // TODO : ?????????????????
@@ -93,7 +88,7 @@ public class StudyController {
     }
 
     @Deprecated(since = "1", forRemoval = true)
-    @GetMapping("/{studyId}")
+    // @GetMapping("/{studyId}")
     @Operation(summary = "스터디 정보 단일 조회")
     public ResponseEntity<StudyDetailsResponse> getStudyDetails(
             @PathVariable final Long studyId
@@ -103,7 +98,7 @@ public class StudyController {
     }
 
     @Deprecated(since = "1", forRemoval = true)
-    @GetMapping("/{studyId}/enter")
+    // @GetMapping("/{studyId}/enter")
     @Operation(summary = "참여 스터디 정보 조회")
     public ResponseEntity<StudyEntranceDetailsResponse> getStudyEntranceDetails(
             @PathVariable final Long studyId
@@ -113,7 +108,7 @@ public class StudyController {
     }
 
     @Deprecated(since = "1", forRemoval = true)
-    @DeleteMapping("/users/{userId}")
+    // @DeleteMapping("/users/{userId}")
     @Operation(summary = "스터디 삭제")
     public ResponseEntity<Long> delete(
             @PathVariable final Long userId
@@ -123,7 +118,7 @@ public class StudyController {
     }
 
     @Deprecated(since = "1", forRemoval = true)
-    @PostMapping("/{studyId}/leave")
+    // @PostMapping("/{studyId}/leave")
     @Operation(summary = "스터디 탈퇴")
     public ResponseEntity<Void> leaveStudy(
             @PathVariable("studyId") @Valid @Positive @NotNull(message = "스터디 id는 필수 항목 입니다.") Long studyId

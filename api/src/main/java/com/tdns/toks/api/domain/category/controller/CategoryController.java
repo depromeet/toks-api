@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "카테고리 정보", description = "Category API")
 @RestController
-@RequestMapping(path = "/api/v2/categories", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/v1/categories", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-public class CategoryV2Controller {
+public class CategoryController {
     private final CategoryService categoryService;
 
     @Operation(summary = "전체 카테고리 정보 조회")
