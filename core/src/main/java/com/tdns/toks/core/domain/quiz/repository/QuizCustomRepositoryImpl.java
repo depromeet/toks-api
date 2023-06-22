@@ -29,8 +29,6 @@ public class QuizCustomRepositoryImpl implements QuizCustomRepository {
 					quiz.startedAt.as("startedAt"),
 					quiz.endedAt.as("endedAt"),
 					quiz.imageUrls.as("imageUrls"),
-					quiz.studyId.as("studyId"),
-					quiz.round.as("round"),
 					Projections.fields(UserSimpleDTO.class,
 						user.id.as("userId"),
 						user.nickname.as("nickname"),
@@ -43,34 +41,5 @@ public class QuizCustomRepositoryImpl implements QuizCustomRepository {
 			.innerJoin(user)
 			.on(quiz.createdBy.eq(user.id))
 			.fetchOne());
-	}
-
-	@Override
-	public List<QuizSimpleDTO> retrieveByStudyId(Long studyId) {
-		return jpaQueryFactory.select(
-				Projections.fields(QuizSimpleDTO.class,
-					quiz.id.as("quizId"),
-					quiz.question.as("question"),
-					quiz.quizType.as("quizType"),
-					quiz.description.as("description"),
-					quiz.startedAt.as("startedAt"),
-					quiz.endedAt.as("endedAt"),
-					quiz.imageUrls.as("imageUrls"),
-					quiz.studyId.as("studyId"),
-					quiz.round.as("round"),
-					Projections.fields(UserSimpleDTO.class,
-						user.id.as("userId"),
-						user.nickname.as("nickname"),
-						user.profileImageUrl.as("profileImageUrl")
-					).as("creator")
-				)
-			)
-			.from(quiz)
-			.where(quiz.studyId.eq(studyId))
-			.innerJoin(user)
-			.on(quiz.createdBy.eq(user.id))
-			.orderBy(quiz.round.desc())
-			.orderBy(quiz.createdAt.desc())
-			.fetch();
 	}
 }

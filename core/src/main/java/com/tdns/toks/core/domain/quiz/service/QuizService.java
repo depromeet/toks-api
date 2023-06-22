@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @Transactional
@@ -32,10 +31,6 @@ public class QuizService {
                 .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_QUIZ_ERROR));
     }
 
-    public List<QuizSimpleDTO> retrieveByStudyId(final Long studyId) {
-        return quizRepository.retrieveByStudyId(studyId);
-    }
-
     public QuizStatusType getQuizStatus(final LocalDateTime startedAt, final LocalDateTime endedAt) {
         LocalDateTime now = LocalDateTime.now();
 
@@ -45,11 +40,6 @@ public class QuizService {
             return QuizStatusType.DONE;
         }
         return QuizStatusType.IN_PROGRESS;
-    }
-
-    public Quiz getStudyLatestQuiz(Long studyId) {
-        return quizRepository.findFirstByStudyIdOrderByCreatedAtDesc(studyId)
-                .orElse(Quiz.builder().id(-1L).build()); // 퀴즈가 없는 경우 id = -1인 Quiz 반환
     }
 
     public StudyLatestQuizStatus getStudyLatestQuizStatus(Quiz quiz, Long userId) {
@@ -72,11 +62,5 @@ public class QuizService {
 
     public Quiz save(final Quiz quiz) {
         return quizRepository.save(quiz);
-    }
-
-    public void checkDuplicatedRound(final Long studyId, final Integer round) {
-        if (quizRepository.existsByStudyIdAndRound(studyId, round)) {
-            throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_EXISTS_QUIZ_ROUND);
-        }
     }
 }

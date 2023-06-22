@@ -7,8 +7,7 @@ import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.service.QuizLikeService;
 import com.tdns.toks.core.domain.quiz.service.QuizService;
 import com.tdns.toks.core.domain.quiz.type.QuizSolveStatus;
-import com.tdns.toks.core.domain.study.service.StudyService;
-import com.tdns.toks.core.domain.study.service.StudyUserService;
+
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleByQuizIdDTO;
 import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
@@ -36,8 +35,6 @@ import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizzesResponse
 @Transactional
 public class QuizApiService {
     private final QuizService quizService;
-    private final StudyUserService studyUserService;
-    private final StudyService studyService;
     private final UserService userService;
     private final QuizLikeService quizLikeService;
 
@@ -48,7 +45,7 @@ public class QuizApiService {
         return QuizSimpleResponse.toResponse(quiz);
     }
 
-    // TODO : 가독성 있는 로직으로 구현하기
+/*    // TODO : 가독성 있는 로직으로 구현하기
     // TODO : 조회 로직 개선 필요
     public QuizzesResponse getAllByStudyId(final Long studyId) {
         var unSubmitters = studyUserService.filterUnSubmitterByStudyId(studyId);
@@ -117,5 +114,5 @@ public class QuizApiService {
         log.info("create quiz uid : {} / quizId : {}", userDTO.getId(), quiz.getId());
 
         return QuizCreateResponse.toResponse(savedQuiz);
-    }
+    }*/
 }

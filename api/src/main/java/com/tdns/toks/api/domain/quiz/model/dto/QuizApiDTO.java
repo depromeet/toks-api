@@ -231,12 +231,6 @@ public class QuizApiDTO {
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "imageUrls", description = "imageUrls")
         private final List<String> imageUrls;
 
-        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "study id", description = "study id")
-        private final Long studyId;
-
-        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "round", description = "round")
-        private final Integer round;
-
         public static QuizCreateResponse toResponse(Quiz quiz) {
             return new QuizCreateResponse(
                     quiz.getId(),
@@ -245,9 +239,7 @@ public class QuizApiDTO {
                     quiz.getDescription(),
                     quiz.getStartedAt(),
                     quiz.getEndedAt(),
-                    quiz.getImageUrls(),
-                    quiz.getStudyId(),
-                    quiz.getRound()
+                    quiz.getImageUrls()
             );
         }
     }

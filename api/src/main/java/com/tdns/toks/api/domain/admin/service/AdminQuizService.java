@@ -58,8 +58,6 @@ public class AdminQuizService {
                         .imageUrls(Collections.emptyList())
                         .startedAt(LocalDateTime.now())
                         .endedAt(LocalDateTime.now())
-                        .studyId(1L)
-                        .round(0)
                         .build()
         );
 

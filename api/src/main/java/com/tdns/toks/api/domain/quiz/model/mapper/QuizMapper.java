@@ -18,9 +18,7 @@ public class QuizMapper {
                 request.getAnswer(),
                 request.getStartedAt(),
                 endedAt,
-                request.getImageUrls(),
-                request.getStudyId(),
-                request.getRound()
+                request.getImageUrls()
         );
     }
 }

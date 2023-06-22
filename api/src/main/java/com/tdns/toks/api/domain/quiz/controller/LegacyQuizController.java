@@ -31,22 +31,4 @@ public class LegacyQuizController {
         var response = quizApiService.getById(quizId);
         return ResponseDto.ok(response);
     }
-
-    @Deprecated(since = "1", forRemoval = true)
-    // @GetMapping("/studies/{studyId}")
-    @Operation(summary = "퀴즈 다건 조회")
-    public ResponseEntity<QuizzesResponse> getAllByStudyID(@PathVariable final Long studyId) {
-        var response = quizApiService.getAllByStudyId(studyId);
-        return ResponseDto.ok(response);
-    }
-
-    @Deprecated(since = "1", forRemoval = true)
-    // @PostMapping
-    @Operation(summary = "퀴즈 생성")
-    public ResponseEntity<QuizCreateResponse> create(
-            @Validated @RequestBody QuizRequest request
-    ) {
-        var response = quizApiService.create(request);
-        return ResponseDto.ok(response);
-    }
 }

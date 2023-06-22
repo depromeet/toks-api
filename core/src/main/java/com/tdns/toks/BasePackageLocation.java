@@ -7,4 +7,3 @@ package com.tdns.toks;
 public interface BasePackageLocation {
 
 }
-

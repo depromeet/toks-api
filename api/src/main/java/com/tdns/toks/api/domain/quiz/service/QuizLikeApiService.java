@@ -32,7 +32,7 @@ public class QuizLikeApiService {
         quizLikeService.checkAlreadyLike(UserDetailDTO.get().getId(), quizReplyHistory.getQuizId());
 
         var quiz = quizService.getOrThrow(quizReplyHistory.getQuizId());
-        quizRankService.updateScore(quizReplyHistory.getCreatedBy(), quiz.getStudyId());
+        // quizRankService.updateScore(quizReplyHistory.getCreatedBy(), quiz.getStudyId());
 
         var quizLike = mapper.toEntity(request);
         var savedQuizLike = quizLikeService.create(quizLike);
