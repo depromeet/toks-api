@@ -1,8 +1,8 @@
-package com.tdns.toks.api.domain.study.event.subscribe;
+package com.tdns.toks.api.domain.tag.event.subscribe;
 
-import com.tdns.toks.api.domain.study.event.model.TagEventModel;
-import com.tdns.toks.api.domain.study.event.model.TagsEventModel;
-import com.tdns.toks.api.domain.study.service.TagDictionaryEventService;
+import com.tdns.toks.api.domain.tag.event.model.TagEventModel;
+import com.tdns.toks.api.domain.tag.event.model.TagsEventModel;
+import com.tdns.toks.api.domain.tag.service.TagDictionaryEventService;
 import com.tdns.toks.core.common.utils.MapperUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,5 +1,6 @@
-package com.tdns.toks.api.domain.study.service;
+package com.tdns.toks.api.domain.tag.service;
 
+import com.tdns.toks.api.domain.tag.event.model.TagEventModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -27,7 +28,7 @@ public class TagDictionaryEventService {
 
     /**
      * @param events String으로 말아진 객체 데이터
-     * @see com.tdns.toks.api.domain.study.event.model.TagEventModel
+     * @see TagEventModel
      */
     public void push(List<String> events) {
         redisTemplate.opsForList()

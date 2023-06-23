@@ -1,4 +1,4 @@
-package com.tdns.toks.api.domain.study.event.model;
+package com.tdns.toks.api.domain.tag.event.model;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

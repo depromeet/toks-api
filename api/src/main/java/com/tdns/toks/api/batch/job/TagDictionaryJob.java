@@ -1,8 +1,8 @@
 package com.tdns.toks.api.batch.job;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.tdns.toks.api.domain.study.event.model.TagEventModel;
-import com.tdns.toks.api.domain.study.service.TagDictionaryEventService;
+import com.tdns.toks.api.domain.tag.event.model.TagEventModel;
+import com.tdns.toks.api.domain.tag.service.TagDictionaryEventService;
 import com.tdns.toks.core.common.utils.MapperUtil;
 import com.tdns.toks.core.domain.study.model.entity.Tag;
 import com.tdns.toks.core.domain.study.repository.TagRepository;

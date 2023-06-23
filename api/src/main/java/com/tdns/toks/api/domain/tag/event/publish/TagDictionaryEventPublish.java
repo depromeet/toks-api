@@ -1,6 +1,6 @@
-package com.tdns.toks.api.domain.study.event.publish;
+package com.tdns.toks.api.domain.tag.event.publish;
 
-import com.tdns.toks.api.domain.study.event.model.TagsEventModel;
+import com.tdns.toks.api.domain.tag.event.model.TagsEventModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
