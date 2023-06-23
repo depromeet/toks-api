@@ -72,6 +72,9 @@ public class Quiz extends BaseTimeEntity {
     @Column(nullable = false, columnDefinition = "BIGINT COMMENT '생성자'")
     private Long createdBy;
 
+    @Column(nullable = false, name = "is_deleted")
+    private Boolean deleted;
+
     public static Quiz of(
             final String question,
             final QuizType quizType,
@@ -108,5 +111,19 @@ public class Quiz extends BaseTimeEntity {
         this.startedAt = startedAt;
         this.endedAt = endedAt;
         this.imageUrls = imageUrls;
+    }
+
+    public Quiz update(
+            String title,
+            String categoryId,
+            QuizType quizType,
+            String question
+    ) {
+        this.title = title;
+        this.categoryId = categoryId;
+        this.quizType = quizType;
+        this.question = question;
+
+        return this;
     }
 }

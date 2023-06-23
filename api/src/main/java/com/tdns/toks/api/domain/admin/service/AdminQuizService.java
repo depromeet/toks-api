@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -45,7 +46,9 @@ public class AdminQuizService {
         }
 
         // 퀴즈 저장하기
-        var question = MapperUtil.writeValueAsString(resolveQuizQuestionModel(request));
+        var question = MapperUtil.writeValueAsString(
+                resolveQuizQuestionModel(request.getQuizType(), request.getQuestion())
+        );
 
         var savedQuestion = quizRepository.save(
                 Quiz.builder()
@@ -66,22 +69,22 @@ public class AdminQuizService {
         return new QuizSaveResponse(savedQuestion.getId());
     }
 
-    private QuizQuestionModel resolveQuizQuestionModel(QuizSaveRequest request) {
-        if (request.getQuizType() == QuizType.A_B_IMAGE) {
+    private QuizQuestionModel resolveQuizQuestionModel(QuizType type, String question) {
+        if (type == QuizType.A_B_IMAGE) {
             return MapperUtil.readValue(
-                    request.getQuestion(),
+                    question,
                     new TypeReference<QuizQuestionAbImageModel>() {
                     }
             );
-        } else if (request.getQuizType() == QuizType.O_X_IMAGE) {
+        } else if (type == QuizType.O_X_IMAGE) {
             return MapperUtil.readValue(
-                    request.getQuestion(),
+                    question,
                     new TypeReference<QuizQuestionOxImageModel>() {
                     }
             );
-        } else if (request.getQuizType() == QuizType.O_X_SIMPLE) {
+        } else if (type == QuizType.O_X_SIMPLE) {
             return MapperUtil.readValue(
-                    request.getQuestion(),
+                    question,
                     new TypeReference<QuizQuestionOxSimpleModel>() {
                     }
             );
@@ -99,5 +102,48 @@ public class AdminQuizService {
                 .orElseThrow(() -> new RuntimeException("error"));
 
         return new QuizResponse(quiz.getId());
+    }
+
+    @Transactional
+    public QuizResponse update(AuthUser authUser, Long quizId, QuizSaveRequest request) {
+        if (!authUser.getUserRole().equals(UserRole.ADMIN)) {
+            throw new RuntimeException("error");
+        }
+
+        var quiz = quizRepository.findById(quizId)
+                .orElseThrow(() -> new RuntimeException("error"));
+
+        // 카테고리 체크
+        if (!categoryRepository.existsById(request.getCategoryId())) {
+            throw new RuntimeException("quiz Id 없음");
+        }
+
+        // 퀴즈 저장하기
+        var question = MapperUtil.writeValueAsString(
+                resolveQuizQuestionModel(request.getQuizType(), request.getQuestion())
+        );
+
+        log.info("update quiz / adminUid : {}", authUser.getId());
+
+        var updatedQuestion = quizRepository.save(
+                quiz.update(
+                        request.getTitle(),
+                        request.getCategoryId(),
+                        request.getQuizType(),
+                        question
+                )
+        );
+
+        return new QuizResponse(updatedQuestion.getId());
+    }
+
+    @Transactional
+    public void delete(AuthUser authUser, Set<Long> ids) {
+        if (!authUser.getUserRole().equals(UserRole.ADMIN)) {
+            throw new RuntimeException("error");
+        }
+
+        quizRepository.deleteAllById(ids);
+        log.info("delete quizzes");
     }
 }

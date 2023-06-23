@@ -10,12 +10,17 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Set;
 
 @Tag(name = "[어드민] 퀴즈관리", description = "QUIZ API")
 @RestController
@@ -49,6 +54,26 @@ public class AdminQuizController {
     }
 
     // 퀴즈 수정
+    @Operation(summary = "퀴즈 단건 조회")
+    @Parameter(name = "authUser", hidden = true)
+    @PatchMapping(path = "/{quizId}")
+    public ResponseEntity<?> update(
+            AuthUser authUser,
+            @PathVariable Long quizId,
+            @RequestBody QuizSaveRequest request
+    ) {
+        var response = adminQuizService.update(authUser, quizId, request);
+        return ResponseDto.ok(response);
+    }
 
-    // 퀴즈 삭제
+    @Operation(summary = "퀴즈 단건 조회")
+    @Parameter(name = "authUser", hidden = true)
+    @DeleteMapping
+    public ResponseEntity<Void> delete(
+            AuthUser authUser,
+            @RequestParam Set<Long> ids
+    ) {
+        adminQuizService.delete(authUser, ids);
+        return ResponseDto.noContent();
+    }
 }

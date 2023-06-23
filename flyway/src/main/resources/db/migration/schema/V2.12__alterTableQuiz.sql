@@ -1,0 +1,2 @@
+ALTER TABLE `quiz`
+    ADD COLUMN `is_deleted` TINYINT NOT NULL DEFAULT 0 AFTER `title`;
