@@ -29,5 +29,8 @@ public enum UserRole implements GrantedAuthority {
     public String getDescription() {
         return description;
     }
-}
 
+    public boolean isAdmin() {
+        return this == ADMIN;
+    }
+}

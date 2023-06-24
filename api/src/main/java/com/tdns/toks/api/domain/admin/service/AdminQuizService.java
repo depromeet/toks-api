@@ -14,7 +14,6 @@ import com.tdns.toks.core.domain.quiz.model.dto.question.QuizQuestionOxSimpleMod
 import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
-import com.tdns.toks.core.domain.user.type.UserRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,10 +35,6 @@ public class AdminQuizService {
             AuthUser authUser,
             QuizSaveRequest request
     ) {
-        if (!authUser.getUserRole().equals(UserRole.ADMIN)) {
-            throw new RuntimeException("error");
-        }
-
         // 카테고리 체크
         if (!categoryRepository.existsById(request.getCategoryId())) {
             throw new RuntimeException("quiz Id 없음");
@@ -94,10 +89,6 @@ public class AdminQuizService {
     }
 
     public QuizResponse get(AuthUser authUser, Long quizId) {
-        if (!authUser.getUserRole().equals(UserRole.ADMIN)) {
-            throw new RuntimeException("error");
-        }
-
         var quiz = quizRepository.findById(quizId)
                 .orElseThrow(() -> new RuntimeException("error"));
 
@@ -106,10 +97,6 @@ public class AdminQuizService {
 
     @Transactional
     public QuizResponse update(AuthUser authUser, Long quizId, QuizSaveRequest request) {
-        if (!authUser.getUserRole().equals(UserRole.ADMIN)) {
-            throw new RuntimeException("error");
-        }
-
         var quiz = quizRepository.findById(quizId)
                 .orElseThrow(() -> new RuntimeException("error"));
 
@@ -139,10 +126,6 @@ public class AdminQuizService {
 
     @Transactional
     public void delete(AuthUser authUser, Set<Long> ids) {
-        if (!authUser.getUserRole().equals(UserRole.ADMIN)) {
-            throw new RuntimeException("error");
-        }
-
         quizRepository.deleteAllById(ids);
         log.info("delete quizzes");
     }

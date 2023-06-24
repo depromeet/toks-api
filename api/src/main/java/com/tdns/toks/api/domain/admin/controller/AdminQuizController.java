@@ -3,6 +3,7 @@ package com.tdns.toks.api.domain.admin.controller;
 import com.tdns.toks.api.domain.admin.dto.QuizSaveRequest;
 import com.tdns.toks.api.domain.admin.service.AdminQuizService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
+import com.tdns.toks.core.domain.auth.annotation.AdminPermission;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -32,6 +33,7 @@ public class AdminQuizController {
     // 퀴즈 생성
     @Operation(summary = "퀴즈 추가")
     @Parameter(name = "authUser", hidden = true)
+    @AdminPermission
     @PostMapping
     public ResponseEntity<?> insert(
             AuthUser authUser,
@@ -44,6 +46,7 @@ public class AdminQuizController {
     // 퀴즈 단건 조회
     @Operation(summary = "퀴즈 단건 조회")
     @Parameter(name = "authUser", hidden = true)
+    @AdminPermission
     @GetMapping(path = "/{quizId}")
     public ResponseEntity<?> get(
             AuthUser authUser,
@@ -56,6 +59,7 @@ public class AdminQuizController {
     // 퀴즈 수정
     @Operation(summary = "퀴즈 단건 조회")
     @Parameter(name = "authUser", hidden = true)
+    @AdminPermission
     @PatchMapping(path = "/{quizId}")
     public ResponseEntity<?> update(
             AuthUser authUser,
@@ -68,6 +72,7 @@ public class AdminQuizController {
 
     @Operation(summary = "퀴즈 단건 조회")
     @Parameter(name = "authUser", hidden = true)
+    @AdminPermission
     @DeleteMapping
     public ResponseEntity<Void> delete(
             AuthUser authUser,
