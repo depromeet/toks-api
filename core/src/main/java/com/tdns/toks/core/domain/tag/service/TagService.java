@@ -1,7 +1,7 @@
-package com.tdns.toks.core.domain.study.service;
+package com.tdns.toks.core.domain.tag.service;
 
-import com.tdns.toks.core.domain.study.model.dto.TagStaticsDTO;
-import com.tdns.toks.core.domain.study.repository.TagRepository;
+import com.tdns.toks.core.domain.tag.model.dto.TagStaticsDTO;
+import com.tdns.toks.core.domain.tag.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

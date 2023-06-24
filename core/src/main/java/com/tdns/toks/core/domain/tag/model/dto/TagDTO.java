@@ -1,6 +1,6 @@
-package com.tdns.toks.core.domain.study.model.dto;
+package com.tdns.toks.core.domain.tag.model.dto;
 
-import com.tdns.toks.core.domain.study.model.entity.Tag;
+import com.tdns.toks.core.domain.tag.model.entity.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

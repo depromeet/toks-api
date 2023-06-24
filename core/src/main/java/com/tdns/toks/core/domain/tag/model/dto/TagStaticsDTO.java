@@ -1,4 +1,4 @@
-package com.tdns.toks.core.domain.study.model.dto;
+package com.tdns.toks.core.domain.tag.model.dto;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

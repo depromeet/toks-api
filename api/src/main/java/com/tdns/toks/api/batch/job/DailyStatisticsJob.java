@@ -3,7 +3,7 @@ package com.tdns.toks.api.batch.job;
 import com.tdns.toks.api.domain.cruiser.client.CruiserClient;
 import com.tdns.toks.api.domain.cruiser.dto.CruiserRequest;
 import com.tdns.toks.core.domain.actionlog.service.SystemActionLogService;
-import com.tdns.toks.core.domain.study.service.TagService;
+import com.tdns.toks.core.domain.tag.service.TagService;
 import com.tdns.toks.core.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
