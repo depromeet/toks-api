@@ -1,20 +1,15 @@
 package com.tdns.toks.api.domain.quiz.controller;
 
-import com.tdns.toks.api.domain.quiz.service.QuizApiService;
+import com.tdns.toks.api.domain.quiz.service.LegacyQuizApiService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizCreateResponse;
-import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizRequest;
 import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizSimpleResponse;
-import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizzesResponse;
 
 @Deprecated(since = "1", forRemoval = true)
 @Tag(name = "QuizController-V1", description = "QUIZ API")
@@ -22,7 +17,7 @@ import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizzesResponse
 // @RequestMapping(path = "/api/v1/quizzes", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class LegacyQuizController {
-    private final QuizApiService quizApiService;
+    private final LegacyQuizApiService quizApiService;
 
     @Deprecated(since = "1", forRemoval = true)
     //  @GetMapping("/{quizId}")

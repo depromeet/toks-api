@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class QuizService {
+public class LegacyQuizService {
     private final QuizRepository quizRepository;
     private final QuizReplyHistoryRepository quizReplyHistoryRepository;
 

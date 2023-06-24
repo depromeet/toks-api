@@ -5,7 +5,7 @@ import com.tdns.toks.api.domain.quiz.model.dto.QuizLikeApiDTO.QuizLikeRequest;
 import com.tdns.toks.api.domain.quiz.model.mapper.QuizLikeMapper;
 import com.tdns.toks.core.domain.quiz.service.QuizLikeService;
 import com.tdns.toks.core.domain.quiz.service.QuizReplyHistoryService;
-import com.tdns.toks.core.domain.quiz.service.QuizService;
+import com.tdns.toks.core.domain.quiz.service.LegacyQuizService;
 import com.tdns.toks.core.domain.quizrank.service.QuizRankService;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class QuizLikeApiService {
     private final QuizLikeService quizLikeService;
     private final QuizReplyHistoryService quizReplyHistoryService;
     private final QuizRankService quizRankService;
-    private final QuizService quizService;
+    private final LegacyQuizService quizService;
     private final QuizLikeMapper mapper;
 
     // TODO : 최대한 가독성 있도록, DB는 2 ~ 4번 정도만 탈 수 있도록

@@ -1,40 +1,23 @@
 package com.tdns.toks.api.domain.quiz.service;
 
 import com.tdns.toks.api.domain.quiz.model.mapper.QuizMapper;
-import com.tdns.toks.core.common.exception.ApplicationErrorType;
-import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
-import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.service.QuizLikeService;
-import com.tdns.toks.core.domain.quiz.service.QuizService;
-import com.tdns.toks.core.domain.quiz.type.QuizSolveStatus;
+import com.tdns.toks.core.domain.quiz.service.LegacyQuizService;
 
-import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
-import com.tdns.toks.core.domain.user.model.dto.UserSimpleByQuizIdDTO;
-import com.tdns.toks.core.domain.user.model.dto.UserSimpleDTO;
 import com.tdns.toks.core.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizCreateResponse;
-import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizRequest;
-import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizResponse;
 import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizSimpleResponse;
-import static com.tdns.toks.api.domain.quiz.model.dto.QuizApiDTO.QuizzesResponse;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class QuizApiService {
-    private final QuizService quizService;
+public class LegacyQuizApiService {
+    private final LegacyQuizService quizService;
     private final UserService userService;
     private final QuizLikeService quizLikeService;
 
