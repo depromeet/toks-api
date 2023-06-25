@@ -23,7 +23,7 @@ public class SystemActionLogEventModel {
     }
 
     private String getClientIpAddress(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
+        var ip = request.getHeader("X-Forwarded-For");
 
         if (ip == null) {
             ip = request.getHeader("Proxy-Client-IP");

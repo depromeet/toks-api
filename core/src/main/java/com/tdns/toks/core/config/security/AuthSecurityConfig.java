@@ -42,8 +42,6 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
     private final OAuth2FailureHandler oAuth2FailureHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
 
-    ObjectMapper objectMapper = new ObjectMapper();
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().disable()

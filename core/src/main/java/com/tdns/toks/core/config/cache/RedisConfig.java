@@ -43,8 +43,8 @@ public class RedisConfig {
      * default Cache Manager
      **/
     @Bean
-    @ConditionalOnMissingBean(name = "beerAirCacheManager")
-    public CacheManager beerAirCacheManager() {
+    @ConditionalOnMissingBean(name = "toksCacheManager")
+    public CacheManager toksCacheManager() {
         var stringSerializationPair = RedisSerializationContext
                 .SerializationPair.fromSerializer(new StringRedisSerializer());
         var objectSerializationPair = RedisSerializationContext
