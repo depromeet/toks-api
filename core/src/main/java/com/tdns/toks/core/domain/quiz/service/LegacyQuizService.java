@@ -7,7 +7,6 @@ import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
-import com.tdns.toks.core.domain.quiz.type.StudyLatestQuizStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,24 +39,6 @@ public class LegacyQuizService {
             return QuizStatusType.DONE;
         }
         return QuizStatusType.IN_PROGRESS;
-    }
-
-    public StudyLatestQuizStatus getStudyLatestQuizStatus(Quiz quiz, Long userId) {
-        QuizStatusType quizStatus = getQuizStatus(quiz.getStartedAt(), quiz.getEndedAt());
-        // 퀴즈 진행 중
-        if (quizStatus.equals(QuizStatusType.IN_PROGRESS)) {
-            if (quizReplyHistoryRepository.existsByQuizIdAndCreatedBy(quiz.getId(), userId)) { // 푼 경우
-                return StudyLatestQuizStatus.SOLVED;
-            }
-            return StudyLatestQuizStatus.UNSOLVED;
-        }
-        // 퀴즈가 진행중이지 않은 경우
-        LocalDateTime endNoticeTime = quiz.getEndedAt().plusHours(1);
-        LocalDateTime nowTime = LocalDateTime.now();
-        if (nowTime.isAfter(quiz.getEndedAt()) && nowTime.isBefore(endNoticeTime)) { // 퀴즈 끝나는 시간 < 현재시간 < 퀴즈 끝나고 1시간 뒤
-            return StudyLatestQuizStatus.UNCHECKED;
-        }
-        return StudyLatestQuizStatus.PENDING;
     }
 
     public Quiz save(final Quiz quiz) {

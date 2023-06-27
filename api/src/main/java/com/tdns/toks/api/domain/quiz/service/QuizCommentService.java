@@ -22,7 +22,8 @@ public class QuizCommentService {
 
     public Page<QuizCommentResponse> getAll(Long quizId, Integer page, Integer size) {
         var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
-        return quizCommentRepository.findAllByQuizId(quizId, pageable).map(QuizCommentResponse::from);
+        return quizCommentRepository.findAllByQuizId(quizId, pageable)
+                .map(QuizCommentResponse::from);
     }
 
     public QuizCommentResponse insert(AuthUser authUser, Long quizId, QuizCommentCreateRequest request) {

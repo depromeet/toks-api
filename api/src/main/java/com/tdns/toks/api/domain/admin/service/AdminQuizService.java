@@ -19,8 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.Set;
 
 @Slf4j
@@ -52,10 +50,6 @@ public class AdminQuizService {
                         .question(question)
                         .quizType(request.getQuizType())
                         .createdBy(1L)
-                        // 이후 필드는 필요 없음 -- 컬럼 삭제도 필요함
-                        .imageUrls(Collections.emptyList())
-                        .startedAt(LocalDateTime.now())
-                        .endedAt(LocalDateTime.now())
                         .build()
         );
 
