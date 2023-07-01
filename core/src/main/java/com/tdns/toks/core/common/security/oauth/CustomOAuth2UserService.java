@@ -21,6 +21,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+//    private final TokenService tokenService;
 
     @Override
     @Transactional

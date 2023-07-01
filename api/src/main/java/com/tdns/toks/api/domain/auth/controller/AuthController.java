@@ -36,10 +36,9 @@ public class AuthController {
     @Parameter(name = "authUser", hidden = true)
     @PostMapping("/renew")
     public ResponseEntity<?> renewAccessToken(
-            AuthUser authUser,
             @RequestBody UserApiDTO.UserRenewAccessTokenRequest request
     ) {
-        var response = authService.renewAccessToken(authUser, request);
+        var response = authService.renewAccessToken(request);
         return ResponseDto.created(response);
     }
 

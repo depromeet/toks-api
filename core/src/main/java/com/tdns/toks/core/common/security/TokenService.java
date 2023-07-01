@@ -23,7 +23,7 @@ import static com.tdns.toks.core.common.security.Constants.TOKS_AUTH_HEADER_KEY;
 @Component
 @RequiredArgsConstructor
 public class TokenService {
-    private final long accessTokenValidMillisecond = 1000L * 60 * 60 * 24 * 120; // AccessToken 120일 토큰 유효
+    private final long accessTokenValidMillisecond = 1000L * 60 * 1 ; // AccessToken 1분 토큰 유효
     private final long refreshTokenValidMillisecond = 1000L * 60 * 60 * 24 * 30; // 30일 토큰 유효
     private final UserRepository userRepository;
 
@@ -45,26 +45,18 @@ public class TokenService {
     public void verifyToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(token);
-            if (!claims.getBody().getExpiration().after(new Date())) { // 토큰 만료 시
-                throw new SilentApplicationErrorException(ApplicationErrorType.EXPIRED_TOKEN);
-            }
+
             Long uid = getUserIdFromToken(token);
             if (!userRepository.existsById(uid)) {
                 throw new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER);
-
             }
         } catch (Exception e) {
-            throw new SilentApplicationErrorException(ApplicationErrorType.TOKEN_INTERNAL_ERROR);
+            throw new SilentApplicationErrorException(ApplicationErrorType.EXPIRED_TOKEN);
         }
     }
 
     public AuthUser getAuthUser(AuthToken token) {
         verifyToken(token.getToken());
-//        var email = Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(token.getToken()).getBody().getSubject();
-//
-//        var user = userRepository.findByEmail(email)
-//                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
-
         var  id = getUserIdFromToken(token.getToken());
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
