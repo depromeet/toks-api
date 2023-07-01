@@ -3,17 +3,19 @@ package com.tdns.toks.api.domain.auth.service;
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
-import com.tdns.toks.core.common.security.JwtTokenProvider;
+import com.tdns.toks.core.common.security.TokenService;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
     private final UserRepository userRepository;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenService tokenService;
 
     public UserApiDTO.UserInfoResponse getMyInfos(AuthUser authUser) {
         var user = userRepository.findById(authUser.getId())
@@ -28,30 +30,27 @@ public class AuthService {
     }
 
     public UserApiDTO.UserRenewAccessTokenResponse renewAccessToken(
-            AuthUser authUser,
+//            AuthUser authUser,
             UserApiDTO.UserRenewAccessTokenRequest request
     ) {
-        var requestRefreshToken = request.getRefreshToken();
+        var refreshToken = request.getRefreshToken();
 
-        if (!jwtTokenProvider.verifyToken(requestRefreshToken)) {
-            throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_REFRESH_TOKEN);
-        }
+        tokenService.verifyToken(refreshToken);
 
-        var email = jwtTokenProvider.getUid(requestRefreshToken);
-
-        var user = userRepository.findByEmail(email)
+        var user = userRepository.findById(tokenService.getUserIdFromToken(refreshToken))
                 .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
 
         var userRefreshToken = user.getRefreshToken();
-        if (!requestRefreshToken.equals(userRefreshToken)) {
+        if (!refreshToken.equals(userRefreshToken)) {
             throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_REFRESH_TOKEN);
         }
 
-        var accessToken = jwtTokenProvider.renewAccessToken(user.getEmail());
+        var accessToken = tokenService.renewAccessToken(user.getId(), user.getEmail());
 
         return new UserApiDTO.UserRenewAccessTokenResponse(accessToken);
     }
 
+    @Transactional
     public void deleteRefreshToken(AuthUser authUser) {
         var user = userRepository.findById(authUser.getId())
                 .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER));
