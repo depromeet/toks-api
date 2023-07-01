@@ -18,26 +18,37 @@ import java.io.IOException;
 @Component
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try{
-            filterChain.doFilter(request,response);
-        } catch (SilentApplicationErrorException ex){
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
+        try {
+            filterChain.doFilter(request, response);
+        } catch (SilentApplicationErrorException ex) {
             log.error("exception exception handler filter");
             ApplicationErrorType responseStatusType = ex.getResponseStatusType();
-            setErrorResponseHeader(ex.getResponseStatusType().getHttpStatus(),response,ex);
+            setErrorResponseHeader(ex.getResponseStatusType().getHttpStatus(), response, ex);
             setErrorResponseBody(response, responseStatusType);
-        }catch (RuntimeException ex){
+        } catch (RuntimeException ex) {
             log.error("runtime exception exception handler filter");
-            setErrorResponseHeader(HttpStatus.FORBIDDEN,response,ex);
+            setErrorResponseHeader(HttpStatus.FORBIDDEN, response, ex);
         }
     }
 
-    private void setErrorResponseHeader(HttpStatus status, HttpServletResponse response, Exception ex) throws IOException {
+    private void setErrorResponseHeader(
+            HttpStatus status,
+            HttpServletResponse response,
+            Exception ex
+    ) throws IOException {
         response.setStatus(status.value());
         response.setContentType("application/json");
     }
 
-    public void setErrorResponseBody(HttpServletResponse response, ApplicationErrorType applicationErrorType) throws IOException {
+    public void setErrorResponseBody(
+            HttpServletResponse response,
+            ApplicationErrorType applicationErrorType
+    ) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         String errorResponse = objectMapper.writeValueAsString(applicationErrorType);
         response.getWriter().write(errorResponse);

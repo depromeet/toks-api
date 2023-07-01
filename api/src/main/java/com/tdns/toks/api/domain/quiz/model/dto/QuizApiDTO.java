@@ -2,7 +2,6 @@ package com.tdns.toks.api.domain.quiz.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
-import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.type.QuizSolveStatus;
 import com.tdns.toks.core.domain.quiz.type.QuizStatusType;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
@@ -185,7 +184,6 @@ public class QuizApiDTO {
         private String answer;
 
         @NotNull(message = "퀴즈 시작시간은 필수 항목입니다.")
-//		@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX", timezone = "Asia/Seoul")
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "startedAt", description = "startedAt")
         private LocalDateTime startedAt;
@@ -221,34 +219,5 @@ public class QuizApiDTO {
 
         @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "description", description = "description")
         private final String description;
-
-        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "startedAt", description = "startedAt")
-        private final LocalDateTime startedAt;
-
-        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "endedAt", description = "endedAt")
-        private final LocalDateTime endedAt;
-
-        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "imageUrls", description = "imageUrls")
-        private final List<String> imageUrls;
-
-        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "study id", description = "study id")
-        private final Long studyId;
-
-        @Schema(accessMode = Schema.AccessMode.READ_WRITE, required = true, name = "round", description = "round")
-        private final Integer round;
-
-        public static QuizCreateResponse toResponse(Quiz quiz) {
-            return new QuizCreateResponse(
-                    quiz.getId(),
-                    quiz.getQuestion(),
-                    quiz.getQuizType(),
-                    quiz.getDescription(),
-                    quiz.getStartedAt(),
-                    quiz.getEndedAt(),
-                    quiz.getImageUrls(),
-                    quiz.getStudyId(),
-                    quiz.getRound()
-            );
-        }
     }
 }

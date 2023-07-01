@@ -3,9 +3,6 @@ package com.tdns.toks.core.domain.user.service;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.common.security.JwtTokenProvider;
-import com.tdns.toks.core.domain.study.model.entity.StudyUser;
-import com.tdns.toks.core.domain.study.repository.StudyUserRepository;
-import com.tdns.toks.core.domain.study.type.StudyUserStatus;
 import com.tdns.toks.core.domain.user.model.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,7 +17,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final StudyUserRepository studyUserRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional(readOnly = true)
@@ -62,10 +57,6 @@ public class UserService {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER));
         user.setRefreshToken("logout");
-    }
-
-    public List<StudyUser> getUserStudyIds(Long userId, StudyUserStatus joinedStatus) {
-        return studyUserRepository.findAllJoinedStudyByUserId(userId, joinedStatus);
     }
 
     private boolean isNicknameDuplicated(String nickname) {

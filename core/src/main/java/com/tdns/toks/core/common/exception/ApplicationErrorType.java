@@ -12,8 +12,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ApplicationErrorType {
     /**
-     * common (-10000 ~ -19999)
-     * 에러코드 재정의 필요 랜덤값 생성
+     * Common Error Type
      */
     INVALID_REQUEST(HttpStatus.BAD_REQUEST, "try.again"),
     INVALID_DATA_ARGUMENT(HttpStatus.BAD_REQUEST, "try.again"),
@@ -51,13 +50,6 @@ public enum ApplicationErrorType {
     ALREADY_EXISTS_QUIZ_ROUND(HttpStatus.BAD_REQUEST, "퀴즈 라운드가 이미 존재합니다."),
     NOT_FOUND_QUIZ_ERROR(HttpStatus.NOT_FOUND, "해당 퀴즈가 존재하지 않습니다."),
     STILL_OPEN_LATEST_QUIZ(HttpStatus.CONFLICT, "마지막 퀴즈가 끝나지 않았습니다"),
-
-    /**
-     * Study Error Type
-     **/
-    NOT_FOUND_STUDY(HttpStatus.NOT_FOUND, "스터디를 찾을 수 없습니다."),
-    NOT_JOINED_STUDY(HttpStatus.NOT_FOUND, "스터디에 참여하고있지 않습니다."),
-
     ;
 
     @Getter

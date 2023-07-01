@@ -31,7 +31,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
             ModelAndViewContainer mavContainer,
             NativeWebRequest webRequest,
             WebDataBinderFactory binderFactory
-    ) throws Exception {
+    ) {
         var httpServletRequest = (HttpServletRequest) webRequest.getNativeRequest();
 
         var accessToken = httpServletRequest.getHeader(TOKS_AUTH_HEADER_KEY);

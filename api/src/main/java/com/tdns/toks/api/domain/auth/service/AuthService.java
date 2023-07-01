@@ -4,7 +4,7 @@ import com.tdns.toks.api.domain.user.model.dto.UserApiDTO;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.common.security.JwtTokenProvider;
-import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
+import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,22 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public UserApiDTO.UserRenewAccessTokenResponse renewAccessToken(UserApiDTO.UserRenewAccessTokenRequest request) {
+    public UserApiDTO.UserInfoResponse getMyInfos(AuthUser authUser) {
+        var user = userRepository.findById(authUser.getId())
+                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
+
+        return new UserApiDTO.UserInfoResponse(
+                user.getEmail(),
+                user.getNickname(),
+                user.getThumbnailImageUrl(),
+                user.getProfileImageUrl()
+        );
+    }
+
+    public UserApiDTO.UserRenewAccessTokenResponse renewAccessToken(
+            AuthUser authUser,
+            UserApiDTO.UserRenewAccessTokenRequest request
+    ) {
         var requestRefreshToken = request.getRefreshToken();
 
         if (!jwtTokenProvider.verifyToken(requestRefreshToken)) {
@@ -37,10 +52,8 @@ public class AuthService {
         return new UserApiDTO.UserRenewAccessTokenResponse(accessToken);
     }
 
-    public void deleteRefreshToken() {
-        var userDTO = UserDetailDTO.get();
-
-        var user = userRepository.findById(userDTO.getId())
+    public void deleteRefreshToken(AuthUser authUser) {
+        var user = userRepository.findById(authUser.getId())
                 .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER));
         user.setRefreshToken("logout");
     }

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "퀴즈 댓글 관리", description = "QUIZ Comment API")
 @RestController
-@RequestMapping(path = "/api/v2", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class QuizCommentController {
     private final QuizCommentService quizCommentService;

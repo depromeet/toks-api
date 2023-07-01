@@ -1,13 +1,11 @@
 package com.tdns.toks.api.batch.job;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.tdns.toks.api.domain.study.event.model.TagEventModel;
-import com.tdns.toks.api.domain.study.service.TagDictionaryEventService;
+import com.tdns.toks.api.domain.tag.event.model.TagEventModel;
+import com.tdns.toks.api.domain.tag.service.TagDictionaryEventService;
 import com.tdns.toks.core.common.utils.MapperUtil;
-import com.tdns.toks.core.domain.study.model.entity.StudyTag;
-import com.tdns.toks.core.domain.study.model.entity.Tag;
-import com.tdns.toks.core.domain.study.repository.StudyTagRepository;
-import com.tdns.toks.core.domain.study.repository.TagRepository;
+import com.tdns.toks.core.domain.tag.model.entity.Tag;
+import com.tdns.toks.core.domain.tag.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,7 +19,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TagDictionaryJob {
     private final TagRepository tagRepository;
-    private final StudyTagRepository studyTagRepository;
     private final TagDictionaryEventService tagDictionaryEventService;
 
     public void run() {
@@ -38,7 +35,6 @@ public class TagDictionaryJob {
                 .collect(Collectors.toSet());
 
         savedTagJob(events);
-        savedStudyTagJob(events);
 
         log.info("run tag dictionary complete");
     }
@@ -62,21 +58,5 @@ public class TagDictionaryJob {
         tagRepository.saveAll(savedTags);
 
         log.info("saved New Tag Job Complete size : {}", savedTags.size());
-    }
-
-    /**
-     * Study Tag Mapping Table 생성
-     *
-     * @param events
-     */
-    private void savedStudyTagJob(Set<TagEventModel> events) {
-        var studyTags = events
-                .stream()
-                .map(tag -> new StudyTag(tag.getStudyId(), tagRepository.getByName(tag.getTagName()).getId()))
-                .collect(Collectors.toList());
-
-        studyTagRepository.saveAll(studyTags);
-
-        log.info("saved study tag mapping data complete : {}", studyTags.size());
     }
 }

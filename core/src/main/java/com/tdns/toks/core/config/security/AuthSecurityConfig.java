@@ -38,14 +38,9 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailService customUserDetailService;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
-
-//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final OAuth2FailureHandler oAuth2FailureHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
-
-    ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -90,9 +85,9 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/v2/api-docs", "/configuration/ui",
                 "**/swagger-resources/**", "/configuration/security",
                 "/swagger-ui.html", "/webjars/**", "/swagger/**", "/swagger-ui/index.html",
-                
+
                 // v2 API 시큐리티 적용 제외
-                "/api/v2/**"
+                "/api/**"
         );
     }
 
