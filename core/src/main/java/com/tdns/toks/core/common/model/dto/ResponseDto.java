@@ -22,8 +22,7 @@ public class ResponseDto<T> implements Serializable {
                 .status(HttpStatus.CREATED)
                 .body(data);
     }
-
-
+    
     public static ResponseEntity<Void> noContent() {
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
