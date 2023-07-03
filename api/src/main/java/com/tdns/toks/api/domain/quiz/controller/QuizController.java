@@ -4,6 +4,7 @@ import com.tdns.toks.api.domain.quiz.service.QuizService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -22,6 +23,7 @@ public class QuizController {
     private final QuizService quizService;
 
     @Operation(summary = "퀴즈 단건 조회")
+    @Parameter(name = "authUser", hidden = true)
     @GetMapping("/quizzes/{quizId}")
     public ResponseEntity<?> get(
             @Nullable AuthUser authUser,
