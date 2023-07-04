@@ -1,7 +1,7 @@
 package com.tdns.toks.api.domain.auth.controller;
 
 import com.tdns.toks.api.domain.auth.service.AuthService;
-import com.tdns.toks.api.domain.user.model.dto.UserApiDTO;
+import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserRenewAccessTokenRequest;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +36,7 @@ public class AuthController {
     @Parameter(name = "authUser", hidden = true)
     @PostMapping("/renew")
     public ResponseEntity<?> renewAccessToken(
-            @RequestBody UserApiDTO.UserRenewAccessTokenRequest request
+            @RequestBody UserRenewAccessTokenRequest request
     ) {
         var response = authService.renewAccessToken(request);
         return ResponseDto.created(response);
