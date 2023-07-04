@@ -8,9 +8,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz, Long>, QuizCustomRepository {
     @Transactional(readOnly = true)
-    Page<Quiz> findAllByCategoryIdIn(List<String> categoryId, Pageable pageable);
+    Page<Quiz> findAllByCategoryIdIn(Set<String> categoryId, Pageable pageable);
 }
