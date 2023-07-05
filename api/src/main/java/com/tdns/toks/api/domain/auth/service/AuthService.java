@@ -7,6 +7,7 @@ import com.tdns.toks.core.common.security.TokenService;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,13 +15,18 @@ import javax.transaction.Transactional;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+    @Value("${not-set-nickname}")
+    private String NOT_SET_NICKNAME;
+
     private final UserRepository userRepository;
     private final TokenService tokenService;
 
     public UserApiDTO.UserInfoResponse getMyInfos(AuthUser authUser) {
         var user = userRepository.findById(authUser.getId())
                 .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
-
+        if (user.getNickname().equals(NOT_SET_NICKNAME)) {
+            throw new SilentApplicationErrorException(ApplicationErrorType.NOT_SET_NICKNAME);
+        }
         return new UserApiDTO.UserInfoResponse(
                 user.getEmail(),
                 user.getNickname(),

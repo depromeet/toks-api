@@ -12,6 +12,7 @@ import java.util.Map;
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
 public class OAuth2Attribute {
+    private static String NOT_SET_NICKNAME = "egVWeetTadtlZthceRiy";
     private Map<String, Object> attributes;
     private String attributeKey;
     private String email;
@@ -34,11 +35,12 @@ public class OAuth2Attribute {
                                            Map<String, Object> attributes) {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+
         return OAuth2Attribute.builder()
                 .provider(UserProvider.KAKAO)
                 .providerId(String.valueOf(attributes.get("id")))
                 .email((String) kakaoAccount.get("email"))
-                .nickname("닉네임을 등록해주세요")
+                .nickname(NOT_SET_NICKNAME)
                 .thumbnailImageUrl((String) profile.get("thumbnail_image_url"))
                 .profileImageUrl((String) profile.get("profile_image_url"))
                 .attributes(kakaoAccount)
