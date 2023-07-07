@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Nullable;
+
 @Tag(name = "인증인가 관리", description = "Auth")
 @RestController
 @RequestMapping(path = "/api/v1/auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,5 +52,17 @@ public class AuthController {
     ) {
         authService.deleteRefreshToken(authUser);
         return ResponseDto.noContent();
+    }
+
+    @Operation(summary = "사용자 상태 조회")
+    @Parameter(name = "authUser", hidden = true)
+    @GetMapping("/status")
+    public ResponseEntity<?> userStatus(
+            @Nullable AuthUser authUser
+    ) {
+        if (authUser == null) {
+            return ResponseDto.noContent();
+        }
+        return ResponseDto.ok("Logged in User");
     }
 }
