@@ -23,7 +23,7 @@ public class LegacyQuizLikeController {
     @Deprecated(since = "1", forRemoval = true)
     // @PostMapping
     @Operation(summary = "퀴즈 답변 좋아요")
-    public ResponseEntity<QuizLikeResponse> like(@Validated @RequestBody final QuizLikeRequest request) {
+    public ResponseEntity<?> like(@Validated @RequestBody final QuizLikeRequest request) {
         var response = quizLikeApiService.like(request);
         return ResponseDto.ok(response);
     }

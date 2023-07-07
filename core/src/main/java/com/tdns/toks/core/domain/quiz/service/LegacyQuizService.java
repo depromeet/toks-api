@@ -1,7 +1,7 @@
 package com.tdns.toks.core.domain.quiz.service;
 
+import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
-import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizSimpleDTO;
 import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
@@ -22,12 +22,12 @@ public class LegacyQuizService {
 
     public Quiz getOrThrow(final Long id) {
         return quizRepository.findById(id)
-                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_QUIZ_ERROR));
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_QUIZ_ERROR));
     }
 
     public QuizSimpleDTO retrieveByIdOrThrow(final Long id) {
         return quizRepository.retrieveById(id)
-                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_QUIZ_ERROR));
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_QUIZ_ERROR));
     }
 
     public QuizStatusType getQuizStatus(final LocalDateTime startedAt, final LocalDateTime endedAt) {

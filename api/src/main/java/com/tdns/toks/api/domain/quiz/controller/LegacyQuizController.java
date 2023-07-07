@@ -22,7 +22,7 @@ public class LegacyQuizController {
     @Deprecated(since = "1", forRemoval = true)
     //  @GetMapping("/{quizId}")
     @Operation(summary = "퀴즈 단건 조회", description = "상세 설명을 기록")
-    public ResponseEntity<QuizSimpleResponse> getById(@PathVariable final Long quizId) {
+    public ResponseEntity<?> getById(@PathVariable final Long quizId) {
         var response = quizApiService.getById(quizId);
         return ResponseDto.ok(response);
     }

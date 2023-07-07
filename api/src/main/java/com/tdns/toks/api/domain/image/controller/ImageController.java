@@ -23,7 +23,7 @@ public class ImageController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "이미지 생성")
-    public ResponseEntity<ImageUploadResponse> uploadImage(
+    public ResponseEntity<?> uploadImage(
             @RequestPart(name = "image") MultipartFile image
     ) {
         var response = imageApiService.uploadImage(image);

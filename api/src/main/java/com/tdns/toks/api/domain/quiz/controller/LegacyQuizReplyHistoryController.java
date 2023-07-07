@@ -27,7 +27,7 @@ public class LegacyQuizReplyHistoryController {
     @Deprecated(since = "1", forRemoval = true)
     // @PostMapping
     @Operation(summary = "퀴즈 답변 제출")
-    public ResponseEntity<QuizReplyHistoryResponse> submit(@Validated @RequestBody final QuizReplyHistoryRequest request) {
+    public ResponseEntity<?> submit(@Validated @RequestBody final QuizReplyHistoryRequest request) {
         var response = quizReplyHistoryApiService.submit(request);
         return ResponseDto.ok(response);
     }
@@ -35,7 +35,7 @@ public class LegacyQuizReplyHistoryController {
     @Deprecated(since = "1", forRemoval = true)
     // @GetMapping("/quizzes/{quizId}")
     @Operation(summary = "퀴즈 답변 다건 조회")
-    public ResponseEntity<QuizReplyHistoriesResponse> getAllByQuizId(
+    public ResponseEntity<?> getAllByQuizId(
             @PathVariable final Long quizId,
             final Pageable pageable
     ) {

@@ -1,7 +1,7 @@
 package com.tdns.toks.core.domain.quiz.service;
 
+import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
-import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.quiz.model.dto.QuizReplyHistoryDto;
 import com.tdns.toks.core.domain.quiz.model.entity.QuizReplyHistory;
 import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
@@ -24,12 +24,12 @@ public class QuizReplyHistoryService {
 
     public QuizReplyHistory getOrThrow(final Long id) {
         return quizReplyHistoryRepository.findById(id)
-                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.INVALID_REQUEST));
     }
 
     public void checkAlreadySubmitted(final Long quizId, final Long userId) {
         if (quizReplyHistoryRepository.existsByQuizIdAndCreatedBy(quizId, userId)) {
-            throw new SilentApplicationErrorException(ApplicationErrorType.ALREADY_SUBMITTED_USER_QUIZ);
+            throw new ApplicationErrorException(ApplicationErrorType.ALREADY_SUBMITTED_USER_QUIZ);
         }
     }
 

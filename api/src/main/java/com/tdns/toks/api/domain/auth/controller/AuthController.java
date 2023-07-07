@@ -29,7 +29,7 @@ public class AuthController {
     @GetMapping("/my-infos")
     public ResponseEntity<?> getMyInfos(AuthUser authUser) {
         var response = authService.getMyInfos(authUser);
-        return ResponseEntity.ok(response);
+        return ResponseDto.ok(response);
     }
 
     @Operation(summary = "사용자 accessToken 갱신 요청")

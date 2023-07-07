@@ -4,31 +4,31 @@ import lombok.Getter;
 
 @Getter
 public class ApplicationErrorException extends RuntimeException {
-    private ApplicationErrorType responseStatusType;
+    private ApplicationErrorType errorType;
     private String customMessage;
     private String[] args;
     private Object data;
 
-    public ApplicationErrorException(ApplicationErrorType responseStatusType) {
-        super(responseStatusType.getMessage());
-        this.responseStatusType = responseStatusType;
+    public ApplicationErrorException(ApplicationErrorType errorType) {
+        super(errorType.getMessage());
+        this.errorType = errorType;
     }
 
-    public ApplicationErrorException(ApplicationErrorType responseStatusType, Object data, String... args) {
-        super(responseStatusType.getMessage());
+    public ApplicationErrorException(ApplicationErrorType errorType, Object data, String... args) {
+        super(errorType.getMessage());
         this.data = data;
         this.args = args;
-        this.responseStatusType = responseStatusType;
+        this.errorType = errorType;
     }
 
-    public ApplicationErrorException(ApplicationErrorType responseStatusType, Throwable t) {
+    public ApplicationErrorException(ApplicationErrorType errorType, Throwable t) {
         super(t);
-        this.responseStatusType = responseStatusType;
+        this.errorType = errorType;
     }
 
-    public ApplicationErrorException(ApplicationErrorType responseStatusType, Throwable t, String customMessage) {
+    public ApplicationErrorException(ApplicationErrorType errorType, Throwable t, String customMessage) {
         super(t);
-        this.responseStatusType = responseStatusType;
+        this.errorType = errorType;
         this.customMessage = customMessage;
     }
 }

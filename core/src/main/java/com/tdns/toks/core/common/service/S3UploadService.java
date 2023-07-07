@@ -11,8 +11,8 @@ import com.amazonaws.services.s3.model.PutObjectResult;
 import com.google.common.base.Charsets;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
+import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
-import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
@@ -50,7 +50,7 @@ public class S3UploadService {
                     } catch (Exception e) {
                         log.error("[S3 UPLOAD ERROR] user id : {}", pathSuffix);
                         deleteNewFile(keys);
-                        throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_DATA_ARGUMENT);
+                        throw new ApplicationErrorException(ApplicationErrorType.INVALID_DATA_ARGUMENT);
                     }
                 })
                 .collect(Collectors.toList());
@@ -62,7 +62,7 @@ public class S3UploadService {
             return uploadToS3(file, newFileName, false);
         } catch (Exception e) {
             log.error("[S3 UPLOAD ERROR] user id : {}", pathSuffix);
-            throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_DATA_ARGUMENT);
+            throw new ApplicationErrorException(ApplicationErrorType.INVALID_DATA_ARGUMENT);
         }
     }
 

@@ -1,7 +1,7 @@
 package com.tdns.toks.core.common.security.oauth;
 
+import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
-import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -18,6 +18,6 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        throw new SilentApplicationErrorException(ApplicationErrorType.AUTHENTICATION_FAIL);
+        throw new ApplicationErrorException(ApplicationErrorType.AUTHENTICATION_FAIL);
     }
 }

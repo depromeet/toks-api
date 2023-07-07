@@ -1,6 +1,7 @@
 package com.tdns.toks.api.domain.user.controller;
 
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserUpdateNicknameRequest;
+import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +29,6 @@ public class UserController {
             AuthUser authUser,
             @RequestBody UserUpdateNicknameRequest nicknameRequest) {
         var response = userService.updateNickname(authUser.getId(), nicknameRequest.getNickname());
-        return ResponseEntity.ok(response);
+        return ResponseDto.ok(response);
     }
 }

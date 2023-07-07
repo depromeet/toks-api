@@ -25,7 +25,7 @@ public class LegacyUserController {
     @Deprecated(since = "1", forRemoval = true)
     // @GetMapping
     @Operation(summary = "사용자 정보 조회")
-    public ResponseEntity<UserInfoResponse> getUserInformation(
+    public ResponseEntity<?> getUserInformation(
     ) {
         var response = userApiService.getUserInfo();
         return ResponseDto.ok(response);
@@ -34,7 +34,7 @@ public class LegacyUserController {
     @Deprecated(since = "1", forRemoval = true)
     // @PatchMapping("/nickname")
     @Operation(summary = "사용자 닉네임 설정")
-    public ResponseEntity<UserUpdateNicknameResponse> updateNickname(
+    public ResponseEntity<?> updateNickname(
             @RequestBody UserUpdateNicknameRequest userUpdateNicknameRequest
     ) {
         var response = userApiService.updateNickname(userUpdateNicknameRequest);
@@ -44,7 +44,7 @@ public class LegacyUserController {
     @Deprecated(since = "1", forRemoval = true)
     //  @PostMapping("/renew")
     @Operation(summary = "사용자 accessToken 갱신 요청", description = "/api/v1/auth/renew 로 변경")
-    public ResponseEntity<UserRenewAccessTokenResponse> renewAccessToken(
+    public ResponseEntity<?> renewAccessToken(
             @RequestBody UserRenewAccessTokenRequest userRenewAccessTokenRequest
     ) {
         var response = userApiService.renewAccessToken(userRenewAccessTokenRequest);

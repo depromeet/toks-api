@@ -1,8 +1,8 @@
 package com.tdns.toks.core.common.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
-import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -25,14 +25,11 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (SilentApplicationErrorException ex) {
+        } catch (ApplicationErrorException ex) {
             log.error("exception exception handler filter");
-            ApplicationErrorType responseStatusType = ex.getResponseStatusType();
-            setErrorResponseHeader(ex.getResponseStatusType().getHttpStatus(), response, ex);
+            ApplicationErrorType responseStatusType = ex.getErrorType();
+            setErrorResponseHeader(ex.getErrorType().getHttpStatus(), response, ex);
             setErrorResponseBody(response, responseStatusType);
-        } catch (RuntimeException ex) {
-            log.error("runtime exception exception handler filter");
-            setErrorResponseHeader(HttpStatus.FORBIDDEN, response, ex);
         }
     }
 

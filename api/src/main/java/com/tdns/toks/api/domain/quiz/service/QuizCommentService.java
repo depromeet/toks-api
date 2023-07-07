@@ -2,8 +2,8 @@ package com.tdns.toks.api.domain.quiz.service;
 
 import com.tdns.toks.api.domain.quiz.model.dto.comment.QuizCommentCreateRequest;
 import com.tdns.toks.api.domain.quiz.model.dto.comment.QuizCommentResponse;
+import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
-import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.quizcomment.model.entity.QuizComment;
@@ -28,7 +28,7 @@ public class QuizCommentService {
 
     public QuizCommentResponse insert(AuthUser authUser, Long quizId, QuizCommentCreateRequest request) {
         if (!quizRepository.existsById(quizId)) {
-            throw new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_QUIZ_ERROR);
+            throw new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_QUIZ_ERROR);
         }
 
         var quizComment = quizCommentRepository.save(

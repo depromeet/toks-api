@@ -1,8 +1,8 @@
 package com.tdns.toks.api.domain.auth.service;
 
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO;
+import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
-import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.common.security.TokenService;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
@@ -23,9 +23,9 @@ public class AuthService {
 
     public UserApiDTO.UserInfoResponse getMyInfos(AuthUser authUser) {
         var user = userRepository.findById(authUser.getId())
-                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
         if (user.getNickname().equals(NOT_SET_NICKNAME)) {
-            throw new SilentApplicationErrorException(ApplicationErrorType.NOT_SET_NICKNAME);
+            throw new ApplicationErrorException(ApplicationErrorType.NOT_SET_NICKNAME);
         }
         return new UserApiDTO.UserInfoResponse(
                 user.getEmail(),
@@ -44,11 +44,11 @@ public class AuthService {
         tokenService.verifyToken(refreshToken);
 
         var user = userRepository.findById(tokenService.getUserIdFromToken(refreshToken))
-                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
 
         var userRefreshToken = user.getRefreshToken();
         if (!refreshToken.equals(userRefreshToken)) {
-            throw new SilentApplicationErrorException(ApplicationErrorType.INVALID_REFRESH_TOKEN);
+            throw new ApplicationErrorException(ApplicationErrorType.INVALID_REFRESH_TOKEN);
         }
 
         var accessToken = tokenService.renewAccessToken(user.getId(), user.getEmail());
@@ -59,7 +59,7 @@ public class AuthService {
     @Transactional
     public void deleteRefreshToken(AuthUser authUser) {
         var user = userRepository.findById(authUser.getId())
-                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER));
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER));
         user.setRefreshToken("logout");
     }
 }

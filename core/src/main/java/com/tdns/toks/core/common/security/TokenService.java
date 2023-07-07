@@ -1,7 +1,7 @@
 package com.tdns.toks.core.common.security;
 
+import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
-import com.tdns.toks.core.common.exception.SilentApplicationErrorException;
 import com.tdns.toks.core.domain.auth.model.AuthToken;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.auth.model.AuthUserImpl;
@@ -23,7 +23,7 @@ import static com.tdns.toks.core.common.security.Constants.TOKS_AUTH_HEADER_KEY;
 @Component
 @RequiredArgsConstructor
 public class TokenService {
-    private final long accessTokenValidMillisecond = 1000L * 60 * 1 ; // AccessToken 1분 토큰 유효
+    private final long accessTokenValidMillisecond = 1000L * 60 * 1; // AccessToken 1분 토큰 유효
     private final long refreshTokenValidMillisecond = 1000L * 60 * 60 * 24 * 30; // 30일 토큰 유효
     private final UserRepository userRepository;
 
@@ -48,18 +48,18 @@ public class TokenService {
 
             Long uid = getUserIdFromToken(token);
             if (!userRepository.existsById(uid)) {
-                throw new SilentApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER);
+                throw new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER);
             }
         } catch (Exception e) {
-            throw new SilentApplicationErrorException(ApplicationErrorType.EXPIRED_TOKEN);
+            throw new ApplicationErrorException(ApplicationErrorType.EXPIRED_TOKEN);
         }
     }
 
     public AuthUser getAuthUser(AuthToken token) {
         verifyToken(token.getToken());
-        var  id = getUserIdFromToken(token.getToken());
+        var id = getUserIdFromToken(token.getToken());
         var user = userRepository.findById(id)
-                .orElseThrow(() -> new SilentApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
         return new AuthUserImpl(id, user.getUserRole());
     }
 

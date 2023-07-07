@@ -1,7 +1,7 @@
 package com.tdns.toks.api.domain.quiz.controller;
 
 import com.tdns.toks.api.domain.quiz.service.QuizService;
-import com.tdns.toks.core.common.model.dto.PageableResponse;
+import com.tdns.toks.core.common.model.dto.PageableResponseDto;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,7 +40,7 @@ public class QuizController {
     @Operation(summary = "퀴즈 다건 조회")
     @Parameter(name = "authUser", hidden = true)
     @GetMapping("/quizzes")
-    public PageableResponse<?> getAll(
+    public PageableResponseDto<?> getAll(
             @Nullable AuthUser authUser,
             @RequestParam Set<String> categoryIds,
             @RequestParam Integer page,
@@ -53,6 +53,6 @@ public class QuizController {
                 size
         );
 
-        return PageableResponse.makeResponse(response);
+        return PageableResponseDto.ok(response);
     }
 }
