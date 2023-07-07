@@ -14,6 +14,12 @@ public class ApplicationErrorException extends RuntimeException {
         this.errorType = errorType;
     }
 
+    public ApplicationErrorException(ApplicationErrorType errorType, String customMessage) {
+        super(errorType.getMessage());
+        this.errorType = errorType;
+        this.customMessage = customMessage;
+    }
+
     public ApplicationErrorException(ApplicationErrorType errorType, Object data, String... args) {
         super(errorType.getMessage());
         this.data = data;

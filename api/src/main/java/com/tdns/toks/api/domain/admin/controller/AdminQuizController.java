@@ -1,7 +1,8 @@
 package com.tdns.toks.api.domain.admin.controller;
 
-import com.tdns.toks.api.domain.admin.dto.QuizSaveRequest;
+import com.tdns.toks.api.domain.admin.dto.AdminQuizSaveOrUpdateRequest;
 import com.tdns.toks.api.domain.admin.service.AdminQuizService;
+import com.tdns.toks.core.common.model.dto.PageableResponseDto;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.annotation.AdminPermission;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
@@ -30,20 +31,18 @@ import java.util.Set;
 public class AdminQuizController {
     private final AdminQuizService adminQuizService;
 
-    // 퀴즈 생성
     @Operation(summary = "퀴즈 추가")
     @Parameter(name = "authUser", hidden = true)
     @AdminPermission
     @PostMapping
     public ResponseEntity<?> insert(
             AuthUser authUser,
-            @RequestBody QuizSaveRequest request
+            @RequestBody AdminQuizSaveOrUpdateRequest request
     ) {
         var response = adminQuizService.insert(authUser, request);
         return ResponseDto.created(response);
     }
 
-    // 퀴즈 단건 조회
     @Operation(summary = "퀴즈 단건 조회")
     @Parameter(name = "authUser", hidden = true)
     @AdminPermission
@@ -56,21 +55,34 @@ public class AdminQuizController {
         return ResponseDto.ok(response);
     }
 
-    // 퀴즈 수정
-    @Operation(summary = "퀴즈 단건 조회")
+    @Operation(summary = "퀴즈 다건 조회")
+    @Parameter(name = "authUser", hidden = true)
+    @AdminPermission
+    @GetMapping
+    public PageableResponseDto<?> getAll(
+            AuthUser authUser,
+            @RequestParam int page,
+            @RequestParam int size
+    ) {
+        var response = adminQuizService.getAll(authUser, page, size);
+        return PageableResponseDto.ok(response);
+    }
+
+
+    @Operation(summary = "퀴즈 수정")
     @Parameter(name = "authUser", hidden = true)
     @AdminPermission
     @PatchMapping(path = "/{quizId}")
     public ResponseEntity<?> update(
             AuthUser authUser,
             @PathVariable Long quizId,
-            @RequestBody QuizSaveRequest request
+            @RequestBody AdminQuizSaveOrUpdateRequest request
     ) {
         var response = adminQuizService.update(authUser, quizId, request);
         return ResponseDto.ok(response);
     }
 
-    @Operation(summary = "퀴즈 단건 조회")
+    @Operation(summary = "퀴즈 삭제")
     @Parameter(name = "authUser", hidden = true)
     @AdminPermission
     @DeleteMapping

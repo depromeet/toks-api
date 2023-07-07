@@ -51,6 +51,11 @@ public enum ApplicationErrorType {
     ALREADY_EXISTS_QUIZ_ROUND(HttpStatus.BAD_REQUEST, "퀴즈 라운드가 이미 존재합니다."),
     NOT_FOUND_QUIZ_ERROR(HttpStatus.NOT_FOUND, "해당 퀴즈가 존재하지 않습니다."),
     STILL_OPEN_LATEST_QUIZ(HttpStatus.CONFLICT, "마지막 퀴즈가 끝나지 않았습니다"),
+
+    /**
+     * Category Error Type
+     */
+    NOT_FOUND_CATEGORY_ERROR(HttpStatus.NOT_FOUND, "카테고리 데이터를 찾을 수 없습니다."),
     ;
 
     @Getter
