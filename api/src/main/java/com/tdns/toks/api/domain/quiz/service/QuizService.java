@@ -1,8 +1,11 @@
 package com.tdns.toks.api.domain.quiz.service;
 
+import com.tdns.toks.api.domain.category.service.CategoryService;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizDetailResponse;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizSimpleResponse;
 import com.tdns.toks.api.domain.quiz.model.mapper.QuizMapper;
+import com.tdns.toks.core.common.exception.ApplicationErrorException;
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +20,16 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class QuizService {
     private final QuizRepository quizRepository;
+    private final CategoryService categoryService;
 
     public QuizDetailResponse get(AuthUser authUser, Long quizId) {
         var quiz = quizRepository.findById(quizId)
-                .orElseThrow(() -> new RuntimeException("error")); // TODO
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_QUIZ_ERROR));
 
-        return QuizMapper.toQuizResponse(quiz);
+        var category = categoryService.get(quiz.getCategoryId())
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
+
+        return QuizMapper.toQuizResponse(quiz, category);
     }
 
     public Page<QuizSimpleResponse> getAll(

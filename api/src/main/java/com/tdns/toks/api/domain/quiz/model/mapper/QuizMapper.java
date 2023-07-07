@@ -1,19 +1,24 @@
 package com.tdns.toks.api.domain.quiz.model.mapper;
 
+import com.tdns.toks.api.domain.category.model.dto.CategoryModel;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizDetailResponse;
+import com.tdns.toks.api.domain.quiz.model.dto.QuizModel;
+import com.tdns.toks.core.common.utils.MapperUtil;
 import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 
+import java.util.Map;
+
 public class QuizMapper {
-    public static QuizDetailResponse toQuizResponse(Quiz quiz) {
-        return new QuizDetailResponse(
+    public static QuizDetailResponse toQuizResponse(Quiz quiz, CategoryModel category) {
+        var quizModel = new QuizModel(
                 quiz.getId(),
                 quiz.getTitle(),
-                quiz.getCategoryId(),
-                quiz.getQuestion(),
+                MapperUtil.readValue(quiz.getQuestion(), Map.class),
                 quiz.getQuizType(),
                 quiz.getDescription(),
-                quiz.getAnswer(),
-                quiz.getCreatedBy()
+                quiz.getAnswer()
         );
+
+        return new QuizDetailResponse(quizModel, category);
     }
 }

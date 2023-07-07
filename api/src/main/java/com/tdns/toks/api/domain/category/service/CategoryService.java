@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -22,7 +23,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private Map<String, CategoryModel> categoryModels = Collections.emptyMap();
 
-    @Scheduled(cron = "0 */5 * * * *")
+    @Scheduled(fixedRate = 1000 * 60 * 3, initialDelayString = "0")
     public void refreshCategories() {
         categoryModels = refresh();
     }
@@ -44,5 +45,9 @@ public class CategoryService {
         }
 
         return new CategoryResponse(new ArrayList<>(categoryModels.values()));
+    }
+
+    public Optional<CategoryModel> get(String categoryId) {
+        return Optional.of(categoryModels.get(categoryId));
     }
 }
