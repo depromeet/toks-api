@@ -59,7 +59,7 @@ public class AdminQuizController {
     @Parameter(name = "authUser", hidden = true)
     @AdminPermission
     @GetMapping
-    public PageableResponseDto<?> getAll(
+    public ResponseEntity<?> getAll(
             AuthUser authUser,
             @RequestParam int page,
             @RequestParam int size
@@ -67,7 +67,6 @@ public class AdminQuizController {
         var response = adminQuizService.getAll(authUser, page, size);
         return PageableResponseDto.ok(response);
     }
-
 
     @Operation(summary = "퀴즈 수정")
     @Parameter(name = "authUser", hidden = true)

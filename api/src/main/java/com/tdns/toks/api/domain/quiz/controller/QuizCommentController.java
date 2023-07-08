@@ -28,7 +28,7 @@ public class QuizCommentController {
 
     @Operation(summary = "댓글 다건 조회", description = "내림차순으로 제공")
     @GetMapping("/quizzes/{quizId}/comments")
-    public PageableResponseDto<?> getAll(
+    public ResponseEntity<?> getAll(
             @PathVariable Long quizId,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "20") Integer size

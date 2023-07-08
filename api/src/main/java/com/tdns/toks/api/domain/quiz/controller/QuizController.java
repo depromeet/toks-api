@@ -40,7 +40,7 @@ public class QuizController {
     @Operation(summary = "퀴즈 다건 조회")
     @Parameter(name = "authUser", hidden = true)
     @GetMapping("/quizzes")
-    public PageableResponseDto<?> getAll(
+    public ResponseEntity<?> getAll(
             @Nullable AuthUser authUser,
             @RequestParam Set<String> categoryIds,
             @RequestParam Integer page,
