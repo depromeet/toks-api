@@ -23,7 +23,10 @@ import java.util.concurrent.CompletableFuture;
 public class QuizCommentService {
     private final QuizCommentRepository quizCommentRepository;
     private final QuizRepository quizRepository;
+    // TODO : 분리
     private final StringRedisTemplate redisTemplate;
+
+    public final static String QUIZ_REPLY_HISTORY_CACHE = "quiz:comment:count:";
 
     public Page<QuizCommentResponse> getAll(Long quizId, Integer page, Integer size) {
         var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
@@ -42,8 +45,6 @@ public class QuizCommentService {
 
         return QuizCommentResponse.from(quizComment);
     }
-
-    public final static String QUIZ_REPLY_HISTORY_CACHE = "quiz:comment:count:";
 
     public int count(long quizId) {
         var count = redisTemplate.opsForValue().get(

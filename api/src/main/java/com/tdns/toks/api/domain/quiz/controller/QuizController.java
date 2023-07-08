@@ -55,4 +55,15 @@ public class QuizController {
 
         return PageableResponseDto.ok(response);
     }
+
+    @Operation(summary = "퀴즈 추천 데이터 조회", description = "[임시] 추천 데이터는 최대 3개까지")
+    @Parameter(name = "authUser", hidden = true)
+    @GetMapping("/rec-quizzes")
+    public ResponseEntity<?> getRecommendQuizzes(
+            @Nullable AuthUser authUser,
+            @RequestParam(name = "category") String category
+    ) {
+        var response = quizService.getRecModels(authUser, category);
+        return ResponseDto.ok(response);
+    }
 }

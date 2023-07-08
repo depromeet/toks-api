@@ -2,6 +2,7 @@ package com.tdns.toks.api.domain.quiz.service;
 
 import com.tdns.toks.api.domain.category.service.CategoryService;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizDetailResponse;
+import com.tdns.toks.api.domain.quiz.model.dto.QuizRecModel;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizSimpleResponse;
 import com.tdns.toks.api.domain.quiz.model.mapper.QuizMapper;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,5 +55,20 @@ public class QuizService {
         var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
         return quizRepository.findAllByCategoryIdIn(categoryIds, pageable)
                 .map(QuizSimpleResponse::from);
+    }
+
+    // TODO : 퀴즈 추천 데이터를 별도로 가져야 할듯....
+    public QuizRecModel getRecModels(AuthUser authUser, String categoryId) {
+        var recQuizzes = quizRepository.findTop3ByCategoryId(categoryId)
+                .stream()
+                .map(quiz -> {
+                            var category = categoryService.get(quiz.getCategoryId())
+                                    .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
+
+                            return QuizMapper.toQuizResponse(quiz, category, 0, 0);
+                        }
+                ).collect(Collectors.toList());
+
+        return new QuizRecModel(recQuizzes);
     }
 }
