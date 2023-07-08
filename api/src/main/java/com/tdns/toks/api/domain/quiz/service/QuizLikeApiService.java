@@ -4,7 +4,7 @@ import com.tdns.toks.api.domain.quiz.model.dto.QuizLikeApiDTO;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizLikeApiDTO.QuizLikeRequest;
 import com.tdns.toks.api.domain.quiz.model.mapper.QuizLikeMapper;
 import com.tdns.toks.core.domain.quiz.service.QuizLikeService;
-import com.tdns.toks.core.domain.quiz.service.QuizReplyHistoryService;
+import com.tdns.toks.core.domain.quiz.service.LegacyQuizReplyHistoryService;
 import com.tdns.toks.core.domain.quiz.service.LegacyQuizService;
 import com.tdns.toks.core.domain.quizrank.service.QuizRankService;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class QuizLikeApiService {
     private final QuizLikeService quizLikeService;
-    private final QuizReplyHistoryService quizReplyHistoryService;
+    private final LegacyQuizReplyHistoryService quizReplyHistoryService;
     private final QuizRankService quizRankService;
     private final LegacyQuizService quizService;
     private final QuizLikeMapper mapper;

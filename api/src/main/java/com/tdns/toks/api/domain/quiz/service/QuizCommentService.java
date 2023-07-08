@@ -12,13 +12,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
 public class QuizCommentService {
     private final QuizCommentRepository quizCommentRepository;
     private final QuizRepository quizRepository;
+    private final StringRedisTemplate redisTemplate;
 
     public Page<QuizCommentResponse> getAll(Long quizId, Integer page, Integer size) {
         var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
@@ -36,5 +41,24 @@ public class QuizCommentService {
         );
 
         return QuizCommentResponse.from(quizComment);
+    }
+
+    public final static String QUIZ_REPLY_HISTORY_CACHE = "quiz:comment:count:";
+
+    public int count(long quizId) {
+        var count = redisTemplate.opsForValue().get(
+                QUIZ_REPLY_HISTORY_CACHE + quizId
+        );
+
+        if (count == null) {
+            return 0;
+        }
+
+        return Integer.parseInt(count);
+    }
+
+    @Async
+    public CompletableFuture<Integer> asyncCount(long quizId) {
+        return CompletableFuture.completedFuture(count(quizId));
     }
 }

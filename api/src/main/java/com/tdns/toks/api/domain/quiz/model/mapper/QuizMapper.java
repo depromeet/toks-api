@@ -9,7 +9,12 @@ import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
 import java.util.Map;
 
 public class QuizMapper {
-    public static QuizDetailResponse toQuizResponse(Quiz quiz, CategoryModel category) {
+    public static QuizDetailResponse toQuizResponse(
+            Quiz quiz,
+            CategoryModel category,
+            int quizReplyHistoryCount,
+            int quizCommentCount
+    ) {
         var quizModel = new QuizModel(
                 quiz.getId(),
                 quiz.getTitle(),
@@ -19,6 +24,6 @@ public class QuizMapper {
                 quiz.getAnswer()
         );
 
-        return new QuizDetailResponse(quizModel, category);
+        return new QuizDetailResponse(quizModel, category, quizReplyHistoryCount, quizCommentCount);
     }
 }

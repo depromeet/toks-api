@@ -1,7 +1,7 @@
 package com.tdns.toks.api.domain.quiz.service;
 
 import com.tdns.toks.api.domain.quiz.model.mapper.QuizReplyHistoryMapper;
-import com.tdns.toks.core.domain.quiz.service.QuizReplyHistoryService;
+import com.tdns.toks.core.domain.quiz.service.LegacyQuizReplyHistoryService;
 import com.tdns.toks.core.domain.quiz.service.LegacyQuizService;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import static com.tdns.toks.api.domain.quiz.model.dto.QuizReplyHistoryApiDTO.Qui
 @RequiredArgsConstructor
 @Transactional
 public class QuizReplyHistoryApiService {
-    private final QuizReplyHistoryService quizReplyHistoryService;
+    private final LegacyQuizReplyHistoryService quizReplyHistoryService;
     private final LegacyQuizService quizService;
     private final QuizReplyHistoryMapper mapper;
 

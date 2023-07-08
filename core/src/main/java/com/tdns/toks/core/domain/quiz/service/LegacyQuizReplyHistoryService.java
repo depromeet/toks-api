@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class QuizReplyHistoryService {
+public class LegacyQuizReplyHistoryService {
     private final QuizReplyHistoryRepository quizReplyHistoryRepository;
 
     public QuizReplyHistory save(final QuizReplyHistory quizReplyHistory) {
