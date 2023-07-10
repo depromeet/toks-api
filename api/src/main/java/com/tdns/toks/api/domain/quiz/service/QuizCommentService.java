@@ -1,5 +1,7 @@
 package com.tdns.toks.api.domain.quiz.service;
 
+import com.tdns.toks.api.cache.CacheFactory;
+import com.tdns.toks.api.cache.CacheService;
 import com.tdns.toks.api.domain.quiz.model.dto.comment.QuizCommentCreateRequest;
 import com.tdns.toks.api.domain.quiz.model.dto.comment.QuizCommentResponse;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
@@ -14,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -28,13 +29,9 @@ public class QuizCommentService {
     private final QuizCacheService quizCacheService;
     private final QuizRepository quizRepository;
     private final UserRepository userRepository;
-    // TODO : 분리
-    private final StringRedisTemplate redisTemplate;
+    private final CacheService cacheService;
     private final QuizCommentLikeService quizCommentLikeService;
 
-    public final static String QUIZ_REPLY_HISTORY_CACHE = "quiz:comment:count:";
-
-    // TODO : 성능개선 필요
     public Page<QuizCommentResponse> getAll(Long quizId, Integer page, Integer size) {
         var quiz = quizCacheService.getCachedQuiz(quizId);
 
@@ -70,15 +67,13 @@ public class QuizCommentService {
     }
 
     public int count(long quizId) {
-        var count = redisTemplate.opsForValue().get(
-                QUIZ_REPLY_HISTORY_CACHE + quizId
-        );
+        var count = cacheService.getOrNull(CacheFactory.makeCachedQuizCommentCount(quizId));
 
         if (count == null) {
             return 0;
         }
 
-        return Integer.parseInt(count);
+        return count;
     }
 
     @Async
