@@ -17,6 +17,7 @@ public class QuizMapper {
     ) {
         var quizModel = new QuizModel(
                 quiz.getId(),
+                quiz.getCategoryId(),
                 quiz.getTitle(),
                 MapperUtil.readValue(quiz.getQuestion(), Map.class),
                 quiz.getQuizType(),
@@ -25,5 +26,14 @@ public class QuizMapper {
         );
 
         return new QuizDetailResponse(quizModel, category, quizReplyHistoryCount, quizCommentCount);
+    }
+
+    public static QuizDetailResponse toQuizResponse(
+            QuizModel quiz,
+            CategoryModel category,
+            int quizReplyHistoryCount,
+            int quizCommentCount
+    ) {
+        return new QuizDetailResponse(quiz, category, quizReplyHistoryCount, quizCommentCount);
     }
 }

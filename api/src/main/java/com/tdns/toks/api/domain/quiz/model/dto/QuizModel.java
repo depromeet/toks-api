@@ -1,18 +1,21 @@
 package com.tdns.toks.api.domain.quiz.model.dto;
 
 import com.tdns.toks.core.domain.quiz.type.QuizType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class QuizModel {
-    private final Long id;
-    private final String title;
-    private final Map<String, Object> question;
-    private final QuizType quizType;
-    private final String description;
-    private final String answer;
+    private Long id;
+    private String categoryId;
+    private String title;
+    private Map<String, Object> question;
+    private QuizType quizType;
+    private String description;
+    private String answer;
 }

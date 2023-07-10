@@ -17,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,25 +24,20 @@ import java.util.stream.Collectors;
 public class QuizService {
     private final QuizRepository quizRepository;
     private final CategoryService categoryService;
-
     private final QuizCommentService quizCommentService;
     private final QuizReplyHistoryService quizReplyHistoryService;
+    private final QuizCacheService quizCacheService;
 
     @SneakyThrows
     public QuizDetailResponse get(AuthUser authUser, Long quizId) {
-        // TODO : caching
-        var quiz = quizRepository.findById(quizId)
-                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_QUIZ_ERROR));
-
+        var quiz = quizCacheService.getCachedQuiz(quizId);
         var category = categoryService.get(quiz.getCategoryId())
                 .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
 
-        var quizReplyHistoryCount = quizReplyHistoryService.asyncCount(quizId);
-        var quizCommentCount = quizCommentService.asyncCount(quizId);
+        var quizReplyHistoryCount = quizReplyHistoryService.count(quizId);
+        var quizCommentCount = quizCommentService.count(quizId);
 
-        CompletableFuture.allOf(quizReplyHistoryCount, quizCommentCount).join();
-
-        return QuizMapper.toQuizResponse(quiz, category, quizReplyHistoryCount.get(), quizCommentCount.get());
+        return QuizMapper.toQuizResponse(quiz, category, quizReplyHistoryCount, quizCommentCount);
     }
 
     public Page<QuizSimpleResponse> getAll(
