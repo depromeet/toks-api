@@ -14,14 +14,18 @@ public class QuizCommentResponse {
     private Long id;
     private Long quizId;
     private Long uid;
+    private Integer likeCount;
+    private String nickname;
     private String content;
     private LocalDateTime createdAt;
 
-    public static QuizCommentResponse from(QuizComment comment) {
+    public static QuizCommentResponse from(QuizComment comment, String nickname, int likeCount) {
         return new QuizCommentResponse(
                 comment.getId(),
                 comment.getQuizId(),
                 comment.getUid(),
+                likeCount,
+                nickname,
                 comment.getContent(),
                 comment.getCreatedAt()
         );

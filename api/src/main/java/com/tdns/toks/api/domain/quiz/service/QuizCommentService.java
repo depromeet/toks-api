@@ -8,6 +8,8 @@ import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.quizcomment.model.entity.QuizComment;
 import com.tdns.toks.core.domain.quizcomment.repository.QuizCommentRepository;
+import com.tdns.toks.core.domain.user.model.entity.User;
+import com.tdns.toks.core.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,21 +19,37 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class QuizCommentService {
     private final QuizCommentRepository quizCommentRepository;
+    private final QuizCacheService quizCacheService;
     private final QuizRepository quizRepository;
+    private final UserRepository userRepository;
     // TODO : 분리
     private final StringRedisTemplate redisTemplate;
+    private final QuizCommentLikeService quizCommentLikeService;
 
     public final static String QUIZ_REPLY_HISTORY_CACHE = "quiz:comment:count:";
 
+    // TODO : 성능개선 필요
     public Page<QuizCommentResponse> getAll(Long quizId, Integer page, Integer size) {
+        var quiz = quizCacheService.getCachedQuiz(quizId);
+
         var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
-        return quizCommentRepository.findAllByQuizId(quizId, pageable)
-                .map(QuizCommentResponse::from);
+        var quizComment = quizCommentRepository.findAllByQuizId(quizId, pageable);
+
+        var uids = quizComment.getContent().stream().map(QuizComment::getUid).collect(Collectors.toList());
+        var user = userRepository.findAllById(uids)
+                .stream().collect(Collectors.toMap(User::getId, User::getNickname));
+
+        return quizComment.map(comment -> {
+                    var likeCount = quizCommentLikeService.count(comment.getId());
+                    return QuizCommentResponse.from(comment, user.get(comment.getUid()), likeCount);
+                }
+        );
     }
 
     public QuizCommentResponse insert(AuthUser authUser, Long quizId, QuizCommentCreateRequest request) {
@@ -43,7 +61,12 @@ public class QuizCommentService {
                 new QuizComment(quizId, authUser.getId(), request.getComment())
         );
 
-        return QuizCommentResponse.from(quizComment);
+        var user = userRepository.findById(authUser.getId())
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER));
+
+        var likeCount = quizCommentLikeService.count(quizComment.getId());
+
+        return QuizCommentResponse.from(quizComment, user.getNickname(), likeCount);
     }
 
     public int count(long quizId) {
