@@ -40,7 +40,8 @@ public class QuizService {
         return QuizMapper.toQuizResponse(quiz, category, quizReplyHistoryCount, quizCommentCount);
     }
 
-    public Page<QuizSimpleResponse> getAll(
+    // TODO : 성능 개선 필요.. 꼭
+    public Page<QuizDetailResponse> getAll(
             AuthUser authUser,
             Set<String> categoryIds,
             Integer page,
@@ -48,9 +49,19 @@ public class QuizService {
     ) {
         var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
         return quizRepository.findAllByCategoryIdIn(categoryIds, pageable)
-                .map(QuizSimpleResponse::from);
+                .map(quiz -> {
+                            var category = categoryService.get(quiz.getCategoryId())
+                                    .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
+
+                            var quizReplyHistoryCount = quizReplyHistoryService.count(quiz.getId());
+                            var quizCommentCount = quizCommentService.count(quiz.getId());
+
+                            return QuizMapper.toQuizResponse(quiz, category, quizReplyHistoryCount, quizCommentCount);
+                        }
+                );
     }
 
+    // TODO : 개선 필요
     // TODO : 퀴즈 추천 데이터를 별도로 가져야 할듯....
     public QuizRecModel getRecModels(AuthUser authUser, String categoryId) {
         var recQuizzes = quizRepository.findTop3ByCategoryId(categoryId)
@@ -59,7 +70,10 @@ public class QuizService {
                             var category = categoryService.get(quiz.getCategoryId())
                                     .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
 
-                            return QuizMapper.toQuizResponse(quiz, category, 0, 0);
+                            var quizReplyHistoryCount = quizReplyHistoryService.count(quiz.getId());
+                            var quizCommentCount = quizCommentService.count(quiz.getId());
+
+                            return QuizMapper.toQuizResponse(quiz, category, quizReplyHistoryCount, quizCommentCount);
                         }
                 ).collect(Collectors.toList());
 
