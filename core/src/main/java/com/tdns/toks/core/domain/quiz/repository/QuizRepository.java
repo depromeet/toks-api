@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
@@ -17,4 +18,7 @@ public interface QuizRepository extends JpaRepository<Quiz, Long>, QuizCustomRep
 
     @Transactional(readOnly = true)
     List<Quiz> findTop3ByCategoryId(String categoryId);
+
+    @Transactional(readOnly = true)
+    Optional<Quiz> findQuizByIdAndDeleted(Long id, Boolean deleted);
 }

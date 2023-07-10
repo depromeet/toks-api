@@ -26,7 +26,7 @@ public class QuizCacheService {
         var quizModel = redisTemplate.opsForValue().get(key);
 
         if (quizModel == null) {
-            var quiz = quizRepository.findById(quizId)
+            var quiz = quizRepository.findQuizByIdAndDeleted(quizId, false)
                     .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_QUIZ_ERROR));
 
             var newQuizModel = new QuizModel(
