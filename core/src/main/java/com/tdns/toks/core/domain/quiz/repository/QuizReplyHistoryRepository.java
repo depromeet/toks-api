@@ -1,10 +1,16 @@
 package com.tdns.toks.core.domain.quiz.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.tdns.toks.core.domain.quiz.model.entity.QuizReplyHistory;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface QuizReplyHistoryRepository
-	extends JpaRepository<QuizReplyHistory, Long>, QuizReplyHistoryCustomRepository {
-	Boolean existsByQuizIdAndCreatedBy(Long quizId, Long createdBy);
+import java.time.LocalDateTime;
+import java.util.List;
+
+public interface QuizReplyHistoryRepository extends JpaRepository<QuizReplyHistory, Long>, QuizReplyHistoryCustomRepository {
+    @Transactional(readOnly = true)
+    Boolean existsByQuizIdAndCreatedBy(Long quizId, Long createdBy);
+
+    @Transactional(readOnly = true)
+    List<QuizReplyHistory> findAllByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 }

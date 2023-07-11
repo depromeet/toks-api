@@ -3,14 +3,11 @@ package com.tdns.toks.api.domain.quiz.service;
 import com.tdns.toks.api.cache.CacheFactory;
 import com.tdns.toks.api.cache.CacheService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
-public class QuizReplyHistoryService {
+public class QuizReplyHistoryCacheService {
     private final CacheService cacheService;
 
     public Integer count(long quizId) {
@@ -21,10 +18,5 @@ public class QuizReplyHistoryService {
         }
 
         return count;
-    }
-
-    @Async
-    public CompletableFuture<Integer> asyncCount(long quizId) {
-        return CompletableFuture.completedFuture(count(quizId));
     }
 }
