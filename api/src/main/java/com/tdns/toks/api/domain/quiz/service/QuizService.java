@@ -3,10 +3,14 @@ package com.tdns.toks.api.domain.quiz.service;
 import com.tdns.toks.api.domain.category.service.CategoryService;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizDetailResponse;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizRecModel;
+import com.tdns.toks.api.domain.quiz.model.dto.QuizSoleDto;
 import com.tdns.toks.api.domain.quiz.model.mapper.QuizMapper;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
+import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
+import com.tdns.toks.core.domain.quiz.model.entity.QuizReplyHistory;
+import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.rec.repository.RecQuizRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +19,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.tdns.toks.api.util.HttpUtil.getClientIp;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +35,7 @@ public class QuizService {
     private final CategoryService categoryService;
     private final QuizCommentService quizCommentService;
     private final QuizReplyHistoryCacheService quizReplyHistoryCacheService;
+    private final QuizReplyHistoryRepository quizReplyHistoryRepository;
     private final QuizCacheService quizCacheService;
     private final RecQuizRepository recQuizRepository;
 
@@ -48,18 +57,12 @@ public class QuizService {
             Integer page,
             Integer size
     ) {
+        if (size < -1 || size > 20) {
+            return Page.empty();
+        }
+
         var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
-        return quizRepository.findAllByCategoryIdIn(categoryIds, pageable)
-                .map(quiz -> {
-                            var category = categoryService.get(quiz.getCategoryId())
-                                    .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
-
-                            var quizReplyHistoryCount = quizReplyHistoryCacheService.count(quiz.getId());
-                            var quizCommentCount = quizCommentService.count(quiz.getId());
-
-                            return QuizMapper.toQuizResponse(quiz, category, quizReplyHistoryCount, quizCommentCount);
-                        }
-                );
+        return quizRepository.findAllByCategoryIdIn(categoryIds, pageable).map(this::resolveQuizDetail);
     }
 
     /**
@@ -75,17 +78,50 @@ public class QuizService {
                 .orElseGet(() -> quizRepository.findTop3ByCategoryId(categoryId));
 
         var recQuizModels = recQuizzes.stream()
-                .map(quiz -> {
-                            var category = categoryService.get(quiz.getCategoryId())
-                                    .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
-
-                            var quizReplyHistoryCount = quizReplyHistoryCacheService.count(quiz.getId());
-                            var quizCommentCount = quizCommentService.count(quiz.getId());
-
-                            return QuizMapper.toQuizResponse(quiz, category, quizReplyHistoryCount, quizCommentCount);
-                        }
-                ).collect(Collectors.toList());
+                .map(this::resolveQuizDetail)
+                .collect(Collectors.toList());
 
         return new QuizRecModel(recQuizModels);
+    }
+
+    private QuizDetailResponse resolveQuizDetail(Quiz quiz) {
+        var category = categoryService.get(quiz.getCategoryId())
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
+
+        var quizReplyHistoryCount = quizReplyHistoryCacheService.count(quiz.getId());
+        var quizCommentCount = quizCommentService.count(quiz.getId());
+
+        return QuizMapper.toQuizResponse(quiz, category, quizReplyHistoryCount, quizCommentCount);
+    }
+
+    // TODO : 성능 개선 및 유효성 검사 개선 필요,
+    @Transactional
+    public QuizSoleDto.QuizSolveResponse solveQuiz(
+            AuthUser authUser,
+            Long quizId,
+            QuizSoleDto.QuizSolveRequest request,
+            HttpServletRequest httpServletRequest
+    ) {
+        var quiz = quizCacheService.getCachedQuiz(quizId);
+
+        var isSubmitted = (authUser == null)
+                ? quizReplyHistoryRepository.existsByQuizIdAndIpAddress(quizId, getClientIp(httpServletRequest))
+                : quizReplyHistoryRepository.existsByQuizIdAndCreatedBy(quizId, authUser.getId());
+
+        if (isSubmitted) {
+            throw new ApplicationErrorException(ApplicationErrorType.ALREADY_SUBMITTED_USER_QUIZ);
+        }
+
+        quizReplyHistoryRepository.save(QuizReplyHistory.builder()
+                .quizId(quizId)
+                .answer(request.getAnswer())
+                .ipAddress(authUser == null ? getClientIp(httpServletRequest) : null)
+                .createdBy(authUser == null ? null : authUser.getId())
+                .build());
+
+        // 매우 위험함
+        // long count = quizReplyHistoryRepository.countByQuizIdAndAnswer(quizId, request.getAnswer());
+
+        return new QuizSoleDto.QuizSolveResponse(0L, quiz.getDescription());
     }
 }

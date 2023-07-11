@@ -2,6 +2,7 @@ package com.tdns.toks.core.domain.quiz.model.entity;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
@@ -18,6 +19,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Builder
 @EntityListeners(AuditingEntityListener.class)
 public class QuizReplyHistory extends BaseTimeEntity {
 
@@ -34,7 +36,7 @@ public class QuizReplyHistory extends BaseTimeEntity {
     @CreatedBy
     @Column(nullable = false, columnDefinition = "BIGINT COMMENT '생성자'")
     private Long createdBy;
-    
+
     private String ipAddress;
 
     public static QuizReplyHistory of(

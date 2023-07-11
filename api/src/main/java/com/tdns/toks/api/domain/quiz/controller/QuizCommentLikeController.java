@@ -24,10 +24,7 @@ public class QuizCommentLikeController {
     @Operation(summary = "댓글 좋아요")
     @Parameter(name = "authUser", hidden = true)
     @PostMapping(path = "/comments/{commendId}/like")
-    public ResponseEntity<Void> like(
-            AuthUser authUser,
-            @PathVariable Long commendId
-    ) {
+    public ResponseEntity<Void> like(AuthUser authUser, @PathVariable Long commendId) {
         quizCommentLikeService.like(authUser, commendId);
         return ResponseDto.noContent();
     }
@@ -35,10 +32,7 @@ public class QuizCommentLikeController {
     @Operation(summary = "댓글 좋아요 취소")
     @Parameter(name = "authUser", hidden = true)
     @PostMapping(path = "/comments/{commendId}/unlike")
-    public ResponseEntity<Void> unlike(
-            AuthUser authUser,
-            @PathVariable Long commendId
-    ) {
+    public ResponseEntity<Void> unlike(AuthUser authUser, @PathVariable Long commendId) {
         quizCommentLikeService.unlike(authUser, commendId);
         return ResponseDto.noContent();
     }
