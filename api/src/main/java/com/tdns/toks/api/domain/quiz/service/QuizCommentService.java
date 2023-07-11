@@ -7,7 +7,6 @@ import com.tdns.toks.api.domain.quiz.model.dto.comment.QuizCommentResponse;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
-import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.quizcomment.model.entity.QuizComment;
 import com.tdns.toks.core.domain.quizcomment.repository.QuizCommentRepository;
 import com.tdns.toks.core.domain.user.model.entity.User;
@@ -16,10 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +25,6 @@ import java.util.stream.Collectors;
 public class QuizCommentService {
     private final QuizCommentRepository quizCommentRepository;
     private final QuizCacheService quizCacheService;
-    private final QuizRepository quizRepository;
     private final UserRepository userRepository;
     private final CacheService cacheService;
     private final QuizCommentLikeService quizCommentLikeService;
@@ -49,10 +46,9 @@ public class QuizCommentService {
         );
     }
 
+    @Transactional
     public QuizCommentResponse insert(AuthUser authUser, Long quizId, QuizCommentCreateRequest request) {
-        if (!quizRepository.existsById(quizId)) {
-            throw new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_QUIZ_ERROR);
-        }
+        var quiz = quizCacheService.getCachedQuiz(quizId);
 
         var quizComment = quizCommentRepository.save(
                 new QuizComment(quizId, authUser.getId(), request.getComment())
@@ -74,10 +70,5 @@ public class QuizCommentService {
         }
 
         return count;
-    }
-
-    @Async
-    public CompletableFuture<Integer> asyncCount(long quizId) {
-        return CompletableFuture.completedFuture(count(quizId));
     }
 }
