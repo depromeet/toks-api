@@ -1,7 +1,6 @@
 package com.tdns.toks.api.domain.image.controller;
 
-import com.tdns.toks.api.domain.image.model.dto.ImageApiDTO.ImageUploadResponse;
-import com.tdns.toks.api.domain.image.service.ImageApiService;
+import com.tdns.toks.api.domain.image.service.ImageService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,14 +18,14 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping(path = "/api/v1/images")
 @RequiredArgsConstructor
 public class ImageController {
-    private final ImageApiService imageApiService;
+    private final ImageService imageService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "이미지 생성")
     public ResponseEntity<?> uploadImage(
             @RequestPart(name = "image") MultipartFile image
     ) {
-        var response = imageApiService.uploadImage(image);
+        var response = imageService.uploadImage(image);
         return ResponseDto.created(response);
     }
 }

@@ -1,4 +1,4 @@
-package com.tdns.toks.core.domain.actionlog.event.model;
+package com.tdns.toks.api.domain.actionlog.event.model;
 
 import lombok.Getter;
 

@@ -1,7 +1,7 @@
 package com.tdns.toks.api.domain.suggest.controller;
 
 import com.tdns.toks.api.domain.suggest.model.dto.SuggestRegisterRequest;
-import com.tdns.toks.api.domain.suggest.service.SuggestApiService;
+import com.tdns.toks.api.domain.suggest.service.SuggestService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 // @RequestMapping(path = "/api/v1/suggests", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class LegacySuggestController {
-    private final SuggestApiService suggestApiService;
+    private final SuggestService suggestApiService;
 
     @Deprecated(since = "1", forRemoval = true)
     @Operation(summary = "똑스에게 제안하기")

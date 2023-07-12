@@ -1,8 +1,8 @@
-package com.tdns.toks.core.domain.actionlog.event.subscribe;
+package com.tdns.toks.api.domain.actionlog.event.subscribe;
 
-import com.tdns.toks.core.domain.actionlog.event.model.SystemActionLogEventModel;
+import com.tdns.toks.api.domain.actionlog.event.model.SystemActionLogEventModel;
 import com.tdns.toks.core.domain.actionlog.model.SystemActionLog;
-import com.tdns.toks.core.domain.actionlog.service.SystemActionLogService;
+import com.tdns.toks.core.domain.actionlog.repository.SystemActionLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class SystemActionLogEventSubscribe {
-    private final SystemActionLogService systemActionLogService;
+    private final SystemActionLogRepository systemActionLogRepository;
 
     @Async(value = "systemActionLogExecutor")
     @EventListener(SystemActionLogEventModel.class)
@@ -30,6 +30,6 @@ public class SystemActionLogEventSubscribe {
                 model.getReferer()
         );
 
-        systemActionLogService.insert(systemActionLog);
+        systemActionLogRepository.save(systemActionLog);
     }
 }

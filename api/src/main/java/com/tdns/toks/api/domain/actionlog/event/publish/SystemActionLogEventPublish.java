@@ -1,6 +1,6 @@
-package com.tdns.toks.core.domain.actionlog.event.publish;
+package com.tdns.toks.api.domain.actionlog.event.publish;
 
-import com.tdns.toks.core.domain.actionlog.event.model.SystemActionLogEventModel;
+import com.tdns.toks.api.domain.actionlog.event.model.SystemActionLogEventModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;

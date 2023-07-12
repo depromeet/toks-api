@@ -1,7 +1,7 @@
 package com.tdns.toks.api.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tdns.toks.core.domain.actionlog.event.publish.SystemActionLogEventPublish;
+import com.tdns.toks.api.domain.actionlog.event.publish.SystemActionLogEventPublish;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

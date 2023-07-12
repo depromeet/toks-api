@@ -1,4 +1,4 @@
-package com.tdns.toks.core.domain.tag.service;
+package com.tdns.toks.api.domain.tag.service;
 
 import com.tdns.toks.core.domain.tag.model.dto.TagStaticsDTO;
 import com.tdns.toks.core.domain.tag.repository.TagRepository;
