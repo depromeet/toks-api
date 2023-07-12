@@ -17,14 +17,16 @@ public class QuizCommentLikeService {
 
     @Transactional
     public void like(AuthUser authUser, Long commendId) {
-        if (!quizCommentLikeRepository.existsByCommentIdAndUid(commendId, authUser.getId())) {
-            quizCommentLikeRepository.save(
-                    QuizCommentLike.builder()
-                            .uid(authUser.getId())
-                            .commentId(commendId)
-                            .build()
-            );
+        if (quizCommentLikeRepository.existsByCommentIdAndUid(commendId, authUser.getId())) {
+            return;
         }
+
+        quizCommentLikeRepository.save(
+                QuizCommentLike.builder()
+                        .uid(authUser.getId())
+                        .commentId(commendId)
+                        .build()
+        );
     }
 
     @Transactional
@@ -35,11 +37,6 @@ public class QuizCommentLikeService {
 
     public int count(long commentId) {
         var count = cacheService.getOrNull(CacheFactory.makeCachedQuizCommentCount(commentId));
-
-        if (count == null) {
-            return 0;
-        }
-
-        return count;
+        return count != null ? count : 0;
     }
 }

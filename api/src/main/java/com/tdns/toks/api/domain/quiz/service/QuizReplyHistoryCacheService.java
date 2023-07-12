@@ -12,11 +12,6 @@ public class QuizReplyHistoryCacheService {
 
     public Integer count(long quizId) {
         var count = cacheService.getOrNull(CacheFactory.makeCachedQuizReplyHistoryCount(quizId));
-
-        if (count == null) {
-            return 0;
-        }
-
-        return count;
+        return count != null ? count : 0;
     }
 }

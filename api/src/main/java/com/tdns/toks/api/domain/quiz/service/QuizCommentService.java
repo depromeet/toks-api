@@ -35,7 +35,7 @@ public class QuizCommentService {
         var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
         var quizComment = quizCommentRepository.findAllByQuizId(quizId, pageable);
 
-        var uids = quizComment.getContent().stream().map(QuizComment::getUid).collect(Collectors.toList());
+        var uids = quizComment.getContent().stream().map(QuizComment::getUid).collect(Collectors.toSet());
         var user = userRepository.findAllById(uids)
                 .stream().collect(Collectors.toMap(User::getId, User::getNickname));
 
@@ -64,11 +64,6 @@ public class QuizCommentService {
 
     public int count(long quizId) {
         var count = cacheService.getOrNull(CacheFactory.makeCachedQuizCommentCount(quizId));
-
-        if (count == null) {
-            return 0;
-        }
-
-        return count;
+        return count != null ? count : 0;
     }
 }

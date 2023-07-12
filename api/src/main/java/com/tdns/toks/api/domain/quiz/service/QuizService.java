@@ -35,6 +35,7 @@ public class QuizService {
     private final CategoryService categoryService;
     private final QuizCommentService quizCommentService;
     private final QuizReplyHistoryCacheService quizReplyHistoryCacheService;
+    private final QuizReplyHistoryService quizReplyHistoryService;
     private final QuizReplyHistoryRepository quizReplyHistoryRepository;
     private final QuizCacheService quizCacheService;
     private final RecQuizRepository recQuizRepository;
@@ -57,10 +58,6 @@ public class QuizService {
             Integer page,
             Integer size
     ) {
-        if (size < -1 || size > 20) {
-            return Page.empty();
-        }
-
         var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
         return quizRepository.findAllByCategoryIdIn(categoryIds, pageable).map(this::resolveQuizDetail);
     }
@@ -94,7 +91,7 @@ public class QuizService {
         return QuizMapper.toQuizResponse(quiz, category, quizReplyHistoryCount, quizCommentCount);
     }
 
-    // TODO : 성능 개선 및 유효성 검사 개선 필요,
+    @SneakyThrows
     @Transactional
     public QuizSoleDto.QuizSolveResponse solveQuiz(
             AuthUser authUser,
@@ -103,25 +100,27 @@ public class QuizService {
             HttpServletRequest httpServletRequest
     ) {
         var quiz = quizCacheService.getCachedQuiz(quizId);
+        var clientIp = getClientIp(httpServletRequest);
 
         var isSubmitted = (authUser == null)
-                ? quizReplyHistoryRepository.existsByQuizIdAndIpAddress(quizId, getClientIp(httpServletRequest))
+                ? (clientIp != null && quizReplyHistoryRepository.existsByQuizIdAndIpAddress(quizId, clientIp))
                 : quizReplyHistoryRepository.existsByQuizIdAndCreatedBy(quizId, authUser.getId());
 
         if (isSubmitted) {
             throw new ApplicationErrorException(ApplicationErrorType.ALREADY_SUBMITTED_USER_QUIZ);
         }
 
+        var quizReplyCountCf = quizReplyHistoryService.asyncCountByQuizIdAndAnswer(quizId, request.getAnswer());
+
         quizReplyHistoryRepository.save(QuizReplyHistory.builder()
                 .quizId(quizId)
                 .answer(request.getAnswer())
-                .ipAddress(authUser == null ? getClientIp(httpServletRequest) : null)
+                .ipAddress(authUser == null ? clientIp : null)
                 .createdBy(authUser == null ? null : authUser.getId())
                 .build());
 
-        // 매우 위험함
-        // long count = quizReplyHistoryRepository.countByQuizIdAndAnswer(quizId, request.getAnswer());
+        quizReplyCountCf.join();
 
-        return new QuizSoleDto.QuizSolveResponse(0L, quiz.getDescription());
+        return new QuizSoleDto.QuizSolveResponse(quizReplyCountCf.get(), quiz.getDescription());
     }
 }

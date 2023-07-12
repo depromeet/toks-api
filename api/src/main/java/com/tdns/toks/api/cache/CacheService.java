@@ -14,14 +14,9 @@ public class CacheService {
 
     public <T> T getOrNull(Cache<T> cache) {
         var data = redisTemplate.opsForValue().get(cache.getKey());
-
-        if (data == null) {
-            return null;
-        } else {
-            return MapperUtil.readValue(data, cache.getType());
-        }
+        return (data != null) ? MapperUtil.readValue(data, cache.getType()) : null;
     }
-
+    
     public <T> void set(Cache<T> cache, T data) {
         redisTemplate.opsForValue().set(cache.getKey(), MapperUtil.writeValueAsString(data), Duration.ofMinutes(3));
     }
