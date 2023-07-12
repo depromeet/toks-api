@@ -30,10 +30,6 @@ public class QuizCommentService {
     private final QuizCommentLikeService quizCommentLikeService;
 
     public Page<QuizCommentResponse> getAll(Long quizId, Integer page, Integer size) {
-        if (size < -1 || size > 20) {
-            return Page.empty();
-        }
-        
         var quiz = quizCacheService.getCachedQuiz(quizId);
 
         var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
