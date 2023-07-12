@@ -1,11 +1,14 @@
 package com.tdns.toks.api.domain.user.service;
 
 import com.tdns.toks.api.domain.user.model.dto.UserModel;
+import com.tdns.toks.core.common.exception.ApplicationErrorException;
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -27,5 +30,29 @@ public class UserService {
     @Async
     public CompletableFuture<Map<Long, UserModel>> asyncGetUsers(Set<Long> uids) {
         return CompletableFuture.completedFuture(getUsers(uids));
+    }
+
+    public String updateNickname(Long id, String nickname) {
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
+        if (isNicknameDuplicated(nickname)) {
+            throw new ApplicationErrorException(ApplicationErrorType.DUPLICATED_NICKNAME);
+        }
+        user.updateNickname(nickname);
+        return user.getNickname();
+    }
+
+    private boolean isNicknameDuplicated(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+    public Long countAllUsers() {
+        return userRepository.count();
+    }
+
+    public Long countNewUsers() {
+        var endAt = LocalDateTime.now();
+        var startAt = endAt.minusDays(1);
+        return userRepository.countByCreatedAtBetween(startAt, endAt);
     }
 }
