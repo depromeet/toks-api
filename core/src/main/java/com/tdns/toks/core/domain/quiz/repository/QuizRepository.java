@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface QuizRepository extends JpaRepository<Quiz, Long>, QuizCustomRepository {
+public interface QuizRepository extends JpaRepository<Quiz, Long> {
     @Transactional(readOnly = true)
     Page<Quiz> findAllByCategoryIdIn(Set<String> categoryId, Pageable pageable);
 

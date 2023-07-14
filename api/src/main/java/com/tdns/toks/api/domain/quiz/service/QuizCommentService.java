@@ -2,8 +2,8 @@ package com.tdns.toks.api.domain.quiz.service;
 
 import com.tdns.toks.api.cache.CacheFactory;
 import com.tdns.toks.api.cache.CacheService;
-import com.tdns.toks.api.domain.quiz.model.dto.comment.QuizCommentCreateRequest;
-import com.tdns.toks.api.domain.quiz.model.dto.comment.QuizCommentResponse;
+import com.tdns.toks.api.domain.quiz.model.dto.QuizCommentCreateRequest;
+import com.tdns.toks.api.domain.quiz.model.dto.QuizCommentResponse;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.auth.model.AuthUser;

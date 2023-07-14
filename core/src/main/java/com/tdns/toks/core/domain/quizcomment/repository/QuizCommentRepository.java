@@ -7,13 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Repository
 public interface QuizCommentRepository extends JpaRepository<QuizComment, Long> {
     @Transactional(readOnly = true)
     Page<QuizComment> findAllByQuizId(Long quizId, Pageable pageable);
-
-    @Transactional(readOnly = true)
-    List<QuizComment> findTop6ByQuizIdOrderByCreatedAtDesc(Long quizId);
 }

@@ -9,7 +9,6 @@ import javax.persistence.PersistenceContext;
 
 @Configuration
 public class QuerydslConfiguration {
-
     @PersistenceContext
     private EntityManager entityManager;
 

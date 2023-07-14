@@ -1,6 +1,6 @@
 package com.tdns.toks.api.domain.quiz.controller;
 
-import com.tdns.toks.api.domain.quiz.model.dto.QuizSoleDto;
+import com.tdns.toks.api.domain.quiz.model.dto.QuizSolveDto;
 import com.tdns.toks.api.domain.quiz.service.QuizService;
 import com.tdns.toks.core.common.model.dto.PageableResponseDto;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
@@ -74,7 +74,7 @@ public class QuizController {
     public ResponseEntity<?> solveQuiz(
             @Nullable AuthUser authUser,
             @PathVariable Long quizId,
-            @RequestBody QuizSoleDto.QuizSolveRequest request,
+            @RequestBody QuizSolveDto.QuizSolveRequest request,
             HttpServletRequest httpServletRequest
     ) {
         var response = quizService.solveQuiz(authUser, quizId, request, httpServletRequest);

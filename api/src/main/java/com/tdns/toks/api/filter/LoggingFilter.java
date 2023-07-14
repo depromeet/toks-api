@@ -31,22 +31,7 @@ public class LoggingFilter extends OncePerRequestFilter {
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
         filterChain.doFilter(requestWrapper, responseWrapper);
-
-        // TODO : 서비스 에러 우선적으로 확인하기 위해서 잠시 로깅을 주석처리
-/*
-		log.info("\n[Request] {} \n"
-				+ "[Request Headers] {} \n"
-				+ "[Request Body] {} \n"
-				+ "[Status Code] {} \n"
-				+ "[Response Body] {}",
-			getRequest(request),
-			getHeaders(request),
-			contentBody(requestWrapper.getContentAsByteArray()),
-			response.getStatus(),
-			contentBody(responseWrapper.getContentAsByteArray())
-		);
-*/
-
+        
         responseWrapper.copyBodyToResponse();
     }
 

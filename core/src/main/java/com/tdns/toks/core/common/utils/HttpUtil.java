@@ -1,4 +1,4 @@
-package com.tdns.toks.api.util;
+package com.tdns.toks.core.common.utils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
@@ -6,8 +6,14 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 
 public class HttpUtil {
-    public static String getClientIp(HttpServletRequest request) {
-        var headers = new String[]{"X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP"};
+    public static String getClientIpAddress(HttpServletRequest request) {
+        var headers = new String[]{
+                "X-Forwarded-For",
+                "Proxy-Client-IP",
+                "WL-Proxy-Client-IP",
+                "HTTP_CLIENT_IP",
+                "HTTP_X_FORWARDED_FOR"
+        };
 
         var ipAddress = Arrays.stream(headers)
                 .map(request::getHeader)

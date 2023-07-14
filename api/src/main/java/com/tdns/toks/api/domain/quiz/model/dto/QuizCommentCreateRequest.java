@@ -1,4 +1,4 @@
-package com.tdns.toks.api.domain.quiz.model.dto.comment;
+package com.tdns.toks.api.domain.quiz.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

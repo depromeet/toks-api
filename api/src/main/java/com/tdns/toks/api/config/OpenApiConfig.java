@@ -19,7 +19,6 @@ import static com.tdns.toks.core.common.security.Constants.TOKS_AUTH_HEADER_KEY;
 
 @Configuration
 public class OpenApiConfig {
-
     @Bean
     public OpenAPI openAPI(@Value("${springdoc.version}") String appVersion) {
         return new OpenAPI()
@@ -42,5 +41,4 @@ public class OpenApiConfig {
                 );
 
     }
-
 }

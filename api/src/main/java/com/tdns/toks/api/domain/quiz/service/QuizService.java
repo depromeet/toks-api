@@ -3,7 +3,7 @@ package com.tdns.toks.api.domain.quiz.service;
 import com.tdns.toks.api.domain.category.service.CategoryService;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizDetailResponse;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizRecModel;
-import com.tdns.toks.api.domain.quiz.model.dto.QuizSoleDto;
+import com.tdns.toks.api.domain.quiz.model.dto.QuizSolveDto;
 import com.tdns.toks.api.domain.quiz.model.mapper.QuizMapper;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
@@ -26,7 +26,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.tdns.toks.api.util.HttpUtil.getClientIp;
+import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
 
 @Service
 @RequiredArgsConstructor
@@ -93,14 +93,14 @@ public class QuizService {
 
     @SneakyThrows
     @Transactional
-    public QuizSoleDto.QuizSolveResponse solveQuiz(
+    public QuizSolveDto.QuizSolveResponse solveQuiz(
             AuthUser authUser,
             Long quizId,
-            QuizSoleDto.QuizSolveRequest request,
+            QuizSolveDto.QuizSolveRequest request,
             HttpServletRequest httpServletRequest
     ) {
         var quiz = quizCacheService.getCachedQuiz(quizId);
-        var clientIp = getClientIp(httpServletRequest);
+        var clientIp = getClientIpAddress(httpServletRequest);
 
         var isSubmitted = (authUser == null)
                 ? (clientIp != null && quizReplyHistoryRepository.existsByQuizIdAndIpAddress(quizId, clientIp))
@@ -121,6 +121,6 @@ public class QuizService {
 
         quizReplyCountCf.join();
 
-        return new QuizSoleDto.QuizSolveResponse(quizReplyCountCf.get(), quiz.getDescription());
+        return new QuizSolveDto.QuizSolveResponse(quizReplyCountCf.get(), quiz.getDescription());
     }
 }

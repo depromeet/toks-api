@@ -4,6 +4,8 @@ import lombok.Getter;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
+
 @Getter
 public class SystemActionLogEventModel {
     private final String ipAddress;
@@ -20,27 +22,5 @@ public class SystemActionLogEventModel {
         this.userAgent = request.getHeader("User-Agent");
         this.host = request.getHeader("Host");
         this.referer = request.getHeader("Referer");
-    }
-
-    private String getClientIpAddress(HttpServletRequest request) {
-        var ip = request.getHeader("X-Forwarded-For");
-
-        if (ip == null) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null) {
-            ip = request.getHeader("HTTP_CLIENT_IP");
-        }
-        if (ip == null) {
-            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-        }
-        if (ip == null) {
-            ip = request.getRemoteAddr();
-        }
-
-        return ip;
     }
 }

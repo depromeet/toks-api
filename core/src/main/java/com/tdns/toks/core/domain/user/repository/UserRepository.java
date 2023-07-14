@@ -19,11 +19,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByNickname(String Nickname);
 
     @Transactional(readOnly = true)
-    Optional<User> findByEmailAndStatus(String email, UserStatus status);
-
-    @Transactional(readOnly = true)
-    Optional<User> findByProviderAndProviderId(UserProvider provider, String providerId);
-
-    @Transactional(readOnly = true)
     Long countByCreatedAtBetween(LocalDateTime startAt, LocalDateTime endAt);
 }

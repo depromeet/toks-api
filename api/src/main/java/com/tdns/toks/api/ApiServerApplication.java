@@ -29,6 +29,7 @@ public class ApiServerApplication implements ApplicationListener<ApplicationRead
     }
 
     private static void init() {
+        log.info("Spring Server TimeZone : Asia/Seoul");
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
     }
 }

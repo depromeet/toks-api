@@ -1,6 +1,6 @@
 package com.tdns.toks.api.domain.quiz.controller;
 
-import com.tdns.toks.api.domain.quiz.model.dto.comment.QuizCommentCreateRequest;
+import com.tdns.toks.api.domain.quiz.model.dto.QuizCommentCreateRequest;
 import com.tdns.toks.api.domain.quiz.service.QuizCommentService;
 import com.tdns.toks.core.common.model.dto.PageableResponseDto;
 import com.tdns.toks.core.common.model.dto.ResponseDto;

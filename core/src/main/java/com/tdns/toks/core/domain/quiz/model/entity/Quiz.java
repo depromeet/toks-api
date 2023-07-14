@@ -1,6 +1,7 @@
 package com.tdns.toks.core.domain.quiz.model.entity;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
+import com.tdns.toks.core.common.utils.MapperUtil;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +17,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Map;
 
 @Entity
 @NoArgsConstructor
@@ -52,6 +54,10 @@ public class Quiz extends BaseTimeEntity {
 
     @Column(nullable = false, name = "is_deleted")
     private Boolean deleted;
+
+    public Map<String, Object> getQuestionJson() {
+        return MapperUtil.readValue(question, Map.class);
+    }
 
     public static Quiz of(
             final String question,

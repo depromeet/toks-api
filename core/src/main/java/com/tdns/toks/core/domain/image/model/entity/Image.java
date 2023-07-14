@@ -33,7 +33,4 @@ public class Image extends BaseTimeEntity implements Serializable {
     // TODO : 서비스 업로드 혹은 기타 라는 정보가 삽입될 수 있도록 하기
     @Column(columnDefinition = "BIGINT COMMENT '생성 user_id'")
     private Long createdBy;
-
-    // extra field가 필요할듯
-    // private String extra;
 }
