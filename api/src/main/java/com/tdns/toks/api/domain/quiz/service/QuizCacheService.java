@@ -5,12 +5,9 @@ import com.tdns.toks.api.cache.CacheService;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizModel;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
-import com.tdns.toks.core.common.utils.MapperUtil;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +27,7 @@ public class QuizCacheService {
                     quiz.getId(),
                     quiz.getCategoryId(),
                     quiz.getTitle(),
-                    MapperUtil.readValue(quiz.getQuestion(), Map.class),
+                    quiz.getQuestion(),
                     quiz.getQuizType(),
                     quiz.getDescription(),
                     quiz.getAnswer()

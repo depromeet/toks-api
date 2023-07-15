@@ -1,7 +1,6 @@
-package com.tdns.toks.core.domain.category.model.entity;
+package com.tdns.toks.core.domain.quizcomment.entity;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,29 +10,25 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * 고정 데이터, 별도의 생성로직은 sql로 인서트만
- */
-@Table(name = "category")
+@Table(name = "quiz_comment_like")
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Category extends BaseTimeEntity {
+public class QuizCommentLike extends BaseTimeEntity {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private Integer depth;
+    private Long uid;
 
-    private String name;
-
-    private String description;
-
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "comment_id")
+    private Long commentId;
 }

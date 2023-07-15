@@ -1,7 +1,7 @@
 package com.tdns.toks.core.domain.user.model.dto;
 
 import com.tdns.toks.core.common.type.JwtToken;
-import com.tdns.toks.core.domain.user.model.entity.User;
+import com.tdns.toks.core.domain.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
+// TODO : Auth 개선하면서, 해당 객체 제거 필요
 @Getter
 @Schema(name = "UserDetailDto", description = "User 디테일 정보")
 public class UserDetailDTO implements UserDetails, OAuth2User {

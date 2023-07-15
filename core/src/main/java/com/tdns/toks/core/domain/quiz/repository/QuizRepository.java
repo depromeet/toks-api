@@ -1,6 +1,6 @@
 package com.tdns.toks.core.domain.quiz.repository;
 
-import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
+import com.tdns.toks.core.domain.quiz.entity.Quiz;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,6 +1,6 @@
 package com.tdns.toks.api.domain.image.model.dto;
 
-import com.tdns.toks.core.domain.image.model.entity.Image;
+import com.tdns.toks.core.domain.image.entity.Image;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;

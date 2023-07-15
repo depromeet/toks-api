@@ -2,7 +2,7 @@ package com.tdns.toks.core.common.security.oauth;
 
 import com.tdns.toks.core.common.security.JwtTokenProvider;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
-import com.tdns.toks.core.domain.user.model.entity.User;
+import com.tdns.toks.core.domain.user.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 import com.tdns.toks.core.domain.user.type.UserRole;
 import com.tdns.toks.core.domain.user.type.UserStatus;

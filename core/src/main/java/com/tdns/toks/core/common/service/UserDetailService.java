@@ -3,7 +3,7 @@ package com.tdns.toks.core.common.service;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
-import com.tdns.toks.core.domain.user.model.entity.User;
+import com.tdns.toks.core.domain.user.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

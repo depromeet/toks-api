@@ -1,6 +1,6 @@
 package com.tdns.toks.api.domain.suggest.model.dto;
 
-import com.tdns.toks.core.domain.suggest.model.Suggest;
+import com.tdns.toks.core.domain.suggest.entity.Suggest;
 import com.tdns.toks.core.domain.suggest.type.SuggestStatus;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

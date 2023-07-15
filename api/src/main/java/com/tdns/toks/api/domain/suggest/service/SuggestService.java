@@ -4,7 +4,7 @@ import com.tdns.toks.api.domain.cruiser.client.CruiserClient;
 import com.tdns.toks.api.domain.cruiser.dto.CruiserRequest;
 import com.tdns.toks.api.domain.suggest.model.dto.SuggestRegisterRequest;
 import com.tdns.toks.api.domain.suggest.model.dto.SuggestResponse;
-import com.tdns.toks.core.domain.suggest.model.Suggest;
+import com.tdns.toks.core.domain.suggest.entity.Suggest;
 import com.tdns.toks.core.domain.suggest.repository.SuggestRepository;
 import com.tdns.toks.core.domain.suggest.type.SuggestStatus;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;

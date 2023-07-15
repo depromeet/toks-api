@@ -1,6 +1,6 @@
 package com.tdns.toks.api.domain.category.model.dto;
 
-import com.tdns.toks.core.domain.category.model.entity.Category;
+import com.tdns.toks.core.domain.category.entity.Category;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 

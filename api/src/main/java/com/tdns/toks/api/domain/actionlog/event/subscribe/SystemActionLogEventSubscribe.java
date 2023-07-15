@@ -1,7 +1,7 @@
 package com.tdns.toks.api.domain.actionlog.event.subscribe;
 
 import com.tdns.toks.api.domain.actionlog.event.model.SystemActionLogEventModel;
-import com.tdns.toks.core.domain.actionlog.model.SystemActionLog;
+import com.tdns.toks.core.domain.actionlog.entity.SystemActionLog;
 import com.tdns.toks.core.domain.actionlog.repository.SystemActionLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;

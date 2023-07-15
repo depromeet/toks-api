@@ -1,7 +1,7 @@
-package com.tdns.toks.core.domain.quiz.model.entity;
+package com.tdns.toks.core.domain.quiz.entity;
 
+import com.tdns.toks.core.common.model.converter.MapConverter;
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
-import com.tdns.toks.core.common.utils.MapperUtil;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
@@ -37,7 +38,8 @@ public class Quiz extends BaseTimeEntity {
     private String categoryId;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String question;
+    @Convert(converter = MapConverter.class)
+    private Map<String, Object> question;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(10) COMMENT '퀴즈 타입'")
     @Enumerated(EnumType.STRING)
@@ -55,12 +57,8 @@ public class Quiz extends BaseTimeEntity {
     @Column(nullable = false, name = "is_deleted")
     private Boolean deleted;
 
-    public Map<String, Object> getQuestionJson() {
-        return MapperUtil.readValue(question, Map.class);
-    }
-
     public static Quiz of(
-            final String question,
+            final Map<String, Object> question,
             final QuizType quizType,
             final String description,
             final String answer
@@ -74,7 +72,7 @@ public class Quiz extends BaseTimeEntity {
     }
 
     public Quiz(
-            final String question,
+            final Map<String, Object> question,
             final QuizType quizType,
             final String description,
             final String answer
@@ -89,7 +87,7 @@ public class Quiz extends BaseTimeEntity {
             String title,
             String categoryId,
             QuizType quizType,
-            String question
+            Map<String, Object> question
     ) {
         this.title = title;
         this.categoryId = categoryId;

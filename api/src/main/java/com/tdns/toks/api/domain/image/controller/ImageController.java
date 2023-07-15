@@ -2,6 +2,7 @@ package com.tdns.toks.api.domain.image.controller;
 
 import com.tdns.toks.api.domain.image.service.ImageService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
+import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +24,10 @@ public class ImageController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "이미지 생성")
     public ResponseEntity<?> uploadImage(
+            AuthUser authUser,
             @RequestPart(name = "image") MultipartFile image
     ) {
-        var response = imageService.uploadImage(image);
+        var response = imageService.uploadImage(authUser, image);
         return ResponseDto.created(response);
     }
 }

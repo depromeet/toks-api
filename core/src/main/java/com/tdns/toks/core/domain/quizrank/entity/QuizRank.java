@@ -1,4 +1,4 @@
-package com.tdns.toks.core.domain.quizrank.model.entity;
+package com.tdns.toks.core.domain.quizrank.entity;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;

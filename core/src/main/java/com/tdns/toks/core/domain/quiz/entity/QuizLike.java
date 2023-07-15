@@ -1,4 +1,4 @@
-package com.tdns.toks.core.domain.quiz.model.entity;
+package com.tdns.toks.core.domain.quiz.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.tdns.toks.core.domain.tag.model.entity;
+package com.tdns.toks.core.domain.tag.entity;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
 import lombok.*;

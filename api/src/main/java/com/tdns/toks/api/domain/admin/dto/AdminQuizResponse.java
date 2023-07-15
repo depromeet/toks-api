@@ -1,7 +1,6 @@
 package com.tdns.toks.api.domain.admin.dto;
 
-import com.tdns.toks.core.common.utils.MapperUtil;
-import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
+import com.tdns.toks.core.domain.quiz.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +26,7 @@ public class AdminQuizResponse {
                 quiz.getId(),
                 quiz.getTitle(),
                 quiz.getCategoryId(),
-                MapperUtil.readValue(quiz.getQuestion(), Map.class),
+                quiz.getQuestion(),
                 quiz.getQuizType(),
                 quiz.getDescription(),
                 quiz.getAnswer(),

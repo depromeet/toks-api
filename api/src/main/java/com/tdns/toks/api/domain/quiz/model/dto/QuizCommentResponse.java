@@ -1,6 +1,6 @@
 package com.tdns.toks.api.domain.quiz.model.dto;
 
-import com.tdns.toks.core.domain.quizcomment.model.entity.QuizComment;
+import com.tdns.toks.core.domain.quizcomment.entity.QuizComment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,42 +1,43 @@
-package com.tdns.toks.core.domain.suggest.model;
+package com.tdns.toks.core.domain.quizcomment.entity;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
-import com.tdns.toks.core.domain.suggest.type.SuggestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
 
-@Getter
-@Setter
+@Table(name = "quiz_comment")
 @Entity
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "suggest")
-public class Suggest extends BaseTimeEntity implements Serializable {
+@AllArgsConstructor
+@Getter
+@Builder
+@EntityListeners(AuditingEntityListener.class)
+public class QuizComment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "quiz_id")
+    private Long quizId;
+
     private Long uid;
-    
-    private String title;
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Enumerated(EnumType.STRING)
-    private SuggestStatus status;
+    public QuizComment(Long quizId, Long uid, String content) {
+        this.quizId = quizId;
+        this.uid = uid;
+        this.content = content;
+    }
 }

@@ -1,6 +1,6 @@
 package com.tdns.toks.core.domain.rec.repository;
 
-import com.tdns.toks.core.domain.rec.model.RecQuiz;
+import com.tdns.toks.core.domain.rec.entity.RecQuiz;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

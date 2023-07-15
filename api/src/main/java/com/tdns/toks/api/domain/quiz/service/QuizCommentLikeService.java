@@ -3,7 +3,7 @@ package com.tdns.toks.api.domain.quiz.service;
 import com.tdns.toks.api.cache.CacheFactory;
 import com.tdns.toks.api.cache.CacheService;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
-import com.tdns.toks.core.domain.quizcomment.model.entity.QuizCommentLike;
+import com.tdns.toks.core.domain.quizcomment.entity.QuizCommentLike;
 import com.tdns.toks.core.domain.quizcomment.repository.QuizCommentLikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

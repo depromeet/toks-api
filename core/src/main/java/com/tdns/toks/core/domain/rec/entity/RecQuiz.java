@@ -1,5 +1,6 @@
-package com.tdns.toks.core.domain.quizcomment.model.entity;
+package com.tdns.toks.core.domain.rec.entity;
 
+import com.tdns.toks.core.common.model.converter.LongArrayConverter;
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,37 +8,29 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.List;
 
-@Table(name = "quiz_comment")
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class QuizComment extends BaseTimeEntity {
+public class RecQuiz extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "quiz_id")
-    private Long quizId;
+    private Integer round;
 
-    private Long uid;
+    private String categoryId;
 
-    @Column(columnDefinition = "TEXT")
-    private String content;
-
-    public QuizComment(Long quizId, Long uid, String content) {
-        this.quizId = quizId;
-        this.uid = uid;
-        this.content = content;
-    }
+    @Convert(converter = LongArrayConverter.class)
+    private List<Long> pids;
 }

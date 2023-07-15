@@ -1,4 +1,4 @@
-package com.tdns.toks.core.domain.user.model.entity;
+package com.tdns.toks.core.domain.user.entity;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
 import com.tdns.toks.core.domain.user.type.UserProvider;

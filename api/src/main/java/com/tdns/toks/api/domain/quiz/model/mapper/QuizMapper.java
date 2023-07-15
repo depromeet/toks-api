@@ -3,7 +3,7 @@ package com.tdns.toks.api.domain.quiz.model.mapper;
 import com.tdns.toks.api.domain.category.model.dto.CategoryModel;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizDetailResponse;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizModel;
-import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
+import com.tdns.toks.core.domain.quiz.entity.Quiz;
 
 public class QuizMapper {
     public static QuizDetailResponse toQuizResponse(
@@ -16,7 +16,7 @@ public class QuizMapper {
                 quiz.getId(),
                 quiz.getCategoryId(),
                 quiz.getTitle(),
-                quiz.getQuestionJson(),
+                quiz.getQuestion(),
                 quiz.getQuizType(),
                 quiz.getDescription(),
                 quiz.getAnswer()

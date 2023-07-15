@@ -4,10 +4,9 @@ import com.tdns.toks.api.domain.admin.dto.AdminQuizResponse;
 import com.tdns.toks.api.domain.admin.dto.AdminQuizSaveOrUpdateRequest;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
-import com.tdns.toks.core.common.utils.MapperUtil;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.category.repository.CategoryRepository;
-import com.tdns.toks.core.domain.quiz.model.entity.Quiz;
+import com.tdns.toks.core.domain.quiz.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +35,7 @@ public class AdminQuizService {
                 Quiz.builder()
                         .title(request.getTitle())
                         .categoryId(request.getCategoryId())
-                        .question(MapperUtil.writeValueAsString(request.getQuestion()))
+                        .question(request.getQuestion())
                         .quizType(request.getQuizType())
                         .createdBy(authUser.getId())
                         .build()
@@ -68,7 +67,7 @@ public class AdminQuizService {
                         request.getTitle(),
                         request.getCategoryId(),
                         request.getQuizType(),
-                        MapperUtil.writeValueAsString(request.getQuestion())
+                        request.getQuestion()
                 )
         );
 

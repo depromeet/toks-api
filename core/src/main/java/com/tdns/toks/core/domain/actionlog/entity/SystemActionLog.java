@@ -1,4 +1,4 @@
-package com.tdns.toks.core.domain.actionlog.model;
+package com.tdns.toks.core.domain.actionlog.entity;
 
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
 import lombok.AccessLevel;
