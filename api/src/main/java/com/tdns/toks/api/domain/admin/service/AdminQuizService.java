@@ -2,6 +2,7 @@ package com.tdns.toks.api.domain.admin.service;
 
 import com.tdns.toks.api.domain.admin.dto.AdminQuizResponse;
 import com.tdns.toks.api.domain.admin.dto.AdminQuizSaveOrUpdateRequest;
+import com.tdns.toks.api.domain.quiz.service.QuizCacheService;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
@@ -23,6 +24,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class AdminQuizService {
     private final QuizRepository quizRepository;
+    private final QuizCacheService quizCacheService;
     private final CategoryRepository categoryRepository;
 
     @Transactional
@@ -42,6 +44,8 @@ public class AdminQuizService {
         );
 
         log.info("create quiz / adminUid : {}", authUser.getId());
+
+        quizCacheService.setCachedQuiz(question);
 
         return AdminQuizResponse.from(question);
     }
@@ -71,6 +75,8 @@ public class AdminQuizService {
                 )
         );
 
+        quizCacheService.setCachedQuiz(updatedQuestion);
+
         log.info("update quiz / adminUid : {}", authUser.getId());
 
         return AdminQuizResponse.from(updatedQuestion);
@@ -79,7 +85,10 @@ public class AdminQuizService {
     @Transactional
     public void delete(AuthUser authUser, Set<Long> ids) {
         quizRepository.deleteAllById(ids);
-        log.info("delete quizzes");
+
+        ids.forEach(quizCacheService::deleteCachedQuiz);
+
+        log.info("delete quizzes {}", ids);
     }
 
     public Page<AdminQuizResponse> getAll(AuthUser authUser, int page, int size) {

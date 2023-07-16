@@ -16,8 +16,12 @@ public class CacheService {
         var data = redisTemplate.opsForValue().get(cache.getKey());
         return (data != null) ? MapperUtil.readValue(data, cache.getType()) : null;
     }
-    
+
     public <T> void set(Cache<T> cache, T data) {
         redisTemplate.opsForValue().set(cache.getKey(), MapperUtil.writeValueAsString(data), Duration.ofMinutes(3));
+    }
+
+    public <T> void delete(Cache<T> cache) {
+        redisTemplate.delete(cache.getKey());
     }
 }

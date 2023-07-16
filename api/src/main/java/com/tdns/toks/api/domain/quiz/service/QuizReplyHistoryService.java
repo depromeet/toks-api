@@ -37,7 +37,11 @@ public class QuizReplyHistoryService {
     }
 
     @Async
-    public CompletableFuture<Boolean> asyncIsSubmitted(@Nullable AuthUser authUser, Long quizId, HttpServletRequest httpServletRequest) {
+    public CompletableFuture<Boolean> asyncIsSubmitted(
+            @Nullable AuthUser authUser,
+            Long quizId,
+            HttpServletRequest httpServletRequest
+    ) {
         return CompletableFuture.completedFuture(isSubmitted(authUser, quizId, httpServletRequest));
     }
 }

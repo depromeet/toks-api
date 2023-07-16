@@ -68,7 +68,7 @@ public class QuizService {
             Integer size
     ) {
         var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
-        return quizRepository.findAllByCategoryIdIn(categoryIds, pageable).map(this::resolveQuizDetail);
+        return quizRepository.findAllByCategoryIdIn(categoryIds, pageable).map(this::resolveQuizSimpleDetail);
     }
 
     /**
@@ -84,13 +84,13 @@ public class QuizService {
                 .orElseGet(() -> quizRepository.findTop3ByCategoryId(categoryId));
 
         var recQuizModels = recQuizzes.stream()
-                .map(this::resolveQuizDetail)
+                .map(this::resolveQuizSimpleDetail)
                 .collect(Collectors.toList());
 
         return new QuizRecModel(recQuizModels);
     }
 
-    private QuizSimpleResponse resolveQuizDetail(Quiz quiz) {
+    private QuizSimpleResponse resolveQuizSimpleDetail(Quiz quiz) {
         var category = categoryService.get(quiz.getCategoryId())
                 .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
 
@@ -111,9 +111,7 @@ public class QuizService {
         var quiz = quizCacheService.getCachedQuiz(quizId);
         var clientIp = getClientIpAddress(httpServletRequest);
 
-        var isSubmitted = (authUser == null)
-                ? (clientIp != null && quizReplyHistoryRepository.existsByQuizIdAndIpAddress(quizId, clientIp))
-                : quizReplyHistoryRepository.existsByQuizIdAndCreatedBy(quizId, authUser.getId());
+        var isSubmitted = quizReplyHistoryService.isSubmitted(authUser, quizId, httpServletRequest);
 
         if (isSubmitted) {
             throw new ApplicationErrorException(ApplicationErrorType.ALREADY_SUBMITTED_USER_QUIZ);

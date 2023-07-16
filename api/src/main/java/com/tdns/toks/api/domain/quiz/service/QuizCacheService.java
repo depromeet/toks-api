@@ -5,6 +5,7 @@ import com.tdns.toks.api.cache.CacheService;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizModel;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.core.domain.quiz.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,5 +40,26 @@ public class QuizCacheService {
         } else {
             return quizModel;
         }
+    }
+
+    public void setCachedQuiz(Quiz quiz) {
+        var cache = CacheFactory.makeCachedQuiz(quiz.getId());
+
+        var newQuizModel = new QuizModel(
+                quiz.getId(),
+                quiz.getCategoryId(),
+                quiz.getTitle(),
+                quiz.getQuestion(),
+                quiz.getQuizType(),
+                quiz.getDescription(),
+                quiz.getAnswer()
+        );
+
+        cacheService.set(cache, newQuizModel);
+    }
+
+    public void deleteCachedQuiz(Long quizId) {
+        var cache = CacheFactory.makeCachedQuiz(quizId);
+        cacheService.delete(cache);
     }
 }
