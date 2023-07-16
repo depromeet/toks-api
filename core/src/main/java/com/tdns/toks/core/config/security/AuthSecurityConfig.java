@@ -26,6 +26,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Collections;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -112,9 +114,10 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     protected CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(CORSType.CONFIGURATION.getAllowOrigins());
-        configuration.setAllowedHeaders(CORSType.CONFIGURATION.getAllowHeaders());
-        configuration.setAllowedMethods(CORSType.CONFIGURATION.getAllowMethods());
+        var all = Collections.singletonList(CorsConfiguration.ALL);
+        configuration.setAllowedOriginPatterns(all);
+        configuration.setAllowedHeaders(all);
+        configuration.setAllowedMethods(all);
         configuration.setMaxAge(CORSType.CONFIGURATION.getMaxAge());
         configuration.setAllowCredentials(true);
 
