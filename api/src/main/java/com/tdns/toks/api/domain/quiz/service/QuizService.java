@@ -3,6 +3,7 @@ package com.tdns.toks.api.domain.quiz.service;
 import com.tdns.toks.api.domain.category.service.CategoryService;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizDetailResponse;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizRecModel;
+import com.tdns.toks.api.domain.quiz.model.dto.QuizSimpleResponse;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizSolveDto;
 import com.tdns.toks.api.domain.quiz.model.mapper.QuizMapper;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
@@ -41,18 +42,26 @@ public class QuizService {
     private final RecQuizRepository recQuizRepository;
 
     @SneakyThrows
-    public QuizDetailResponse get(AuthUser authUser, Long quizId) {
+    public QuizDetailResponse get(AuthUser authUser, Long quizId, HttpServletRequest httpServletRequest) {
         var quiz = quizCacheService.getCachedQuiz(quizId);
         var category = categoryService.get(quiz.getCategoryId())
                 .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
 
+        var isSubmittedCf = quizReplyHistoryService.asyncIsSubmitted(authUser, quizId, httpServletRequest);
+
         var quizReplyHistoryCount = quizReplyHistoryCacheService.count(quizId);
         var quizCommentCount = quizCommentService.count(quizId);
 
-        return QuizMapper.toQuizResponse(quiz, category, quizReplyHistoryCount, quizCommentCount);
+        return QuizMapper.toQuizResponse(
+                quiz,
+                category,
+                quizReplyHistoryCount,
+                quizCommentCount,
+                isSubmittedCf.get()
+        );
     }
 
-    public Page<QuizDetailResponse> getAll(
+    public Page<QuizSimpleResponse> getAll(
             AuthUser authUser,
             Set<String> categoryIds,
             Integer page,
@@ -81,14 +90,14 @@ public class QuizService {
         return new QuizRecModel(recQuizModels);
     }
 
-    private QuizDetailResponse resolveQuizDetail(Quiz quiz) {
+    private QuizSimpleResponse resolveQuizDetail(Quiz quiz) {
         var category = categoryService.get(quiz.getCategoryId())
                 .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
 
         var quizReplyHistoryCount = quizReplyHistoryCacheService.count(quiz.getId());
         var quizCommentCount = quizCommentService.count(quiz.getId());
 
-        return QuizMapper.toQuizResponse(quiz, category, quizReplyHistoryCount, quizCommentCount);
+        return QuizMapper.toQuizSimpleResponse(quiz, category, quizReplyHistoryCount, quizCommentCount);
     }
 
     @SneakyThrows

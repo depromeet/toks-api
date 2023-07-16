@@ -33,8 +33,12 @@ public class QuizController {
     @Operation(summary = "퀴즈 단건 조회")
     @Parameter(name = "authUser", hidden = true)
     @GetMapping("/quizzes/{quizId}")
-    public ResponseEntity<?> get(@Nullable AuthUser authUser, @PathVariable Long quizId) {
-        var response = quizService.get(authUser, quizId);
+    public ResponseEntity<?> get(
+            @Nullable AuthUser authUser,
+            @PathVariable Long quizId,
+            HttpServletRequest httpServletRequest
+    ) {
+        var response = quizService.get(authUser, quizId, httpServletRequest);
         return ResponseDto.ok(response);
     }
 
