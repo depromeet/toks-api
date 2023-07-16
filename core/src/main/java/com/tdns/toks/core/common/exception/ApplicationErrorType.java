@@ -33,7 +33,8 @@ public enum ApplicationErrorType {
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "error.invalid.refresh.token"),
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."),
     NOT_SET_NICKNAME(HttpStatus.NOT_FOUND, "닉네임을 설정하지 않았습니다"),
-
+    NOT_AUTHORIZED_ADMIN_USER(HttpStatus.UNAUTHORIZED, "권한이 없습니다."),
+    
     /**
      * Quiz Error Type
      */

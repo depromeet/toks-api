@@ -1,5 +1,7 @@
 package com.tdns.toks.core.domain.auth.aspect;
 
+import com.tdns.toks.core.common.exception.ApplicationErrorException;
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -14,7 +16,7 @@ public class PermissionCheckAspect {
         for (var args : joinPoint.getArgs()) {
             if (args instanceof AuthUser) {
                 if (!((AuthUser) args).getUserRole().isAdmin()) {
-                    throw new RuntimeException("permission error");
+                    throw new ApplicationErrorException(ApplicationErrorType.NOT_AUTHORIZED_ADMIN_USER);
                 }
             }
         }
