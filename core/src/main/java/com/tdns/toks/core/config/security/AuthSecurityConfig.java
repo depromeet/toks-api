@@ -1,6 +1,5 @@
 package com.tdns.toks.core.config.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tdns.toks.core.common.filter.ExceptionHandlerFilter;
 import com.tdns.toks.core.common.security.oauth.CustomOAuth2UserService;
 import com.tdns.toks.core.common.security.oauth.OAuth2FailureHandler;

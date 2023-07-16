@@ -22,7 +22,6 @@ import javax.persistence.Id;
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 public class QuizReplyHistory extends BaseTimeEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,18 +37,4 @@ public class QuizReplyHistory extends BaseTimeEntity {
     private Long createdBy;
 
     private String ipAddress;
-
-    public static QuizReplyHistory of(
-            final String answer,
-            final Long quizId) {
-        return new QuizReplyHistory(answer, quizId);
-    }
-
-    public QuizReplyHistory(
-            final String answer,
-            final Long quizId
-    ) {
-        this.answer = answer;
-        this.quizId = quizId;
-    }
 }

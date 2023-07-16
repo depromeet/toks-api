@@ -20,7 +20,6 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Getter
 public class QuizRank extends BaseTimeEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,22 +32,4 @@ public class QuizRank extends BaseTimeEntity {
 
     @Column(nullable = false, columnDefinition = "BIGINT COMMENT '스터디 id'")
     private Long studyId;
-
-    public static QuizRank of(
-            final Integer score,
-            final Long userId,
-            final Long studyId
-    ) {
-        return new QuizRank(score, userId, studyId);
-    }
-
-    public QuizRank(
-            final Integer score,
-            final Long userId,
-            final Long studyId
-    ) {
-        this.score = score;
-        this.userId = userId;
-        this.studyId = studyId;
-    }
 }

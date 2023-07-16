@@ -56,33 +56,7 @@ public class Quiz extends BaseTimeEntity {
 
     @Column(nullable = false, name = "is_deleted")
     private Boolean deleted;
-
-    public static Quiz of(
-            final Map<String, Object> question,
-            final QuizType quizType,
-            final String description,
-            final String answer
-    ) {
-        return new Quiz(
-                question,
-                quizType,
-                description,
-                answer
-        );
-    }
-
-    public Quiz(
-            final Map<String, Object> question,
-            final QuizType quizType,
-            final String description,
-            final String answer
-    ) {
-        this.question = question;
-        this.quizType = quizType;
-        this.description = description;
-        this.answer = answer;
-    }
-
+    
     public Quiz update(
             String title,
             String categoryId,
