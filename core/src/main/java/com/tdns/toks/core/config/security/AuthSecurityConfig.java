@@ -27,6 +27,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -115,7 +116,8 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
     protected CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         var all = Collections.singletonList(CorsConfiguration.ALL);
-        configuration.setAllowedOriginPatterns(all);
+
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:3000", "http://dev.tokstudy.com"));
         configuration.setAllowedHeaders(all);
         configuration.setAllowedMethods(all);
         configuration.setMaxAge(CORSType.CONFIGURATION.getMaxAge());
