@@ -1,4 +1,4 @@
-package com.tdns.toks.api.domain.user.model.dto;
+package com.tdns.toks.api.domain.user.model;
 
 import com.tdns.toks.core.domain.user.entity.User;
 import com.tdns.toks.core.domain.user.type.UserRole;

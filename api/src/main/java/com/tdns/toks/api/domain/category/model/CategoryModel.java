@@ -1,4 +1,4 @@
-package com.tdns.toks.api.domain.category.model.dto;
+package com.tdns.toks.api.domain.category.model;
 
 import com.tdns.toks.core.domain.category.entity.Category;
 import lombok.Data;

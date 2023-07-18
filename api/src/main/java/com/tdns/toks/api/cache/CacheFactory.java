@@ -1,6 +1,6 @@
 package com.tdns.toks.api.cache;
 
-import com.tdns.toks.api.domain.quiz.model.dto.QuizModel;
+import com.tdns.toks.api.domain.quiz.model.QuizModel;
 
 public class CacheFactory {
     public static Cache<QuizModel> makeCachedQuiz(Long id) {

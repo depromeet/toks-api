@@ -1,12 +1,13 @@
-package com.tdns.toks.api.domain.quiz.model.dto;
+package com.tdns.toks.api.domain.quiz.model;
 
-import com.tdns.toks.api.domain.category.model.dto.CategoryModel;
+import com.tdns.toks.api.domain.category.model.CategoryModel;
+import com.tdns.toks.api.domain.quiz.model.QuizModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class QuizSimpleResponse {
+public class QuizSimpleModel {
     private QuizModel quiz;
     private CategoryModel category;
     private int quizReplyHistoryCount;

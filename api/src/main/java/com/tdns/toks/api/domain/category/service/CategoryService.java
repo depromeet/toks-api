@@ -1,6 +1,6 @@
 package com.tdns.toks.api.domain.category.service;
 
-import com.tdns.toks.api.domain.category.model.dto.CategoryModel;
+import com.tdns.toks.api.domain.category.model.CategoryModel;
 import com.tdns.toks.api.domain.category.model.dto.CategoryResponse;
 import com.tdns.toks.core.domain.category.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.tdns.toks.api.domain.user.service;
 
-import com.tdns.toks.api.domain.user.model.dto.UserModel;
+import com.tdns.toks.api.domain.user.model.UserModel;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
