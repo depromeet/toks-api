@@ -25,10 +25,12 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Collections;
 import java.util.List;
 
+@EnableWebMvc
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -113,18 +115,19 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
     // CORS Configuration
     @Bean
     protected CorsConfigurationSource cors() {
-        var corsConfig = new CorsConfiguration();
+        CorsConfiguration configuration = new CorsConfiguration();
+        var all = Collections.singletonList(CorsConfiguration.ALL);
 
-        corsConfig.addAllowedOriginPattern(CorsConfiguration.ALL);
-        corsConfig.addAllowedHeader(CorsConfiguration.ALL);
-        corsConfig.addAllowedMethod(CorsConfiguration.ALL);
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://dev.tokstudy.com"));
+        configuration.setAllowedHeaders(all);
+        configuration.setAllowedMethods(all);
+        configuration.setMaxAge(CORSType.CONFIGURATION.getMaxAge());
+        configuration.setAllowCredentials(true);
 
-        corsConfig.setAllowCredentials(true);
-        corsConfig.setMaxAge(3600L);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
 
-        var corsConfigSource = new UrlBasedCorsConfigurationSource();
-        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
-        return corsConfigSource;
+        return source;
     }
 
 }
