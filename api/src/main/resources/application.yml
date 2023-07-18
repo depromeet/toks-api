@@ -11,7 +11,7 @@ spring:
 
   # kakao login
   security:
-    front-redirect-uri: /kakaoauth
+    front-redirect-uri: /kakao-auth
     oauth2:
       client:
         registration:
