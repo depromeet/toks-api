@@ -113,19 +113,20 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // CORS Configuration
     @Bean
-    protected UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        var corsConfig = new CorsConfiguration();
+    protected CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        var all = Collections.singletonList(CorsConfiguration.ALL);
 
-        corsConfig.addAllowedOriginPattern(CorsConfiguration.ALL);
-        corsConfig.addAllowedHeader(CorsConfiguration.ALL);
-        corsConfig.addAllowedMethod(CorsConfiguration.ALL);
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://dev.tokstudy.com"));
+        configuration.setAllowedHeaders(all);
+        configuration.setAllowedMethods(all);
+        configuration.setMaxAge(CORSType.CONFIGURATION.getMaxAge());
+        configuration.setAllowCredentials(true);
 
-        corsConfig.setAllowCredentials(true);
-        corsConfig.setMaxAge(3600L);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
 
-        var corsConfigSource = new UrlBasedCorsConfigurationSource();
-        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
-        return corsConfigSource;
+        return source;
     }
 
 }
