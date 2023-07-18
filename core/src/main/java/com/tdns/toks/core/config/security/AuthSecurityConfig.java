@@ -47,7 +47,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().disable()
-                .cors().configurationSource(corsConfigurationSource())
+                .cors().configurationSource(cors())
                 .and()
                 .csrf().disable()
                 .formLogin().disable()
@@ -113,7 +113,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // CORS Configuration
     @Bean
-    protected CorsConfigurationSource corsConfigurationSource() {
+    protected CorsConfigurationSource cors() {
         CorsConfiguration configuration = new CorsConfiguration();
         var all = Collections.singletonList(CorsConfiguration.ALL);
 
