@@ -46,8 +46,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().disable()
-                .cors().configurationSource(cors())
+        http.cors().configurationSource(cors())
                 .and()
                 .csrf().disable()
                 .formLogin().disable()
@@ -114,19 +113,18 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
     // CORS Configuration
     @Bean
     protected CorsConfigurationSource cors() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        var all = Collections.singletonList(CorsConfiguration.ALL);
+        var corsConfig = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://dev.tokstudy.com"));
-        configuration.setAllowedHeaders(all);
-        configuration.setAllowedMethods(all);
-        configuration.setMaxAge(CORSType.CONFIGURATION.getMaxAge());
-        configuration.setAllowCredentials(true);
+        corsConfig.addAllowedOriginPattern(CorsConfiguration.ALL);
+        corsConfig.addAllowedHeader(CorsConfiguration.ALL);
+        corsConfig.addAllowedMethod(CorsConfiguration.ALL);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        corsConfig.setAllowCredentials(true);
+        corsConfig.setMaxAge(3600L);
 
-        return source;
+        var corsConfigSource = new UrlBasedCorsConfigurationSource();
+        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
+        return corsConfigSource;
     }
 
 }
