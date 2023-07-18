@@ -117,7 +117,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         var all = Collections.singletonList(CorsConfiguration.ALL);
 
-        configuration.setAllowedOriginPatterns(List.of("http://localhost:3000", "http://dev.tokstudy.com"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://dev.tokstudy.com"));
         configuration.setAllowedHeaders(all);
         configuration.setAllowedMethods(all);
         configuration.setMaxAge(CORSType.CONFIGURATION.getMaxAge());
