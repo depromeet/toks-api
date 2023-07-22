@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
 
@@ -31,11 +32,14 @@ public class QuizService {
     private final QuizCacheService quizCacheService;
     private final QuizInfoService quizInfoService;
 
+    @SneakyThrows
     public QuizDetailResponse get(AuthUser authUser, Long quizId, HttpServletRequest httpServletRequest) {
-        var quizModelInfo = quizInfoService.getQuizInfoModelByQuizId(quizId);
-        var isSubmitted = quizReplyHistoryService.isSubmitted(authUser, quizId, httpServletRequest);
+        var quizModelInfoCf = quizInfoService.asyncGetQuizInfoModelByQuizId(quizId);
+        var isSubmittedCf = quizReplyHistoryService.asyncIsSubmitted(authUser, quizId, httpServletRequest);
 
-        return QuizDetailResponse.of(quizModelInfo, isSubmitted);
+        CompletableFuture.allOf(quizModelInfoCf, isSubmittedCf).join();
+
+        return QuizDetailResponse.of(quizModelInfoCf.get(), isSubmittedCf.get());
     }
 
     public Page<QuizInfoModel> getAll(
