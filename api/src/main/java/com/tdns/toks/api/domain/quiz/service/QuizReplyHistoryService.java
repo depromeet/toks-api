@@ -1,5 +1,7 @@
 package com.tdns.toks.api.domain.quiz.service;
 
+import com.tdns.toks.api.cache.CacheFactory;
+import com.tdns.toks.api.cache.CacheService;
 import com.tdns.toks.core.domain.auth.AuthUserValidator;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
@@ -16,6 +18,7 @@ import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
 @Service
 @RequiredArgsConstructor
 public class QuizReplyHistoryService {
+    private final CacheService cacheService;
     private final QuizReplyHistoryRepository quizReplyHistoryRepository;
 
     public Long countByQuizIdAndAnswer(Long quizId, String answer) {
@@ -43,5 +46,14 @@ public class QuizReplyHistoryService {
             HttpServletRequest httpServletRequest
     ) {
         return CompletableFuture.completedFuture(isSubmitted(authUser, quizId, httpServletRequest));
+    }
+
+    public Integer count(long quizId) {
+        var count = cacheService.getOrNull(CacheFactory.makeCachedQuizReplyHistoryCount(quizId));
+        return count != null ? count : 0;
+    }
+
+    public CompletableFuture<Integer> asyncCount(long quizId) {
+        return CompletableFuture.completedFuture(count(quizId));
     }
 }

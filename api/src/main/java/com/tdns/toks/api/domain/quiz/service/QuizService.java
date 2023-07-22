@@ -1,14 +1,11 @@
 package com.tdns.toks.api.domain.quiz.service;
 
-import com.tdns.toks.api.domain.category.service.CategoryService;
+import com.tdns.toks.api.domain.quiz.model.QuizInfoModel;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizDetailResponse;
-import com.tdns.toks.api.domain.quiz.model.QuizSimpleModel;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizSolveDto;
-import com.tdns.toks.api.domain.quiz.model.mapper.QuizMapper;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
-import com.tdns.toks.core.domain.quiz.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.entity.QuizReplyHistory;
 import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
@@ -29,51 +26,26 @@ import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
 @RequiredArgsConstructor
 public class QuizService {
     private final QuizRepository quizRepository;
-    private final CategoryService categoryService;
-    private final QuizCommentService quizCommentService;
-    private final QuizReplyHistoryCacheService quizReplyHistoryCacheService;
     private final QuizReplyHistoryService quizReplyHistoryService;
     private final QuizReplyHistoryRepository quizReplyHistoryRepository;
     private final QuizCacheService quizCacheService;
+    private final QuizInfoService quizInfoService;
 
-    @SneakyThrows
     public QuizDetailResponse get(AuthUser authUser, Long quizId, HttpServletRequest httpServletRequest) {
-        var quiz = quizCacheService.getCachedQuiz(quizId);
-        var category = categoryService.get(quiz.getCategoryId())
-                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
+        var quizModelInfo = quizInfoService.getQuizInfoModelByQuizId(quizId);
+        var isSubmitted = quizReplyHistoryService.isSubmitted(authUser, quizId, httpServletRequest);
 
-        var isSubmittedCf = quizReplyHistoryService.asyncIsSubmitted(authUser, quizId, httpServletRequest);
-
-        var quizReplyHistoryCount = quizReplyHistoryCacheService.count(quizId);
-        var quizCommentCount = quizCommentService.count(quizId);
-
-        return QuizMapper.toQuizResponse(
-                quiz,
-                category,
-                quizReplyHistoryCount,
-                quizCommentCount,
-                isSubmittedCf.get()
-        );
+        return QuizDetailResponse.of(quizModelInfo, isSubmitted);
     }
 
-    public Page<QuizSimpleModel> getAll(
+    public Page<QuizInfoModel> getAll(
             AuthUser authUser,
             Set<String> categoryIds,
             Integer page,
             Integer size
     ) {
         var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
-        return quizRepository.findAllByCategoryIdIn(categoryIds, pageable).map(this::resolveQuizSimpleDetail);
-    }
-
-    public QuizSimpleModel resolveQuizSimpleDetail(Quiz quiz) {
-        var category = categoryService.get(quiz.getCategoryId())
-                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
-
-        var quizReplyHistoryCount = quizReplyHistoryCacheService.count(quiz.getId());
-        var quizCommentCount = quizCommentService.count(quiz.getId());
-
-        return QuizMapper.toQuizSimpleResponse(quiz, category, quizReplyHistoryCount, quizCommentCount);
+        return quizRepository.findAllByCategoryIdIn(categoryIds, pageable).map(quizInfoService::getQuizInfoModelByQuiz);
     }
 
     @SneakyThrows

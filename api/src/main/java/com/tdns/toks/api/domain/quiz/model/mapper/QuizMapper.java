@@ -1,13 +1,12 @@
 package com.tdns.toks.api.domain.quiz.model.mapper;
 
 import com.tdns.toks.api.domain.category.model.CategoryModel;
-import com.tdns.toks.api.domain.quiz.model.dto.QuizDetailResponse;
+import com.tdns.toks.api.domain.quiz.model.QuizInfoModel;
 import com.tdns.toks.api.domain.quiz.model.QuizModel;
-import com.tdns.toks.api.domain.quiz.model.QuizSimpleModel;
 import com.tdns.toks.core.domain.quiz.entity.Quiz;
 
 public class QuizMapper {
-    public static QuizSimpleModel toQuizSimpleResponse(
+    public static QuizInfoModel toQuizInfoResponse(
             Quiz quiz,
             CategoryModel category,
             int quizReplyHistoryCount,
@@ -23,16 +22,6 @@ public class QuizMapper {
                 quiz.getAnswer()
         );
 
-        return new QuizSimpleModel(quizModel, category, quizReplyHistoryCount, quizCommentCount);
-    }
-
-    public static QuizDetailResponse toQuizResponse(
-            QuizModel quiz,
-            CategoryModel category,
-            int quizReplyHistoryCount,
-            int quizCommentCount,
-            boolean isSubmitted
-    ) {
-        return new QuizDetailResponse(quiz, category, quizReplyHistoryCount, quizCommentCount, isSubmitted);
+        return new QuizInfoModel(quizModel, category, quizReplyHistoryCount, quizCommentCount);
     }
 }

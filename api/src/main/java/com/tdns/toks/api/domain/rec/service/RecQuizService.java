@@ -1,6 +1,6 @@
 package com.tdns.toks.api.domain.rec.service;
 
-import com.tdns.toks.api.domain.quiz.service.QuizService;
+import com.tdns.toks.api.domain.quiz.service.QuizInfoService;
 import com.tdns.toks.api.domain.rec.model.dto.QuizRecResponse;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RecQuizService {
     private final QuizRepository quizRepository;
-    private final QuizService quizService;
+    private final QuizInfoService quizInfoService;
     private final RecQuizRepository recQuizRepository;
 
     /**
@@ -31,7 +31,7 @@ public class RecQuizService {
                 .orElseGet(() -> quizRepository.findTop3ByCategoryId(categoryId));
 
         var recQuizModels = recQuizzes.stream()
-                .map(quizService::resolveQuizSimpleDetail)
+                .map(quizInfoService::getQuizInfoModelByQuiz)
                 .collect(Collectors.toList());
 
         return new QuizRecResponse(recQuizModels);

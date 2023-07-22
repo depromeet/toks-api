@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,5 +66,9 @@ public class QuizCommentService {
     public int count(long quizId) {
         var count = cacheService.getOrNull(CacheFactory.makeCachedQuizCommentCount(quizId));
         return count != null ? count : 0;
+    }
+
+    public CompletableFuture<Integer> asyncCount(long quizId) {
+        return CompletableFuture.completedFuture(count(quizId));
     }
 }

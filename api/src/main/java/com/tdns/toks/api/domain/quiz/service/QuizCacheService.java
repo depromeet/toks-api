@@ -8,7 +8,10 @@ import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.quiz.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +43,11 @@ public class QuizCacheService {
         } else {
             return quizModel;
         }
+    }
+
+    @Async
+    public CompletableFuture<QuizModel> asyncGetCachedQuiz(Long quizId) {
+        return CompletableFuture.completedFuture(getCachedQuiz(quizId));
     }
 
     public void setCachedQuiz(Quiz quiz) {
