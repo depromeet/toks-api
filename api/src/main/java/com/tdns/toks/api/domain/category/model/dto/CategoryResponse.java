@@ -1,7 +1,7 @@
 package com.tdns.toks.api.domain.category.model.dto;
 
 import com.tdns.toks.api.domain.category.model.CategoryModel;
-import com.tdns.toks.core.domain.category.entity.UserCategory;
+import com.tdns.toks.core.domain.user.entity.UserCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

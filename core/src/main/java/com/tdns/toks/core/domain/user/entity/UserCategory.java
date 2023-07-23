@@ -1,4 +1,4 @@
-package com.tdns.toks.core.domain.category.entity;
+package com.tdns.toks.core.domain.user.entity;
 
 import com.tdns.toks.core.common.model.converter.StringArrayConverter;
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;

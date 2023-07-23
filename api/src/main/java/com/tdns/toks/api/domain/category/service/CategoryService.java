@@ -6,15 +6,22 @@ import com.tdns.toks.api.domain.category.model.dto.CategoryResponse.GetUserCateg
 import com.tdns.toks.api.domain.category.model.dto.CategoryResponse.SetUserCategoriesResponse;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
-import com.tdns.toks.core.domain.category.entity.UserCategory;
+import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.category.repository.CategoryRepository;
-import com.tdns.toks.core.domain.category.repository.UserCategoryRepository;
+import com.tdns.toks.core.domain.user.entity.UserCategory;
+import com.tdns.toks.core.domain.user.repository.UserCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -54,16 +61,22 @@ public class CategoryService {
         return Optional.of(categoryModels.get(categoryId));
     }
 
-    public GetUserCategoriesResponse getUserCategories(long userId) {
-        UserCategory userCategory = userCategoryRepository.findByUserId(userId).orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_SET_USER_CATEGORY));
+    public GetUserCategoriesResponse getUserCategories(AuthUser authUser) {
+        var userCategory = userCategoryRepository.findByUserId(authUser.getId())
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_SET_USER_CATEGORY));
+
         return new GetUserCategoriesResponse(userCategory.getCategoryIds());
     }
 
-    public SetUserCategoriesResponse setUserCategories(long userId, List<String> categories) {
-        UserCategory savedUserCategories = userCategoryRepository.save(UserCategory.builder()
-                .userId(userId)
-                .categoryIds(categories)
-                .build());
+    @Transactional
+    public SetUserCategoriesResponse setUserCategories(AuthUser authUser, List<String> categories) {
+        var savedUserCategories = userCategoryRepository.save(
+                UserCategory.builder()
+                        .userId(authUser.getId())
+                        .categoryIds(categories)
+                        .build()
+        );
+
         return new SetUserCategoriesResponse(savedUserCategories);
     }
 }
