@@ -27,9 +27,9 @@ public class RecController {
     @GetMapping("/rec/quizzes")
     public ResponseEntity<?> getRecommendQuizzes(
             @Nullable AuthUser authUser,
-            @RequestParam(name = "category") String category
+            @RequestParam(name = "quizId") Long quizId
     ) {
-        var response = recQuizService.getRecModels(authUser, category);
+        var response = recQuizService.getRecModels(authUser, quizId);
         return ResponseDto.ok(response);
     }
 }
