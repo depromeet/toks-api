@@ -30,7 +30,7 @@ public class CategoryController {
         return ResponseDto.ok(response);
     }
 
-    @Operation(summary = "사용자가 카테고리 조회")
+    @Operation(summary = "사용자 카테고리 조회")
     @Parameter(name = "authUser", hidden = true)
     @GetMapping
     public ResponseEntity<?> getUserCategory(
@@ -40,7 +40,7 @@ public class CategoryController {
         return ResponseDto.ok(response);
     }
 
-    @Operation(summary = "사용자가 카테고리 설정")
+    @Operation(summary = "사용자 카테고리 설정")
     @Parameter(name = "authUser", hidden = true)
     @PostMapping
     public ResponseEntity<?> setUserCategory(
