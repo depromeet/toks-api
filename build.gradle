@@ -140,6 +140,9 @@ subprojects { subproject ->
             testImplementation 'org.springframework.security:spring-security-test'
             testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:0.3.5")
             testImplementation 'com.drewnoakes:metadata-extractor:2.16.0'
+
+            // mac error
+            runtimeOnly('io.netty:netty-resolver-dns-native-macos:4.1.93.Final:osx-aarch_64')
         }
     }
 }
