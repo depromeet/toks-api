@@ -1,6 +1,7 @@
 package com.tdns.toks.core.domain.quiz.entity;
 
 import com.tdns.toks.core.common.model.converter.MapConverter;
+import com.tdns.toks.core.common.model.converter.StringArrayConverter;
 import com.tdns.toks.core.common.model.entity.BaseTimeEntity;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -56,14 +58,19 @@ public class Quiz extends BaseTimeEntity {
 
     @Column(nullable = false, name = "is_deleted")
     private Boolean deleted;
-    
+
+    @Convert(converter = StringArrayConverter.class)
+    private List<String> tags;
+
     public Quiz update(
             String title,
+            List<String> tags,
             String categoryId,
             QuizType quizType,
             Map<String, Object> question
     ) {
         this.title = title;
+        this.tags = tags;
         this.categoryId = categoryId;
         this.quizType = quizType;
         this.question = question;

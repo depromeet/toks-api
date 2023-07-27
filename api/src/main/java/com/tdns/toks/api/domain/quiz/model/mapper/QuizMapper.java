@@ -16,6 +16,7 @@ public class QuizMapper {
                 quiz.getId(),
                 quiz.getCategoryId(),
                 quiz.getTitle(),
+                quiz.getTags(),
                 quiz.getQuestion(),
                 quiz.getQuizType(),
                 quiz.getDescription(),

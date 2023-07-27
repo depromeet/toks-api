@@ -36,6 +36,7 @@ public class AdminQuizService {
         var question = quizRepository.save(
                 Quiz.builder()
                         .title(request.getTitle())
+                        .tags(request.getTags())
                         .categoryId(request.getCategoryId())
                         .question(request.getQuestion())
                         .quizType(request.getQuizType())
@@ -69,6 +70,7 @@ public class AdminQuizService {
         var updatedQuestion = quizRepository.save(
                 quiz.update(
                         request.getTitle(),
+                        request.getTags(),
                         request.getCategoryId(),
                         request.getQuizType(),
                         request.getQuestion()

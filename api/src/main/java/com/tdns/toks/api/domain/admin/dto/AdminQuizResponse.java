@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -14,6 +15,7 @@ import java.util.Map;
 public class AdminQuizResponse {
     private Long id;
     private String title;
+    private List<String> tags;
     private String categoryId;
     private Map<String, Object> question;
     private QuizType quizType;
@@ -25,6 +27,7 @@ public class AdminQuizResponse {
         return new AdminQuizResponse(
                 quiz.getId(),
                 quiz.getTitle(),
+                quiz.getTags(),
                 quiz.getCategoryId(),
                 quiz.getQuestion(),
                 quiz.getQuizType(),

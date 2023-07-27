@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -14,6 +15,7 @@ public class QuizModel {
     private Long id;
     private String categoryId;
     private String title;
+    private List<String> tags;
     private Map<String, Object> question;
     private QuizType quizType;
     private String description;
