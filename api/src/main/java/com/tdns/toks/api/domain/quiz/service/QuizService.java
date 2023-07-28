@@ -80,6 +80,8 @@ public class QuizService {
 
         quizReplyCountCf.join();
 
+        quizCacheService.incrementQuizReply(quizId);
+
         return new QuizSolveDto.QuizSolveResponse(quizReplyCountCf.get(), quiz.getDescription());
     }
 }

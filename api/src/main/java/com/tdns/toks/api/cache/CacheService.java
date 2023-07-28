@@ -24,4 +24,8 @@ public class CacheService {
     public <T> void delete(Cache<T> cache) {
         redisTemplate.delete(cache.getKey());
     }
+
+    public <T> void increment(Cache<T> cache) {
+        redisTemplate.opsForValue().increment(cache.getKey());
+    }
 }

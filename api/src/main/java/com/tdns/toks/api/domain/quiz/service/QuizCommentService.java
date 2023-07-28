@@ -60,6 +60,8 @@ public class QuizCommentService {
 
         var likeCount = quizCommentLikeService.count(quizComment.getId());
 
+        cacheService.increment(CacheFactory.makeCachedQuizCommentCount(quizId));
+
         return QuizCommentResponse.from(quizComment, user.getNickname(), likeCount);
     }
 

@@ -72,4 +72,9 @@ public class QuizCacheService {
         var cache = CacheFactory.makeCachedQuiz(quizId);
         cacheService.delete(cache);
     }
+
+    public void incrementQuizReply(Long quizId) {
+        var cache = CacheFactory.makeCachedQuizReplyHistoryCount(quizId);
+        cacheService.increment(cache);
+    }
 }
