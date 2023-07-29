@@ -2,6 +2,7 @@ package com.tdns.toks.api.domain.quiz.service;
 
 import com.tdns.toks.api.domain.quiz.model.QuizInfoModel;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizDetailResponse;
+import com.tdns.toks.api.domain.quiz.model.dto.QuizSearchRequest;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizSolveDto;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
@@ -42,14 +42,15 @@ public class QuizService {
         return QuizDetailResponse.of(quizModelInfoCf.get(), isSubmittedCf.get());
     }
 
-    public Page<QuizInfoModel> getAll(
-            AuthUser authUser,
-            Set<String> categoryIds,
-            Integer page,
-            Integer size
-    ) {
-        var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
-        return quizRepository.findAllByCategoryIdIn(categoryIds, pageable).map(quizInfoService::getQuizInfoModelByQuiz);
+    public Page<QuizInfoModel> search(AuthUser authUser, QuizSearchRequest request) {
+        var pageable = PageRequest.of(
+                request.getPage(),
+                request.getSize(),
+                Sort.by(Sort.Order.desc("createdAt"))
+        );
+
+        return quizRepository.findAllByCategoryIdIn(request.getCategoryIds(), pageable)
+                .map(quizInfoService::getQuizInfoModelByQuiz);
     }
 
     @SneakyThrows

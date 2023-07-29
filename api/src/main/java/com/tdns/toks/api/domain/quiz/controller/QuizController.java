@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.quiz.controller;
 
+import com.tdns.toks.api.domain.quiz.model.dto.QuizSearchRequest;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizSolveDto;
 import com.tdns.toks.api.domain.quiz.service.QuizService;
 import com.tdns.toks.core.common.model.dto.PageableResponseDto;
@@ -8,6 +9,7 @@ import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -16,11 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Set;
 
 @Tag(name = "퀴즈", description = "QUIZ API")
 @RestController
@@ -29,7 +29,7 @@ import java.util.Set;
 public class QuizController {
     private final QuizService quizService;
 
-    @Operation(summary = "퀴즈 단건 조회")
+    @Operation(summary = "퀴즈 상세 조회")
     @GetMapping("/quizzes/{quizId}")
     public ResponseEntity<?> get(
             @Nullable AuthUser authUser,
@@ -44,17 +44,9 @@ public class QuizController {
     @GetMapping("/quizzes")
     public ResponseEntity<?> getAll(
             @Nullable AuthUser authUser,
-            @RequestParam Set<String> categoryIds,
-            @RequestParam Integer page,
-            @RequestParam Integer size
+            @ParameterObject QuizSearchRequest request
     ) {
-        var response = quizService.getAll(
-                authUser,
-                categoryIds,
-                page,
-                size
-        );
-
+        var response = quizService.search(authUser, request);
         return PageableResponseDto.ok(response);
     }
 
