@@ -5,7 +5,6 @@ import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserRenewAccessTokenRe
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -27,7 +26,6 @@ public class AuthController {
     private final AuthService authService;
 
     @Operation(summary = "인증 사용자 본인 정보 조회")
-    @Parameter(name = "authUser", hidden = true)
     @GetMapping("/my-infos")
     public ResponseEntity<?> getMyInfos(AuthUser authUser) {
         var response = authService.getMyInfos(authUser);
@@ -35,7 +33,6 @@ public class AuthController {
     }
 
     @Operation(summary = "사용자 accessToken 갱신 요청")
-    @Parameter(name = "authUser", hidden = true)
     @PostMapping("/renew")
     public ResponseEntity<?> renewAccessToken(
             @RequestBody UserRenewAccessTokenRequest request
@@ -45,7 +42,6 @@ public class AuthController {
     }
 
     @Operation(summary = "사용자 로그아웃, refreshToken 삭제 처리")
-    @Parameter(name = "authUser", hidden = true)
     @PatchMapping("/logout")
     public ResponseEntity<Void> userLogout(
             AuthUser authUser
@@ -55,7 +51,6 @@ public class AuthController {
     }
 
     @Operation(summary = "사용자 상태 조회")
-    @Parameter(name = "authUser", hidden = true)
     @GetMapping("/status")
     public ResponseEntity<?> userStatus(
             @Nullable AuthUser authUser

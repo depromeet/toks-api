@@ -5,7 +5,6 @@ import com.tdns.toks.api.domain.user.service.UserService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -23,7 +22,6 @@ public class UserController {
     private final UserService userService;
 
     @Operation(summary = "사용자 닉네임 설정")
-    @Parameter(name = "authUser", hidden = true)
     @PatchMapping("/nickname")
     public ResponseEntity<?> setUserNickname(
             AuthUser authUser,

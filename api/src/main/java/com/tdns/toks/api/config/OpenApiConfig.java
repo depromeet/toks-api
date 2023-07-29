@@ -1,5 +1,6 @@
 package com.tdns.toks.api.config;
 
+import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -9,16 +10,26 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
+import lombok.RequiredArgsConstructor;
+import org.springdoc.core.SpringDocUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 import static com.tdns.toks.core.common.security.Constants.TOKS_AUTH_HEADER_KEY;
 
 @Configuration
-public class OpenApiConfig {
+@RequiredArgsConstructor
+public class OpenApiConfig implements WebMvcConfigurer {
+    @PostConstruct
+    public void init() {
+        SpringDocUtils.getConfig().addRequestWrapperToIgnore(AuthUser.class);
+    }
+
     @Bean
     public OpenAPI openAPI(@Value("${springdoc.version}") String appVersion) {
         return new OpenAPI()
@@ -39,6 +50,5 @@ public class OpenApiConfig {
                         .version(appVersion)
                         .license(new License().name("TDNS. All rights reserved.").url("https://tokstudy.com/"))
                 );
-
     }
 }

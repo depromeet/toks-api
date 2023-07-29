@@ -4,7 +4,6 @@ import com.tdns.toks.api.domain.rec.service.RecQuizService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -23,7 +22,6 @@ public class RecController {
     private final RecQuizService recQuizService;
 
     @Operation(summary = "퀴즈 추천 데이터 조회", description = "추천 데이터는 최대 3개까지")
-    @Parameter(name = "authUser", hidden = true)
     @GetMapping("/rec/quizzes")
     public ResponseEntity<?> getRecommendQuizzes(
             @Nullable AuthUser authUser,

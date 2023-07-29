@@ -4,7 +4,6 @@ import com.tdns.toks.api.domain.quiz.service.QuizCommentLikeService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -22,7 +21,6 @@ public class QuizCommentLikeController {
     private final QuizCommentLikeService quizCommentLikeService;
 
     @Operation(summary = "댓글 좋아요")
-    @Parameter(name = "authUser", hidden = true)
     @PostMapping(path = "/comments/{commendId}/like")
     public ResponseEntity<Void> like(AuthUser authUser, @PathVariable Long commendId) {
         quizCommentLikeService.like(authUser, commendId);
@@ -30,7 +28,6 @@ public class QuizCommentLikeController {
     }
 
     @Operation(summary = "댓글 좋아요 취소")
-    @Parameter(name = "authUser", hidden = true)
     @PostMapping(path = "/comments/{commendId}/unlike")
     public ResponseEntity<Void> unlike(AuthUser authUser, @PathVariable Long commendId) {
         quizCommentLikeService.unlike(authUser, commendId);

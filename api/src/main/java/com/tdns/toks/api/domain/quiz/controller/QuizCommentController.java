@@ -6,7 +6,6 @@ import com.tdns.toks.core.common.model.dto.PageableResponseDto;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -38,7 +37,6 @@ public class QuizCommentController {
     }
 
     @Operation(summary = "댓글 작성")
-    @Parameter(name = "authUser", hidden = true)
     @PostMapping("/quizzes/{quizId}/comments")
     public ResponseEntity<?> insert(
             AuthUser authUser,

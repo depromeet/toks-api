@@ -5,7 +5,6 @@ import com.tdns.toks.api.domain.category.service.CategoryService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -31,7 +30,6 @@ public class CategoryController {
     }
 
     @Operation(summary = "사용자 카테고리 조회")
-    @Parameter(name = "authUser", hidden = true)
     @GetMapping
     public ResponseEntity<?> getUserCategory(
             AuthUser authUser
@@ -41,7 +39,6 @@ public class CategoryController {
     }
 
     @Operation(summary = "사용자 카테고리 설정")
-    @Parameter(name = "authUser", hidden = true)
     @PostMapping
     public ResponseEntity<?> setUserCategory(
             AuthUser authUser,

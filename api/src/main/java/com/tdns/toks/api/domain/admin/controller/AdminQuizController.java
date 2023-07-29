@@ -7,7 +7,6 @@ import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.annotation.AdminPermission;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -32,7 +31,6 @@ public class AdminQuizController {
     private final AdminQuizService adminQuizService;
 
     @Operation(summary = "퀴즈 추가")
-    @Parameter(name = "authUser", hidden = true)
     @AdminPermission
     @PostMapping
     public ResponseEntity<?> insert(
@@ -44,7 +42,6 @@ public class AdminQuizController {
     }
 
     @Operation(summary = "퀴즈 단건 조회")
-    @Parameter(name = "authUser", hidden = true)
     @AdminPermission
     @GetMapping(path = "/{quizId}")
     public ResponseEntity<?> get(
@@ -56,7 +53,6 @@ public class AdminQuizController {
     }
 
     @Operation(summary = "퀴즈 다건 조회")
-    @Parameter(name = "authUser", hidden = true)
     @AdminPermission
     @GetMapping
     public ResponseEntity<?> getAll(
@@ -69,7 +65,6 @@ public class AdminQuizController {
     }
 
     @Operation(summary = "퀴즈 수정")
-    @Parameter(name = "authUser", hidden = true)
     @AdminPermission
     @PatchMapping(path = "/{quizId}")
     public ResponseEntity<?> update(
@@ -82,7 +77,6 @@ public class AdminQuizController {
     }
 
     @Operation(summary = "퀴즈 삭제")
-    @Parameter(name = "authUser", hidden = true)
     @AdminPermission
     @DeleteMapping
     public ResponseEntity<Void> delete(

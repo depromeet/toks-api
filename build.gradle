@@ -20,6 +20,7 @@ ext {
     set('logbackVersion', '1.2.9')
     set('mapStructVersion', '1.4.2.Final')
     set('awsSecretManagerVersion', '2.4.1')
+    set('jwtVersion', '0.11.2')
 }
 
 configurations {
@@ -88,58 +89,59 @@ subprojects { subproject ->
             /* spring starter */
             implementation("org.springframework.boot:spring-boot-starter-web")
             implementation("org.springframework.boot:spring-boot-starter-webflux")
-            implementation 'org.springframework.boot:spring-boot-starter-validation'
-            implementation 'org.springframework.boot:spring-boot-starter-security'
-            implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-            implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-            implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+            implementation("org.springframework.boot:spring-boot-starter-validation")
+            implementation("org.springframework.boot:spring-boot-starter-security")
+            implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+            implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+            implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
             /* reactor */
-            implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+            implementation("org.projectreactor:reactor-spring:1.0.1.RELEASE")
 
             /* database */
-            implementation 'mysql:mysql-connector-java:8.0.28'
+            implementation("mysql:mysql-connector-java:8.0.28")
 
             /* aws */
-            implementation "io.awspring.cloud:spring-cloud-starter-aws-secrets-manager-config:${awsSecretManagerVersion}"
+            implementation("io.awspring.cloud:spring-cloud-starter-aws-secrets-manager-config:${awsSecretManagerVersion}")
 
             /* apache common utils */
-            implementation 'org.apache.commons:commons-lang3:3.12.0'
-            implementation 'org.apache.commons:commons-collections4:4.4'
-            implementation 'org.apache.commons:commons-pool2:2.11.1'
+            implementation("org.apache.commons:commons-lang3:3.12.0")
+            implementation("org.apache.commons:commons-collections4:4.4")
+            implementation("org.apache.commons:commons-pool2:2.11.1")
 
             /* swagger */
-            implementation "org.springdoc:springdoc-openapi-ui:${springdocOpenapiUIVersion}"
+            implementation("org.springdoc:springdoc-openapi-ui:${springdocOpenapiUIVersion}")
+            implementation("org.springdoc:springdoc-openapi-webmvc-core:${springdocOpenapiUIVersion}")
 
             /* google utils */
-            implementation 'com.google.guava:guava:31.1-jre'
+            implementation("com.google.guava:guava:31.1-jre")
 
             /* log */
-            implementation "ch.qos.logback:logback-classic:${logbackVersion}"
-            implementation "ch.qos.logback:logback-access:${logbackVersion}"
-            implementation "ch.qos.logback:logback-core:${logbackVersion}"
+            implementation("ch.qos.logback:logback-classic:${logbackVersion}")
+            implementation("ch.qos.logback:logback-access:${logbackVersion}")
+            implementation("ch.qos.logback:logback-core:${logbackVersion}")
 
             /* lombok */
-            compileOnly 'org.projectlombok:lombok'
-            annotationProcessor 'org.projectlombok:lombok'
+            compileOnly("org.projectlombok:lombok")
+            annotationProcessor("org.projectlombok:lombok")
 
             /* hibernate-spatial */
-            implementation group: 'org.hibernate', name: 'hibernate-spatial', version: '5.6.0.Final'
+            implementation(group: 'org.hibernate', name: 'hibernate-spatial', version: '5.6.0.Final')
 
             /* jwt */
-            implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-            implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
-            runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+            implementation("io.jsonwebtoken:jjwt-api:${jwtVersion}")
+            implementation("io.jsonwebtoken:jjwt-jackson:${jwtVersion}")
+            runtimeOnly("io.jsonwebtoken:jjwt-impl:${jwtVersion}")
 
             /* spring dev tools */
-            developmentOnly 'org.springframework.boot:spring-boot-devtools'
+            developmentOnly("org.springframework.boot:spring-boot-devtools")
 
             /* test */
-            testImplementation 'org.springframework.boot:spring-boot-starter-test'
-            testImplementation 'io.projectreactor:reactor-test'
-            testImplementation 'org.springframework.security:spring-security-test'
+            testImplementation("org.springframework.boot:spring-boot-starter-test")
+            testImplementation("io.projectreactor:reactor-test")
+            testImplementation("org.springframework.security:spring-security-test")
             testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:0.3.5")
-            testImplementation 'com.drewnoakes:metadata-extractor:2.16.0'
+            testImplementation("com.drewnoakes:metadata-extractor:2.16.0")
         }
     }
 }

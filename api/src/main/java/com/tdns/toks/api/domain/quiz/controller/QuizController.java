@@ -6,7 +6,6 @@ import com.tdns.toks.core.common.model.dto.PageableResponseDto;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -31,7 +30,6 @@ public class QuizController {
     private final QuizService quizService;
 
     @Operation(summary = "퀴즈 단건 조회")
-    @Parameter(name = "authUser", hidden = true)
     @GetMapping("/quizzes/{quizId}")
     public ResponseEntity<?> get(
             @Nullable AuthUser authUser,
@@ -43,7 +41,6 @@ public class QuizController {
     }
 
     @Operation(summary = "퀴즈 다건 조회")
-    @Parameter(name = "authUser", hidden = true)
     @GetMapping("/quizzes")
     public ResponseEntity<?> getAll(
             @Nullable AuthUser authUser,
@@ -62,7 +59,6 @@ public class QuizController {
     }
 
     @Operation(summary = "퀴즈 문제 풀이", description = "[임시] 추천 데이터는 최대 3개까지")
-    @Parameter(name = "authUser", hidden = true)
     @PostMapping("/quizzes/{quizId}")
     public ResponseEntity<?> solveQuiz(
             @Nullable AuthUser authUser,
