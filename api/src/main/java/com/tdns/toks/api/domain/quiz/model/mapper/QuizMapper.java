@@ -10,6 +10,7 @@ public class QuizMapper {
             Quiz quiz,
             CategoryModel category,
             int quizReplyHistoryCount,
+            long answerReplyCount,
             int quizCommentCount
     ) {
         var quizModel = new QuizModel(
@@ -23,6 +24,6 @@ public class QuizMapper {
                 quiz.getAnswer()
         );
 
-        return new QuizInfoModel(quizModel, category, quizReplyHistoryCount, quizCommentCount);
+        return new QuizInfoModel(quizModel, category, quizReplyHistoryCount,answerReplyCount, quizCommentCount);
     }
 }

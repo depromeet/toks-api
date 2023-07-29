@@ -22,13 +22,14 @@ public class QuizInfoService {
 
     public QuizInfoModel getQuizInfoModelByQuizId(Long quizId) {
         var quiz = quizCacheService.getCachedQuiz(quizId);
+        CompletableFuture<Long> longCompletableFuture = quizReplyHistoryService.asyncCountByQuizIdAndAnswer(quiz.getId(), quiz.getAnswer());
         var category = categoryService.get(quiz.getCategoryId())
                 .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
 
         var quizReplyHistoryCount = quizReplyHistoryService.count(quiz.getId());
         var quizCommentCount = quizCommentService.count(quizId);
-
-        return new QuizInfoModel(quiz, category, quizReplyHistoryCount, quizCommentCount);
+        Long answerReplyCount = longCompletableFuture.join();
+        return new QuizInfoModel(quiz, category, quizReplyHistoryCount, answerReplyCount, quizCommentCount);
     }
 
     @Async
@@ -41,8 +42,9 @@ public class QuizInfoService {
                 .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
 
         var quizReplyHistoryCount = quizReplyHistoryService.count(quiz.getId());
+        var answerCount = quizReplyHistoryService.countByQuizIdAndAnswer(quiz.getId(), quiz.getAnswer());
         var quizCommentCount = quizCommentService.count(quiz.getId());
 
-        return QuizMapper.toQuizInfoResponse(quiz, category, quizReplyHistoryCount, quizCommentCount);
+        return QuizMapper.toQuizInfoResponse(quiz, category, quizReplyHistoryCount,answerCount, quizCommentCount);
     }
 }

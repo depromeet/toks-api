@@ -13,6 +13,7 @@ public class QuizDetailResponse {
     private QuizModel quiz;
     private CategoryModel category;
     private int quizReplyHistoryCount;
+    private int answerReplyCount;
     private int quizCommentCount;
     @JsonProperty("isSubmitted")
     private boolean isSubmitted;
@@ -22,6 +23,7 @@ public class QuizDetailResponse {
                 quizInfo.getQuiz(),
                 quizInfo.getCategory(),
                 quizInfo.getQuizReplyHistoryCount(),
+                quizInfo.getAnswerReplyCount().intValue(),
                 quizInfo.getQuizCommentCount(),
                 isSubmitted
         );
