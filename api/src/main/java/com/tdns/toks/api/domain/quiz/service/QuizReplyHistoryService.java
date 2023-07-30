@@ -2,6 +2,7 @@ package com.tdns.toks.api.domain.quiz.service;
 
 import com.tdns.toks.api.cache.CacheFactory;
 import com.tdns.toks.api.cache.CacheService;
+import com.tdns.toks.api.domain.quiz.model.QuizReplyModel;
 import com.tdns.toks.core.domain.auth.AuthUserValidator;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
@@ -55,5 +56,34 @@ public class QuizReplyHistoryService {
 
     public CompletableFuture<Integer> asyncCount(long quizId) {
         return CompletableFuture.completedFuture(count(quizId));
+    }
+
+
+    public QuizReplyModel getReplyModel(@Nullable AuthUser authUser, Long quizId, HttpServletRequest httpServletRequest) {
+        if (AuthUserValidator.isAuthenticated(authUser)) {
+            var replyModel = quizReplyHistoryRepository.findByQuizIdAndCreatedBy(quizId, authUser.getId());
+            if (replyModel.isPresent()) {
+                return QuizReplyModel.from(replyModel.get());
+            }
+        }
+
+        var clientIp = getClientIpAddress(httpServletRequest);
+        if (clientIp != null) {
+            var replyModel = quizReplyHistoryRepository.findByQuizIdAndIpAddress(quizId, clientIp);
+            if (replyModel.isPresent()) {
+                return QuizReplyModel.from(replyModel.get());
+            }
+        }
+
+        return null;
+    }
+
+    @Async
+    public CompletableFuture<QuizReplyModel> asyncGetReplyModel(
+            @Nullable AuthUser authUser,
+            Long quizId,
+            HttpServletRequest httpServletRequest
+    ) {
+        return CompletableFuture.completedFuture(getReplyModel(authUser, quizId, httpServletRequest));
     }
 }

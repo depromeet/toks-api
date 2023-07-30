@@ -35,11 +35,18 @@ public class QuizService {
     @SneakyThrows
     public QuizDetailResponse get(AuthUser authUser, Long quizId, HttpServletRequest httpServletRequest) {
         var quizModelInfoCf = quizInfoService.asyncGetQuizInfoModelByQuizId(quizId);
-        var isSubmittedCf = quizReplyHistoryService.asyncIsSubmitted(authUser, quizId, httpServletRequest);
+        var quizReplyModelCf = quizReplyHistoryService.asyncGetReplyModel(
+                authUser,
+                quizId,
+                httpServletRequest
+        );
 
-        CompletableFuture.allOf(quizModelInfoCf, isSubmittedCf).join();
+        CompletableFuture.allOf(quizModelInfoCf, quizReplyModelCf).join();
 
-        return QuizDetailResponse.of(quizModelInfoCf.get(), isSubmittedCf.get());
+        return QuizDetailResponse.of(
+                quizModelInfoCf.get(),
+                quizReplyModelCf.get()
+        );
     }
 
     public Page<QuizInfoModel> search(AuthUser authUser, QuizSearchRequest request) {

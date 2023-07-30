@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 public interface QuizReplyHistoryRepository extends JpaRepository<QuizReplyHistory, Long> {
     @Transactional(readOnly = true)
@@ -15,4 +17,10 @@ public interface QuizReplyHistoryRepository extends JpaRepository<QuizReplyHisto
 
     @Transactional(readOnly = true)
     Long countByQuizIdAndAnswer(Long quizId, String answer);
+
+    @Transactional(readOnly = true)
+    Optional<QuizReplyHistory> findByQuizIdAndCreatedBy(Long quizId, Long createdBy);
+
+    @Transactional(readOnly = true)
+    Optional<QuizReplyHistory> findByQuizIdAndIpAddress(Long quizId, String ipAddress);
 }

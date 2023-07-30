@@ -25,7 +25,7 @@ public class RecQuizService {
      * - round는 총 3개 이고, 랜덤하게 뽑아서 사용 진행
      * - 추후, 추천 정보 제공을 위한 알고리즘 개발 진행
      */
-    public QuizRecResponse getRecModels(AuthUser authUser, Long quizId) {
+    public QuizRecResponse getRecQuizModels(AuthUser authUser, Long quizId) {
         var quizModel = quizCacheService.getCachedQuiz(quizId);
         var randomRound = new Random().nextInt(2) + 1;
 

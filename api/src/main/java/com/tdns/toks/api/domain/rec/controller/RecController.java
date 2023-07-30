@@ -16,18 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "추천 서비스", description = "Rec API")
 @RestController
-@RequestMapping(path = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/v1/rec", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class RecController {
     private final RecQuizService recQuizService;
 
     @Operation(summary = "퀴즈 추천 데이터 조회", description = "추천 데이터는 최대 3개까지")
-    @GetMapping("/rec/quizzes")
-    public ResponseEntity<?> getRecommendQuizzes(
+    @GetMapping("/quizzes")
+    public ResponseEntity<?> getRecQuizzes(
             @Nullable AuthUser authUser,
             @RequestParam(name = "quizId") Long quizId
     ) {
-        var response = recQuizService.getRecModels(authUser, quizId);
+        var response = recQuizService.getRecQuizModels(authUser, quizId);
         return ResponseDto.ok(response);
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tdns.toks.api.domain.category.model.CategoryModel;
 import com.tdns.toks.api.domain.quiz.model.QuizInfoModel;
 import com.tdns.toks.api.domain.quiz.model.QuizModel;
+import com.tdns.toks.api.domain.quiz.model.QuizReplyModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -17,15 +18,20 @@ public class QuizDetailResponse {
     private int quizCommentCount;
     @JsonProperty("isSubmitted")
     private boolean isSubmitted;
+    private QuizReplyModel quizReply;
 
-    public static QuizDetailResponse of(QuizInfoModel quizInfo, boolean isSubmitted) {
+    public static QuizDetailResponse of(
+            QuizInfoModel quizInfo,
+            QuizReplyModel replyModel
+    ) {
         return new QuizDetailResponse(
                 quizInfo.getQuiz(),
                 quizInfo.getCategory(),
                 quizInfo.getQuizReplyHistoryCount(),
                 quizInfo.getAnswerReplyCount().intValue(),
                 quizInfo.getQuizCommentCount(),
-                isSubmitted
+                replyModel != null,
+                replyModel
         );
     }
 }
