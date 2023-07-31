@@ -7,8 +7,6 @@ import com.tdns.toks.api.domain.quiz.model.dto.QuizSolveDto;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
-import com.tdns.toks.core.domain.quiz.entity.QuizReplyHistory;
-import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -28,12 +26,11 @@ import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
 public class QuizService {
     private final QuizRepository quizRepository;
     private final QuizReplyHistoryService quizReplyHistoryService;
-    private final QuizReplyHistoryRepository quizReplyHistoryRepository;
     private final QuizCacheService quizCacheService;
     private final QuizInfoService quizInfoService;
 
     @SneakyThrows
-    public QuizDetailResponse get(AuthUser authUser, Long quizId, HttpServletRequest httpServletRequest) {
+    public QuizDetailResponse getDetail(AuthUser authUser, Long quizId, HttpServletRequest httpServletRequest) {
         var quizModelInfoCf = quizInfoService.asyncGetQuizInfoModelByQuizId(quizId);
         var quizReplyModelCf = quizReplyHistoryService.asyncGetReplyModel(
                 authUser,
@@ -79,12 +76,7 @@ public class QuizService {
 
         var quizReplyCountCf = quizReplyHistoryService.asyncCountByQuizIdAndAnswer(quizId, request.getAnswer());
 
-        quizReplyHistoryRepository.save(QuizReplyHistory.builder()
-                .quizId(quizId)
-                .answer(request.getAnswer())
-                .ipAddress(authUser == null ? clientIp : null)
-                .createdBy(authUser == null ? null : authUser.getId())
-                .build());
+        quizReplyHistoryService.save(authUser, quizId, request.getAnswer(), clientIp);
 
         quizReplyCountCf.join();
 

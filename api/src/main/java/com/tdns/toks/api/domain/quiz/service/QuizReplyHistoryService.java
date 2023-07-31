@@ -5,11 +5,13 @@ import com.tdns.toks.api.cache.CacheService;
 import com.tdns.toks.api.domain.quiz.model.QuizReplyModel;
 import com.tdns.toks.core.domain.auth.AuthUserValidator;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
+import com.tdns.toks.core.domain.quiz.entity.QuizReplyHistory;
 import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.CompletableFuture;
@@ -85,5 +87,17 @@ public class QuizReplyHistoryService {
             HttpServletRequest httpServletRequest
     ) {
         return CompletableFuture.completedFuture(getReplyModel(authUser, quizId, httpServletRequest));
+    }
+
+    @Transactional
+    public QuizReplyHistory save(AuthUser authUser, Long quizId, String answer, String clientIp) {
+        return quizReplyHistoryRepository.save(
+                QuizReplyHistory.builder()
+                        .quizId(quizId)
+                        .answer(answer)
+                        .ipAddress(authUser == null ? clientIp : null)
+                        .createdBy(authUser == null ? null : authUser.getId())
+                        .build()
+        );
     }
 }

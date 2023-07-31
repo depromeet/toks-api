@@ -36,7 +36,7 @@ public class QuizController {
             @PathVariable Long quizId,
             HttpServletRequest httpServletRequest
     ) {
-        var response = quizService.get(authUser, quizId, httpServletRequest);
+        var response = quizService.getDetail(authUser, quizId, httpServletRequest);
         return ResponseDto.ok(response);
     }
 
