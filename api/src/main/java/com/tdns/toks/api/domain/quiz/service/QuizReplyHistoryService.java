@@ -2,11 +2,14 @@ package com.tdns.toks.api.domain.quiz.service;
 
 import com.tdns.toks.api.cache.CacheFactory;
 import com.tdns.toks.api.cache.CacheService;
+import com.tdns.toks.api.domain.quiz.model.QuizReplyCountsModel;
 import com.tdns.toks.api.domain.quiz.model.QuizReplyModel;
 import com.tdns.toks.core.domain.auth.AuthUserValidator;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.quiz.entity.QuizReplyHistory;
+import com.tdns.toks.core.domain.quiz.model.QuizReplyCountModel;
 import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
+import com.tdns.toks.core.domain.quiz.type.QuizType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.scheduling.annotation.Async;
@@ -15,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
 
@@ -23,6 +28,7 @@ import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
 public class QuizReplyHistoryService {
     private final CacheService cacheService;
     private final QuizReplyHistoryRepository quizReplyHistoryRepository;
+    private final QuizCacheService quizCacheService;
 
     public Long countByQuizIdAndAnswer(Long quizId, String answer) {
         return quizReplyHistoryRepository.countByQuizIdAndAnswer(quizId, answer);
@@ -99,5 +105,35 @@ public class QuizReplyHistoryService {
                         .createdBy(authUser == null ? null : authUser.getId())
                         .build()
         );
+    }
+
+    public QuizReplyCountsModel getQuizReplyStatistics(Long quizId) {
+        var quizModel = quizCacheService.getCachedQuiz(quizId);
+
+        var quizReplyHistoryModel = quizReplyHistoryRepository.findQuizReplyCount(
+                quizModel.getId(),
+                QuizType.getAnswer(quizModel.getQuizType())
+        );
+
+        if (quizReplyHistoryModel.stream().anyMatch(a -> a.getCount() == null || a.getAnswer() == null)) {
+            return null;
+        }
+
+        var totalCount = quizReplyHistoryModel.stream()
+                .mapToInt(QuizReplyCountModel::getCount).sum();
+
+        var statistics = quizReplyHistoryModel.stream()
+                .map(reply -> new QuizReplyCountsModel.ReplyModel(
+                                reply.getAnswer(),
+                                reply.getCount()
+                        )
+                ).collect(Collectors.toMap(QuizReplyCountsModel.ReplyModel::getAnswer, Function.identity()));
+
+        return new QuizReplyCountsModel(totalCount, statistics);
+    }
+
+    @Async
+    public CompletableFuture<QuizReplyCountsModel> asyncGetQuizReplyStatistics(Long quizId) {
+        return CompletableFuture.completedFuture(getQuizReplyStatistics(quizId));
     }
 }

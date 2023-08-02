@@ -30,19 +30,25 @@ public class QuizService {
     private final QuizInfoService quizInfoService;
 
     @SneakyThrows
-    public QuizDetailResponse getDetail(AuthUser authUser, Long quizId, HttpServletRequest httpServletRequest) {
+    public QuizDetailResponse getDetail(
+            AuthUser authUser,
+            Long quizId,
+            HttpServletRequest httpServletRequest
+    ) {
         var quizModelInfoCf = quizInfoService.asyncGetQuizInfoModelByQuizId(quizId);
         var quizReplyModelCf = quizReplyHistoryService.asyncGetReplyModel(
                 authUser,
                 quizId,
                 httpServletRequest
         );
+        var quizReplyCountsModelCf = quizReplyHistoryService.asyncGetQuizReplyStatistics(quizId);
 
-        CompletableFuture.allOf(quizModelInfoCf, quizReplyModelCf).join();
+        CompletableFuture.allOf(quizModelInfoCf, quizReplyModelCf, quizReplyCountsModelCf).join();
 
         return QuizDetailResponse.of(
                 quizModelInfoCf.get(),
-                quizReplyModelCf.get()
+                quizReplyModelCf.get(),
+                quizReplyCountsModelCf.get()
         );
     }
 
