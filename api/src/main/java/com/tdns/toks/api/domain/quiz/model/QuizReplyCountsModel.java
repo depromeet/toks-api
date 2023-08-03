@@ -8,13 +8,13 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 public class QuizReplyCountsModel {
-    private Integer totalCount;
+    private Long totalCount;
     private Map<String, ReplyModel> replyCount;
 
     @Data
     @AllArgsConstructor
     public static class ReplyModel {
         private String answer;
-        private Integer count;
+        private Long count;
     }
 }

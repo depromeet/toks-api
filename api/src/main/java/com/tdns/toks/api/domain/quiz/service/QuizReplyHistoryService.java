@@ -110,17 +110,15 @@ public class QuizReplyHistoryService {
     public QuizReplyCountsModel getQuizReplyStatistics(Long quizId) {
         var quizModel = quizCacheService.getCachedQuiz(quizId);
 
-        var quizReplyHistoryModel = quizReplyHistoryRepository.findQuizReplyCount(
-                quizModel.getId(),
-                QuizType.getAnswer(quizModel.getQuizType())
-        );
+        var answer = QuizType.getAnswer(quizModel.getQuizType());
 
-        if (quizReplyHistoryModel.stream().anyMatch(a -> a.getCount() == null || a.getAnswer() == null)) {
-            return null;
-        }
+        var quizReplyHistoryModel = quizReplyHistoryRepository.findQuizReplyCount(quizModel.getId(), answer)
+                .stream()
+                .filter(model -> (model.getAnswer() != null && model.getCount() != null))
+                .collect(Collectors.toList());
 
         var totalCount = quizReplyHistoryModel.stream()
-                .mapToInt(QuizReplyCountModel::getCount).sum();
+                .mapToLong(QuizReplyCountModel::getCount).sum();
 
         var statistics = quizReplyHistoryModel.stream()
                 .map(reply -> new QuizReplyCountsModel.ReplyModel(

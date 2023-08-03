@@ -29,7 +29,8 @@ public interface QuizReplyHistoryRepository extends JpaRepository<QuizReplyHisto
     @Transactional(readOnly = true)
     Optional<QuizReplyHistory> findByQuizIdAndIpAddress(Long quizId, String ipAddress);
 
+    // TODO QueryDsl 변경
     @Transactional(readOnly = true)
-    @Query(value = "SELECT qrh.answer, count(qrh.id) FROM quiz_reply_history qrh WHERE qrh.quiz_id = :quizId AND qrh.answer IN :answer", nativeQuery = true)
+    @Query(value = "SELECT qrh.answer AS answer, count(qrh.id) AS count FROM quiz_reply_history qrh WHERE qrh.quiz_id = :quizId AND qrh.answer IN :answer", nativeQuery = true)
     List<QuizReplyCountModel> findQuizReplyCount(@Param("quizId") Long quizId, @Param("answer") Set<String> answer);
 }
