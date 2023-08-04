@@ -8,6 +8,7 @@ import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
+import com.tdns.toks.core.domain.user.repository.UserActivityCountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
@@ -28,6 +29,7 @@ public class QuizService {
     private final QuizReplyHistoryService quizReplyHistoryService;
     private final QuizCacheService quizCacheService;
     private final QuizInfoService quizInfoService;
+    private final UserActivityCountRepository userActivityCountRepository;
 
     @SneakyThrows
     public QuizDetailResponse getDetail(
@@ -71,6 +73,10 @@ public class QuizService {
             QuizSolveDto.QuizSolveRequest request,
             HttpServletRequest httpServletRequest
     ) {
+        userActivityCountRepository.findByUserId(authUser.getId())
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER_ACTIVITY))
+                .updateTotalSolveCount();
+
         var quiz = quizCacheService.getCachedQuiz(quizId);
         var clientIp = getClientIpAddress(httpServletRequest);
 
