@@ -1,8 +1,11 @@
 package com.tdns.toks.core.common.security.oauth;
 
+import com.tdns.toks.core.common.exception.ApplicationErrorException;
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.security.JwtTokenProvider;
-import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import com.tdns.toks.core.domain.user.entity.User;
+import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
+import com.tdns.toks.core.domain.user.repository.UserActivityCountRepository;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 import com.tdns.toks.core.domain.user.type.UserRole;
 import com.tdns.toks.core.domain.user.type.UserStatus;
@@ -15,13 +18,15 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
-//    private final TokenService tokenService;
+    private final UserActivityCountRepository userActivityCountRepository;
 
     @Override
     @Transactional
@@ -34,7 +39,16 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         var user = userRepository.findByEmail(oAuth2Attribute.getEmail())
                 .orElseGet(() -> createUser(oAuth2Attribute));
         var jwtTokenPair = jwtTokenProvider.generateTokenPair(user.getId(), user.getEmail());
+
+
+        if (user.getUpdatedAt().toLocalDate().isBefore(LocalDateTime.now().toLocalDate())) {
+            userActivityCountRepository.findByUserId(user.getId())
+                    .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER_ACTIVITY))
+                    .updateTotalVisitCount();
+        }
+
         user.setRefreshToken(jwtTokenPair.getRefreshToken());
+
         userRepository.save(user);
         return new UserDetailDTO(user, oAuth2Attribute.getAttributes(), jwtTokenPair);
     }

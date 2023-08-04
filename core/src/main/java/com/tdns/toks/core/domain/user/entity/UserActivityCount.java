@@ -25,4 +25,8 @@ public class UserActivityCount extends BaseTimeEntity {
     public void updateTotalSolveCount() {
         this.totalSolveCount += 1;
     }
+
+    public void updateTotalVisitCount() {
+        this.totalVisitCount += 1;
+    }
 }
