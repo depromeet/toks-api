@@ -2,6 +2,7 @@ package com.tdns.toks.core.domain.quiz.repository;
 
 import com.tdns.toks.core.domain.quiz.entity.QuizReplyHistory;
 import com.tdns.toks.core.domain.quiz.model.QuizReplyCountModel;
+import com.tdns.toks.core.domain.user.model.UserDailySolveCountModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -33,4 +34,12 @@ public interface QuizReplyHistoryRepository extends JpaRepository<QuizReplyHisto
     @Transactional(readOnly = true)
     @Query(value = "SELECT qrh.answer AS answer, count(qrh.id) AS count FROM quiz_reply_history qrh WHERE qrh.quiz_id = :quizId AND qrh.answer IN :answer", nativeQuery = true)
     List<QuizReplyCountModel> findQuizReplyCount(@Param("quizId") Long quizId, @Param("answer") Set<String> answer);
+
+    @Transactional(readOnly = true)
+    @Query(value = "select DATE_FORMAT(created_at,'%y-%m-%d') date, count(created_by) as value\n" +
+            "from quiz_reply_history qrh\n" +
+            "where qrh.created_by = :userId and DATE_FORMAT(created_at, '%m') = :month and DATE_FORMAT(created_at, '%Y') = :year\n" +
+            "GROUP BY DATE\n" +
+            "order by date", nativeQuery = true)
+    List<UserDailySolveCountModel> findUserMonthlySolveActivity(@Param("userId") Long userId, @Param("month") int month, @Param("year") int year);
 }

@@ -46,6 +46,11 @@ public enum ApplicationErrorType {
      */
     NOT_FOUND_CATEGORY_ERROR(HttpStatus.NOT_FOUND, "카테고리 데이터를 찾을 수 없습니다."),
     NOT_SET_USER_CATEGORY(HttpStatus.NOT_FOUND, "카테고리 설정 하지 않은 사옹자입니다."),
+
+    /**
+     * UserActivityCount Error Type
+     */
+    NOT_FOUND_USER_ACTIVITY(HttpStatus.NOT_FOUND, "사용자의 활동 기록을 찾을 수 없습니다."),
     ;
 
     @Getter
