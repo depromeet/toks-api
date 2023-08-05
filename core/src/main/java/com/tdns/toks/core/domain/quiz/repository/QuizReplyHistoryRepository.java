@@ -35,6 +35,7 @@ public interface QuizReplyHistoryRepository extends JpaRepository<QuizReplyHisto
     @Query(value = "SELECT qrh.answer AS answer, count(qrh.id) AS count FROM quiz_reply_history qrh WHERE qrh.quiz_id = :quizId AND qrh.answer IN :answer", nativeQuery = true)
     List<QuizReplyCountModel> findQuizReplyCount(@Param("quizId") Long quizId, @Param("answer") Set<String> answer);
 
+    // 해당 월에 각 일별 푼 문제수 카운트
     @Transactional(readOnly = true)
     @Query(value = "select DATE_FORMAT(created_at,'%y-%m-%d') date, count(created_by) as value\n" +
             "from quiz_reply_history qrh\n" +
@@ -42,4 +43,12 @@ public interface QuizReplyHistoryRepository extends JpaRepository<QuizReplyHisto
             "GROUP BY DATE\n" +
             "order by date", nativeQuery = true)
     List<UserDailySolveCountModel> findUserMonthlySolveActivity(@Param("userId") Long userId, @Param("month") int month, @Param("year") int year);
+
+    // 해당 일에 몇 문제 풀었는지 카운트
+    // date format : 20230802
+    @Transactional(readOnly = true)
+    @Query(value = "select count(qrh.created_by) as count\n" +
+            "from quiz_reply_history qrh\n" +
+            "where qrh.created_by = :userId and DATE_FORMAT(qrh.created_at,'%Y-%m-%d') = STR_TO_DATE(:date, '%Y%m%d')", nativeQuery = true)
+    Long countUserDailySolveActivity(@Param("userId") Long userId, @Param("date") String date);
 }

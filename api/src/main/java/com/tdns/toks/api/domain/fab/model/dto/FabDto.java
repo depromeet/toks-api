@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.fab.model.dto;
 
+import com.tdns.toks.api.domain.fab.model.DailySolveCountModel;
 import com.tdns.toks.api.domain.fab.model.FabModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ public class FabDto {
         private String title;
         private String description1;
         private String description2;
-        private List<Integer> calendar;
+        private List<DailySolveCountModel> calendar;
 
         public GetFabResponseDto(FabModel fabModel) {
             this.title = fabModel.getUserName() + "님 " + fabModel.getTotalVisitCount() + "번째 출석 성공!";

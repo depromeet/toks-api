@@ -15,5 +15,5 @@ public class FabModel {
     private int totalVisitCount;
     private int todaySolveCount;
     private int totalSolveCount;
-    private List<Integer> monthlySolveCount;
+    private List<DailySolveCountModel> monthlySolveCount;
 }
