@@ -1,55 +1,36 @@
 package com.tdns.toks.api.domain.fab.service;
 
-import com.tdns.toks.api.domain.fab.model.DailySolveCountModel;
 import com.tdns.toks.api.domain.fab.model.FabModel;
 import com.tdns.toks.api.domain.fab.model.dto.FabDto;
-import com.tdns.toks.core.common.exception.ApplicationErrorException;
-import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.api.domain.quiz.service.QuizReplyHistoryService;
+import com.tdns.toks.api.domain.user.service.UserActivityCountService;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
-import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
-import com.tdns.toks.core.domain.user.entity.UserActivityCount;
-import com.tdns.toks.core.domain.user.model.UserDailySolveCountModel;
-import com.tdns.toks.core.domain.user.repository.UserActivityCountRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
 public class FabService {
+    private final UserActivityCountService userActivityCountService;
+    private final QuizReplyHistoryService quizReplyHistoryService;
 
-    private final UserActivityCountRepository userActivityCountRepository;
-    private final QuizReplyHistoryRepository quizReplyHistoryRepository;
-
-
+    @SneakyThrows
     public FabDto.GetFabResponseDto getFabInfo(AuthUser authUser, int month, int year) {
-        UserActivityCount userActivityCount = userActivityCountRepository.findByUserId(authUser.getId())
-                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER_ACTIVITY));
+        var userActivityCountCf = userActivityCountService.asyncGetUserActivityCount(authUser.getId());
+        var userMonthlySolveActivityCf = quizReplyHistoryService.asyncGetUserMonthlySolveActivity(
+                authUser.getId(),
+                month,
+                year
+        );
+        var todaySolveCountCf = quizReplyHistoryService.asyncGetTodaySolveCount(authUser.getId());
 
-        List<UserDailySolveCountModel> userMonthlySolveActivity = quizReplyHistoryRepository.findUserMonthlySolveActivity(userActivityCount.getUserId(), month, year);
+        CompletableFuture.allOf(userActivityCountCf, userMonthlySolveActivityCf, todaySolveCountCf).join();
 
-        int todaySolveCount = Math.toIntExact((quizReplyHistoryRepository.countUserDailySolveActivity(authUser.getId(), LocalDate.now().format(DateTimeFormatter.ofPattern("YYYYMMdd")))));
+        var fabModel = FabModel.of(userActivityCountCf.get(), userMonthlySolveActivityCf.get(), todaySolveCountCf.get());
 
-        FabModel fabModel = FabModel.builder()
-                .userId(userActivityCount.getUserId())
-                .totalVisitCount(userActivityCount.getTotalVisitCount())
-                .totalSolveCount(userActivityCount.getTotalSolveCount())
-                .todaySolveCount(todaySolveCount)
-                .monthlySolveCount(getMonthlySolveCount(userMonthlySolveActivity))
-                .build();
         return new FabDto.GetFabResponseDto(fabModel);
-    }
-
-    private List<DailySolveCountModel> getMonthlySolveCount(List<UserDailySolveCountModel> solveActivity) {
-        List<DailySolveCountModel> monthlySolve = new ArrayList<>();
-
-        for (UserDailySolveCountModel model : solveActivity) {
-            monthlySolve.add(new DailySolveCountModel(model.getDate(), model.getValue()));
-        }
-        return monthlySolve;
     }
 }

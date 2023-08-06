@@ -2,6 +2,7 @@ package com.tdns.toks.api.domain.quiz.service;
 
 import com.tdns.toks.api.cache.CacheFactory;
 import com.tdns.toks.api.cache.CacheService;
+import com.tdns.toks.api.domain.fab.model.DailySolveCountModel;
 import com.tdns.toks.api.domain.quiz.model.QuizReplyCountsModel;
 import com.tdns.toks.api.domain.quiz.model.QuizReplyModel;
 import com.tdns.toks.core.domain.auth.AuthUserValidator;
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -133,5 +137,31 @@ public class QuizReplyHistoryService {
     @Async
     public CompletableFuture<QuizReplyCountsModel> asyncGetQuizReplyStatistics(Long quizId) {
         return CompletableFuture.completedFuture(getQuizReplyStatistics(quizId));
+    }
+
+    public List<DailySolveCountModel> getUserMonthlySolveActivity(Long uid, int year, int month) {
+        return quizReplyHistoryRepository.findUserMonthlySolveActivity(uid, month, year)
+                .stream()
+                .map(DailySolveCountModel::from)
+                .collect(Collectors.toList());
+    }
+
+    @Async
+    public CompletableFuture<List<DailySolveCountModel>> asyncGetUserMonthlySolveActivity(Long uid, int year, int month) {
+        return CompletableFuture.completedFuture(getUserMonthlySolveActivity(uid, year, month));
+    }
+
+    public Integer getTodaySolveCount(Long uid) {
+        return Math.toIntExact(
+                quizReplyHistoryRepository.countUserDailySolveActivity(
+                        uid,
+                        LocalDate.now().format(DateTimeFormatter.ofPattern("YYYYMMdd"))
+                )
+        );
+    }
+
+    @Async
+    public CompletableFuture<Integer> asyncGetTodaySolveCount(Long uid) {
+        return CompletableFuture.completedFuture(getTodaySolveCount(uid));
     }
 }
