@@ -51,4 +51,7 @@ public interface QuizReplyHistoryRepository extends JpaRepository<QuizReplyHisto
             "from quiz_reply_history qrh\n" +
             "where qrh.created_by = :userId and DATE_FORMAT(qrh.created_at,'%Y-%m-%d') = STR_TO_DATE(:date, '%Y%m%d')", nativeQuery = true)
     Long countUserDailySolveActivity(@Param("userId") Long userId, @Param("date") String date);
+
+    @Transactional(readOnly = true)
+    Long countByCreatedBy(long userId);
 }

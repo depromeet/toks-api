@@ -3,7 +3,9 @@ package com.tdns.toks.core.common.security.oauth;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.common.security.JwtTokenProvider;
+import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
 import com.tdns.toks.core.domain.user.entity.User;
+import com.tdns.toks.core.domain.user.entity.UserActivityCount;
 import com.tdns.toks.core.domain.user.model.dto.UserDetailDTO;
 import com.tdns.toks.core.domain.user.repository.UserActivityCountRepository;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
@@ -27,6 +29,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserActivityCountRepository userActivityCountRepository;
+    private final QuizReplyHistoryRepository quizReplyHistoryRepository;
 
     @Override
     @Transactional
@@ -38,9 +41,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 oAuth2User.getAttributes());
         var user = userRepository.findByEmail(oAuth2Attribute.getEmail())
                 .orElseGet(() -> createUser(oAuth2Attribute));
+
+        userActivityCountRepository.findByUserId(user.getId()).orElseGet(() -> createActivityCount(user.getId()));
+
         var jwtTokenPair = jwtTokenProvider.generateTokenPair(user.getId(), user.getEmail());
-
-
         if (user.getUpdatedAt().toLocalDate().isBefore(LocalDateTime.now().toLocalDate())) {
             userActivityCountRepository.findByUserId(user.getId())
                     .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER_ACTIVITY))
@@ -55,6 +59,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private User createUser(OAuth2Attribute oAuth2Attribute) {
         return userRepository.save(convertToUserEntity(oAuth2Attribute));
+    }
+
+    private UserActivityCount createActivityCount(long userId) {
+        int quizCount = Math.toIntExact(quizReplyHistoryRepository.countByCreatedBy(userId));
+        UserActivityCount u = new UserActivityCount(userId, userId,0, quizCount);
+        return userActivityCountRepository.save(u);
     }
 
     private User convertToUserEntity(OAuth2Attribute oAuth2Attribute) {
