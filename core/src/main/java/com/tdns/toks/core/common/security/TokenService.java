@@ -51,7 +51,7 @@ public class TokenService {
                 throw new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER);
             }
         } catch (Exception e) {
-            throw new ApplicationErrorException(ApplicationErrorType.EXPIRED_TOKEN);
+            throw new ApplicationErrorException(ApplicationErrorType.TOKEN_INTERNAL_ERROR);
         }
     }
 
