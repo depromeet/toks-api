@@ -63,6 +63,11 @@ public class QuizService {
                 Sort.by(Sort.Order.desc("createdAt"))
         );
 
+        if (request.getCategoryIds() == null || request.getCategoryIds().size() == 0) {
+            return quizRepository.findAllByDeletedOrderByCreatedAtDesc(false, pageable)
+                    .map(quizInfoService::getQuizInfoModelByQuiz);
+        }
+
         return quizRepository.findAllByCategoryIdIn(request.getCategoryIds(), pageable)
                 .map(quizInfoService::getQuizInfoModelByQuiz);
     }

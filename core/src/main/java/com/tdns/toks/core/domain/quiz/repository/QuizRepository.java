@@ -21,4 +21,7 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
     @Transactional(readOnly = true)
     Optional<Quiz> findQuizByIdAndDeleted(Long id, Boolean deleted);
+
+    @Transactional(readOnly = true)
+    Page<Quiz> findAllByDeletedOrderByCreatedAtDesc(Boolean deleted, Pageable pageable);
 }
