@@ -55,6 +55,8 @@ public class QuizService {
     }
 
     public Page<QuizInfoModel> search(AuthUser authUser, QuizSearchRequest request) {
+        validateQuizSearchRequest(request);
+
         var pageable = PageRequest.of(
                 request.getPage(),
                 request.getSize(),
@@ -63,6 +65,12 @@ public class QuizService {
 
         return quizRepository.findAllByCategoryIdIn(request.getCategoryIds(), pageable)
                 .map(quizInfoService::getQuizInfoModelByQuiz);
+    }
+
+    private void validateQuizSearchRequest(QuizSearchRequest request) {
+        if (request.getSize() < 0 || request.getSize() > 50) {
+            throw new ApplicationErrorException(ApplicationErrorType.INVALID_QUIZ_SEARCH_ERROR);
+        }
     }
 
     @SneakyThrows

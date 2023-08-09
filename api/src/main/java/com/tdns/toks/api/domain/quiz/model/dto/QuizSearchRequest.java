@@ -11,6 +11,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class QuizSearchRequest {
     private Set<String> categoryIds;
-    private Integer page;
-    private Integer size;
+    private Integer page = 0;
+    private Integer size = 10;
 }

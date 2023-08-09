@@ -34,12 +34,13 @@ public enum ApplicationErrorType {
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "사용자 정보를 찾을 수 없습니다."),
     NOT_SET_NICKNAME(HttpStatus.NOT_FOUND, "닉네임을 설정하지 않았습니다"),
     NOT_AUTHORIZED_ADMIN_USER(HttpStatus.UNAUTHORIZED, "권한이 없습니다."),
-    
+
     /**
      * Quiz Error Type
      */
     ALREADY_SUBMITTED_USER_QUIZ(HttpStatus.BAD_REQUEST, "이미 진행한 퀴즈입니다."),
     NOT_FOUND_QUIZ_ERROR(HttpStatus.NOT_FOUND, "해당 퀴즈가 존재하지 않습니다."),
+    INVALID_QUIZ_SEARCH_ERROR(HttpStatus.BAD_REQUEST, "퀴즈 조회 요청 정보가 잘못되었습니다."),
 
     /**
      * Category Error Type
