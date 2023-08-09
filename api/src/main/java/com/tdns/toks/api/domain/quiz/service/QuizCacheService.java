@@ -38,7 +38,7 @@ public class QuizCacheService {
                     quiz.getAnswer()
             );
 
-            cacheService.set(cache, newQuizModel);
+            cacheService.asyncSet(cache, newQuizModel);
 
             return newQuizModel;
         } else {
