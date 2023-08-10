@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -18,19 +19,16 @@ import java.util.Date;
 
 import static com.tdns.toks.core.common.security.Constants.TOKS_AUTH_HEADER_KEY;
 
+
+/**
+ * JWT토큰 생성 및 유효성을 검증하는 컴포넌트
+ */
 @RequiredArgsConstructor
 @Component
 @Slf4j
-public class JwtTokenProvider {	// JWT토큰 생성 및 유효성을 검증하는 컴포넌트
+public class JwtTokenProvider {
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
-
-//    private long tokenValidMillisecond = 1000L * 60 * 60 * 24; // 1일 토큰 유효
-//    private long accesstokenValidMillisecond = 1000L * 60 * 1; // AccessToken 1분 토큰 유효
-    private long accesstokenValidMillisecond = 1000L * 30; // AccessToken 30초 토큰 유효
-//    private long refreshTokenValidMillisecond = 1000L * 60 * 3; // 3분 토큰 유효
-    private long refreshTokenValidMillisecond = 1000L * 60 * 1; // 1분 토큰 유효
-//    private long permenentTokenValidMillisecont = 1000L * 60 * 60 * 24 * 365; // 1년 토큰 유효
 
     @PostConstruct
     protected void init() {
@@ -42,13 +40,13 @@ public class JwtTokenProvider {	// JWT토큰 생성 및 유효성을 검증하�
      */
     public JwtToken generateTokenPair(Long id, String email) {
         return new JwtToken(
-                jwtBuilder(id, email, accesstokenValidMillisecond),
-                jwtBuilder(id, email, refreshTokenValidMillisecond)
+                jwtBuilder(id, email, TokenDuration.ACCESS_TOKEN_VALID_DURATION.duration),
+                jwtBuilder(id, email, TokenDuration.REFRESH_TOKEN_VALID_DURATION.duration)
         );
     }
 
     public String renewAccessToken(Long id, String email) {
-        return jwtBuilder(id, email, accesstokenValidMillisecond);
+        return jwtBuilder(id, email, TokenDuration.ACCESS_TOKEN_VALID_DURATION.duration);
     }
 
     public boolean verifyToken(String token) {
@@ -63,7 +61,7 @@ public class JwtTokenProvider {	// JWT토큰 생성 및 유효성을 검증하�
             return false;
         }
     }
-    
+
     public String getUserEmail(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
     }
@@ -73,11 +71,7 @@ public class JwtTokenProvider {	// JWT토큰 생성 및 유효성을 검증하�
     }
 
     public String getAuthToken(HttpServletRequest request) {
-        String accessToken = request.getHeader(TOKS_AUTH_HEADER_KEY); //인증토큰 값 가져오기
-
-        /*if (StringUtils.startsWithIgnoreCase(accessToken, AuthTokenType.BEARER_TYPE.getTokenType())) {
-            return StringUtils.replaceIgnoreCase(accessToken, AuthTokenType.BEARER_TYPE.getTokenType(), "");
-        }*/
+        var accessToken = request.getHeader(TOKS_AUTH_HEADER_KEY); //인증토큰 값 가져오기
 
         if (StringUtils.isNotEmpty(accessToken)) {
             return accessToken;
@@ -89,6 +83,7 @@ public class JwtTokenProvider {	// JWT토큰 생성 및 유효성을 검증하�
      * 사용자의 id, email, 만료 시간을 인자로 토큰을 생성합니다.
      * 토큰의 payLoad 저장 값 = key :"uid" | value : 사용자의 id.
      * 토큰 발급자(issuer)와 Subject엔 Unique한 String값인 email을 등록합니다.
+     *
      * @param id
      * @param email
      * @param expireTime
@@ -107,4 +102,23 @@ public class JwtTokenProvider {	// JWT토큰 생성 및 유효성을 검증하�
                 .compact();
     }
 
+    @AllArgsConstructor
+    enum TokenDuration {
+        /**
+         * AccessToken 30초 토큰 유효
+         */
+        ACCESS_TOKEN_VALID_DURATION(1000L * 30),
+
+        /**
+         * 1분 토큰 유효
+         */
+        REFRESH_TOKEN_VALID_DURATION(1000L * 60),
+
+        /**
+         * 1년 토큰 유효
+         */
+        PERMENENT_TOKEN_VALID_DURATION(1000L * 60 * 60 * 24 * 365);
+
+        private final Long duration;
+    }
 }
