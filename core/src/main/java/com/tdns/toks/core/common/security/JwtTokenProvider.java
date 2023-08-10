@@ -26,9 +26,11 @@ public class JwtTokenProvider {	// JWT토큰 생성 및 유효성을 검증하�
     private String SECRET_KEY;
 
 //    private long tokenValidMillisecond = 1000L * 60 * 60 * 24; // 1일 토큰 유효
-    private long accesstokenValidMillisecond = 1000L * 60 * 1; // AccessToken 1분 토큰 유효
-    private long refreshTokenValidMillisecond = 1000L * 60 * 3; // 3분 토큰 유효
-    private long permenentTokenValidMillisecont = 1000L * 60 * 60 * 24 * 365; // 1년 토큰 유효
+//    private long accesstokenValidMillisecond = 1000L * 60 * 1; // AccessToken 1분 토큰 유효
+    private long accesstokenValidMillisecond = 1000L * 30; // AccessToken 30초 토큰 유효
+//    private long refreshTokenValidMillisecond = 1000L * 60 * 3; // 3분 토큰 유효
+    private long refreshTokenValidMillisecond = 1000L * 60 * 1; // 1분 토큰 유효
+//    private long permenentTokenValidMillisecont = 1000L * 60 * 60 * 24 * 365; // 1년 토큰 유효
 
     @PostConstruct
     protected void init() {
