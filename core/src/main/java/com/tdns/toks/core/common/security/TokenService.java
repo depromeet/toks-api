@@ -45,13 +45,15 @@ public class TokenService {
     public void verifyToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(token);
-
-            Long uid = getUserIdFromToken(token);
-            if (!userRepository.existsById(uid)) {
-                throw new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER);
-            }
         } catch (Exception e) {
+            if (e.getMessage().contains("JWT expired")) {
+                throw new ApplicationErrorException(ApplicationErrorType.EXPIRED_TOKEN);
+            }
             throw new ApplicationErrorException(ApplicationErrorType.TOKEN_INTERNAL_ERROR);
+        }
+        Long uid = getUserIdFromToken(token);
+        if (!userRepository.existsById(uid)) {
+            throw new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER);
         }
     }
 
