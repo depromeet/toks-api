@@ -105,19 +105,20 @@ public class JwtTokenProvider {
     @AllArgsConstructor
     enum TokenDuration {
         /**
-         * AccessToken 30초 토큰 유효
+         * AccessToken 1시간 토큰 유효
          */
-        ACCESS_TOKEN_VALID_DURATION(1000L * 30),
+        ACCESS_TOKEN_VALID_DURATION(1000L * 60 * 60 * 1),
 
         /**
-         * 1분 토큰 유효
+         * 1달 토큰 유효
          */
-        REFRESH_TOKEN_VALID_DURATION(1000L * 60),
+        REFRESH_TOKEN_VALID_DURATION(1000L * 60 * 60 * 24 * 30),
 
         /**
          * 1년 토큰 유효
          */
-        PERMENENT_TOKEN_VALID_DURATION(1000L * 60 * 60 * 24 * 365);
+        PERMENENT_TOKEN_VALID_DURATION(1000L * 60 * 60 * 24 * 365),
+        ;
 
         private final Long duration;
     }
