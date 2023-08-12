@@ -22,11 +22,11 @@ public class CacheService {
     }
 
     @SneakyThrows
-    public <T> T get(Cache<T> cache, Callable callable) {
+    public <T> T get(Cache<T> cache, Callable<T> callable) {
         var data = redisTemplate.opsForValue().get(cache.getKey());
 
         if (data == null) {
-            var dataObject = (T) callable.call();
+            var dataObject = callable.call();
 
             asyncSet(cache, dataObject);
 
