@@ -7,6 +7,7 @@ import com.tdns.toks.core.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class UserService {
         return CompletableFuture.completedFuture(getUsers(uids));
     }
 
+    @Transactional
     public String updateNickname(Long id, String nickname) {
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.UNKNOWN_USER));
