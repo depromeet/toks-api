@@ -54,7 +54,11 @@ public class CacheService {
         CompletableFuture.runAsync(() -> delete(cache));
     }
 
-    public <T> void increment(Cache<T> cache) {
-        redisTemplate.opsForValue().increment(cache.getKey());
+    public <T> Long increment(Cache<T> cache) {
+        return redisTemplate.opsForValue().increment(cache.getKey());
+    }
+
+    public <T> Long decrement(Cache<T> cache) {
+        return redisTemplate.opsForValue().decrement(cache.getKey());
     }
 }
