@@ -1,7 +1,6 @@
 package com.tdns.toks.core.domain.quiz.repository;
 
 import com.tdns.toks.core.domain.quiz.entity.QuizReplyHistory;
-import com.tdns.toks.core.domain.quiz.model.QuizReplyCountModel;
 import com.tdns.toks.core.domain.user.model.UserDailySolveCountModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,10 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
-public interface QuizReplyHistoryRepository extends JpaRepository<QuizReplyHistory, Long> {
+public interface QuizReplyHistoryRepository extends JpaRepository<QuizReplyHistory, Long>, QuizReplyHistoryCustomRepository {
     @Transactional(readOnly = true)
     Boolean existsByQuizIdAndCreatedBy(Long quizId, Long createdBy);
 
@@ -29,11 +27,6 @@ public interface QuizReplyHistoryRepository extends JpaRepository<QuizReplyHisto
 
     @Transactional(readOnly = true)
     Optional<QuizReplyHistory> findByQuizIdAndIpAddress(Long quizId, String ipAddress);
-
-    // TODO QueryDsl 변경
-    @Transactional(readOnly = true)
-    @Query(value = "SELECT qrh.answer AS answer, count(qrh.id) AS count FROM quiz_reply_history qrh WHERE qrh.quiz_id = :quizId AND qrh.answer IN :answer", nativeQuery = true)
-    List<QuizReplyCountModel> findQuizReplyCount(@Param("quizId") Long quizId, @Param("answer") Set<String> answer);
 
     // 해당 월에 각 일별 푼 문제수 카운트
     @Transactional(readOnly = true)

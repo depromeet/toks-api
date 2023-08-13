@@ -1,7 +1,9 @@
 package com.tdns.toks.core.domain.quiz.model;
 
-public interface QuizReplyCountModel {
-    String getAnswer();
+import lombok.Getter;
 
-    Long getCount();
+@Getter
+public class QuizReplyCountModel {
+    private String answer;
+    private Long count;
 }
