@@ -20,30 +20,12 @@ public class QuizCacheService {
     private final CacheService cacheService;
 
     public QuizModel getCachedQuiz(Long quizId) {
-        var cache = CacheFactory.makeCachedQuiz(quizId);
-        var quizModel = cacheService.getOrNull(cache);
-
-        if (quizModel == null) {
+        return cacheService.get(CacheFactory.makeCachedQuiz(quizId), () -> {
             var quiz = quizRepository.findQuizByIdAndDeleted(quizId, false)
                     .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_QUIZ_ERROR));
 
-            var newQuizModel = new QuizModel(
-                    quiz.getId(),
-                    quiz.getCategoryId(),
-                    quiz.getTitle(),
-                    quiz.getTags(),
-                    quiz.getQuestion(),
-                    quiz.getQuizType(),
-                    quiz.getDescription(),
-                    quiz.getAnswer()
-            );
-
-            cacheService.asyncSet(cache, newQuizModel);
-
-            return newQuizModel;
-        } else {
-            return quizModel;
-        }
+            return QuizModel.from(quiz);
+        });
     }
 
     @Async

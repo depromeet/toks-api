@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.quiz.model;
 
+import com.tdns.toks.core.domain.quiz.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,4 +21,17 @@ public class QuizModel {
     private QuizType quizType;
     private String description;
     private String answer;
+
+    public static QuizModel from(Quiz quiz) {
+        return new QuizModel(
+                quiz.getId(),
+                quiz.getCategoryId(),
+                quiz.getTitle(),
+                quiz.getTags(),
+                quiz.getQuestion(),
+                quiz.getQuizType(),
+                quiz.getDescription(),
+                quiz.getAnswer()
+        );
+    }
 }
