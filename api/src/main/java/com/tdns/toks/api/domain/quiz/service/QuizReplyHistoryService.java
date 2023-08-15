@@ -105,7 +105,7 @@ public class QuizReplyHistoryService {
                 QuizReplyHistory.builder()
                         .quizId(quizId)
                         .answer(answer)
-                        .ipAddress(authUser == null ? clientIp : null)
+                        .ipAddress(clientIp)
                         .createdBy(authUser == null ? null : authUser.getId())
                         .build()
         );

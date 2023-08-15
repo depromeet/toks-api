@@ -7,4 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class QuizSolveEvent {
     private Long quizId;
+    private Long uid;
 }
