@@ -1,9 +1,10 @@
 package com.tdns.toks.api.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tdns.toks.api.domain.actionlog.event.publish.SystemActionLogEventPublish;
+import com.tdns.toks.api.domain.actionlog.event.model.SystemActionLogEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
@@ -22,16 +23,16 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class LoggingFilter extends OncePerRequestFilter {
-    private final SystemActionLogEventPublish systemActionLogEventPublish;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        systemActionLogEventPublish.publish(request);
+        applicationEventPublisher.publishEvent(new SystemActionLogEvent(request));
 
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
         filterChain.doFilter(requestWrapper, responseWrapper);
-        
+
         responseWrapper.copyBodyToResponse();
     }
 
