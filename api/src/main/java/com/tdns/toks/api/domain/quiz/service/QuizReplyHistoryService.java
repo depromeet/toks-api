@@ -100,13 +100,13 @@ public class QuizReplyHistoryService {
     }
 
     @Transactional
-    public QuizReplyHistory save(AuthUser authUser, Long quizId, String answer, String clientIp) {
+    public QuizReplyHistory save(Long uid, Long quizId, String answer, String clientIp) {
         return quizReplyHistoryRepository.save(
                 QuizReplyHistory.builder()
                         .quizId(quizId)
                         .answer(answer)
                         .ipAddress(clientIp)
-                        .createdBy(authUser == null ? null : authUser.getId())
+                        .createdBy(uid)
                         .build()
         );
     }

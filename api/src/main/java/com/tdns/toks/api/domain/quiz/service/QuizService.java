@@ -90,17 +90,19 @@ public class QuizService {
         var quiz = quizCacheService.getCachedQuiz(quizId);
         var clientIp = getClientIpAddress(httpServletRequest);
 
-        var isSubmitted = quizReplyHistoryService.isSubmitted(authUser, quizId, httpServletRequest);
-
-        if (isSubmitted) {
+        if (quizReplyHistoryService.isSubmitted(authUser, quizId, httpServletRequest)) {
             throw new ApplicationErrorException(ApplicationErrorType.ALREADY_SUBMITTED_USER_QUIZ);
         }
 
         var quizReplyCountCf = quizReplyHistoryService.asyncCountByQuizIdAndAnswer(quizId, request.getAnswer());
 
-        quizReplyHistoryService.save(authUser, quizId, request.getAnswer(), clientIp);
+        var uid = authUser == null ? -1 : authUser.getId();
 
-        applicationEventPublisher.publishEvent(new QuizSolveEvent(quizId, authUser == null ? -1 : authUser.getId()));
+        quizReplyHistoryService.save(uid, quizId, request.getAnswer(), clientIp);
+
+        if (uid != -1) {
+            applicationEventPublisher.publishEvent(new QuizSolveEvent(quizId, uid));
+        }
 
         quizReplyCountCf.join();
 

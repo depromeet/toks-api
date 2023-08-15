@@ -16,9 +16,6 @@ public class QuizEventListener {
     @TransactionalEventListener
     public void handle(QuizSolveEvent event) {
         quizCacheService.incrementQuizReply(event.getQuizId());
-
-        if (event.getUid() != -1) {
-            userActivityCountService.getUserActivityCountOrGenerate(event.getUid()).updateTotalSolveCount();
-        }
+        userActivityCountService.getUserActivityCountOrGenerate(event.getUid()).updateTotalSolveCount();
     }
 }
