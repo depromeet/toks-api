@@ -1,4 +1,4 @@
-package com.tdns.toks.api.domain.quiz.event.handler;
+package com.tdns.toks.api.domain.quiz.event.listener;
 
 import com.tdns.toks.api.domain.quiz.event.model.QuizSolveEvent;
 import com.tdns.toks.api.domain.quiz.service.QuizCacheService;

@@ -2,6 +2,7 @@ package com.tdns.toks.api.domain.quiz.service;
 
 import com.tdns.toks.api.cache.CacheFactory;
 import com.tdns.toks.api.cache.CacheService;
+import com.tdns.toks.api.domain.quiz.event.model.QuizCommentInsertEvent;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizCommentCreateRequest;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizCommentResponse;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
@@ -12,6 +13,7 @@ import com.tdns.toks.core.domain.quizcomment.repository.QuizCommentRepository;
 import com.tdns.toks.core.domain.user.entity.User;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -29,6 +31,7 @@ public class QuizCommentService {
     private final UserRepository userRepository;
     private final CacheService cacheService;
     private final QuizCommentLikeService quizCommentLikeService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public Page<QuizCommentResponse> getAll(Long quizId, Integer page, Integer size) {
         var quiz = quizCacheService.getCachedQuiz(quizId);
@@ -60,7 +63,7 @@ public class QuizCommentService {
 
         var likeCount = quizCommentLikeService.count(quizComment.getId());
 
-        cacheService.increment(CacheFactory.makeCachedQuizCommentCount(quizId));
+        applicationEventPublisher.publishEvent(new QuizCommentInsertEvent(quizId));
 
         return QuizCommentResponse.from(quizComment, user.getNickname(), likeCount);
     }
