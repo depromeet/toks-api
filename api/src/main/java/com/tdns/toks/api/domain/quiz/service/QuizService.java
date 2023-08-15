@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.quiz.service;
 
+import com.tdns.toks.api.domain.quiz.event.model.QuizSolveEvent;
 import com.tdns.toks.api.domain.quiz.model.QuizInfoModel;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizDetailResponse;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizSearchRequest;
@@ -11,6 +12,7 @@ import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.user.repository.UserActivityCountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -30,6 +32,7 @@ public class QuizService {
     private final QuizCacheService quizCacheService;
     private final QuizInfoService quizInfoService;
     private final UserActivityCountRepository userActivityCountRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @SneakyThrows
     public QuizDetailResponse getDetail(
@@ -103,9 +106,9 @@ public class QuizService {
 
         quizReplyHistoryService.save(authUser, quizId, request.getAnswer(), clientIp);
 
-        quizReplyCountCf.join();
+        applicationEventPublisher.publishEvent(new QuizSolveEvent(quizId));
 
-        quizCacheService.incrementQuizReply(quizId);
+        quizReplyCountCf.join();
 
         return new QuizSolveDto.QuizSolveResponse(quizReplyCountCf.get(), quiz.getDescription());
     }
