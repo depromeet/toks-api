@@ -1,4 +1,4 @@
-package com.tdns.toks.api.domain.actionlog.event.subscribe;
+package com.tdns.toks.api.domain.actionlog.event.listener;
 
 import com.tdns.toks.api.domain.actionlog.event.model.SystemActionLogEvent;
 import com.tdns.toks.core.domain.actionlog.entity.SystemActionLog;
