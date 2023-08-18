@@ -1,7 +1,7 @@
 package com.tdns.toks.core.domain.quiz.repository;
 
 import com.tdns.toks.core.domain.quiz.entity.QuizReplyHistory;
-import com.tdns.toks.core.domain.user.model.UserDailySolveCountModel;
+import com.tdns.toks.core.domain.quiz.model.UserDailySolveCountModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

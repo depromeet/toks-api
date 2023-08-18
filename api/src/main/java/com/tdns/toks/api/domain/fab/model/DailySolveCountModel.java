@@ -1,6 +1,6 @@
 package com.tdns.toks.api.domain.fab.model;
 
-import com.tdns.toks.core.domain.user.model.UserDailySolveCountModel;
+import com.tdns.toks.core.domain.quiz.model.UserDailySolveCountModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
