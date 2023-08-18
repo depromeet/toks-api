@@ -23,6 +23,7 @@ public class QuizReplyHistoryCustomRepositoryImpl implements QuizReplyHistoryCus
                         )
                 ).from(quizReplyHistory)
                 .where(quizReplyHistory.quizId.eq(quizId).and(quizReplyHistory.answer.in(answer)))
+                .groupBy(quizReplyHistory.answer)
                 .fetch();
     }
 }
