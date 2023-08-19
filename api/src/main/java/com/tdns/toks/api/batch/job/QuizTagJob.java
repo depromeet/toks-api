@@ -28,18 +28,21 @@ public class QuizTagJob {
         quiz.getTags()
                 .stream()
                 .map(this::resolveTag)
+                .filter(tag -> isNotExistsQuizTag(quiz, tag))
                 .map(tag -> resolveQuizTag(quiz, tag))
                 .forEach(quizTagRepository::save);
     }
 
+    private boolean isNotExistsQuizTag(Quiz quiz, Tag tag) {
+        return !quizTagRepository.existsByQuizIdAndTagId(quiz.getId(), tag.getId());
+    }
+
     private Tag resolveTag(String tag) {
-        log.info("resolve tag : {}", tag);
         return tagRepository.findByName(tag)
-                .orElse(tagRepository.save(Tag.builder().name(tag).build()));
+                .orElseGet(() -> tagRepository.save(Tag.builder().name(tag).build()));
     }
 
     private QuizTag resolveQuizTag(Quiz quiz, Tag tag) {
-        log.info("resolve quiz tag / quizId : {} / tag : {}", quiz.getId(), tag.getId());
         return QuizTag.builder().quizId(quiz.getId()).tagId(tag.getId()).build();
     }
 }
