@@ -2,6 +2,7 @@ package com.tdns.toks.api.domain.quiz.service;
 
 import com.tdns.toks.api.domain.quiz.event.model.QuizSolveEvent;
 import com.tdns.toks.api.domain.quiz.model.QuizInfoModel;
+import com.tdns.toks.api.domain.quiz.model.QuizModel;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizDetailResponse;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizSearchRequest;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizSolveDto;
@@ -107,5 +108,11 @@ public class QuizService {
         quizReplyCountCf.join();
 
         return new QuizSolveDto.QuizSolveResponse(quizReplyCountCf.get(), quiz.getDescription());
+    }
+
+    public QuizModel getQuizModelOrThrow(Long quizId) {
+        return quizRepository.findQuizByIdAndDeleted(quizId, false)
+                .map(QuizModel::from)
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_QUIZ_ERROR));
     }
 }

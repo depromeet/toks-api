@@ -5,14 +5,12 @@ import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -26,11 +24,6 @@ public class UserService {
                 .stream()
                 .map(UserModel::from)
                 .collect(Collectors.toMap(UserModel::getId, Function.identity()));
-    }
-
-    @Async
-    public CompletableFuture<Map<Long, UserModel>> asyncGetUsers(Set<Long> uids) {
-        return CompletableFuture.completedFuture(getUsers(uids));
     }
 
     @Transactional

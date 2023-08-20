@@ -107,11 +107,8 @@ public class QuizReplyHistoryService {
                 .mapToLong(QuizReplyCountModel::getCount).sum();
 
         var statistics = quizReplyHistoryModel.stream()
-                .map(reply -> new QuizReplyCountsModel.ReplyModel(
-                                reply.getAnswer(),
-                                reply.getCount()
-                        )
-                ).collect(Collectors.toMap(QuizReplyCountsModel.ReplyModel::getAnswer, Function.identity()));
+                .map(QuizReplyCountsModel.ReplyModel::from)
+                .collect(Collectors.toMap(QuizReplyCountsModel.ReplyModel::getAnswer, Function.identity()));
 
         return new QuizReplyCountsModel(totalCount, statistics);
     }

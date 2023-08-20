@@ -25,7 +25,8 @@ public class UserController {
     @PatchMapping("/nickname")
     public ResponseEntity<?> setUserNickname(
             AuthUser authUser,
-            @RequestBody UserUpdateNicknameRequest nicknameRequest) {
+            @RequestBody UserUpdateNicknameRequest nicknameRequest
+    ) {
         var response = userService.updateNickname(authUser.getId(), nicknameRequest.getNickname());
         return ResponseDto.ok(response);
     }
