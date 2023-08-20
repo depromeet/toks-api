@@ -70,21 +70,16 @@ public class QuizReplyHistoryService {
         return CompletableFuture.completedFuture(count(quizId));
     }
 
-
     public QuizReplyModel getReplyModel(@Nullable AuthUser authUser, Long quizId, HttpServletRequest httpServletRequest) {
         if (AuthUserValidator.isAuthenticated(authUser)) {
-            var replyModel = quizReplyHistoryRepository.findByQuizIdAndCreatedBy(quizId, authUser.getId());
-            if (replyModel.isPresent()) {
-                return QuizReplyModel.from(replyModel.get());
-            }
+            return quizReplyHistoryRepository.findByQuizIdAndCreatedBy(quizId, authUser.getId())
+                    .map(QuizReplyModel::from).orElse(null);
         }
 
         var clientIp = getClientIpAddress(httpServletRequest);
         if (clientIp != null) {
-            var replyModel = quizReplyHistoryRepository.findByQuizIdAndIpAddress(quizId, clientIp);
-            if (replyModel.isPresent()) {
-                return QuizReplyModel.from(replyModel.get());
-            }
+            return quizReplyHistoryRepository.findByQuizIdAndIpAddress(quizId, clientIp)
+                    .map(QuizReplyModel::from).orElse(null);
         }
 
         return null;
