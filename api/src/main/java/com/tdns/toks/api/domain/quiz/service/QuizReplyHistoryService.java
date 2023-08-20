@@ -52,22 +52,9 @@ public class QuizReplyHistoryService {
         return clientIp != null && quizReplyHistoryRepository.existsByQuizIdAndIpAddress(quizId, clientIp);
     }
 
-    @Async
-    public CompletableFuture<Boolean> asyncIsSubmitted(
-            @Nullable AuthUser authUser,
-            Long quizId,
-            HttpServletRequest httpServletRequest
-    ) {
-        return CompletableFuture.completedFuture(isSubmitted(authUser, quizId, httpServletRequest));
-    }
-
     public Integer count(long quizId) {
         var count = cacheService.getOrNull(CacheFactory.makeCachedQuizReplyHistoryCount(quizId));
         return count != null ? count : 0;
-    }
-
-    public CompletableFuture<Integer> asyncCount(long quizId) {
-        return CompletableFuture.completedFuture(count(quizId));
     }
 
     public QuizReplyModel getReplyModel(@Nullable AuthUser authUser, Long quizId, HttpServletRequest httpServletRequest) {

@@ -57,8 +57,13 @@ public class CategoryService {
         return new GetAllCategoriesResponse(new ArrayList<>(categoryModels.values()));
     }
 
-    public Optional<CategoryModel> get(String categoryId) {
+    public Optional<CategoryModel> getOrNull(String categoryId) {
         return Optional.of(categoryModels.get(categoryId));
+    }
+
+    public CategoryModel get(String categoryId) {
+        return getOrNull(categoryId)
+                .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
     }
 
     public GetUserCategoriesResponse getUserCategories(AuthUser authUser) {

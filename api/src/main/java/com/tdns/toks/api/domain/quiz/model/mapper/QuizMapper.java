@@ -9,21 +9,8 @@ public class QuizMapper {
     public static QuizInfoModel toQuizInfoResponse(
             Quiz quiz,
             CategoryModel category,
-            int quizReplyHistoryCount,
-            long answerReplyCount,
             int quizCommentCount
     ) {
-        var quizModel = new QuizModel(
-                quiz.getId(),
-                quiz.getCategoryId(),
-                quiz.getTitle(),
-                quiz.getTags(),
-                quiz.getQuestion(),
-                quiz.getQuizType(),
-                quiz.getDescription(),
-                quiz.getAnswer()
-        );
-
-        return new QuizInfoModel(quizModel, category, quizReplyHistoryCount,answerReplyCount, quizCommentCount);
+        return new QuizInfoModel(QuizModel.from(quiz), category, quizCommentCount);
     }
 }

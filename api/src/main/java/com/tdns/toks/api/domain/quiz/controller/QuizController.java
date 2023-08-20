@@ -1,6 +1,5 @@
 package com.tdns.toks.api.domain.quiz.controller;
 
-import com.tdns.toks.api.batch.job.QuizTagJob;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizSearchRequest;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizSolveDto;
 import com.tdns.toks.api.domain.quiz.service.QuizService;
@@ -29,13 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class QuizController {
     private final QuizService quizService;
-    private final QuizTagJob quizTagJob;
-
-    @GetMapping("/test")
-    public void test() {
-        quizTagJob.runEveryHourJob();
-    }
-
 
     @Operation(summary = "퀴즈 상세 조회")
     @GetMapping("/quizzes/{quizId}")

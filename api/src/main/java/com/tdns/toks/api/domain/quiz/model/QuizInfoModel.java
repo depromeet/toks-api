@@ -9,7 +9,5 @@ import lombok.Data;
 public class QuizInfoModel {
     private QuizModel quiz;
     private CategoryModel category;
-    private Integer quizReplyHistoryCount;
-    private Long answerReplyCount;
     private Integer quizCommentCount;
 }

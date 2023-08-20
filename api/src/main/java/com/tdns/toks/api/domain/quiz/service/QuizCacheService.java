@@ -8,10 +8,7 @@ import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.quiz.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -28,26 +25,9 @@ public class QuizCacheService {
         });
     }
 
-    @Async
-    public CompletableFuture<QuizModel> asyncGetCachedQuiz(Long quizId) {
-        return CompletableFuture.completedFuture(getCachedQuiz(quizId));
-    }
-
     public void setCachedQuiz(Quiz quiz) {
         var cache = CacheFactory.makeCachedQuiz(quiz.getId());
-
-        var newQuizModel = new QuizModel(
-                quiz.getId(),
-                quiz.getCategoryId(),
-                quiz.getTitle(),
-                quiz.getTags(),
-                quiz.getQuestion(),
-                quiz.getQuizType(),
-                quiz.getDescription(),
-                quiz.getAnswer()
-        );
-
-        cacheService.set(cache, newQuizModel);
+        cacheService.set(cache, QuizModel.from(quiz));
     }
 
     public void deleteCachedQuiz(Long quizId) {
