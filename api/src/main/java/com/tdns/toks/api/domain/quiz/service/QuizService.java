@@ -107,7 +107,7 @@ public class QuizService {
 
         quizReplyCountCf.join();
 
-        return new QuizSolveDto.QuizSolveResponse(quizReplyCountCf.get(), quiz.getDescription());
+        return QuizSolveDto.QuizSolveResponse.of(quizReplyCountCf.get(), quiz);
     }
 
     public QuizModel getQuizModelOrThrow(Long quizId) {

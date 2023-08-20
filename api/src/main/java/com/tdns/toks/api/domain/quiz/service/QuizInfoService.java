@@ -2,7 +2,6 @@ package com.tdns.toks.api.domain.quiz.service;
 
 import com.tdns.toks.api.domain.category.service.CategoryService;
 import com.tdns.toks.api.domain.quiz.model.QuizInfoModel;
-import com.tdns.toks.api.domain.quiz.model.mapper.QuizMapper;
 import com.tdns.toks.core.domain.quiz.entity.Quiz;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -22,7 +21,7 @@ public class QuizInfoService {
         var category = categoryService.get(quiz.getCategoryId());
         var quizCommentCount = quizCommentService.count(quizId);
 
-        return new QuizInfoModel(quiz, category, quizCommentCount);
+        return QuizInfoModel.of(quiz, category, quizCommentCount);
     }
 
     @Async
@@ -34,6 +33,6 @@ public class QuizInfoService {
         var category = categoryService.get(quiz.getCategoryId());
         var quizCommentCount = quizCommentService.count(quiz.getId());
 
-        return QuizMapper.toQuizInfoResponse(quiz, category, quizCommentCount);
+        return QuizInfoModel.of(quiz, category, quizCommentCount);
     }
 }
