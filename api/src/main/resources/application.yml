@@ -36,8 +36,8 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   jwt:
-#    이전 시크릿 값 (향후 기간 동안 문제 없으면 추후 삭제하겠습니다)
-#    secret: ENC(BF9EmOQPpQJ8n8uZwUgw37wHFDBQg9wCNHiZUcDnNTbQbHwUd//RIfjiCO38GavO7PIuCKm11FFVhKG1HofyiljZBCCD83eOzw9lWZi6VXE=)
+    #    이전 시크릿 값 (향후 기간 동안 문제 없으면 추후 삭제하겠습니다)
+    #    secret: ENC(BF9EmOQPpQJ8n8uZwUgw37wHFDBQg9wCNHiZUcDnNTbQbHwUd//RIfjiCO38GavO7PIuCKm11FFVhKG1HofyiljZBCCD83eOzw9lWZi6VXE=)
     secret: ENC(ofbBXNe4Vl4UfHa8Kwsth0QTGo5Y4xn0dzs5AbdiedG32jSZCHyOzdFXqVhh2KAXzNuNT9F4ni2I6JEZ4Tsah4Js1u8HhZnrMkFtpq1rUJM=)
 
 server:
@@ -94,4 +94,10 @@ monitor:
   slack:
     cruiser: ENC(TIydYqpYJ4LIrazfFdSk0FLwfHeZ8KVgTtwtMtDT5NzlYtSxMvbn3OETKAcZCkN9Q658p5wa0IMEePSKyvAd1EA1UEBnG9aXYMGhsqg3ex4m0/Wgr8X0wIG9GY8MrBZ/T29dH+tGZIMsxX04soR30F3tRlWSnfcFdbvPkiBjRkc=)
 
-not-set-nickname : egVWeetTadtlZthceRiy
+not-set-nickname: egVWeetTadtlZthceRiy
+
+fab:
+  form:
+    title: "{username}님 {totalVisitCount}번째 출석 성공!"
+    description1: "오늘은 {todaySolveCount}개의 퀴즈를 풀었어요."
+    description2: "총 {totalSolveCount}개의 퀴즈를 풀었어요."

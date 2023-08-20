@@ -31,9 +31,14 @@ public class UserActivityCountService {
         return userActivityCountRepository.findByUserId(uid).orElseGet(() -> createActivityCount(uid));
     }
 
+    @Async
+    public CompletableFuture<UserActivityCount> asyncGetUserActivityCountOrGenerate(Long uid) {
+        return CompletableFuture.completedFuture(getUserActivityCountOrGenerate(uid));
+    }
+
     private UserActivityCount createActivityCount(long userId) {
         int quizCount = Math.toIntExact(quizReplyHistoryRepository.countByCreatedBy(userId));
-        UserActivityCount u = new UserActivityCount(userId, userId,0, quizCount);
+        UserActivityCount u = new UserActivityCount(userId, userId, 0, quizCount);
         return userActivityCountRepository.save(u);
     }
 }

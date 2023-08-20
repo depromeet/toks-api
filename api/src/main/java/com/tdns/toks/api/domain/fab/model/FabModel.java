@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.fab.model;
 
+import com.tdns.toks.api.domain.user.model.UserModel;
 import com.tdns.toks.core.domain.user.entity.UserActivityCount;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,10 +22,12 @@ public class FabModel {
     public static FabModel of(
             UserActivityCount userActivityCount,
             List<DailySolveCountModel> userMonthlySolveActivity,
+            UserModel userModel,
             Integer todaySolveCount
     ) {
         return FabModel.builder()
                 .userId(userActivityCount.getUserId())
+                .userName(userModel.getNickname())
                 .totalVisitCount(userActivityCount.getTotalVisitCount())
                 .totalSolveCount(userActivityCount.getTotalSolveCount())
                 .todaySolveCount(todaySolveCount)
