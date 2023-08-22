@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "이지미 관리", description = "IMAGE API")
+@Tag(name = "이미지 관리", description = "IMAGE API")
 @RestController
 @RequestMapping(path = "/api/v1/images")
 @RequiredArgsConstructor
