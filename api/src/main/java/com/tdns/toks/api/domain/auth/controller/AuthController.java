@@ -3,6 +3,7 @@ package com.tdns.toks.api.domain.auth.controller;
 import com.tdns.toks.api.domain.auth.service.AuthService;
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserRenewAccessTokenRequest;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
+import com.tdns.toks.core.domain.auth.AuthUserValidator;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -55,9 +56,10 @@ public class AuthController {
     public ResponseEntity<?> userStatus(
             @Nullable AuthUser authUser
     ) {
-        if (authUser == null) {
-            return ResponseDto.noContent();
+        if (AuthUserValidator.isAuthenticated(authUser)) {
+            return ResponseDto.ok("Logged in User");
         }
-        return ResponseDto.ok("Logged in User");
+
+        return ResponseDto.noContent();
     }
 }
