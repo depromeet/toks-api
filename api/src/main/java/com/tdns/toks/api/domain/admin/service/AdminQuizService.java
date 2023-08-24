@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -96,5 +97,17 @@ public class AdminQuizService {
     public Page<AdminQuizResponse> getAll(AuthUser authUser, int page, int size) {
         var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
         return quizRepository.findAll(pageable).map(AdminQuizResponse::from);
+    }
+
+    public void evict(AuthUser authUser, Set<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            quizRepository.findAll()
+                    .stream()
+                    .map(Quiz::getId)
+                    .collect(Collectors.toSet())
+                    .forEach(quizCacheService::deleteCachedQuiz);
+        } else {
+            ids.forEach(quizCacheService::deleteCachedQuiz);
+        }
     }
 }

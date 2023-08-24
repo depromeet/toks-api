@@ -86,4 +86,15 @@ public class AdminQuizController {
         adminQuizService.delete(authUser, ids);
         return ResponseDto.noContent();
     }
+
+    @Operation(summary = "퀴즈 캐싱 제어", description = "[DEV] 퀴즈 모델 캐싱 제어")
+    @AdminPermission
+    @PostMapping("/quizzes/evict-cache")
+    public ResponseEntity<Void> evict(
+            AuthUser authUser,
+            @RequestParam(required = false) Set<Long> ids
+    ) {
+        adminQuizService.evict(authUser, ids);
+        return ResponseDto.noContent();
+    }
 }

@@ -9,7 +9,7 @@ public class CacheFactory {
         return new Cache<>(
                 "quiz:model:" + id,
                 QuizModel.class,
-                Duration.ofMinutes(3)
+                Duration.ofMinutes(30)
         );
     }
 
