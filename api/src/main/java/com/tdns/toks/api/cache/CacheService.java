@@ -4,7 +4,6 @@ import com.tdns.toks.core.common.utils.MapperUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.Callable;
@@ -43,7 +42,6 @@ public class CacheService {
         );
     }
 
-    @Async
     public <T> void asyncSet(Cache<T> cache, T data) {
         CompletableFuture.runAsync(() -> set(cache, data));
     }
@@ -52,7 +50,6 @@ public class CacheService {
         redisTemplate.delete(cache.getKey());
     }
 
-    @Async
     public <T> void asyncDelete(Cache<T> cache) {
         CompletableFuture.runAsync(() -> delete(cache));
     }
