@@ -61,7 +61,7 @@ public class CategoryService {
         return Optional.of(categoryModels.get(categoryId));
     }
 
-    public CategoryModel get(String categoryId) {
+    public CategoryModel getOrThrow(String categoryId) {
         return getOrNull(categoryId)
                 .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR));
     }
