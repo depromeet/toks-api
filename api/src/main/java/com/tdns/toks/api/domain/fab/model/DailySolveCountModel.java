@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DailySolveCountModel {
     private String date;
-    private int count;
+    private Long count;
 
     public static DailySolveCountModel from(UserDailySolveCountModel model) {
         return new DailySolveCountModel(model.getDate(), model.getValue());

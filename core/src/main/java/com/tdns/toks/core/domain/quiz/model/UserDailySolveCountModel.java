@@ -1,6 +1,9 @@
 package com.tdns.toks.core.domain.quiz.model;
 
-public interface UserDailySolveCountModel {
-    String getDate();
-    Integer getValue();
+import lombok.Getter;
+
+@Getter
+public class UserDailySolveCountModel {
+    private String date;
+    private Long value;
 }

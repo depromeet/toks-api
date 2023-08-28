@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
@@ -119,7 +118,7 @@ public class QuizReplyHistoryService {
     }
 
     public List<DailySolveCountModel> getUserMonthlySolveActivity(Long uid, int year, int month) {
-        return quizReplyHistoryRepository.findUserMonthlySolveActivity(uid, month, year)
+        return quizReplyHistoryRepository.findUserMonthlySolveActivity(uid, year, month)
                 .stream()
                 .map(DailySolveCountModel::from)
                 .collect(Collectors.toList());
@@ -134,7 +133,7 @@ public class QuizReplyHistoryService {
         return Math.toIntExact(
                 quizReplyHistoryRepository.countUserDailySolveActivity(
                         uid,
-                        LocalDate.now().format(DateTimeFormatter.ofPattern("YYYYMMdd"))
+                        LocalDate.now()
                 )
         );
     }
