@@ -22,7 +22,7 @@ public class UserActivityCountService {
                 .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER_ACTIVITY));
     }
 
-    @Async
+    @Async(value = "taskExecutor")
     public CompletableFuture<UserActivityCount> asyncGetUserActivityCount(Long uid) {
         return CompletableFuture.completedFuture(getUserActivityCount(uid));
     }
@@ -31,7 +31,7 @@ public class UserActivityCountService {
         return userActivityCountRepository.findByUserId(uid).orElseGet(() -> createActivityCount(uid));
     }
 
-    @Async
+    @Async(value = "taskExecutor")
     public CompletableFuture<UserActivityCount> asyncGetUserActivityCountOrGenerate(Long uid) {
         return CompletableFuture.completedFuture(getUserActivityCountOrGenerate(uid));
     }

@@ -35,7 +35,7 @@ public class QuizInfoService {
         );
     }
 
-    @Async
+    @Async(value = "taskExecutor")
     public CompletableFuture<QuizInfoModel> asyncGetQuizInfoModelByQuizId(Long quizId) {
         return CompletableFuture.completedFuture(getQuizInfoModelByQuizId(quizId));
     }

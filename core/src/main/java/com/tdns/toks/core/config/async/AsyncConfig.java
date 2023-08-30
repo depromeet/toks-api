@@ -14,9 +14,9 @@ public class AsyncConfig extends AsyncConfigurerSupport {
     @Bean(name = "taskExecutor")
     public ThreadPoolTaskExecutor taskExecutor() {
         var executor = new ExecutorGenerator(
-                5,
                 10,
-                10,
+                15,
+                15,
                 "taskExecutor"
         );
 
@@ -30,18 +30,6 @@ public class AsyncConfig extends AsyncConfigurerSupport {
                 10,
                 10,
                 "systemActionLogExecutor"
-        );
-
-        return executor.generate();
-    }
-
-    @Bean(name = "tagDictionaryExecutor")
-    public ThreadPoolTaskExecutor tagDictionaryExecutor() {
-        var executor = new ExecutorGenerator(
-                5,
-                10,
-                10,
-                "tagDictionaryExecutor"
         );
 
         return executor.generate();

@@ -37,7 +37,7 @@ public class QuizReplyHistoryService {
         return quizReplyHistoryRepository.countByQuizIdAndAnswer(quizId, answer);
     }
 
-    @Async
+    @Async(value = "taskExecutor")
     public CompletableFuture<Long> asyncCountByQuizIdAndAnswer(Long quizId, String answer) {
         return CompletableFuture.completedFuture(countByQuizIdAndAnswer(quizId, answer));
     }
@@ -71,7 +71,7 @@ public class QuizReplyHistoryService {
         return null;
     }
 
-    @Async
+    @Async(value = "taskExecutor")
     public CompletableFuture<QuizReplyModel> asyncGetReplyModel(
             @Nullable AuthUser authUser,
             Long quizId,
@@ -112,7 +112,7 @@ public class QuizReplyHistoryService {
         return new QuizReplyCountsModel(totalCount, statistics);
     }
 
-    @Async
+    @Async(value = "taskExecutor")
     public CompletableFuture<QuizReplyCountsModel> asyncGetQuizReplyStatistics(Long quizId) {
         return CompletableFuture.completedFuture(getQuizReplyStatistics(quizId));
     }
@@ -124,7 +124,7 @@ public class QuizReplyHistoryService {
                 .collect(Collectors.toList());
     }
 
-    @Async
+    @Async(value = "taskExecutor")
     public CompletableFuture<List<DailySolveCountModel>> asyncGetUserMonthlySolveActivity(Long uid, int year, int month) {
         return CompletableFuture.completedFuture(getUserMonthlySolveActivity(uid, year, month));
     }
@@ -138,7 +138,7 @@ public class QuizReplyHistoryService {
         );
     }
 
-    @Async
+    @Async(value = "taskExecutor")
     public CompletableFuture<Integer> asyncGetTodaySolveCount(Long uid) {
         return CompletableFuture.completedFuture(getTodaySolveCount(uid));
     }

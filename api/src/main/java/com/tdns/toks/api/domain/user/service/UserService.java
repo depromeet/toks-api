@@ -59,7 +59,7 @@ public class UserService {
                 .orElseThrow(() -> new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_USER));
     }
 
-    @Async
+    @Async(value = "taskExecutor")
     public CompletableFuture<UserModel> asyncGetUserModel(Long uid) {
         return CompletableFuture.completedFuture(getUserModel(uid));
     }
