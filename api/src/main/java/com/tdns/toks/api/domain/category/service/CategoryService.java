@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -35,18 +34,16 @@ public class CategoryService {
 
     @Scheduled(fixedRate = 1000 * 60 * 3, initialDelayString = "0")
     public void refreshCategories() {
+        log.info("refresh categories info start");
         categoryModels = refresh();
+        log.info("refresh categories info complete");
     }
 
     private Map<String, CategoryModel> refresh() {
-        var categories = categoryRepository.findAll()
+        return categoryRepository.findAll()
                 .stream()
                 .map(CategoryModel::from)
                 .collect(Collectors.toMap(CategoryModel::getId, Function.identity()));
-
-        log.info("refresh categories info success");
-
-        return new TreeMap<>(categories);
     }
 
     public GetAllCategoriesResponse getAll() {
