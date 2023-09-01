@@ -6,6 +6,8 @@ import com.tdns.toks.api.domain.cruiser.dto.CruiserRequest;
 import com.tdns.toks.api.domain.user.service.UserService;
 import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
+import com.tdns.toks.core.domain.quiz.repository.QuizTagRepository;
+import com.tdns.toks.core.domain.quizcomment.repository.QuizCommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,8 @@ public class DailyStatisticsJob {
     private final SystemActionLogService systemActionLogService;
     private final QuizRepository quizRepository;
     private final QuizReplyHistoryRepository quizReplyHistoryRepository;
+    private final QuizTagRepository quizTagRepository;
+    private final QuizCommentRepository quizCommentRepository;
 
     public void dailyStatisticsJob() {
         var now = LocalDateTime.now();
@@ -33,6 +37,11 @@ public class DailyStatisticsJob {
         var replyCount = quizReplyHistoryRepository.count();
         var newReplyCount = quizReplyHistoryRepository.countByCreatedAtBetween(now.minusDays(1), now);
 
+        var tagCount = quizTagRepository.count();
+
+        var commentCount = quizCommentRepository.count();
+        var newCommentCount = quizCommentRepository.countByCreatedAtBetween(now.minusDays(1), now);
+
         var request = new CruiserRequest(
                 ":pray: *극락 알림* :pray:"
                         + "\n- 전체 가입자 : " + userCount
@@ -41,6 +50,9 @@ public class DailyStatisticsJob {
                         + "\n- 신규 퀴즈수 : " + newQuizCount
                         + "\n- 퀴즈 풀이수 : " + replyCount
                         + "\n- 신규 풀이수 : " + newReplyCount
+                        + "\n- 전체 태그수 : " + tagCount
+                        + "\n- 전체 댓글수 : " + commentCount
+                        + "\n- 신규 댓글수 : " + newCommentCount
                         + "\n- Api Call Count : " + apiCallCount
         );
 
