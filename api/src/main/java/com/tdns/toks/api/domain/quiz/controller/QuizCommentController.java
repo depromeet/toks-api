@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Nullable;
+
 @Tag(name = "퀴즈 댓글 관리", description = "QUIZ Comment API")
 @RestController
 @RequestMapping(path = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -22,11 +24,12 @@ public class QuizCommentController {
     @Operation(summary = "댓글 다건 조회", description = "내림차순으로 제공")
     @GetMapping("/quizzes/{quizId}/comments")
     public ResponseEntity<?> getAll(
+            @Nullable AuthUser authUser,
             @PathVariable Long quizId,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "20") Integer size
     ) {
-        var response = quizCommentService.getAll(quizId, page, size);
+        var response = quizCommentService.getAll(quizId, page, size, authUser);
         return PageableResponseDto.ok(response);
     }
 

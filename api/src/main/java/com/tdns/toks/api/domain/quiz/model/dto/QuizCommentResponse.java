@@ -21,7 +21,10 @@ public class QuizCommentResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
-    public static QuizCommentResponse from(QuizComment comment, String nickname, int likeCount) {
+    private String profileImageUrl;
+    private Boolean isLiked;
+
+    public static QuizCommentResponse from(QuizComment comment, String nickname, int likeCount, String profileImageUrl, Boolean isLiked) {
         return new QuizCommentResponse(
                 comment.getId(),
                 comment.getQuizId(),
@@ -29,7 +32,9 @@ public class QuizCommentResponse {
                 likeCount,
                 nickname,
                 comment.getContent(),
-                comment.getCreatedAt()
+                comment.getCreatedAt(),
+                profileImageUrl,
+                isLiked
         );
     }
 }

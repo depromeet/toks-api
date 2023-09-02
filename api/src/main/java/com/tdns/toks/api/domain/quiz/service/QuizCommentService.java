@@ -33,7 +33,7 @@ public class QuizCommentService {
     private final QuizCommentLikeService quizCommentLikeService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public Page<QuizCommentResponse> getAll(Long quizId, Integer page, Integer size) {
+    public Page<QuizCommentResponse> getAll(Long quizId, Integer page, Integer size, AuthUser authUser) {
         var quiz = quizCacheService.getCachedQuiz(quizId);
 
         var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
@@ -41,11 +41,15 @@ public class QuizCommentService {
 
         var uids = quizComment.getContent().stream().map(QuizComment::getUid).collect(Collectors.toSet());
         var user = userRepository.findAllById(uids)
-                .stream().collect(Collectors.toMap(User::getId, User::getNickname));
+                .stream().collect(Collectors.toMap(User::getId, userTemp -> {
+                    return new String[]{userTemp.getNickname(), userTemp.getProfileImageUrl()};
+                }));
+
 
         return quizComment.map(comment -> {
+                    boolean liked = quizCommentLikeService.isLiked(comment.getId(), authUser);
                     var likeCount = quizCommentLikeService.count(comment.getId());
-                    return QuizCommentResponse.from(comment, user.get(comment.getUid()), likeCount);
+                    return QuizCommentResponse.from(comment, user.get(comment.getUid())[0], likeCount, user.get(comment.getUid())[1], liked);
                 }
         );
     }
@@ -65,7 +69,7 @@ public class QuizCommentService {
 
         applicationEventPublisher.publishEvent(new QuizCommentInsertEvent(quizId));
 
-        return QuizCommentResponse.from(quizComment, user.getNickname(), likeCount);
+        return QuizCommentResponse.from(quizComment, user.getNickname(), likeCount, user.getProfileImageUrl(), false);
     }
 
     public int count(long quizId) {

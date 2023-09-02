@@ -39,4 +39,12 @@ public class QuizCommentLikeService {
         var count = cacheService.getOrNull(CacheFactory.makeCachedQuizCommentCount(commentId));
         return count != null ? count : 0;
     }
+
+    public boolean isLiked(long commentId, AuthUser authUser) {
+        long userId = 0L;
+        if (authUser != null) {
+            userId = authUser.getId();
+        }
+        return quizCommentLikeRepository.existsByCommentIdAndUid(commentId, userId);
+    }
 }
