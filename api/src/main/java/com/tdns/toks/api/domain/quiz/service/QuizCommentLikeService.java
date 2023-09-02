@@ -27,16 +27,20 @@ public class QuizCommentLikeService {
                         .commentId(commendId)
                         .build()
         );
+
+        cacheService.increment(CacheFactory.makeCachedQuizCommentLikeCount(commendId));
     }
 
     @Transactional
     public void unlike(AuthUser authUser, Long commendId) {
         quizCommentLikeRepository.findByCommentIdAndUid(commendId, authUser.getId())
                 .ifPresent(commentLike -> quizCommentLikeRepository.deleteById(commentLike.getId()));
+
+        cacheService.decrement(CacheFactory.makeCachedQuizCommentLikeCount(commendId));
     }
 
     public int count(long commentId) {
-        var count = cacheService.getOrNull(CacheFactory.makeCachedQuizCommentCount(commentId));
+        var count = cacheService.getOrNull(CacheFactory.makeCachedQuizCommentLikeCount(commentId));
         return count != null ? count : 0;
     }
 

@@ -28,4 +28,12 @@ public class CacheFactory {
                 Duration.ZERO
         );
     }
+
+    public static Cache<Integer> makeCachedQuizCommentLikeCount(Long id) {
+        return new Cache<>(
+                "quiz:comment:like:count:" + id,
+                Integer.class,
+                Duration.ZERO
+        );
+    }
 }
