@@ -16,8 +16,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,7 +51,11 @@ public class CategoryService {
             categoryModels = refresh();
         }
 
-        return new GetAllCategoriesResponse(new ArrayList<>(categoryModels.values()));
+        var categories = categoryModels.values().stream()
+                .sorted(Comparator.comparingInt(category -> Integer.parseInt(category.getId())))
+                .collect(Collectors.toList());
+
+        return new GetAllCategoriesResponse(categories);
     }
 
     public Optional<CategoryModel> getOrNull(String categoryId) {
