@@ -1,7 +1,5 @@
 package com.tdns.toks.api.domain.quiz.service;
 
-import com.tdns.toks.api.cache.CacheFactory;
-import com.tdns.toks.api.cache.CacheService;
 import com.tdns.toks.api.domain.fab.model.DailySolveCountModel;
 import com.tdns.toks.api.domain.quiz.model.QuizReplyCountsModel;
 import com.tdns.toks.api.domain.quiz.model.QuizReplyModel;
@@ -29,7 +27,6 @@ import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
 @Service
 @RequiredArgsConstructor
 public class QuizReplyHistoryService {
-    private final CacheService cacheService;
     private final QuizReplyHistoryRepository quizReplyHistoryRepository;
     private final QuizCacheService quizCacheService;
 
@@ -49,11 +46,6 @@ public class QuizReplyHistoryService {
 
         var clientIp = getClientIpAddress(httpServletRequest);
         return clientIp != null && quizReplyHistoryRepository.existsByQuizIdAndIpAddress(quizId, clientIp);
-    }
-
-    public Integer count(long quizId) {
-        var count = cacheService.getOrNull(CacheFactory.makeCachedQuizReplyHistoryCount(quizId));
-        return count != null ? count : 0;
     }
 
     public QuizReplyModel getReplyModel(@Nullable AuthUser authUser, Long quizId, HttpServletRequest httpServletRequest) {

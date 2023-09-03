@@ -1,18 +1,19 @@
 package com.tdns.toks.api.domain.quiz.service;
 
-import com.tdns.toks.api.domain.quiz.event.model.QuizSolveEvent;
+import com.tdns.toks.api.cache.CacheFactory;
+import com.tdns.toks.api.cache.CacheService;
 import com.tdns.toks.api.domain.quiz.model.QuizInfoModel;
 import com.tdns.toks.api.domain.quiz.model.QuizModel;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizDetailResponse;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizSearchRequest;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizSolveDto;
+import com.tdns.toks.api.domain.user.service.UserActivityCountService;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -28,10 +29,12 @@ import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
 @RequiredArgsConstructor
 public class QuizService {
     private final QuizRepository quizRepository;
-    private final QuizReplyHistoryService quizReplyHistoryService;
+    private final CacheService cacheService;
     private final QuizCacheService quizCacheService;
+    private final QuizReplyHistoryService quizReplyHistoryService;
     private final QuizInfoService quizInfoService;
-    private final ApplicationEventPublisher applicationEventPublisher;
+    private final UserActivityCountService userActivityCountService;
+
 
     @SneakyThrows
     public QuizDetailResponse getDetail(
@@ -101,8 +104,10 @@ public class QuizService {
 
         quizReplyHistoryService.save(uid, quizId, request.getAnswer(), clientIp);
 
+        cacheService.asyncIncrement(CacheFactory.makeCachedQuizReplyHistoryCount(quizId));
+
         if (uid != -1) {
-            applicationEventPublisher.publishEvent(new QuizSolveEvent(quizId, uid));
+            userActivityCountService.getUserActivityCountOrGenerate(uid).updateTotalSolveCount();
         }
 
         quizReplyCountCf.join();

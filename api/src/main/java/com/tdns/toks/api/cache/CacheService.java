@@ -21,16 +21,16 @@ public class CacheService {
 
     @SneakyThrows
     public <T> T get(Cache<T> cache, Callable<T> callable) {
-        var data = redisTemplate.opsForValue().get(cache.getKey());
+        var data = getOrNull(cache);
 
         if (data == null) {
-            var dataObject = callable.call();
+            var calledData = callable.call();
 
-            asyncSet(cache, dataObject);
+            asyncSet(cache, calledData);
 
-            return dataObject;
+            return calledData;
         } else {
-            return MapperUtil.readValue(data, cache.getType());
+            return data;
         }
     }
 
@@ -60,5 +60,18 @@ public class CacheService {
 
     public <T> Long decrement(Cache<T> cache) {
         return redisTemplate.opsForValue().decrement(cache.getKey());
+    }
+
+    public <T> Integer count(Cache<Integer> cache) {
+        var count = getOrNull(cache);
+        return count != null ? count : 0;
+    }
+
+    public <T> void asyncIncrement(Cache<T> cache) {
+        CompletableFuture.runAsync(() -> increment(cache));
+    }
+
+    public <T> void asyncDecrement(Cache<T> cache) {
+        CompletableFuture.runAsync(() -> decrement(cache));
     }
 }

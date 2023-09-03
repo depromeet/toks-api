@@ -1,5 +1,7 @@
 package com.tdns.toks.api.domain.quiz.service;
 
+import com.tdns.toks.api.cache.CacheFactory;
+import com.tdns.toks.api.cache.CacheService;
 import com.tdns.toks.api.domain.category.service.CategoryService;
 import com.tdns.toks.api.domain.quiz.model.QuizInfoModel;
 import com.tdns.toks.api.domain.quiz.model.QuizModel;
@@ -15,16 +17,15 @@ import java.util.concurrent.CompletableFuture;
 public class QuizInfoService {
     private final CategoryService categoryService;
     private final QuizReplyHistoryService quizReplyHistoryService;
-    private final QuizCommentService quizCommentService;
+    private final CacheService cacheService;
     private final QuizCacheService quizCacheService;
 
     public QuizInfoModel getQuizInfoModelByQuizId(Long quizId) {
         var quiz = quizCacheService.getCachedQuiz(quizId);
         var category = categoryService.getOrThrow(quiz.getCategoryId());
-        var quizCommentCount = quizCommentService.count(quizId);
-
+        var quizCommentCount = cacheService.count(CacheFactory.makeCachedQuizCommentCount(quizId));
         var answerReplyCountCf = quizReplyHistoryService.asyncCountByQuizIdAndAnswer(quizId, quiz.getAnswer());
-        var quizReplyHistoryCount = quizReplyHistoryService.count(quizId);
+        var quizReplyHistoryCount = cacheService.count(CacheFactory.makeCachedQuizReplyHistoryCount(quizId));
 
         return QuizInfoModel.of(
                 quiz,
@@ -43,11 +44,11 @@ public class QuizInfoService {
     // TODO : 퀴즈 검색 조회, 추천 데이터 조회 - DB 한번만 찌르게 수정
     public QuizInfoModel getQuizInfoModelByQuiz(Quiz quiz) {
         var category = categoryService.getOrThrow(quiz.getCategoryId());
-        var quizReplyHistoryCount = quizReplyHistoryService.count(quiz.getId());
+        var quizReplyHistoryCount = cacheService.count(CacheFactory.makeCachedQuizReplyHistoryCount(quiz.getId()));
 
         // TODO Refacor
         var answerReplyCount = quizReplyHistoryService.countByQuizIdAndAnswer(quiz.getId(), quiz.getAnswer());
-        var quizCommentCount = quizCommentService.count(quiz.getId());
+        var quizCommentCount = cacheService.count(CacheFactory.makeCachedQuizCommentCount(quiz.getId()));
 
         return QuizInfoModel.of(
                 QuizModel.from(quiz),
