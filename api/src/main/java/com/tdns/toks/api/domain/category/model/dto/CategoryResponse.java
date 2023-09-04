@@ -36,4 +36,35 @@ public class CategoryResponse {
             this.categoryIds = userCategory.getCategoryIds();
         }
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetMainCategories {
+        private List<GetMainCategory> categories;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetMainCategory {
+        private String id;
+        private Integer depth;
+        private String name;
+        private String description;
+        private List<CategoryModel> subCategories;
+
+        public static CategoryResponse.GetMainCategory of(
+                CategoryModel mainCategory,
+                List<CategoryModel> subCategories
+        ) {
+            return new CategoryResponse.GetMainCategory(
+                    mainCategory.getId(),
+                    mainCategory.getDepth(),
+                    mainCategory.getName(),
+                    mainCategory.getDescription(),
+                    subCategories
+            );
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.tdns.toks.api.domain.category.service;
 
 import com.tdns.toks.api.domain.category.model.CategoryModel;
+import com.tdns.toks.api.domain.category.model.dto.CategoryResponse;
 import com.tdns.toks.api.domain.category.model.dto.CategoryResponse.GetAllCategoriesResponse;
 import com.tdns.toks.api.domain.category.model.dto.CategoryResponse.GetUserCategoriesResponse;
 import com.tdns.toks.api.domain.category.model.dto.CategoryResponse.SetUserCategoriesResponse;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -56,6 +58,26 @@ public class CategoryService {
                 .collect(Collectors.toList());
 
         return new GetAllCategoriesResponse(categories);
+    }
+
+    public CategoryResponse.GetMainCategories getMainCategories() {
+        var groupedCategories = categoryModels.values()
+                .stream()
+                .collect(Collectors.groupingBy(category -> category.getId().substring(0, 2), HashMap::new, Collectors.toList()));
+
+        var mainCategories = categoryModels.values().stream()
+                .filter(categoryModel -> categoryModel.getDepth() == 1)
+                .map(category -> {
+                    var subCategories = groupedCategories.getOrDefault(category.getId().substring(0, 2), Collections.emptyList())
+                            .stream()
+                            .filter(c -> c.getDepth() != 1)
+                            .sorted(Comparator.comparingInt(c -> Integer.parseInt(c.getId())))
+                            .collect(Collectors.toList());
+
+                    return CategoryResponse.GetMainCategory.of(category, subCategories);
+                }).collect(Collectors.toList());
+
+        return new CategoryResponse.GetMainCategories(mainCategories);
     }
 
     public Optional<CategoryModel> getOrNull(String categoryId) {

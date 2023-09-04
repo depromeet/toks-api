@@ -29,6 +29,13 @@ public class CategoryController {
         return ResponseDto.ok(response);
     }
 
+    @Operation(summary = "메인홈에서 사용되는 카테고리 정보 조회, 대분류 기반")
+    @GetMapping("/main")
+    public ResponseEntity<?> getMainCategories() {
+        var response = categoryService.getMainCategories();
+        return ResponseDto.ok(response);
+    }
+
     @Operation(summary = "사용자 카테고리 조회")
     @GetMapping
     public ResponseEntity<?> getUserCategory(
