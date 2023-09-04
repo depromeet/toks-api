@@ -75,7 +75,9 @@ public class CategoryService {
                             .collect(Collectors.toList());
 
                     return CategoryResponse.GetMainCategory.of(category, subCategories);
-                }).collect(Collectors.toList());
+                })
+                .sorted(Comparator.comparingInt(c -> Integer.parseInt(c.getId())))
+                .collect(Collectors.toList());
 
         return new CategoryResponse.GetMainCategories(mainCategories);
     }
