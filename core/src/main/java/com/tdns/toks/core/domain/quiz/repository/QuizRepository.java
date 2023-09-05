@@ -15,7 +15,7 @@ import java.util.Set;
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
     @Transactional(readOnly = true)
-    Page<Quiz> findAllByCategoryIdIn(Set<String> categoryId, Pageable pageable);
+    Page<Quiz> findAllByCategoryIdInAndDeleted(Set<String> categoryId, Boolean deleted, Pageable pageable);
 
     @Transactional(readOnly = true)
     List<Quiz> findTop3ByCategoryId(String categoryId);

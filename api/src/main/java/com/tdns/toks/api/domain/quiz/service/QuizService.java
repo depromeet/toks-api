@@ -10,8 +10,10 @@ import com.tdns.toks.api.domain.quiz.model.dto.QuizSolveDto;
 import com.tdns.toks.api.domain.user.service.UserActivityCountService;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.core.domain.auth.AuthUserValidator;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
+import com.tdns.toks.core.domain.user.repository.UserCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
 import java.util.concurrent.CompletableFuture;
 
 import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
@@ -34,6 +37,7 @@ public class QuizService {
     private final QuizReplyHistoryService quizReplyHistoryService;
     private final QuizInfoService quizInfoService;
     private final UserActivityCountService userActivityCountService;
+    private final UserCategoryRepository userCategoryRepository;
 
 
     @SneakyThrows
@@ -68,12 +72,26 @@ public class QuizService {
                 Sort.by(Sort.Order.desc("createdAt"))
         );
 
-        if (request.getCategoryIds() == null || request.getCategoryIds().size() == 0) {
-            return quizRepository.findAllByDeletedOrderByCreatedAtDesc(false, pageable)
+        if (request.getCategoryIds() != null) {
+            return quizRepository.findAllByCategoryIdInAndDeleted(request.getCategoryIds(), false, pageable)
                     .map(quizInfoService::getQuizInfoModelByQuiz);
         }
 
-        return quizRepository.findAllByCategoryIdIn(request.getCategoryIds(), pageable)
+
+        if (AuthUserValidator.isAuthenticated(authUser)) {
+            var userCategory = userCategoryRepository.findByUserId(authUser.getId());
+
+            if (userCategory.isPresent()) {
+                var userCategories = new HashSet<>(userCategory.get().getCategoryIds());
+                return quizRepository.findAllByCategoryIdInAndDeleted(userCategories, false, pageable)
+                        .map(quizInfoService::getQuizInfoModelByQuiz);
+            } else {
+                return quizRepository.findAllByDeletedOrderByCreatedAtDesc(false, pageable)
+                        .map(quizInfoService::getQuizInfoModelByQuiz);
+            }
+        }
+
+        return quizRepository.findAllByDeletedOrderByCreatedAtDesc(false, pageable)
                 .map(quizInfoService::getQuizInfoModelByQuiz);
     }
 
