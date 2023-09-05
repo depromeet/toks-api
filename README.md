@@ -31,12 +31,6 @@ Kakao OAuth 와 사용자 인증
 - Flyway  
 데이터베이스 형상 관리
 
-## 개발 서버
-https://api.tokstudy.com
-
-## API 문서
-https://api.tokstudy.com/swagger-ui/index.html#
-
 ## 아키텍쳐
 ### 서버 아키텍쳐
 ![image](https://user-images.githubusercontent.com/66551410/211833433-430203aa-45ac-450d-b034-d4cf0699c869.png)
