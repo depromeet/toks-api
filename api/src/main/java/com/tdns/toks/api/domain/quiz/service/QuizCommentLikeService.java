@@ -39,11 +39,7 @@ public class QuizCommentLikeService {
         cacheService.decrement(CacheFactory.makeCachedQuizCommentLikeCount(commendId));
     }
 
-    public boolean isLiked(long commentId, AuthUser authUser) {
-        long userId = 0L;
-        if (authUser != null) {
-            userId = authUser.getId();
-        }
-        return quizCommentLikeRepository.existsByCommentIdAndUid(commentId, userId);
+    public boolean isLiked(Long uid, long commentId) {
+        return quizCommentLikeRepository.existsByCommentIdAndUid(commentId, uid);
     }
 }

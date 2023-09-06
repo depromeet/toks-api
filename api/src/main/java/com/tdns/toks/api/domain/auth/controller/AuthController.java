@@ -35,27 +35,21 @@ public class AuthController {
 
     @Operation(summary = "사용자 accessToken 갱신 요청")
     @PostMapping("/renew")
-    public ResponseEntity<?> renewAccessToken(
-            @RequestBody UserRenewAccessTokenRequest request
-    ) {
+    public ResponseEntity<?> renewAccessToken(@RequestBody UserRenewAccessTokenRequest request) {
         var response = authService.renewAccessToken(request);
         return ResponseDto.created(response);
     }
 
     @Operation(summary = "사용자 로그아웃, refreshToken 삭제 처리")
     @PatchMapping("/logout")
-    public ResponseEntity<Void> userLogout(
-            AuthUser authUser
-    ) {
+    public ResponseEntity<Void> userLogout(AuthUser authUser) {
         authService.deleteRefreshToken(authUser);
         return ResponseDto.noContent();
     }
 
     @Operation(summary = "사용자 상태 조회")
     @GetMapping("/status")
-    public ResponseEntity<?> userStatus(
-            @Nullable AuthUser authUser
-    ) {
+    public ResponseEntity<?> userStatus(@Nullable AuthUser authUser) {
         if (AuthUserValidator.isAuthenticated(authUser)) {
             return ResponseDto.ok("Logged in User");
         }

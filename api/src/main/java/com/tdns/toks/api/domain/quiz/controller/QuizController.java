@@ -42,10 +42,7 @@ public class QuizController {
 
     @Operation(summary = "퀴즈 다건 조회")
     @GetMapping("/quizzes")
-    public ResponseEntity<?> getAll(
-            @Nullable AuthUser authUser,
-            @ParameterObject QuizSearchRequest request
-    ) {
+    public ResponseEntity<?> getAll(@Nullable AuthUser authUser, @ParameterObject QuizSearchRequest request) {
         var response = quizService.search(authUser, request);
         return PageableResponseDto.ok(response);
     }

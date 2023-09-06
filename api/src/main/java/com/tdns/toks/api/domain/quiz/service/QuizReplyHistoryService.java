@@ -3,14 +3,11 @@ package com.tdns.toks.api.domain.quiz.service;
 import com.tdns.toks.api.domain.fab.model.DailySolveCountModel;
 import com.tdns.toks.api.domain.quiz.model.QuizReplyCountsModel;
 import com.tdns.toks.api.domain.quiz.model.QuizReplyModel;
-import com.tdns.toks.core.domain.auth.AuthUserValidator;
-import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.quiz.entity.QuizReplyHistory;
 import com.tdns.toks.core.domain.quiz.model.QuizReplyCountModel;
 import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.Nullable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,18 +36,18 @@ public class QuizReplyHistoryService {
         return CompletableFuture.completedFuture(countByQuizIdAndAnswer(quizId, answer));
     }
 
-    public boolean isSubmitted(@Nullable AuthUser authUser, Long quizId, HttpServletRequest httpServletRequest) {
-        if (AuthUserValidator.isAuthenticated(authUser)) {
-            return quizReplyHistoryRepository.existsByQuizIdAndCreatedBy(quizId, authUser.getId());
+    public boolean isSubmitted(Long uid, Long quizId, HttpServletRequest httpServletRequest) {
+        if (uid != -1) {
+            return quizReplyHistoryRepository.existsByQuizIdAndCreatedBy(quizId, uid);
         }
 
         var clientIp = getClientIpAddress(httpServletRequest);
         return clientIp != null && quizReplyHistoryRepository.existsByQuizIdAndIpAddress(quizId, clientIp);
     }
 
-    public QuizReplyModel getReplyModel(@Nullable AuthUser authUser, Long quizId, HttpServletRequest httpServletRequest) {
-        if (AuthUserValidator.isAuthenticated(authUser)) {
-            return quizReplyHistoryRepository.findByQuizIdAndCreatedBy(quizId, authUser.getId())
+    public QuizReplyModel getReplyModel(Long uid, Long quizId, HttpServletRequest httpServletRequest) {
+        if (uid != -1) {
+            return quizReplyHistoryRepository.findByQuizIdAndCreatedBy(quizId, uid)
                     .map(QuizReplyModel::from).orElse(null);
         }
 
@@ -65,11 +62,11 @@ public class QuizReplyHistoryService {
 
     @Async(value = "taskExecutor")
     public CompletableFuture<QuizReplyModel> asyncGetReplyModel(
-            @Nullable AuthUser authUser,
+            Long uid,
             Long quizId,
             HttpServletRequest httpServletRequest
     ) {
-        return CompletableFuture.completedFuture(getReplyModel(authUser, quizId, httpServletRequest));
+        return CompletableFuture.completedFuture(getReplyModel(uid, quizId, httpServletRequest));
     }
 
     @Transactional

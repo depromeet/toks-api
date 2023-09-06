@@ -38,19 +38,14 @@ public class CategoryController {
 
     @Operation(summary = "사용자 카테고리 조회")
     @GetMapping
-    public ResponseEntity<?> getUserCategory(
-            AuthUser authUser
-    ) {
+    public ResponseEntity<?> getUserCategory(AuthUser authUser) {
         var response = categoryService.getUserCategories(authUser);
         return ResponseDto.ok(response);
     }
 
     @Operation(summary = "사용자 카테고리 설정")
     @PostMapping
-    public ResponseEntity<?> setUserCategory(
-            AuthUser authUser,
-            @RequestBody SetUserCategoriesRequest request
-    ) {
+    public ResponseEntity<?> setUserCategory(AuthUser authUser, @RequestBody SetUserCategoriesRequest request) {
         var response = categoryService.setUserCategories(authUser, request.getCategories());
         return ResponseDto.created(response);
     }

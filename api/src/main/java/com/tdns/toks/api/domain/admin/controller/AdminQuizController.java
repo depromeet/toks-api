@@ -33,10 +33,7 @@ public class AdminQuizController {
     @Operation(summary = "퀴즈 추가")
     @AdminPermission
     @PostMapping
-    public ResponseEntity<?> insert(
-            AuthUser authUser,
-            @RequestBody AdminQuizSaveOrUpdateRequest request
-    ) {
+    public ResponseEntity<?> insert(AuthUser authUser, @RequestBody AdminQuizSaveOrUpdateRequest request) {
         var response = adminQuizService.insert(authUser, request);
         return ResponseDto.created(response);
     }
@@ -44,10 +41,7 @@ public class AdminQuizController {
     @Operation(summary = "퀴즈 단건 조회")
     @AdminPermission
     @GetMapping(path = "/{quizId}")
-    public ResponseEntity<?> get(
-            AuthUser authUser,
-            @PathVariable Long quizId
-    ) {
+    public ResponseEntity<?> get(AuthUser authUser, @PathVariable Long quizId) {
         var response = adminQuizService.get(authUser, quizId);
         return ResponseDto.ok(response);
     }
@@ -55,11 +49,7 @@ public class AdminQuizController {
     @Operation(summary = "퀴즈 다건 조회")
     @AdminPermission
     @GetMapping
-    public ResponseEntity<?> getAll(
-            AuthUser authUser,
-            @RequestParam int page,
-            @RequestParam int size
-    ) {
+    public ResponseEntity<?> getAll(AuthUser authUser, @RequestParam int page, @RequestParam int size) {
         var response = adminQuizService.getAll(authUser, page, size);
         return PageableResponseDto.ok(response);
     }
@@ -79,10 +69,7 @@ public class AdminQuizController {
     @Operation(summary = "퀴즈 삭제")
     @AdminPermission
     @DeleteMapping
-    public ResponseEntity<Void> delete(
-            AuthUser authUser,
-            @RequestParam Set<Long> ids
-    ) {
+    public ResponseEntity<Void> delete(AuthUser authUser, @RequestParam Set<Long> ids) {
         adminQuizService.delete(authUser, ids);
         return ResponseDto.noContent();
     }
@@ -90,10 +77,7 @@ public class AdminQuizController {
     @Operation(summary = "퀴즈 캐싱 제어", description = "[DEV] 퀴즈 모델 캐싱 제어")
     @AdminPermission
     @PostMapping("/quizzes/evict-cache")
-    public ResponseEntity<Void> evict(
-            AuthUser authUser,
-            @RequestParam(required = false) Set<Long> ids
-    ) {
+    public ResponseEntity<Void> evict(AuthUser authUser, @RequestParam(required = false) Set<Long> ids) {
         adminQuizService.evict(authUser, ids);
         return ResponseDto.noContent();
     }

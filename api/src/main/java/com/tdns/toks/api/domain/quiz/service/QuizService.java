@@ -19,6 +19,7 @@ import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,13 +43,15 @@ public class QuizService {
 
     @SneakyThrows
     public QuizDetailResponse getDetail(
-            AuthUser authUser,
+            @Nullable AuthUser authUser,
             Long quizId,
             HttpServletRequest httpServletRequest
     ) {
+        var uid = AuthUserValidator.getUidOrElseDefault(authUser);
+
         var quizModelInfoCf = quizInfoService.asyncGetQuizInfoModelByQuizId(quizId);
         var quizReplyModelCf = quizReplyHistoryService.asyncGetReplyModel(
-                authUser,
+                uid,
                 quizId,
                 httpServletRequest
         );
@@ -63,7 +66,7 @@ public class QuizService {
         );
     }
 
-    public Page<QuizInfoModel> search(AuthUser authUser, QuizSearchRequest request) {
+    public Page<QuizInfoModel> search(@Nullable AuthUser authUser, QuizSearchRequest request) {
         validateQuizSearchRequest(request);
 
         var pageable = PageRequest.of(
@@ -104,7 +107,7 @@ public class QuizService {
     @SneakyThrows
     @Transactional
     public QuizSolveDto.QuizSolveResponse solveQuiz(
-            AuthUser authUser,
+            @Nullable AuthUser authUser,
             Long quizId,
             QuizSolveDto.QuizSolveRequest request,
             HttpServletRequest httpServletRequest
@@ -112,13 +115,13 @@ public class QuizService {
         var quiz = quizCacheService.getCachedQuiz(quizId);
         var clientIp = getClientIpAddress(httpServletRequest);
 
-        if (quizReplyHistoryService.isSubmitted(authUser, quizId, httpServletRequest)) {
+        var uid = AuthUserValidator.getUidOrElseDefault(authUser);
+
+        if (quizReplyHistoryService.isSubmitted(uid, quizId, httpServletRequest)) {
             throw new ApplicationErrorException(ApplicationErrorType.ALREADY_SUBMITTED_USER_QUIZ);
         }
 
         var quizReplyCountCf = quizReplyHistoryService.asyncCountByQuizIdAndAnswer(quizId, request.getAnswer());
-
-        var uid = authUser == null ? -1 : authUser.getId();
 
         quizReplyHistoryService.save(uid, quizId, request.getAnswer(), clientIp);
 

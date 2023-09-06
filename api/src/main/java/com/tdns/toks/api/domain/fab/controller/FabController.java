@@ -22,11 +22,7 @@ public class FabController {
 
     @Operation(summary = "FAB 데이터 제공", description = "FAB 페이지에서 필요한 모든 데이터 일괄 제공")
     @GetMapping
-    public ResponseEntity<?> getFab(
-            AuthUser authUser,
-            @RequestParam int year,
-            @RequestParam int month
-    ) {
+    public ResponseEntity<?> getFab(AuthUser authUser, @RequestParam int year, @RequestParam int month) {
         var response = fabService.getFabInfo(authUser, month, year);
         return ResponseDto.ok(response);
     }

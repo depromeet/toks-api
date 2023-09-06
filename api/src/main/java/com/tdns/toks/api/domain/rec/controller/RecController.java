@@ -23,10 +23,7 @@ public class RecController {
 
     @Operation(summary = "퀴즈 추천 데이터 조회", description = "추천 데이터는 최대 3개까지")
     @GetMapping("/quizzes")
-    public ResponseEntity<?> getRecQuizzes(
-            @Nullable AuthUser authUser,
-            @RequestParam(name = "quizId") Long quizId
-    ) {
+    public ResponseEntity<?> getRecQuizzes(@Nullable AuthUser authUser, @RequestParam(name = "quizId") Long quizId) {
         var response = recQuizService.getRecQuizModels(authUser, quizId);
         return ResponseDto.ok(response);
     }

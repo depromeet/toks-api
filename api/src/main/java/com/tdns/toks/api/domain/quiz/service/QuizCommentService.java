@@ -6,6 +6,7 @@ import com.tdns.toks.api.domain.quiz.model.dto.QuizCommentCreateRequest;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizCommentResponse;
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
+import com.tdns.toks.core.domain.auth.AuthUserValidator;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.quizcomment.entity.QuizComment;
 import com.tdns.toks.core.domain.quizcomment.repository.QuizCommentRepository;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +31,7 @@ public class QuizCommentService {
     private final QuizCommentLikeService quizCommentLikeService;
     private final CacheService cacheService;
 
-    public Page<QuizCommentResponse> getAll(Long quizId, Integer page, Integer size, AuthUser authUser) {
+    public Page<QuizCommentResponse> getAll(@Nullable AuthUser authUser, Long quizId, Integer page, Integer size) {
         var quiz = quizCacheService.getCachedQuiz(quizId);
 
         var pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
@@ -41,9 +43,10 @@ public class QuizCommentService {
                     return new String[]{userTemp.getNickname(), userTemp.getProfileImageUrl()};
                 }));
 
+        var uid = AuthUserValidator.getUidOrElseDefault(authUser);
 
         return quizComment.map(comment -> {
-                    boolean liked = quizCommentLikeService.isLiked(comment.getId(), authUser);
+                    boolean liked = quizCommentLikeService.isLiked(comment.getId(), uid);
                     var likeCount = cacheService.count(CacheFactory.makeCachedQuizCommentLikeCount(comment.getId()));
                     return QuizCommentResponse.from(comment, user.get(comment.getUid())[0], likeCount, user.get(comment.getUid())[1], liked);
                 }
