@@ -23,8 +23,11 @@ import static com.tdns.toks.core.common.security.Constants.TOKS_AUTH_HEADER_KEY;
 @Component
 @RequiredArgsConstructor
 public class TokenService {
-    private final long accessTokenValidMillisecond = 1000L * 60 * 60 * 1; // AccessToken 1시간 토큰 유효
-    private final long refreshTokenValidMillisecond = 1000L * 60 * 60 * 24 * 30; // 30일 토큰 유효
+//    private final long accessTokenValidMillisecond = 1000L * 60 * 60 * 1; // AccessToken 1시간 토큰 유효
+    private final long accessTokenValidMillisecond = 1000L * 30 ; // AccessToken 30초 토큰 유효
+
+//    private final long refreshTokenValidMillisecond = 1000L * 60 * 60 * 24 * 30; // 30일 토큰 유효
+    private final long refreshTokenValidMillisecond = 1000L * 60 * 1; // 1분 토큰 유효
     private final UserRepository userRepository;
 
     private static String key;

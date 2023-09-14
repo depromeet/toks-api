@@ -108,12 +108,14 @@ public class JwtTokenProvider {
         /**
          * AccessToken 1시간 토큰 유효
          */
-        ACCESS_TOKEN_VALID_DURATION(1000L * 60 * 60 * 1),
+//        ACCESS_TOKEN_VALID_DURATION(1000L * 60 * 60 * 1),
+        ACCESS_TOKEN_VALID_DURATION(1000L * 30), // 30초 유효
 
         /**
          * 1달 토큰 유효
          */
-        REFRESH_TOKEN_VALID_DURATION(1000L * 60 * 60 * 24 * 30),
+//        REFRESH_TOKEN_VALID_DURATION(1000L * 60 * 60 * 24 * 30),
+        REFRESH_TOKEN_VALID_DURATION(1000L * 60 * 1), // 1분 유효
 
         /**
          * 1년 토큰 유효
