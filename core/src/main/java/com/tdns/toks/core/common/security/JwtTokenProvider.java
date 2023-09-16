@@ -40,7 +40,6 @@ public class JwtTokenProvider {
      */
     public JwtToken generateTokenPair(Long id, String email) {
         return new JwtToken(
-                // TODO : test를 위해, accessToken도 만료를 1년으로 변경, 추후 변경 필요
                 jwtBuilder(id, email, TokenDuration.REFRESH_TOKEN_VALID_DURATION.duration),
                 jwtBuilder(id, email, TokenDuration.REFRESH_TOKEN_VALID_DURATION.duration)
         );
