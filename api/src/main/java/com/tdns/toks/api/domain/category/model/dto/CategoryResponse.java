@@ -20,26 +20,6 @@ public class CategoryResponse {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class GetUserCategoriesResponse {
-        private List<String> categoryIds;
-    }
-
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class SetUserCategoriesResponse {
-        private long userId;
-        private List<String> categoryIds;
-
-        public SetUserCategoriesResponse(UserCategory userCategory) {
-            this.userId = userCategory.getUserId();
-            this.categoryIds = userCategory.getCategoryIds();
-        }
-    }
-
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class GetMainCategories {
         private List<GetMainCategory> categories;
     }

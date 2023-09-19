@@ -80,7 +80,6 @@ public class QuizService {
                     .map(quizInfoService::getQuizInfoModelByQuiz);
         }
 
-
         if (AuthUserValidator.isAuthenticated(authUser)) {
             var userCategory = userCategoryRepository.findByUserId(authUser.getId());
 
