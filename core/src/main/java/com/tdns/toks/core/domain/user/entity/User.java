@@ -66,4 +66,9 @@ public class User extends BaseTimeEntity implements Serializable {
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    public void updateUserRefreshTokenAndProfileUrl(String refreshToken, String profileImageUrl) {
+        this.refreshToken = refreshToken;
+        this.profileImageUrl = profileImageUrl;
+    }
 }

@@ -51,7 +51,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                     .updateTotalVisitCount();
         }
 
-        user.setRefreshToken(jwtTokenPair.getRefreshToken());
+//        user.setRefreshToken(jwtTokenPair.getRefreshToken());
+        user.updateUserRefreshTokenAndProfileUrl(jwtTokenPair.getRefreshToken(),
+                oAuth2Attribute.getProfileImageUrl());
 
         userRepository.save(user);
         return new UserDetailDTO(user, oAuth2Attribute.getAttributes(), jwtTokenPair);
