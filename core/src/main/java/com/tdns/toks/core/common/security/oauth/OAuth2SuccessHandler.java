@@ -31,8 +31,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         var userDetailDTO = (UserDetailDTO) authentication.getPrincipal();
 
-//        String host = "https://tokstudy.com";
-        String host = local;
+        String host = "https://tokstudy.com/toks-main";
+//        String host = local;
 
         String referer = request.getHeader("Referer");
         if (referer != null && referer.contains("localhost")) {
