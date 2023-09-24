@@ -1,5 +1,7 @@
 package com.tdns.toks.core.common.security;
 
+import static com.tdns.toks.core.common.security.Constants.TOKS_AUTH_HEADER_KEY;
+
 import com.tdns.toks.core.common.exception.ApplicationErrorException;
 import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.auth.model.AuthToken;
@@ -10,24 +12,19 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Date;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-
-import static com.tdns.toks.core.common.security.Constants.TOKS_AUTH_HEADER_KEY;
-
 @Component
 @RequiredArgsConstructor
 public class TokenService {
-//    private final long accessTokenValidMillisecond = 1000L * 60 * 60 * 1; // AccessToken 1시간 토큰 유효
-    private final long accessTokenValidMillisecond = 1000L * 30 ; // AccessToken 30초 토큰 유효
+    private final long accessTokenValidMillisecond = 1000L * 60 * 60 * 1; // AccessToken 1시간 토큰 유효
 
-//    private final long refreshTokenValidMillisecond = 1000L * 60 * 60 * 24 * 30; // 30일 토큰 유효
-    private final long refreshTokenValidMillisecond = 1000L * 60 * 1; // 1분 토큰 유효
+    private final long refreshTokenValidMillisecond = 1000L * 60 * 60 * 24 * 30; // 30일 토큰 유효
     private final UserRepository userRepository;
 
     private static String key;

@@ -1,23 +1,22 @@
 package com.tdns.toks.core.common.security;
 
+import static com.tdns.toks.core.common.security.Constants.TOKS_AUTH_HEADER_KEY;
+
 import com.tdns.toks.core.common.type.JwtToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Base64;
+import java.util.Date;
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
-import java.util.Date;
-
-import static com.tdns.toks.core.common.security.Constants.TOKS_AUTH_HEADER_KEY;
 
 
 /**
@@ -107,15 +106,12 @@ public class JwtTokenProvider {
         /**
          * AccessToken 1시간 토큰 유효
          */
-//        ACCESS_TOKEN_VALID_DURATION(1000L * 60 * 60 * 1),
-        ACCESS_TOKEN_VALID_DURATION(1000L * 30), // 30초 유효
+        ACCESS_TOKEN_VALID_DURATION(1000L * 60 * 60 * 1),
 
         /**
          * 1달 토큰 유효
          */
-//        REFRESH_TOKEN_VALID_DURATION(1000L * 60 * 60 * 24 * 30),
-        REFRESH_TOKEN_VALID_DURATION(1000L * 60 * 1), // 1분 유효
-
+        REFRESH_TOKEN_VALID_DURATION(1000L * 60 * 60 * 24 * 30),
         /**
          * 1년 토큰 유효
          */
