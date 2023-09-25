@@ -1,5 +1,7 @@
 package com.tdns.toks.api.domain.quiz.service;
 
+import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
+
 import com.tdns.toks.api.cache.CacheFactory;
 import com.tdns.toks.api.cache.CacheService;
 import com.tdns.toks.api.domain.quiz.model.QuizInfoModel;
@@ -14,6 +16,8 @@ import com.tdns.toks.core.domain.auth.AuthUserValidator;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.quiz.repository.QuizRepository;
 import com.tdns.toks.core.domain.user.repository.UserCategoryRepository;
+import java.util.concurrent.CompletableFuture;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
@@ -22,12 +26,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.concurrent.CompletableFuture;
-
-import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
 
 @Service
 @RequiredArgsConstructor
@@ -66,6 +64,37 @@ public class QuizService {
         );
     }
 
+//    public Page<QuizInfoModel> search(@Nullable AuthUser authUser, QuizSearchRequest request) {
+//        validateQuizSearchRequest(request);
+//
+//        var pageable = PageRequest.of(
+//                request.getPage(),
+//                request.getSize(),
+//                Sort.by(Sort.Order.desc("createdAt"))
+//        );
+//
+//        if (request.getCategoryIds() != null) {
+//            return quizRepository.findAllByCategoryIdInAndDeleted(request.getCategoryIds(), false, pageable)
+//                    .map(quizInfoService::getQuizInfoModelByQuiz);
+//        }
+//
+//        if (AuthUserValidator.isAuthenticated(authUser)) {
+//            var userCategory = userCategoryRepository.findByUserId(authUser.getId());
+//
+//            if (userCategory.isPresent()) {
+//                var userCategories = new HashSet<>(userCategory.get().getCategoryIds());
+//                return quizRepository.findAllByCategoryIdInAndDeleted(userCategories, false, pageable)
+//                        .map(quizInfoService::getQuizInfoModelByQuiz);
+//            } else {
+//                return quizRepository.findAllByDeletedOrderByCreatedAtDesc(false, pageable)
+//                        .map(quizInfoService::getQuizInfoModelByQuiz);
+//            }
+//        }
+//
+//        return quizRepository.findAllByDeletedOrderByCreatedAtDesc(false, pageable)
+//                .map(quizInfoService::getQuizInfoModelByQuiz);
+//    }
+
     public Page<QuizInfoModel> search(@Nullable AuthUser authUser, QuizSearchRequest request) {
         validateQuizSearchRequest(request);
 
@@ -75,27 +104,15 @@ public class QuizService {
                 Sort.by(Sort.Order.desc("createdAt"))
         );
 
-        if (request.getCategoryIds() != null) {
-            return quizRepository.findAllByCategoryIdInAndDeleted(request.getCategoryIds(), false, pageable)
+        if (request.getCategoryIds() == null || request.getCategoryIds().size() == 0) {
+            return quizRepository.findAllByDeletedOrderByCreatedAtDesc(false, pageable)
                     .map(quizInfoService::getQuizInfoModelByQuiz);
         }
 
-        if (AuthUserValidator.isAuthenticated(authUser)) {
-            var userCategory = userCategoryRepository.findByUserId(authUser.getId());
-
-            if (userCategory.isPresent()) {
-                var userCategories = new HashSet<>(userCategory.get().getCategoryIds());
-                return quizRepository.findAllByCategoryIdInAndDeleted(userCategories, false, pageable)
-                        .map(quizInfoService::getQuizInfoModelByQuiz);
-            } else {
-                return quizRepository.findAllByDeletedOrderByCreatedAtDesc(false, pageable)
-                        .map(quizInfoService::getQuizInfoModelByQuiz);
-            }
-        }
-
-        return quizRepository.findAllByDeletedOrderByCreatedAtDesc(false, pageable)
+        return quizRepository.findAllByCategoryIdInAndDeleted(request.getCategoryIds(),false, pageable)
                 .map(quizInfoService::getQuizInfoModelByQuiz);
     }
+
 
     private void validateQuizSearchRequest(QuizSearchRequest request) {
         if (request.getSize() < 0 || request.getSize() > 50) {
