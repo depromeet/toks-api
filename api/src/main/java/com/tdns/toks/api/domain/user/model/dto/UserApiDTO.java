@@ -28,6 +28,7 @@ public class UserApiDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UserInfoResponse {
+        private Long id;
         private String email;
         private String nickname;
         private String thumbnailImageUrl;

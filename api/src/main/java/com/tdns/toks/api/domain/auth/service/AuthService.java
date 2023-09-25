@@ -28,6 +28,7 @@ public class AuthService {
             throw new ApplicationErrorException(ApplicationErrorType.NOT_SET_NICKNAME);
         }
         return new UserApiDTO.UserInfoResponse(
+                user.getId(),
                 user.getEmail(),
                 user.getNickname(),
                 user.getThumbnailImageUrl(),
