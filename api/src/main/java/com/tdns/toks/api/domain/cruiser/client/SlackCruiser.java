@@ -1,6 +1,5 @@
 package com.tdns.toks.api.domain.cruiser.client;
 
-import com.tdns.toks.api.config.cruiser.CruiserProperties;
 import com.tdns.toks.api.domain.cruiser.dto.CruiserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -9,14 +8,11 @@ import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 public class SlackCruiser implements CruiserClient {
-    private final CruiserProperties cruiserProperties;
-    private final WebClient.Builder webclient;
+    private final WebClient webClient;
 
     @Override
     public void send(CruiserRequest request) {
-        webclient.build()
-                .post()
-                .uri(cruiserProperties.getCruiser())
+        webClient.post()
                 .body(Mono.just(request), CruiserRequest.class)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()

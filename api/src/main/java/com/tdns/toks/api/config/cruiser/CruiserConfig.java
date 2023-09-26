@@ -2,11 +2,11 @@ package com.tdns.toks.api.config.cruiser;
 
 import com.tdns.toks.api.domain.cruiser.client.CruiserClient;
 import com.tdns.toks.api.domain.cruiser.client.SlackCruiser;
+import com.tdns.toks.core.common.client.WebClientFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Slf4j
 @Configuration
@@ -14,11 +14,15 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class CruiserConfig {
     private final CruiserProperties cruiserProperties;
 
-    // TODO : Webclient Builder 추가하기
-    private final WebClient.Builder webClient;
-
     @Bean
     public CruiserClient slackCruiser() {
-        return new SlackCruiser(cruiserProperties, webClient);
+        var webClient = WebClientFactory.generate(
+                cruiserProperties.getCruiser(),
+                10000,
+                10000L,
+                10000L
+        );
+
+        return new SlackCruiser(webClient);
     }
 }
