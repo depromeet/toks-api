@@ -45,7 +45,7 @@ public class QuizCommentService {
         var uid = AuthUserValidator.getUidOrElseDefault(authUser);
 
         return quizComment.map(comment -> {
-                    boolean liked = quizCommentLikeService.isLiked(comment.getId(), uid);
+                    boolean liked = quizCommentLikeService.isLiked(uid, comment.getId());
                     var likeCount = cacheService.count(CacheFactory.makeCachedQuizCommentLikeCount(comment.getId()));
                     return QuizCommentResponse.from(comment, user.get(comment.getUid()), likeCount, liked);
                 }
