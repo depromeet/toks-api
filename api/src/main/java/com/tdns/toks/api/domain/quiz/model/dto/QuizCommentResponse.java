@@ -57,6 +57,6 @@ public class QuizCommentResponse {
         if (user == null) {
             return "https://toks-web-assets.s3.amazonaws.com/emoji/ic_drooling.svg";
         }
-        return user.getNickname();
+        return user.getProfileImageUrl();
     }
 }
