@@ -20,6 +20,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,16 +40,14 @@ public class QuizCommentService {
 
         var uids = quizComment.getContent().stream().map(QuizComment::getUid).collect(Collectors.toSet());
         var user = userRepository.findAllById(uids)
-                .stream().collect(Collectors.toMap(User::getId, userTemp -> {
-                    return new String[]{userTemp.getNickname(), userTemp.getProfileImageUrl()};
-                }));
+                .stream().collect(Collectors.toMap(User::getId, Function.identity()));
 
         var uid = AuthUserValidator.getUidOrElseDefault(authUser);
 
         return quizComment.map(comment -> {
                     boolean liked = quizCommentLikeService.isLiked(comment.getId(), uid);
                     var likeCount = cacheService.count(CacheFactory.makeCachedQuizCommentLikeCount(comment.getId()));
-                    return QuizCommentResponse.from(comment, user.get(comment.getUid())[0], likeCount, user.get(comment.getUid())[1], liked);
+                    return QuizCommentResponse.from(comment, user.get(comment.getUid()), likeCount, liked);
                 }
         );
     }
@@ -68,6 +67,6 @@ public class QuizCommentService {
 
         cacheService.asyncIncrement(CacheFactory.makeCachedQuizCommentCount(quizId));
 
-        return QuizCommentResponse.from(quizComment, user.getNickname(), likeCount, user.getProfileImageUrl(), false);
+        return QuizCommentResponse.from(quizComment, user, likeCount, false);
     }
 }

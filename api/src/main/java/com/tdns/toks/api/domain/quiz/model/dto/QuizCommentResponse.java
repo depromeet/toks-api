@@ -2,6 +2,7 @@ package com.tdns.toks.api.domain.quiz.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tdns.toks.core.domain.quizcomment.entity.QuizComment;
+import com.tdns.toks.core.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,17 +25,38 @@ public class QuizCommentResponse {
     private String profileImageUrl;
     private Boolean isLiked;
 
-    public static QuizCommentResponse from(QuizComment comment, String nickname, int likeCount, String profileImageUrl, Boolean isLiked) {
+    public static QuizCommentResponse from(
+            QuizComment comment,
+            User user,
+            int likeCount,
+            Boolean isLiked
+    ) {
         return new QuizCommentResponse(
                 comment.getId(),
                 comment.getQuizId(),
                 comment.getUid(),
                 likeCount,
-                nickname,
+                resolveNickname(user),
                 comment.getContent(),
                 comment.getCreatedAt(),
-                profileImageUrl,
+                resolveProfileImageUrl(user),
                 isLiked
         );
+    }
+
+    private static String resolveNickname(User user) {
+        // default nickname
+        if (user == null) {
+            return "똑스";
+        }
+        return user.getNickname();
+    }
+
+    private static String resolveProfileImageUrl(User user) {
+        // default image
+        if (user == null) {
+            return "https://toks-web-assets.s3.amazonaws.com/emoji/ic_drooling.svg";
+        }
+        return user.getNickname();
     }
 }
