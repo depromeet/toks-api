@@ -26,6 +26,9 @@ public interface QuizReplyHistoryRepository extends JpaRepository<QuizReplyHisto
     Optional<QuizReplyHistory> findByQuizIdAndIpAddress(Long quizId, String ipAddress);
 
     @Transactional(readOnly = true)
+    Optional<QuizReplyHistory> findByQuizIdAndIpAddressAndCreatedBy(Long quizId, String ipAddress, Long createdBy);
+
+    @Transactional(readOnly = true)
     Long countByCreatedBy(long userId);
 
     @Transactional(readOnly = true)

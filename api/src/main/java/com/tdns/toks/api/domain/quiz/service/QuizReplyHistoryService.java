@@ -53,7 +53,7 @@ public class QuizReplyHistoryService {
 
         var clientIp = getClientIpAddress(httpServletRequest);
         if (clientIp != null) {
-            return quizReplyHistoryRepository.findByQuizIdAndIpAddress(quizId, clientIp)
+            return quizReplyHistoryRepository.findByQuizIdAndIpAddressAndCreatedBy(quizId, clientIp, -1L)
                     .map(QuizReplyModel::from).orElse(null);
         }
 
