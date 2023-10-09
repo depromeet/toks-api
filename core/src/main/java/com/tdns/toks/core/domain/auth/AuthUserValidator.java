@@ -1,8 +1,9 @@
 package com.tdns.toks.core.domain.auth;
 
+import com.tdns.toks.core.common.exception.ApplicationErrorException;
+import com.tdns.toks.core.common.exception.ApplicationErrorType;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
 import com.tdns.toks.core.domain.auth.model.AuthUserImpl;
-import com.tdns.toks.core.domain.user.type.UserRole;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -10,6 +11,15 @@ public class AuthUserValidator {
     @NonNull
     public static boolean isAuthenticated(@Nullable AuthUser authUser) {
         return authUser != null;
+    }
+
+    @NonNull
+    public static AuthUser getAuthenticatedUser(@Nullable AuthUser authUser) {
+        if (isAuthenticated(authUser)) {
+            return authUser;
+        }
+
+        throw new ApplicationErrorException(ApplicationErrorType.AUTHENTICATION_FAIL);
     }
 
     @NonNull
@@ -25,6 +35,6 @@ public class AuthUserValidator {
         if (isAuthenticated(authUser)) {
             return authUser;
         }
-        return new AuthUserImpl(-1L, UserRole.ANONYMOUS);
+        return AuthUserImpl.unauthorizedUser();
     }
 }

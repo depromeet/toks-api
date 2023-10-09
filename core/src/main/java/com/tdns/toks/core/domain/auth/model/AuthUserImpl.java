@@ -17,4 +17,8 @@ public class AuthUserImpl implements AuthUser {
     public UserRole getUserRole() {
         return this.userRole;
     }
+
+    public static AuthUser unauthorizedUser() {
+        return new AuthUserImpl(-1L, UserRole.ANONYMOUS);
+    }
 }
