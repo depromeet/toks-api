@@ -10,5 +10,5 @@ import java.time.LocalDateTime;
 @Repository
 public interface SystemActionLogRepository extends JpaRepository<SystemActionLog, Long> {
     @Transactional(readOnly = true)
-    Long countByCreatedAtBetween(LocalDateTime startAt, LocalDateTime endAT);
+    Long countByCreatedAtBetween(LocalDateTime startAt, LocalDateTime endAt);
 }
