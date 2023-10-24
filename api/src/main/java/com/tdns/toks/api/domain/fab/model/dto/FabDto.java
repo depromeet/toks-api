@@ -11,10 +11,16 @@ public class FabDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class GetFabResponseDto {
+    public static class GetFabUserDataResponseDto {
         private String title;
         private String description1;
         private String description2;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class GetFabCalendarDataResponseDto {
         private List<DailySolveCountModel> calendar;
     }
 }

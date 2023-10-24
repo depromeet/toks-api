@@ -20,10 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class FabController {
     private final FabService fabService;
 
-    @Operation(summary = "FAB 데이터 제공", description = "FAB 페이지에서 필요한 모든 데이터 일괄 제공")
-    @GetMapping
-    public ResponseEntity<?> getFab(AuthUser authUser, @RequestParam int year, @RequestParam int month) {
-        var response = fabService.getFabInfo(authUser, month, year);
+    @Operation(summary = "FAB 유저 퀴즈 데이터", description = "사용자 총 접속 및 문제 풀이 횟수 제공")
+    @GetMapping("/user")
+    public ResponseEntity<?> getFabUserData(AuthUser authUser, @RequestParam int year, @RequestParam int month) {
+        var response = fabService.getFabUserData(authUser, month, year);
+        return ResponseDto.ok(response);
+    }
+
+    @Operation(summary = "FAB 월별 풀이 데이터", description = "사용자 해당 월 일별 문제 풀이 횟수 제공")
+    @GetMapping("/calendar")
+    public ResponseEntity<?> getFabCalendarData(AuthUser authUser, @RequestParam int year, @RequestParam int month) {
+        var response = fabService.getFabCalendarData(authUser, month, year);
         return ResponseDto.ok(response);
     }
 }

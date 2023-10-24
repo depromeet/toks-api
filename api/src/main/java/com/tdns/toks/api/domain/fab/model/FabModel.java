@@ -12,11 +12,11 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class FabModel {
-    private long userId;
+    private Long userId;
     private String userName;
-    private int totalVisitCount;
-    private int todaySolveCount;
-    private int totalSolveCount;
+    private Integer totalVisitCount;
+    private Integer todaySolveCount;
+    private Integer totalSolveCount;
     private List<DailySolveCountModel> monthlySolveCount;
 
     public static FabModel of(
@@ -33,5 +33,13 @@ public class FabModel {
                 .todaySolveCount(todaySolveCount)
                 .monthlySolveCount(userMonthlySolveActivity)
                 .build();
+    }
+
+    public FabModel calenderDataOnly(List<DailySolveCountModel> userMonthlySolveActivity){
+        return new FabModel(null, null, null, null, null, userMonthlySolveActivity);
+    }
+
+    public FabModel userDataOnly(UserActivityCount userActivityCount, UserModel userModel, Integer todaySolveCount) {
+        return new FabModel(userActivityCount.getUserId(),userModel.getNickname(),userActivityCount.getTotalVisitCount(),userActivityCount.getTotalSolveCount(),todaySolveCount, null);
     }
 }
