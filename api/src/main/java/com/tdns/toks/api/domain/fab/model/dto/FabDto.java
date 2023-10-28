@@ -12,7 +12,8 @@ public class FabDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class GetFabUserDataResponseDto {
-        private String title;
+        private String username;
+        private Integer attendance;
         private String description1;
         private String description2;
     }

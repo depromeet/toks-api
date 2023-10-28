@@ -45,12 +45,10 @@ public class FabService {
     }
 
     private FabDto.GetFabUserDataResponseDto resolveFabUserDataResponse(FabModel model) {
-        var title = fabProperties.getTitle().replace("{username}", model.getUserName())
-                .replace("{totalVisitCount}", String.valueOf(model.getTotalVisitCount()));
         var description1 = fabProperties.getDescription1().replace("{todaySolveCount}", String.valueOf(model.getTodaySolveCount()));
         var description2 = fabProperties.getDescription2().replace("{totalSolveCount}", String.valueOf(model.getTotalSolveCount()));
 
-        return new FabDto.GetFabUserDataResponseDto(title, description1, description2);
+        return new FabDto.GetFabUserDataResponseDto(model.getUserName(), model.getTotalVisitCount(), description1, description2);
     }
 
     @SneakyThrows
