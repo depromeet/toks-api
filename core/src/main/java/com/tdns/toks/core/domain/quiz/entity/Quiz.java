@@ -47,7 +47,7 @@ public class Quiz extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private QuizType quizType;
 
-    @Column(columnDefinition = "VARCHAR(255) COMMENT '퀴즈 설명'")
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Column(columnDefinition = "TEXT COMMENT '정답'")
