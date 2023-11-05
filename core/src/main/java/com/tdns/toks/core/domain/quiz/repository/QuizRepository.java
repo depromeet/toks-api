@@ -28,4 +28,7 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
     @Transactional(readOnly = true)
     Long countByCreatedAtBetween(LocalDateTime startAt, LocalDateTime endAt);
+
+    @Transactional(readOnly = true)
+    Quiz findTop1ByIdIsNotIn(List<Long> ids);
 }
