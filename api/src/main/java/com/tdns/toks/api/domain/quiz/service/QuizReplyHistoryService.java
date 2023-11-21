@@ -1,5 +1,7 @@
 package com.tdns.toks.api.domain.quiz.service;
 
+import static com.tdns.toks.core.common.utils.HttpUtil.getToksUserKeyUUID;
+
 import com.tdns.toks.api.domain.fab.model.DailySolveCountModel;
 import com.tdns.toks.api.domain.quiz.model.QuizReplyCountsModel;
 import com.tdns.toks.api.domain.quiz.model.QuizReplyModel;
@@ -7,19 +9,16 @@ import com.tdns.toks.core.domain.quiz.entity.QuizReplyHistory;
 import com.tdns.toks.core.domain.quiz.model.QuizReplyCountModel;
 import com.tdns.toks.core.domain.quiz.repository.QuizReplyHistoryRepository;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
-import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
+import javax.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +40,9 @@ public class QuizReplyHistoryService {
             return quizReplyHistoryRepository.existsByQuizIdAndCreatedBy(quizId, uid);
         }
 
-        var clientIp = getClientIpAddress(httpServletRequest);
+//        var clientIp = getClientIpAddress(httpServletRequest);
+        var clientIp = getToksUserKeyUUID(httpServletRequest);
+
         return clientIp != null && quizReplyHistoryRepository.existsByQuizIdAndIpAddress(quizId, clientIp);
     }
 
@@ -51,7 +52,9 @@ public class QuizReplyHistoryService {
                     .map(QuizReplyModel::from).orElse(null);
         }
 
-        var clientIp = getClientIpAddress(httpServletRequest);
+//        var clientIp = getClientIpAddress(httpServletRequest);
+        var clientIp = getToksUserKeyUUID(httpServletRequest);
+
         if (clientIp != null) {
             return quizReplyHistoryRepository.findByQuizIdAndIpAddressAndCreatedBy(quizId, clientIp, -1L)
                     .map(QuizReplyModel::from).orElse(null);

@@ -1,5 +1,6 @@
 package com.tdns.toks.core.common.utils;
 
+import com.tdns.toks.core.common.security.Constants;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
@@ -18,5 +19,9 @@ public class HttpUtil {
                 .filter(ip -> ip != null && !ip.isEmpty() && !"unknown".equalsIgnoreCase(ip))
                 .findFirst()
                 .orElse(request.getRemoteAddr());
+    }
+
+    public static String getToksUserKeyUUID(HttpServletRequest request) {
+        return request.getHeader(Constants.USER_UUID);
     }
 }

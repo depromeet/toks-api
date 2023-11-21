@@ -1,8 +1,8 @@
 package com.tdns.toks.core.domain.auth.model;
 
-import lombok.Data;
-
 import static com.tdns.toks.core.common.security.Constants.TOKS_AUTH_HEADER_KEY;
+
+import lombok.Data;
 
 @Data
 public class AuthToken {

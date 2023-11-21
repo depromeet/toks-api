@@ -1,6 +1,6 @@
 package com.tdns.toks.api.domain.quiz.service;
 
-import static com.tdns.toks.core.common.utils.HttpUtil.getClientIpAddress;
+import static com.tdns.toks.core.common.utils.HttpUtil.getToksUserKeyUUID;
 
 import com.tdns.toks.api.cache.CacheFactory;
 import com.tdns.toks.api.cache.CacheService;
@@ -129,7 +129,7 @@ public class QuizService {
             HttpServletRequest httpServletRequest
     ) {
         var quiz = quizCacheService.getCachedQuiz(quizId);
-        var clientIp = getClientIpAddress(httpServletRequest);
+        var clientIp = getToksUserKeyUUID(httpServletRequest);
 
         var uid = AuthUserValidator.getUidOrElseDefault(authUser);
 
