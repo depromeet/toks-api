@@ -129,7 +129,7 @@ public class QuizService {
             HttpServletRequest httpServletRequest
     ) {
         var quiz = quizCacheService.getCachedQuiz(quizId);
-        var clientIp = getToksUserKeyUUID(httpServletRequest);
+        var userKeyUUID = getToksUserKeyUUID(httpServletRequest);
 
         var uid = AuthUserValidator.getUidOrElseDefault(authUser);
 
@@ -139,7 +139,7 @@ public class QuizService {
 
         var quizReplyCountCf = quizReplyHistoryService.asyncCountByQuizIdAndAnswer(quizId, request.getAnswer());
 
-        quizReplyHistoryService.save(uid, quizId, request.getAnswer(), clientIp);
+        quizReplyHistoryService.save(uid, quizId, request.getAnswer(), userKeyUUID);
 
         cacheService.asyncIncrement(CacheFactory.makeCachedQuizReplyHistoryCount(quizId));
 

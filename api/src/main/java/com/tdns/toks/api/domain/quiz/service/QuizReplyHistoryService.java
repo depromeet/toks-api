@@ -40,10 +40,9 @@ public class QuizReplyHistoryService {
             return quizReplyHistoryRepository.existsByQuizIdAndCreatedBy(quizId, uid);
         }
 
-//        var clientIp = getClientIpAddress(httpServletRequest);
-        var clientIp = getToksUserKeyUUID(httpServletRequest);
+        var userKeyUUID = getToksUserKeyUUID(httpServletRequest);
 
-        return clientIp != null && quizReplyHistoryRepository.existsByQuizIdAndIpAddress(quizId, clientIp);
+        return userKeyUUID != null && quizReplyHistoryRepository.existsByQuizIdAndUserUuid(quizId, userKeyUUID);
     }
 
     public QuizReplyModel getReplyModel(Long uid, Long quizId, HttpServletRequest httpServletRequest) {
@@ -52,11 +51,10 @@ public class QuizReplyHistoryService {
                     .map(QuizReplyModel::from).orElse(null);
         }
 
-//        var clientIp = getClientIpAddress(httpServletRequest);
-        var clientIp = getToksUserKeyUUID(httpServletRequest);
+        var userKeyUUID = getToksUserKeyUUID(httpServletRequest);
 
-        if (clientIp != null) {
-            return quizReplyHistoryRepository.findByQuizIdAndIpAddressAndCreatedBy(quizId, clientIp, -1L)
+        if (userKeyUUID != null) {
+            return quizReplyHistoryRepository.findByQuizIdAndUserUuidAndCreatedBy(quizId, userKeyUUID, -1L)
                     .map(QuizReplyModel::from).orElse(null);
         }
 
@@ -78,7 +76,7 @@ public class QuizReplyHistoryService {
                 QuizReplyHistory.builder()
                         .quizId(quizId)
                         .answer(answer)
-                        .ipAddress(clientIp)
+                        .userUuid(clientIp)
                         .createdBy(uid)
                         .build()
         );

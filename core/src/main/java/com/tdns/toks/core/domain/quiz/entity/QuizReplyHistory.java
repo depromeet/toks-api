@@ -36,5 +36,5 @@ public class QuizReplyHistory extends BaseTimeEntity {
     @Column(nullable = false, columnDefinition = "BIGINT COMMENT '생성자'")
     private Long createdBy;
 
-    private String ipAddress;
+    private String userUuid;
 }

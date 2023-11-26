@@ -14,7 +14,7 @@ public interface QuizReplyHistoryRepository extends JpaRepository<QuizReplyHisto
     Boolean existsByQuizIdAndCreatedBy(Long quizId, Long createdBy);
 
     @Transactional(readOnly = true)
-    Boolean existsByQuizIdAndIpAddress(Long quizId, String ipAddress);
+    Boolean existsByQuizIdAndUserUuid(Long quizId, String userUuid);
 
     @Transactional(readOnly = true)
     Long countByQuizIdAndAnswer(Long quizId, String answer);
@@ -23,10 +23,10 @@ public interface QuizReplyHistoryRepository extends JpaRepository<QuizReplyHisto
     Optional<QuizReplyHistory> findByQuizIdAndCreatedBy(Long quizId, Long createdBy);
 
     @Transactional(readOnly = true)
-    Optional<QuizReplyHistory> findByQuizIdAndIpAddress(Long quizId, String ipAddress);
+    Optional<QuizReplyHistory> findByQuizIdAndUserUuid(Long quizId, String userUuid);
 
     @Transactional(readOnly = true)
-    Optional<QuizReplyHistory> findByQuizIdAndIpAddressAndCreatedBy(Long quizId, String ipAddress, Long createdBy);
+    Optional<QuizReplyHistory> findByQuizIdAndUserUuidAndCreatedBy(Long quizId, String userUuid, Long createdBy);
 
     @Transactional(readOnly = true)
     Long countByCreatedBy(long userId);
