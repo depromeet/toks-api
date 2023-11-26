@@ -18,4 +18,6 @@ public class AdminQuizSaveOrUpdateRequest {
      */
     private Map<String, Object> question;
     private QuizType quizType;
+    private String description;
+    private String answer;
 }

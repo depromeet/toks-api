@@ -34,6 +34,7 @@ public class AdminQuizService {
             throw new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR);
         }
 
+        /** quiz 생성 */
         var question = quizRepository.save(
                 Quiz.builder()
                         .title(request.getTitle())
@@ -41,6 +42,9 @@ public class AdminQuizService {
                         .categoryId(request.getCategoryId())
                         .question(request.getQuestion())
                         .quizType(request.getQuizType())
+                        .description(request.getDescription())
+                        .answer(request.getAnswer())
+                        .deleted(false)
                         .createdBy(authUser.getId())
                         .build()
         );
@@ -69,13 +73,17 @@ public class AdminQuizService {
         }
 
         var updatedQuestion = quizRepository.save(
-                quiz.update(
-                        request.getTitle(),
-                        request.getTags(),
-                        request.getCategoryId(),
-                        request.getQuizType(),
-                        request.getQuestion()
-                )
+                Quiz.builder()
+                        .title(request.getTitle())
+                        .tags(request.getTags())
+                        .categoryId(request.getCategoryId())
+                        .question(request.getQuestion())
+                        .quizType(request.getQuizType())
+                        .description(request.getDescription())
+                        .answer(request.getAnswer())
+                        .deleted(false)
+                        .createdBy(authUser.getId())
+                        .build()
         );
 
         quizCacheService.setCachedQuiz(updatedQuestion);
