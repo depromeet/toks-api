@@ -61,10 +61,12 @@ cloud:
 
     s3:
       bucket: ENC(LZJ5s+QVjQfyf7KQb+bTMwbd+CN2Ji9j4ipsVleNo0b7hYBdTGN6nINAFtvXQLwhIk1RfjI+d8MlbyTLMyJ+CQ==)
+      url: https://toks-api-quiz-image-dev-an2.s3.ap-northeast-2.amazonaws.com
       upload:
         path.review: public/review
       cdn:
-        url: https://tdns.s3.ap-northeast-2.amazonaws.com
+#        url: https://tdns.s3.ap-northeast-2.amazonaws.com
+        url: https://image.tokstudy.com
 
 # security
 security:

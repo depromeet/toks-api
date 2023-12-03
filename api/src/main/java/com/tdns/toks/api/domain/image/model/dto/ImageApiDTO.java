@@ -39,5 +39,12 @@ public class ImageApiDTO {
                     .imageUrl(image.getImageUrl())
                     .build();
         }
+
+        public static ImageUploadResponse toResponse(Image image, String cdnUrl) {
+            return ImageUploadResponse.builder()
+                    .id(image.getId())
+                    .imageUrl(cdnUrl)
+                    .build();
+        }
     }
 }

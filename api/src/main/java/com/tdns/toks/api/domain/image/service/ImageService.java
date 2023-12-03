@@ -7,6 +7,7 @@ import com.tdns.toks.core.domain.image.entity.Image;
 import com.tdns.toks.core.domain.image.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,13 +17,21 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Transactional
 public class ImageService {
+
     private final S3UploadService s3UploadService;
     private final ImageRepository imageRepository;
+
+    @Value("${cloud.aws.s3.url}")
+    private String s3Url;
+
+    @Value("${cloud.aws.s3.cdn.url}")
+    private String cdnUrl;
 
     // TODO : image upload path 이상함
     public ImageUploadResponse uploadImage(AuthUser authUser, MultipartFile image) {
         var imageUrl = s3UploadService.uploadSingleFile(image, authUser.getId().toString());
 
+        String cdnImageUrl = imageUrl.replaceAll(s3Url, cdnUrl);
         var imageUploadLog = imageRepository.save(
                 Image.builder()
                         .imageUrl(imageUrl)
@@ -32,6 +41,7 @@ public class ImageService {
 
         log.info("uploadImage / uid : {} / imageUrl {}", authUser.getId(), imageUrl);
 
-        return ImageUploadResponse.toResponse(imageUploadLog);
+        return ImageUploadResponse.toResponse(imageUploadLog, cdnImageUrl);
+//        return ImageUploadResponse.toResponse(imageUploadLog);
     }
 }
