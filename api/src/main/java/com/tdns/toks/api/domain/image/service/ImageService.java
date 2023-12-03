@@ -34,14 +34,14 @@ public class ImageService {
         String cdnImageUrl = imageUrl.replaceAll(s3Url, cdnUrl);
         var imageUploadLog = imageRepository.save(
                 Image.builder()
-                        .imageUrl(imageUrl)
+                        .imageUrl(cdnImageUrl)
                         .createdBy(authUser.getId())
                         .build()
         );
 
-        log.info("uploadImage / uid : {} / imageUrl {}", authUser.getId(), imageUrl);
+        log.info("uploadImage / uid : {} / imageUrl {}", authUser.getId(), cdnImageUrl);
 
-        return ImageUploadResponse.toResponse(imageUploadLog, cdnImageUrl);
+        return ImageUploadResponse.toResponse(imageUploadLog);
 //        return ImageUploadResponse.toResponse(imageUploadLog);
     }
 }
