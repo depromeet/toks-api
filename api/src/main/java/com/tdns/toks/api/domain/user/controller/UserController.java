@@ -23,7 +23,7 @@ public class UserController {
 
     @Operation(summary = "사용자 닉네임 설정")
     @PatchMapping("/nickname")
-    public ResponseEntity<?> setUserNickname(
+    public ResponseEntity<ResponseDto<String>> setUserNickname(
             AuthUser authUser,
             @RequestBody UserUpdateNicknameRequest nicknameRequest
     ) {

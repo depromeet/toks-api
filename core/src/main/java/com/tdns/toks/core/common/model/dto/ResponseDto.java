@@ -1,5 +1,6 @@
 package com.tdns.toks.core.common.model.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +10,12 @@ import org.springframework.http.ResponseEntity;
 
 import java.io.Serializable;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResponseDto<T> implements Serializable {
+    @Schema
     private T data;
 
     public static <T> ResponseEntity<ResponseDto<T>> ok(T data) {

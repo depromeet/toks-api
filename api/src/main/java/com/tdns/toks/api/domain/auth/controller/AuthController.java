@@ -1,6 +1,7 @@
 package com.tdns.toks.api.domain.auth.controller;
 
 import com.tdns.toks.api.domain.auth.service.AuthService;
+import com.tdns.toks.api.domain.user.model.dto.UserApiDTO;
 import com.tdns.toks.api.domain.user.model.dto.UserApiDTO.UserRenewAccessTokenRequest;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.AuthUserValidator;
@@ -28,14 +29,16 @@ public class AuthController {
 
     @Operation(summary = "인증 사용자 본인 정보 조회")
     @GetMapping("/my-infos")
-    public ResponseEntity<?> getMyInfos(AuthUser authUser) {
+    public ResponseEntity<ResponseDto<UserApiDTO.UserInfoResponse>> getMyInfos(AuthUser authUser) {
         var response = authService.getMyInfos(authUser);
         return ResponseDto.ok(response);
     }
 
     @Operation(summary = "사용자 accessToken 갱신 요청")
     @PostMapping("/renew")
-    public ResponseEntity<?> renewAccessToken(@RequestBody UserRenewAccessTokenRequest request) {
+    public ResponseEntity<ResponseDto<UserApiDTO.UserRenewAccessTokenResponse>> renewAccessToken(
+            @RequestBody UserRenewAccessTokenRequest request
+    ) {
         var response = authService.renewAccessToken(request);
         return ResponseDto.created(response);
     }

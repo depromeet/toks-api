@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.fab.controller;
 
+import com.tdns.toks.api.domain.fab.model.dto.FabDto;
 import com.tdns.toks.api.domain.fab.service.FabService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
@@ -22,14 +23,22 @@ public class FabController {
 
     @Operation(summary = "FAB 유저 퀴즈 데이터", description = "사용자 총 접속 및 문제 풀이 횟수 제공")
     @GetMapping("/user")
-    public ResponseEntity<?> getFabUserData(AuthUser authUser, @RequestParam int year, @RequestParam int month) {
+    public ResponseEntity<ResponseDto<FabDto.GetFabUserDataResponseDto>> getFabUserData(
+            AuthUser authUser,
+            @RequestParam int year,
+            @RequestParam int month
+    ) {
         var response = fabService.getFabUserData(authUser, month, year);
         return ResponseDto.ok(response);
     }
 
     @Operation(summary = "FAB 월별 풀이 데이터", description = "사용자 해당 월 일별 문제 풀이 횟수 제공")
     @GetMapping("/calendar")
-    public ResponseEntity<?> getFabCalendarData(AuthUser authUser, @RequestParam int year, @RequestParam int month) {
+    public ResponseEntity<ResponseDto<FabDto.GetFabCalendarDataResponseDto>> getFabCalendarData(
+            AuthUser authUser,
+            @RequestParam int year,
+            @RequestParam int month
+    ) {
         var response = fabService.getFabCalendarData(authUser, month, year);
         return ResponseDto.ok(response);
     }

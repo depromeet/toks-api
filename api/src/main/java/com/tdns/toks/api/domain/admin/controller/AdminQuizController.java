@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.admin.controller;
 
+import com.tdns.toks.api.domain.admin.dto.AdminQuizResponse;
 import com.tdns.toks.api.domain.admin.dto.AdminQuizSaveOrUpdateRequest;
 import com.tdns.toks.api.domain.admin.service.AdminQuizService;
 import com.tdns.toks.core.common.model.dto.PageableResponseDto;
@@ -33,7 +34,10 @@ public class AdminQuizController {
     @Operation(summary = "퀴즈 추가")
     @AdminPermission
     @PostMapping
-    public ResponseEntity<?> insert(AuthUser authUser, @RequestBody AdminQuizSaveOrUpdateRequest request) {
+    public ResponseEntity<ResponseDto<AdminQuizResponse>> insert(
+            AuthUser authUser,
+            @RequestBody AdminQuizSaveOrUpdateRequest request
+    ) {
         var response = adminQuizService.insert(authUser, request);
         return ResponseDto.created(response);
     }
@@ -41,7 +45,7 @@ public class AdminQuizController {
     @Operation(summary = "퀴즈 단건 조회")
     @AdminPermission
     @GetMapping(path = "/{quizId}")
-    public ResponseEntity<?> get(AuthUser authUser, @PathVariable Long quizId) {
+    public ResponseEntity<ResponseDto<AdminQuizResponse>> get(AuthUser authUser, @PathVariable Long quizId) {
         var response = adminQuizService.get(authUser, quizId);
         return ResponseDto.ok(response);
     }
@@ -49,7 +53,11 @@ public class AdminQuizController {
     @Operation(summary = "퀴즈 다건 조회")
     @AdminPermission
     @GetMapping
-    public ResponseEntity<?> getAll(AuthUser authUser, @RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<ResponseDto<PageableResponseDto<AdminQuizResponse>>> getAll(
+            AuthUser authUser,
+            @RequestParam int page,
+            @RequestParam int size
+    ) {
         var response = adminQuizService.getAll(authUser, page, size);
         return PageableResponseDto.ok(response);
     }
@@ -57,7 +65,7 @@ public class AdminQuizController {
     @Operation(summary = "퀴즈 수정")
     @AdminPermission
     @PatchMapping(path = "/{quizId}")
-    public ResponseEntity<?> update(
+    public ResponseEntity<ResponseDto<AdminQuizResponse>> update(
             AuthUser authUser,
             @PathVariable Long quizId,
             @RequestBody AdminQuizSaveOrUpdateRequest request

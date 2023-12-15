@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.category.controller;
 
+import com.tdns.toks.api.domain.category.model.dto.CategoryResponse;
 import com.tdns.toks.api.domain.category.service.CategoryService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,14 +21,14 @@ public class CategoryController {
 
     @Operation(summary = "전체 카테고리 정보 조회")
     @GetMapping("/all")
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<ResponseDto<CategoryResponse.GetAllCategoriesResponse>> getAll() {
         var response = categoryService.getAll();
         return ResponseDto.ok(response);
     }
 
     @Operation(summary = "메인홈에서 사용되는 카테고리 정보 조회, 대분류 기반")
     @GetMapping("/main")
-    public ResponseEntity<?> getMainCategories() {
+    public ResponseEntity<ResponseDto<CategoryResponse.GetMainCategories>> getMainCategories() {
         var response = categoryService.getMainCategories();
         return ResponseDto.ok(response);
     }

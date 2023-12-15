@@ -1,5 +1,7 @@
 package com.tdns.toks.api.domain.quiz.controller;
 
+import com.tdns.toks.api.domain.quiz.model.QuizInfoModel;
+import com.tdns.toks.api.domain.quiz.model.dto.QuizDetailResponse;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizSearchRequest;
 import com.tdns.toks.api.domain.quiz.model.dto.QuizSolveDto;
 import com.tdns.toks.api.domain.quiz.service.QuizService;
@@ -31,7 +33,7 @@ public class QuizController {
 
     @Operation(summary = "퀴즈 상세 조회")
     @GetMapping("/quizzes/{quizId}")
-    public ResponseEntity<?> get(
+    public ResponseEntity<ResponseDto<QuizDetailResponse>> get(
             @Nullable AuthUser authUser,
             @PathVariable Long quizId,
             HttpServletRequest httpServletRequest
@@ -42,14 +44,17 @@ public class QuizController {
 
     @Operation(summary = "퀴즈 다건 조회")
     @GetMapping("/quizzes")
-    public ResponseEntity<?> getAll(@Nullable AuthUser authUser, @ParameterObject QuizSearchRequest request) {
+    public ResponseEntity<ResponseDto<PageableResponseDto<QuizInfoModel>>> getAll(
+            @Nullable AuthUser authUser,
+            @ParameterObject QuizSearchRequest request
+    ) {
         var response = quizService.search(authUser, request);
         return PageableResponseDto.ok(response);
     }
 
     @Operation(summary = "퀴즈 문제 풀이", description = "[임시] 추천 데이터는 최대 3개까지")
     @PostMapping("/quizzes/{quizId}")
-    public ResponseEntity<?> solveQuiz(
+    public ResponseEntity<ResponseDto<QuizSolveDto.QuizSolveResponse>> solveQuiz(
             @Nullable AuthUser authUser,
             @PathVariable Long quizId,
             @RequestBody QuizSolveDto.QuizSolveRequest request,

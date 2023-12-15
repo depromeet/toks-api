@@ -1,6 +1,7 @@
 package com.tdns.toks.api.domain.quiz.controller;
 
 import com.tdns.toks.api.domain.quiz.model.dto.QuizCommentCreateRequest;
+import com.tdns.toks.api.domain.quiz.model.dto.QuizCommentResponse;
 import com.tdns.toks.api.domain.quiz.service.QuizCommentService;
 import com.tdns.toks.core.common.model.dto.PageableResponseDto;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
@@ -29,7 +30,7 @@ public class QuizCommentController {
 
     @Operation(summary = "댓글 다건 조회", description = "내림차순으로 제공")
     @GetMapping("/quizzes/{quizId}/comments")
-    public ResponseEntity<?> getAll(
+    public ResponseEntity<ResponseDto<PageableResponseDto<QuizCommentResponse>>> getAll(
             @Nullable AuthUser authUser,
             @PathVariable Long quizId,
             @RequestParam(required = false, defaultValue = "0") Integer page,
@@ -41,7 +42,7 @@ public class QuizCommentController {
 
     @Operation(summary = "댓글 작성")
     @PostMapping("/quizzes/{quizId}/comments")
-    public ResponseEntity<?> insert(
+    public ResponseEntity<ResponseDto<QuizCommentResponse>> insert(
             AuthUser authUser,
             @PathVariable Long quizId,
             @RequestBody QuizCommentCreateRequest request

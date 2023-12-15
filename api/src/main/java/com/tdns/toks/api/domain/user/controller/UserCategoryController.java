@@ -1,6 +1,7 @@
 package com.tdns.toks.api.domain.user.controller;
 
 import com.tdns.toks.api.domain.category.model.dto.CategoryRequest;
+import com.tdns.toks.api.domain.user.model.dto.UserCategoryResponse;
 import com.tdns.toks.api.domain.user.service.UserCategoryService;
 import com.tdns.toks.core.common.model.dto.ResponseDto;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
@@ -24,14 +25,19 @@ public class UserCategoryController {
 
     @Operation(summary = "사용자 카테고리 조회")
     @GetMapping
-    public ResponseEntity<?> getUserCategory(AuthUser authUser) {
+    public ResponseEntity<ResponseDto<UserCategoryResponse.GetUserCategoriesResponse>> getUserCategory(
+            AuthUser authUser
+    ) {
         var response = userCategoryService.getUserCategories(authUser);
         return ResponseDto.ok(response);
     }
 
     @Operation(summary = "사용자 카테고리 설정")
     @PostMapping
-    public ResponseEntity<?> setUserCategory(AuthUser authUser, @RequestBody CategoryRequest.SetUserCategoriesRequest request) {
+    public ResponseEntity<ResponseDto<UserCategoryResponse.SetUserCategoriesResponse>> setUserCategory(
+            AuthUser authUser,
+            @RequestBody CategoryRequest.SetUserCategoriesRequest request
+    ) {
         var response = userCategoryService.setUserCategories(authUser, request.getCategories());
         return ResponseDto.created(response);
     }
