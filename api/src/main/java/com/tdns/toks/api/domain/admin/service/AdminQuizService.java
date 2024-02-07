@@ -71,19 +71,17 @@ public class AdminQuizService {
         if (!categoryRepository.existsById(request.getCategoryId())) {
             throw new ApplicationErrorException(ApplicationErrorType.NOT_FOUND_CATEGORY_ERROR);
         }
-
+        
         var updatedQuestion = quizRepository.save(
-                Quiz.builder()
-                        .title(request.getTitle())
-                        .tags(request.getTags())
-                        .categoryId(request.getCategoryId())
-                        .question(request.getQuestion())
-                        .quizType(request.getQuizType())
-                        .description(request.getDescription())
-                        .answer(request.getAnswer())
-                        .deleted(false)
-                        .createdBy(authUser.getId())
-                        .build()
+                quiz.update(
+                        request.getTitle(),
+                        request.getTags(),
+                        request.getCategoryId(),
+                        request.getQuestion(),
+                        request.getQuizType(),
+                        request.getDescription(),
+                        request.getAnswer()
+                )
         );
 
         quizCacheService.setCachedQuiz(updatedQuestion);

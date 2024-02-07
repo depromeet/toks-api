@@ -66,14 +66,18 @@ public class Quiz extends BaseTimeEntity {
             String title,
             List<String> tags,
             String categoryId,
+            Map<String, Object> question,
             QuizType quizType,
-            Map<String, Object> question
+            String description,
+            String answer
     ) {
         this.title = title;
         this.tags = tags;
         this.categoryId = categoryId;
-        this.quizType = quizType;
         this.question = question;
+        this.quizType = quizType;
+        this.description = description;
+        this.answer = answer;
 
         return this;
     }
