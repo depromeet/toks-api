@@ -1,5 +1,6 @@
 package com.tdns.toks.api.domain.admin.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.tdns.toks.core.domain.quiz.entity.Quiz;
 import com.tdns.toks.core.domain.quiz.type.QuizType;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AdminQuizResponse {
     private Long id;
     private String title;
