@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface BottomBannerRepository extends JpaRepository<BottomBanner, Long> {
     @Transactional(readOnly = true)
-    List<BottomBanner> findAllByIsActive(boolean isActive);
+    List<BottomBanner> findAllByIsActive(Boolean isActive);
 }

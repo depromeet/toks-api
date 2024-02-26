@@ -44,9 +44,9 @@ public class BottomBanner extends BaseTimeEntity {
     private String landingUrl;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private Boolean isActive;
 
-    public void update(String title, int seq, String imageUrl, String landingUrl, boolean isActive) {
+    public void update(String title, int seq, String imageUrl, String landingUrl, Boolean isActive) {
         this.title = title;
         this.seq = seq;
         this.imageUrl = imageUrl;

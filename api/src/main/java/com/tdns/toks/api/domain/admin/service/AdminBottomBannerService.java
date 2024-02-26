@@ -38,7 +38,7 @@ public class AdminBottomBannerService {
                 .seq(request.getSeq())
                 .imageUrl(request.getImageUrl())
                 .landingUrl(request.getLandingUrl())
-                .isActive(request.isActive())
+                .isActive(request.getIsActive())
                 .build();
 
         var createdBottomBanner = bottomBannerRepository.save(bottomBanner);
@@ -60,7 +60,7 @@ public class AdminBottomBannerService {
                 request.getSeq(),
                 request.getImageUrl(),
                 request.getLandingUrl(),
-                request.isActive()
+                request.getIsActive()
         );
 
         var updatedBottomBanner = bottomBannerRepository.save(bottomBanner);

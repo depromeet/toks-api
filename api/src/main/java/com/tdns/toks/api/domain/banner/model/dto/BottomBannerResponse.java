@@ -2,7 +2,6 @@ package com.tdns.toks.api.domain.banner.model.dto;
 
 import com.tdns.toks.api.domain.banner.model.BottomBannerModel;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

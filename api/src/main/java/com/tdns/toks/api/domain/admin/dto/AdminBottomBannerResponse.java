@@ -16,7 +16,7 @@ public class AdminBottomBannerResponse {
     private int seq;
     private String imageUrl;
     private String landingUrl;
-    private boolean isActive;
+    private Boolean isActive;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -27,7 +27,7 @@ public class AdminBottomBannerResponse {
                 bottomBanner.getSeq(),
                 bottomBanner.getImageUrl(),
                 bottomBanner.getLandingUrl(),
-                bottomBanner.isActive(),
+                bottomBanner.getIsActive(),
                 bottomBanner.getCreatedAt(),
                 bottomBanner.getUpdatedAt()
         );

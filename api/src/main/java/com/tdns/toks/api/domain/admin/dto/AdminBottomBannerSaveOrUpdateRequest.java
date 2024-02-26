@@ -10,5 +10,5 @@ public class AdminBottomBannerSaveOrUpdateRequest {
     private int seq;
     private String imageUrl;
     private String landingUrl;
-    private boolean isActive;
+    private Boolean isActive;
 }

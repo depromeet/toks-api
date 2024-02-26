@@ -12,7 +12,7 @@ public class BottomBannerModel {
     private final int seq;
     private final String imageUrl;
     private final String landingUrl;
-    private final boolean isActive;
+    private final Boolean isActive;
 
     public static BottomBannerModel from(BottomBanner bottomBanner) {
         return new BottomBannerModel(
@@ -21,7 +21,7 @@ public class BottomBannerModel {
                 bottomBanner.getSeq(),
                 bottomBanner.getImageUrl(),
                 bottomBanner.getLandingUrl(),
-                bottomBanner.isActive()
+                bottomBanner.getIsActive()
         );
     }
 }
