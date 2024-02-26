@@ -52,6 +52,11 @@ public enum ApplicationErrorType {
      * UserActivityCount Error Type
      */
     NOT_FOUND_USER_ACTIVITY(HttpStatus.NOT_FOUND, "사용자의 활동 기록을 찾을 수 없습니다."),
+
+    /**
+     * BottomBanner Error Type
+     */
+    NOT_FOUND_BOTTOM_BANNER_ERROR(HttpStatus.NOT_FOUND, "바텀 배너 정보를 찾을 수 없습니다."),
     ;
 
     @Getter
