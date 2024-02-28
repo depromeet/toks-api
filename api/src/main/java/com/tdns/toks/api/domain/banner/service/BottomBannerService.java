@@ -3,7 +3,6 @@ package com.tdns.toks.api.domain.banner.service;
 import com.tdns.toks.api.domain.banner.model.BottomBannerModel;
 import com.tdns.toks.api.domain.banner.model.dto.BottomBannerResponse;
 import com.tdns.toks.core.domain.auth.model.AuthUser;
-import com.tdns.toks.core.domain.banner.entity.BottomBanner;
 import com.tdns.toks.core.domain.banner.repository.BottomBannerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -36,17 +34,18 @@ public class BottomBannerService {
     public Map<Long, BottomBannerModel> refresh() {
         return bottomBannerRepository.findAllByIsActive(true)
                 .stream()
-                .sorted(Comparator.comparingInt(BottomBanner::getSeq))
                 .map(BottomBannerModel::from)
                 .collect(Collectors.toMap(BottomBannerModel::getId, Function.identity()));
     }
 
     public List<BottomBannerModel> getAll() {
-        return new ArrayList<>(bottomBanners.values());
+        return bottomBanners.values()
+                .stream()
+                .sorted(Comparator.comparingInt(BottomBannerModel::getSeq))
+                .collect(Collectors.toList());
     }
 
     public BottomBannerResponse.GetAllBottomBannerResponse getAllBottomBanners(@Nullable AuthUser authUser) {
-        var bottomBanners = getAll();
-        return new BottomBannerResponse.GetAllBottomBannerResponse(bottomBanners);
+        return new BottomBannerResponse.GetAllBottomBannerResponse(getAll());
     }
 }
